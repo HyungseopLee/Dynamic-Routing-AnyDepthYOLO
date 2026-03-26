@@ -1,0 +1,13 @@
+# logs/
+runs/
+__pycache__/
+pretrain/
+
+*.out
+*.err
+# *.log
+
+*.pt
+
+train_adn_distill_sbatch.sh
+

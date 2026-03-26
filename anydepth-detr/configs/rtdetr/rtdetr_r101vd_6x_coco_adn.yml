@@ -1,0 +1,43 @@
+__include__: [
+  '../dataset/coco_detection.yml',
+  '../runtime.yml',
+  './include/dataloader.yml',
+  './include/optimizer.yml',
+  './include/rtdetr_r50vd_adn.yml',
+]
+
+# output_dir: ./output/rtdetr_r50vd_6x_coco_res50_adn_exp009_skip1of3_conv1-act-conv2-shortcut-img1k81.1 
+# output_dir: ./output/rtdetr_r50vd_6x_coco_res50_adn_exp014_residual_shortcut_encoder  
+output_dir: ./output/rtdetr_r101vd_adn_6x_coco_exp016  
+# output_dir: ./output/rtdetr_r50vd_6x_coco_res50_adn_exp015_no_features_kd_no_shortcut
+
+train_dataloader: 
+  batch_size: 8
+  num_workers: 8
+
+ResNet_ADN:
+  depth: 101
+
+HybridEncoder:
+  # intra
+  hidden_dim: 384
+  dim_feedforward: 2048
+
+
+RTDETRTransformer:
+  feat_channels: [384, 384, 384]
+
+
+optimizer:
+  type: AdamW
+  params: 
+    - 
+      params: '^(?=.*backbone)(?!.*norm|bn).*$'
+      lr: 0.000002 # orig 0.000001
+    - 
+      params: '^(?=.*(?:encoder|decoder))(?=.*(?:norm|bn)).*$'
+      weight_decay: 0.
+
+  lr: 0.0002 # orig 0.0001
+  betas: [0.9, 0.999]
+  weight_decay: 0.0002 # orig 0.0001
