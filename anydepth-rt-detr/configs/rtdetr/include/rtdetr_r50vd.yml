@@ -6,18 +6,10 @@ postprocessor: RTDETRPostProcessor
 
 
 RTDETR: 
-  backbone: ResNet_ADN
+  backbone: PResNet
   encoder: HybridEncoder
   decoder: RTDETRTransformer
   multi_scale: [480, 512, 544, 576, 608, 640, 640, 640, 672, 704, 736, 768, 800]
-
-ResNet_ADN:
-  depth: 50
-  freeze_at: 0
-  return_idx: [1, 2, 3]
-  num_stages: 4
-  freeze_norm: True
-  pretrained: True 
 
 PResNet:
   depth: 50

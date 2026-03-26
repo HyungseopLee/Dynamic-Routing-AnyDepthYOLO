@@ -8,5 +8,5 @@ __include__: [
 
 # output_dir: ./output/rtdetr_r50vd_6x_coco_res50_adn_exp009_skip1of3_conv1-act-conv2-shortcut-img1k81.1 
 # output_dir: ./output/rtdetr_r50vd_6x_coco_res50_adn_exp014_residual_shortcut_encoder  
-output_dir: ./output/rtdetr_r50vd_6x_coco_res50_adn_exp014_residual_shortcut_encoder_opt3 
+output_dir: ./output/anydepth_rtdetr_r50vd_6x_coco
 # output_dir: ./output/rtdetr_r50vd_6x_coco_res50_adn_exp015_no_features_kd_no_shortcut

@@ -30,16 +30,6 @@ class RTDETR(nn.Module):
             sz = np.random.choice(self.multi_scale)
             x = F.interpolate(x, size=[sz, sz])
         
-        # backbone_skip=[True, True, True, True]
-        # backbone_skip=[False, False, False, False]
-        # # backbone_skip = [True, True, False, False]
-        
-        # encoder_skip=[True,]
-        # encoder_skip=[False,]
-        
-        # decoder_depth = 6
-        # decoder_depth = 4
-        
         x_backbone = self.backbone(x, skip=backbone_skip)
         # print("output of backbone:", len(x_backbone))
         # for i in range(len(x_backbone)):

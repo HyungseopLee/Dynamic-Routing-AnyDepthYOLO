@@ -212,19 +212,12 @@ class PResNet(nn.Module):
                     setattr(m, name, _child)
         return m
 
-    def forward(self, x, skip=None):
+    def forward(self, x, skip=None): # @HyungseopLee: "skip=None" for baseline
         conv1 = self.conv1(x)
         x = F.max_pool2d(conv1, kernel_size=3, stride=2, padding=1)
         outs = []
-
-        # woochul
-        if skip is not None:
-            print("backbone skip:", skip)
-
         for idx, stage in enumerate(self.res_layers):
             x = stage(x)
             if idx in self.return_idx:
                 outs.append(x)
         return outs
-
-

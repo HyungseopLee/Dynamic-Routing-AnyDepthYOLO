@@ -6,10 +6,7 @@ __include__: [
   './include/rtdetr_r50vd_adn.yml',
 ]
 
-# output_dir: ./output/rtdetr_r50vd_6x_coco_res50_adn_exp009_skip1of3_conv1-act-conv2-shortcut-img1k81.1 
-# output_dir: ./output/rtdetr_r50vd_6x_coco_res50_adn_exp014_residual_shortcut_encoder  
-output_dir: ./output/rtdetr_r101vd_adn_6x_coco_exp016  
-# output_dir: ./output/rtdetr_r50vd_6x_coco_res50_adn_exp015_no_features_kd_no_shortcut
+output_dir: ./output/anydepth_rtdetr_r101vd_6x_coco
 
 train_dataloader: 
   batch_size: 8
@@ -18,7 +15,9 @@ train_dataloader:
 ResNet_ADN:
   depth: 101
 
-HybridEncoder:
+# @HyungseopLee
+# HybridEncoder
+HybridEncoderADN:
   # intra
   hidden_dim: 384
   dim_feedforward: 2048

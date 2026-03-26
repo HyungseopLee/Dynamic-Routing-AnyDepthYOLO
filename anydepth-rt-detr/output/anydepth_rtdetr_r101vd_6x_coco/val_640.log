@@ -1,0 +1,1067 @@
+W0326 22:16:46.191000 3668502 site-packages/torch/distributed/run.py:766] 
+W0326 22:16:46.191000 3668502 site-packages/torch/distributed/run.py:766] *****************************************
+W0326 22:16:46.191000 3668502 site-packages/torch/distributed/run.py:766] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0326 22:16:46.191000 3668502 site-packages/torch/distributed/run.py:766] *****************************************
+register CocoDetection
+register CIFAR10
+register DataLoader
+register default_collate_fn
+register RandomPhotometricDistort
+register RandomZoomOut
+register RandomHorizontalFlip
+register Resize
+register SanitizeBoundingBoxes
+register RandomCrop
+register Normalize
+register Compose
+register EmptyTransform
+register PadToSize
+register RandomIoUCrop
+register ConvertBoxes
+register ConvertPILImage
+register Classification
+register ClassHead
+register CrossEntropyLoss
+register CocoDetection
+register PResNet
+register ResNet_ADN
+register MResNet
+register CIFAR10
+register DataLoader
+register default_collate_fn
+register RandomPhotometricDistort
+register RandomZoomOut
+register RandomHorizontalFlip
+register Resize
+register SanitizeBoundingBoxes
+register RandomCrop
+register Normalize
+register Compose
+register EmptyTransform
+register PadToSize
+register RandomIoUCrop
+register ConvertBoxes
+register ConvertPILImage
+register Classification
+register ClassHead
+register CrossEntropyLoss
+register PResNet
+register ResNet_ADN
+register MResNet
+register SwinTransformer
+register ModelEMA
+register SGD
+register Adam
+register AdamW
+register MultiStepLR
+register CosineAnnealingLR
+register OneCycleLR
+register LambdaLR
+register GradScaler
+register RTDETR
+register HybridEncoderADN
+register HybridEncoder
+register RTDETRTransformer
+register SwinTransformer
+register RTDETRPostProcessor
+register SetCriterionKD
+register SetCriterion
+register ModelEMA
+register SGD
+register Adam
+register AdamW
+register MultiStepLR
+register CosineAnnealingLR
+register OneCycleLR
+register LambdaLR
+register GradScaler
+register RTDETR
+register HybridEncoderADN
+register HybridEncoder
+register RTDETRTransformer
+register RTDETRPostProcessor
+register SetCriterionKD
+register SetCriterion
+register HungarianMatcherregister HungarianMatcher
+
+/home/hslee/anaconda3/envs/torch271/lib/python3.13/site-packages/torch/distributed/distributed_c10d.py:4631: UserWarning: No device id is provided via `init_process_group` or `barrier `. Using the current device set by the user. 
+  warnings.warn(  # warn only once
+/home/hslee/anaconda3/envs/torch271/lib/python3.13/site-packages/torch/distributed/distributed_c10d.py:4631: UserWarning: No device id is provided via `init_process_group` or `barrier `. Using the current device set by the user. 
+  warnings.warn(  # warn only once
+[rank1]:[W326 22:16:47.957254275 ProcessGroupNCCL.cpp:4718] [PG ID 0 PG GUID 0 Rank 1]  using GPU 1 as device used by this process is currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect. You can pecify device_id in init_process_group() to force use of a particular device.
+[rank0]:[W326 22:16:47.966785325 ProcessGroupNCCL.cpp:4718] [PG ID 0 PG GUID 0 Rank 0]  using GPU 0 as device used by this process is currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect. You can pecify device_id in init_process_group() to force use of a particular device.
+Initialized distributed mode...
+YAMLConfig: ./configs/rtdetr/rtdetr_r101vd_6x_coco_adn.yml
+==============================  Model Architecture  ==============================
+Downsample: d
+Downsample: d
+Downsample: d
+Load pretrained PResNet101 state_dict
+RTDETR(
+  (backbone): ResNet_ADN(
+    (conv1): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+    (bn1): FrozenBatchNorm2d(64, eps=1e-05)
+    (relu): ReLU(inplace=True)
+    (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+    (layer1): SkippableSequentialBlocks(
+      (0): Bottleneck(
+        (conv1): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(64, eps=1e-05)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(64, eps=1e-05)
+        (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(256, eps=1e-05)
+        (relu): ReLU(inplace=True)
+        (downsample): Sequential(
+          (0): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): FrozenBatchNorm2d(256, eps=1e-05)
+        )
+        (bn1_skip): FrozenBatchNorm2d(64, eps=1e-05)
+        (bn2_skip): FrozenBatchNorm2d(64, eps=1e-05)
+        (bn3_skip): FrozenBatchNorm2d(256, eps=1e-05)
+      )
+      (1): Bottleneck(
+        (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(64, eps=1e-05)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(64, eps=1e-05)
+        (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(256, eps=1e-05)
+        (relu): ReLU(inplace=True)
+        (bn1_skip): FrozenBatchNorm2d(64, eps=1e-05)
+        (bn2_skip): FrozenBatchNorm2d(64, eps=1e-05)
+        (bn3_skip): FrozenBatchNorm2d(256, eps=1e-05)
+      )
+      (2): Bottleneck(
+        (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(64, eps=1e-05)
+        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(64, eps=1e-05)
+        (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(256, eps=1e-05)
+        (relu): ReLU(inplace=True)
+      )
+    )
+    (layer2): SkippableSequentialBlocks(
+      (0): Bottleneck(
+        (conv1): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(128, eps=1e-05)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(128, eps=1e-05)
+        (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(512, eps=1e-05)
+        (relu): ReLU(inplace=True)
+        (downsample): Sequential(
+          (0): AvgPool2d(kernel_size=2, stride=2, padding=0)
+          (1): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (2): FrozenBatchNorm2d(512, eps=1e-05)
+        )
+        (bn1_skip): FrozenBatchNorm2d(128, eps=1e-05)
+        (bn2_skip): FrozenBatchNorm2d(128, eps=1e-05)
+        (bn3_skip): FrozenBatchNorm2d(512, eps=1e-05)
+      )
+      (1): Bottleneck(
+        (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(128, eps=1e-05)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(128, eps=1e-05)
+        (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(512, eps=1e-05)
+        (relu): ReLU(inplace=True)
+        (bn1_skip): FrozenBatchNorm2d(128, eps=1e-05)
+        (bn2_skip): FrozenBatchNorm2d(128, eps=1e-05)
+        (bn3_skip): FrozenBatchNorm2d(512, eps=1e-05)
+      )
+      (2): Bottleneck(
+        (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(128, eps=1e-05)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(128, eps=1e-05)
+        (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(512, eps=1e-05)
+        (relu): ReLU(inplace=True)
+      )
+      (3): Bottleneck(
+        (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(128, eps=1e-05)
+        (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(128, eps=1e-05)
+        (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(512, eps=1e-05)
+        (relu): ReLU(inplace=True)
+      )
+    )
+    (layer3): SkippableSequentialBlocks(
+      (0): Bottleneck(
+        (conv1): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+        (downsample): Sequential(
+          (0): AvgPool2d(kernel_size=2, stride=2, padding=0)
+          (1): Conv2d(512, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (2): FrozenBatchNorm2d(1024, eps=1e-05)
+        )
+        (bn1_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn2_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn3_skip): FrozenBatchNorm2d(1024, eps=1e-05)
+      )
+      (1): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+        (bn1_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn2_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn3_skip): FrozenBatchNorm2d(1024, eps=1e-05)
+      )
+      (2): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+        (bn1_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn2_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn3_skip): FrozenBatchNorm2d(1024, eps=1e-05)
+      )
+      (3): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+        (bn1_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn2_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn3_skip): FrozenBatchNorm2d(1024, eps=1e-05)
+      )
+      (4): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+        (bn1_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn2_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn3_skip): FrozenBatchNorm2d(1024, eps=1e-05)
+      )
+      (5): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+        (bn1_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn2_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn3_skip): FrozenBatchNorm2d(1024, eps=1e-05)
+      )
+      (6): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+        (bn1_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn2_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn3_skip): FrozenBatchNorm2d(1024, eps=1e-05)
+      )
+      (7): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+        (bn1_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn2_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn3_skip): FrozenBatchNorm2d(1024, eps=1e-05)
+      )
+      (8): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+        (bn1_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn2_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn3_skip): FrozenBatchNorm2d(1024, eps=1e-05)
+      )
+      (9): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+        (bn1_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn2_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn3_skip): FrozenBatchNorm2d(1024, eps=1e-05)
+      )
+      (10): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+        (bn1_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn2_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn3_skip): FrozenBatchNorm2d(1024, eps=1e-05)
+      )
+      (11): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+        (bn1_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn2_skip): FrozenBatchNorm2d(256, eps=1e-05)
+        (bn3_skip): FrozenBatchNorm2d(1024, eps=1e-05)
+      )
+      (12): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+      )
+      (13): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+      )
+      (14): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+      )
+      (15): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+      )
+      (16): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+      )
+      (17): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+      )
+      (18): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+      )
+      (19): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+      )
+      (20): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+      )
+      (21): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+      )
+      (22): Bottleneck(
+        (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+        (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+        (relu): ReLU(inplace=True)
+      )
+    )
+    (layer4): SkippableSequentialBlocks(
+      (0): Bottleneck(
+        (conv1): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(512, eps=1e-05)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(512, eps=1e-05)
+        (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(2048, eps=1e-05)
+        (relu): ReLU(inplace=True)
+        (downsample): Sequential(
+          (0): AvgPool2d(kernel_size=2, stride=2, padding=0)
+          (1): Conv2d(1024, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (2): FrozenBatchNorm2d(2048, eps=1e-05)
+        )
+        (bn1_skip): FrozenBatchNorm2d(512, eps=1e-05)
+        (bn2_skip): FrozenBatchNorm2d(512, eps=1e-05)
+        (bn3_skip): FrozenBatchNorm2d(2048, eps=1e-05)
+      )
+      (1): Bottleneck(
+        (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(512, eps=1e-05)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(512, eps=1e-05)
+        (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(2048, eps=1e-05)
+        (relu): ReLU(inplace=True)
+        (bn1_skip): FrozenBatchNorm2d(512, eps=1e-05)
+        (bn2_skip): FrozenBatchNorm2d(512, eps=1e-05)
+        (bn3_skip): FrozenBatchNorm2d(2048, eps=1e-05)
+      )
+      (2): Bottleneck(
+        (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn1): FrozenBatchNorm2d(512, eps=1e-05)
+        (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn2): FrozenBatchNorm2d(512, eps=1e-05)
+        (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn3): FrozenBatchNorm2d(2048, eps=1e-05)
+        (relu): ReLU(inplace=True)
+      )
+    )
+  )
+  (decoder): RTDETRTransformer(
+    (input_proj): ModuleList(
+      (0-2): 3 x Sequential(
+        (conv): Conv2d(384, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (norm): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (decoder): TransformerDecoder(
+      (layers): ModuleList(
+        (0-5): 6 x TransformerDecoderLayer(
+          (self_attn): MultiheadAttention(
+            (out_proj): NonDynamicallyQuantizableLinear(in_features=256, out_features=256, bias=True)
+          )
+          (dropout1): Dropout(p=0.0, inplace=False)
+          (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (cross_attn): MSDeformableAttention(
+            (sampling_offsets): Linear(in_features=256, out_features=192, bias=True)
+            (attention_weights): Linear(in_features=256, out_features=96, bias=True)
+            (value_proj): Linear(in_features=256, out_features=256, bias=True)
+            (output_proj): Linear(in_features=256, out_features=256, bias=True)
+          )
+          (dropout2): Dropout(p=0.0, inplace=False)
+          (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (linear1): Linear(in_features=256, out_features=1024, bias=True)
+          (dropout3): Dropout(p=0.0, inplace=False)
+          (linear2): Linear(in_features=1024, out_features=256, bias=True)
+          (dropout4): Dropout(p=0.0, inplace=False)
+          (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        )
+      )
+    )
+    (denoising_class_embed): Embedding(81, 256, padding_idx=80)
+    (query_pos_head): MLP(
+      (layers): ModuleList(
+        (0): Linear(in_features=4, out_features=512, bias=True)
+        (1): Linear(in_features=512, out_features=256, bias=True)
+      )
+      (act): ReLU(inplace=True)
+    )
+    (enc_output): Sequential(
+      (0): Linear(in_features=256, out_features=256, bias=True)
+      (1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    )
+    (enc_score_head): Linear(in_features=256, out_features=80, bias=True)
+    (enc_bbox_head): MLP(
+      (layers): ModuleList(
+        (0-1): 2 x Linear(in_features=256, out_features=256, bias=True)
+        (2): Linear(in_features=256, out_features=4, bias=True)
+      )
+      (act): ReLU(inplace=True)
+    )
+    (dec_score_head): ModuleList(
+      (0-5): 6 x Linear(in_features=256, out_features=80, bias=True)
+    )
+    (dec_bbox_head): ModuleList(
+      (0-5): 6 x MLP(
+        (layers): ModuleList(
+          (0-1): 2 x Linear(in_features=256, out_features=256, bias=True)
+          (2): Linear(in_features=256, out_features=4, bias=True)
+        )
+        (act): ReLU(inplace=True)
+      )
+    )
+  )
+  (encoder): HybridEncoderADN(
+    (input_proj): ModuleList(
+      (0): SkippableInputProjection(
+        (conv): Conv2d(512, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (norm): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (norm_skippable): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): SkippableInputProjection(
+        (conv): Conv2d(1024, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (norm): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (norm_skippable): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (2): SkippableInputProjection(
+        (conv): Conv2d(2048, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (norm): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (norm_skippable): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (encoder): ModuleList(
+      (0): SkippableTransformerEncoder(
+        (layers): ModuleList(
+          (0): SkippableTransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): NonDynamicallyQuantizableLinear(in_features=384, out_features=384, bias=True)
+            )
+            (linear1): Linear(in_features=384, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.0, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=384, bias=True)
+            (norm1): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+            (norm1_skippable): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+            (norm2_skippable): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.0, inplace=False)
+            (dropout2): Dropout(p=0.0, inplace=False)
+            (activation): GELU(approximate='none')
+          )
+        )
+      )
+    )
+    (lateral_convs): ModuleList(
+      (0-1): 2 x SkippableConvNormLayer(
+        (conv): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (norm): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (norm_skippable): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+    )
+    (fpn_blocks): ModuleList(
+      (0-1): 2 x SkippableCSPRepLayer(
+        (conv1): SkippableConvNormLayer(
+          (conv): Conv2d(768, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (norm): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (norm_skippable): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (conv2): SkippableConvNormLayer(
+          (conv): Conv2d(768, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (norm): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (norm_skippable): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (bottlenecks): SkippableSequentialBlocks(
+          (0): SkippableRepVggBlock(
+            (conv1): SkippableConvNormLayer(
+              (conv): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (norm): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (norm_skippable): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): Identity()
+            )
+            (conv2): SkippableConvNormLayer(
+              (conv): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (norm): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (norm_skippable): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): Identity()
+            )
+            (act): SiLU(inplace=True)
+          )
+          (1): SkippableRepVggBlock(
+            (conv1): SkippableConvNormLayer(
+              (conv): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (norm): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): Identity()
+            )
+            (conv2): SkippableConvNormLayer(
+              (conv): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (norm): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): Identity()
+            )
+            (act): SiLU(inplace=True)
+          )
+          (2): SkippableRepVggBlock(
+            (conv1): SkippableConvNormLayer(
+              (conv): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (norm): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): Identity()
+            )
+            (conv2): SkippableConvNormLayer(
+              (conv): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (norm): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): Identity()
+            )
+            (act): SiLU(inplace=True)
+          )
+        )
+        (conv3): Identity()
+      )
+    )
+    (downsample_convs): ModuleList(
+      (0-1): 2 x SkippableConvNormLayer(
+        (conv): Conv2d(384, 384, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (norm): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (norm_skippable): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+    )
+    (pan_blocks): ModuleList(
+      (0-1): 2 x SkippableCSPRepLayer(
+        (conv1): SkippableConvNormLayer(
+          (conv): Conv2d(768, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (norm): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (norm_skippable): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (conv2): SkippableConvNormLayer(
+          (conv): Conv2d(768, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (norm): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (norm_skippable): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (bottlenecks): SkippableSequentialBlocks(
+          (0): SkippableRepVggBlock(
+            (conv1): SkippableConvNormLayer(
+              (conv): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (norm): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (norm_skippable): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): Identity()
+            )
+            (conv2): SkippableConvNormLayer(
+              (conv): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (norm): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (norm_skippable): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): Identity()
+            )
+            (act): SiLU(inplace=True)
+          )
+          (1): SkippableRepVggBlock(
+            (conv1): SkippableConvNormLayer(
+              (conv): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (norm): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): Identity()
+            )
+            (conv2): SkippableConvNormLayer(
+              (conv): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (norm): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): Identity()
+            )
+            (act): SiLU(inplace=True)
+          )
+          (2): SkippableRepVggBlock(
+            (conv1): SkippableConvNormLayer(
+              (conv): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (norm): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): Identity()
+            )
+            (conv2): SkippableConvNormLayer(
+              (conv): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (norm): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (act): Identity()
+            )
+            (act): SiLU(inplace=True)
+          )
+        )
+        (conv3): Identity()
+      )
+    )
+  )
+)
+====================================================================================================
+[woochul] scaler: None
+loading annotations into memory...
+Done (t=0.19s)
+creating index...
+index created!
+resume from ./pretrained/checkpoint0065_resnet101vd_AP_54.6.pth
+Loading last_epoch
+Loading model.state_dict
+Loading ema.state_dict
+====================================================================================================
+Start evaluate!
+Depth config - Backbone: [False, False, False, False], Encoder: [False], Decoder: 6
+input_tensor.shape: torch.Size([1, 3, 640, 640])
+| module                                        | #parameters or shape   | #flops     |
+|:----------------------------------------------|:-----------------------|:-----------|
+| base_model                                    | 76.556M                | 0.128T     |
+|  backbone                                     |  42.395M               |  63.668G   |
+|   backbone.conv1                              |   9.408K               |   0.963G   |
+|    backbone.conv1.weight                      |    (64, 3, 7, 7)       |            |
+|   backbone.layer1                             |   0.213M               |   5.453G   |
+|    backbone.layer1.0                          |    73.728K             |    1.887G  |
+|    backbone.layer1.1                          |    69.632K             |    1.783G  |
+|    backbone.layer1.2                          |    69.632K             |    1.783G  |
+|   backbone.layer2                             |   1.212M               |   8.389G   |
+|    backbone.layer2.0                          |    0.377M              |    3.041G  |
+|    backbone.layer2.1                          |    0.279M              |    1.783G  |
+|    backbone.layer2.2                          |    0.279M              |    1.783G  |
+|    backbone.layer2.3                          |    0.279M              |    1.783G  |
+|   backbone.layer3                             |   26.018M              |   42.258G  |
+|    backbone.layer3.0                          |    1.507M              |    3.041G  |
+|    backbone.layer3.1                          |    1.114M              |    1.783G  |
+|    backbone.layer3.2                          |    1.114M              |    1.783G  |
+|    backbone.layer3.3                          |    1.114M              |    1.783G  |
+|    backbone.layer3.4                          |    1.114M              |    1.783G  |
+|    backbone.layer3.5                          |    1.114M              |    1.783G  |
+|    backbone.layer3.6                          |    1.114M              |    1.783G  |
+|    backbone.layer3.7                          |    1.114M              |    1.783G  |
+|    backbone.layer3.8                          |    1.114M              |    1.783G  |
+|    backbone.layer3.9                          |    1.114M              |    1.783G  |
+|    backbone.layer3.10                         |    1.114M              |    1.783G  |
+|    backbone.layer3.11                         |    1.114M              |    1.783G  |
+|    backbone.layer3.12                         |    1.114M              |    1.783G  |
+|    backbone.layer3.13                         |    1.114M              |    1.783G  |
+|    backbone.layer3.14                         |    1.114M              |    1.783G  |
+|    backbone.layer3.15                         |    1.114M              |    1.783G  |
+|    backbone.layer3.16                         |    1.114M              |    1.783G  |
+|    backbone.layer3.17                         |    1.114M              |    1.783G  |
+|    backbone.layer3.18                         |    1.114M              |    1.783G  |
+|    backbone.layer3.19                         |    1.114M              |    1.783G  |
+|    backbone.layer3.20                         |    1.114M              |    1.783G  |
+|    backbone.layer3.21                         |    1.114M              |    1.783G  |
+|    backbone.layer3.22                         |    1.114M              |    1.783G  |
+|   backbone.layer4                             |   14.942M              |   6.606G   |
+|    backbone.layer4.0                          |    6.029M              |    3.041G  |
+|    backbone.layer4.1                          |    4.456M              |    1.783G  |
+|    backbone.layer4.2                          |    4.456M              |    1.783G  |
+|  decoder                                      |  7.565M                |  8.431G    |
+|   decoder.input_proj                          |   0.296M               |   0.83G    |
+|    decoder.input_proj.0                       |    98.816K             |    0.632G  |
+|    decoder.input_proj.1                       |    98.816K             |    0.158G  |
+|    decoder.input_proj.2                       |    98.816K             |    39.526M |
+|   decoder.decoder.layers                      |   5.975M               |   5.275G   |
+|    decoder.decoder.layers.0                   |    0.996M              |    0.879G  |
+|    decoder.decoder.layers.1                   |    0.996M              |    0.879G  |
+|    decoder.decoder.layers.2                   |    0.996M              |    0.879G  |
+|    decoder.decoder.layers.3                   |    0.996M              |    0.879G  |
+|    decoder.decoder.layers.4                   |    0.996M              |    0.879G  |
+|    decoder.decoder.layers.5                   |    0.996M              |    0.879G  |
+|   decoder.denoising_class_embed               |   20.736K              |            |
+|    decoder.denoising_class_embed.weight       |    (81, 256)           |            |
+|   decoder.query_pos_head.layers               |   0.134M               |   0.24G    |
+|    decoder.query_pos_head.layers.0            |    2.56K               |    3.686M  |
+|    decoder.query_pos_head.layers.1            |    0.131M              |    0.236G  |
+|   decoder.enc_output                          |   66.304K              |   0.561G   |
+|    decoder.enc_output.0                       |    65.792K             |    0.551G  |
+|    decoder.enc_output.1                       |    0.512K              |    10.752M |
+|   decoder.enc_score_head                      |   20.56K               |   0.172G   |
+|    decoder.enc_score_head.weight              |    (80, 256)           |            |
+|    decoder.enc_score_head.bias                |    (80,)               |            |
+|   decoder.enc_bbox_head.layers                |   0.133M               |   1.11G    |
+|    decoder.enc_bbox_head.layers.0             |    65.792K             |    0.551G  |
+|    decoder.enc_bbox_head.layers.1             |    65.792K             |    0.551G  |
+|    decoder.enc_bbox_head.layers.2             |    1.028K              |    8.602M  |
+|   decoder.dec_score_head                      |   0.123M               |   6.144M   |
+|    decoder.dec_score_head.0                   |    20.56K              |            |
+|    decoder.dec_score_head.1                   |    20.56K              |            |
+|    decoder.dec_score_head.2                   |    20.56K              |            |
+|    decoder.dec_score_head.3                   |    20.56K              |            |
+|    decoder.dec_score_head.4                   |    20.56K              |            |
+|    decoder.dec_score_head.5                   |    20.56K              |    6.144M  |
+|   decoder.dec_bbox_head                       |   0.796M               |   0.238G   |
+|    decoder.dec_bbox_head.0.layers             |    0.133M              |    39.629M |
+|    decoder.dec_bbox_head.1.layers             |    0.133M              |    39.629M |
+|    decoder.dec_bbox_head.2.layers             |    0.133M              |    39.629M |
+|    decoder.dec_bbox_head.3.layers             |    0.133M              |    39.629M |
+|    decoder.dec_bbox_head.4.layers             |    0.133M              |    39.629M |
+|    decoder.dec_bbox_head.5.layers             |    0.133M              |    39.629M |
+|  encoder                                      |  26.597M               |  56.35G    |
+|   encoder.input_proj                          |   1.381M               |   2.208G   |
+|    encoder.input_proj.0                       |    0.198M              |    1.263G  |
+|    encoder.input_proj.1                       |    0.395M              |    0.63G   |
+|    encoder.input_proj.2                       |    0.788M              |    0.315G  |
+|   encoder.encoder.0.layers.0                  |   2.17M                |   0.989G   |
+|    encoder.encoder.0.layers.0.self_attn       |    0.591M              |    0.359G  |
+|    encoder.encoder.0.layers.0.linear1         |    0.788M              |    0.315G  |
+|    encoder.encoder.0.layers.0.linear2         |    0.787M              |    0.315G  |
+|    encoder.encoder.0.layers.0.norm1           |    0.768K              |    0.768M  |
+|    encoder.encoder.0.layers.0.norm2           |    0.768K              |    0.768M  |
+|    encoder.encoder.0.layers.0.norm1_skippable |    0.768K              |            |
+|    encoder.encoder.0.layers.0.norm2_skippable |    0.768K              |            |
+|   encoder.lateral_convs                       |   0.298M               |   0.296G   |
+|    encoder.lateral_convs.0                    |    0.149M              |    59.29M  |
+|    encoder.lateral_convs.1                    |    0.149M              |    0.237G  |
+|   encoder.fpn_blocks                          |   10.045M              |   40.157G  |
+|    encoder.fpn_blocks.0                       |    5.023M              |    8.031G  |
+|    encoder.fpn_blocks.1                       |    5.023M              |    32.126G |
+|   encoder.downsample_convs                    |   2.657M               |   2.656G   |
+|    encoder.downsample_convs.0                 |    1.329M              |    2.125G  |
+|    encoder.downsample_convs.1                 |    1.329M              |    0.531G  |
+|   encoder.pan_blocks                          |   10.045M              |   10.039G  |
+|    encoder.pan_blocks.0                       |    5.023M              |    8.031G  |
+|    encoder.pan_blocks.1                       |    5.023M              |    2.008G  |
+Test:  [  0/313]  eta: 0:02:30    time: 0.4810  data: 0.2616  max mem: 1862
+Test:  [ 10/313]  eta: 0:00:58    time: 0.1936  data: 0.0367  max mem: 2137
+Test:  [ 20/313]  eta: 0:00:52    time: 0.1648  data: 0.0132  max mem: 2138
+Test:  [ 30/313]  eta: 0:00:47    time: 0.1517  data: 0.0126  max mem: 2138
+Test:  [ 40/313]  eta: 0:00:45    time: 0.1527  data: 0.0235  max mem: 2138
+Test:  [ 50/313]  eta: 0:00:43    time: 0.1660  data: 0.0234  max mem: 2138
+Test:  [ 60/313]  eta: 0:00:41    time: 0.1531  data: 0.0128  max mem: 2138
+Test:  [ 70/313]  eta: 0:00:39    time: 0.1537  data: 0.0128  max mem: 2138
+Test:  [ 80/313]  eta: 0:00:38    time: 0.1695  data: 0.0128  max mem: 2138
+Test:  [ 90/313]  eta: 0:00:36    time: 0.1614  data: 0.0126  max mem: 2138
+Test:  [100/313]  eta: 0:00:34    time: 0.1616  data: 0.0126  max mem: 2138
+Test:  [110/313]  eta: 0:00:32    time: 0.1583  data: 0.0130  max mem: 2138
+Test:  [120/313]  eta: 0:00:31    time: 0.1580  data: 0.0132  max mem: 2138
+Test:  [130/313]  eta: 0:00:29    time: 0.1588  data: 0.0132  max mem: 2138
+Test:  [140/313]  eta: 0:00:28    time: 0.1606  data: 0.0129  max mem: 2138
+Test:  [150/313]  eta: 0:00:26    time: 0.1595  data: 0.0128  max mem: 2138
+Test:  [160/313]  eta: 0:00:24    time: 0.1609  data: 0.0132  max mem: 2138
+Test:  [170/313]  eta: 0:00:23    time: 0.1628  data: 0.0135  max mem: 2138
+Test:  [180/313]  eta: 0:00:21    time: 0.1459  data: 0.0130  max mem: 2138
+Test:  [190/313]  eta: 0:00:19    time: 0.1604  data: 0.0127  max mem: 2138
+Test:  [200/313]  eta: 0:00:18    time: 0.1602  data: 0.0130  max mem: 2138
+Test:  [210/313]  eta: 0:00:16    time: 0.1657  data: 0.0130  max mem: 2138
+Test:  [220/313]  eta: 0:00:14    time: 0.1662  data: 0.0127  max mem: 2138
+Test:  [230/313]  eta: 0:00:13    time: 0.1439  data: 0.0128  max mem: 2138
+Test:  [240/313]  eta: 0:00:11    time: 0.1644  data: 0.0127  max mem: 2138
+Test:  [250/313]  eta: 0:00:10    time: 0.1657  data: 0.0125  max mem: 2138
+Test:  [260/313]  eta: 0:00:08    time: 0.1465  data: 0.0127  max mem: 2138
+Test:  [270/313]  eta: 0:00:06    time: 0.1683  data: 0.0128  max mem: 2138
+Test:  [280/313]  eta: 0:00:05    time: 0.1659  data: 0.0123  max mem: 2138
+Test:  [290/313]  eta: 0:00:03    time: 0.1430  data: 0.0124  max mem: 2138
+Test:  [300/313]  eta: 0:00:02    time: 0.1662  data: 0.0126  max mem: 2138
+Test:  [310/313]  eta: 0:00:00    time: 0.1658  data: 0.0122  max mem: 2138
+Test:  [312/313]  eta: 0:00:00    time: 0.1626  data: 0.0120  max mem: 2138
+Test: Total time: 0:00:50 (0.1601 s / it)
+Averaged stats: 
+Accumulating evaluation results...
+DONE (t=12.28s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.546
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.726
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.591
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.361
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.591
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.727
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.399
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.667
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.731
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.570
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.773
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.890
+[woochul] scaler: None
+resume from ./pretrained/checkpoint0065_resnet101vd_AP_54.6.pth
+Loading last_epoch
+Loading model.state_dict
+Loading ema.state_dict
+====================================================================================================
+Start evaluate!
+Depth config - Backbone: [True, True, True, True], Encoder: [True], Decoder: 4
+input_tensor.shape: torch.Size([1, 3, 640, 640])
+| module                                        | #parameters or shape   | #flops     |
+|:----------------------------------------------|:-----------------------|:-----------|
+| base_model                                    | 76.556M                | 70.271G    |
+|  backbone                                     |  42.395M               |  36.93G    |
+|   backbone.conv1                              |   9.408K               |   0.963G   |
+|    backbone.conv1.weight                      |    (64, 3, 7, 7)       |            |
+|   backbone.layer1                             |   0.213M               |   3.67G    |
+|    backbone.layer1.0                          |    73.728K             |    1.887G  |
+|    backbone.layer1.1                          |    69.632K             |    1.783G  |
+|    backbone.layer1.2                          |    69.632K             |            |
+|   backbone.layer2                             |   1.212M               |   4.823G   |
+|    backbone.layer2.0                          |    0.377M              |    3.041G  |
+|    backbone.layer2.1                          |    0.279M              |    1.783G  |
+|    backbone.layer2.2                          |    0.279M              |            |
+|    backbone.layer2.3                          |    0.279M              |            |
+|   backbone.layer3                             |   26.018M              |   22.649G  |
+|    backbone.layer3.0                          |    1.507M              |    3.041G  |
+|    backbone.layer3.1                          |    1.114M              |    1.783G  |
+|    backbone.layer3.2                          |    1.114M              |    1.783G  |
+|    backbone.layer3.3                          |    1.114M              |    1.783G  |
+|    backbone.layer3.4                          |    1.114M              |    1.783G  |
+|    backbone.layer3.5                          |    1.114M              |    1.783G  |
+|    backbone.layer3.6                          |    1.114M              |    1.783G  |
+|    backbone.layer3.7                          |    1.114M              |    1.783G  |
+|    backbone.layer3.8                          |    1.114M              |    1.783G  |
+|    backbone.layer3.9                          |    1.114M              |    1.783G  |
+|    backbone.layer3.10                         |    1.114M              |    1.783G  |
+|    backbone.layer3.11                         |    1.114M              |    1.783G  |
+|    backbone.layer3.12                         |    1.114M              |            |
+|    backbone.layer3.13                         |    1.114M              |            |
+|    backbone.layer3.14                         |    1.114M              |            |
+|    backbone.layer3.15                         |    1.114M              |            |
+|    backbone.layer3.16                         |    1.114M              |            |
+|    backbone.layer3.17                         |    1.114M              |            |
+|    backbone.layer3.18                         |    1.114M              |            |
+|    backbone.layer3.19                         |    1.114M              |            |
+|    backbone.layer3.20                         |    1.114M              |            |
+|    backbone.layer3.21                         |    1.114M              |            |
+|    backbone.layer3.22                         |    1.114M              |            |
+|   backbone.layer4                             |   14.942M              |   4.823G   |
+|    backbone.layer4.0                          |    6.029M              |    3.041G  |
+|    backbone.layer4.1                          |    4.456M              |    1.783G  |
+|    backbone.layer4.2                          |    4.456M              |            |
+|  decoder                                      |  7.565M                |  6.514G    |
+|   decoder.input_proj                          |   0.296M               |   0.83G    |
+|    decoder.input_proj.0                       |    98.816K             |    0.632G  |
+|    decoder.input_proj.1                       |    98.816K             |    0.158G  |
+|    decoder.input_proj.2                       |    98.816K             |    39.526M |
+|   decoder.decoder.layers                      |   5.975M               |   3.517G   |
+|    decoder.decoder.layers.0                   |    0.996M              |    0.879G  |
+|    decoder.decoder.layers.1                   |    0.996M              |    0.879G  |
+|    decoder.decoder.layers.2                   |    0.996M              |    0.879G  |
+|    decoder.decoder.layers.3                   |    0.996M              |    0.879G  |
+|    decoder.decoder.layers.4                   |    0.996M              |            |
+|    decoder.decoder.layers.5                   |    0.996M              |            |
+|   decoder.denoising_class_embed               |   20.736K              |            |
+|    decoder.denoising_class_embed.weight       |    (81, 256)           |            |
+|   decoder.query_pos_head.layers               |   0.134M               |   0.16G    |
+|    decoder.query_pos_head.layers.0            |    2.56K               |    2.458M  |
+|    decoder.query_pos_head.layers.1            |    0.131M              |    0.157G  |
+|   decoder.enc_output                          |   66.304K              |   0.561G   |
+|    decoder.enc_output.0                       |    65.792K             |    0.551G  |
+|    decoder.enc_output.1                       |    0.512K              |    10.752M |
+|   decoder.enc_score_head                      |   20.56K               |   0.172G   |
+|    decoder.enc_score_head.weight              |    (80, 256)           |            |
+|    decoder.enc_score_head.bias                |    (80,)               |            |
+|   decoder.enc_bbox_head.layers                |   0.133M               |   1.11G    |
+|    decoder.enc_bbox_head.layers.0             |    65.792K             |    0.551G  |
+|    decoder.enc_bbox_head.layers.1             |    65.792K             |    0.551G  |
+|    decoder.enc_bbox_head.layers.2             |    1.028K              |    8.602M  |
+|   decoder.dec_score_head                      |   0.123M               |   6.144M   |
+|    decoder.dec_score_head.0                   |    20.56K              |            |
+|    decoder.dec_score_head.1                   |    20.56K              |            |
+|    decoder.dec_score_head.2                   |    20.56K              |            |
+|    decoder.dec_score_head.3                   |    20.56K              |    6.144M  |
+|    decoder.dec_score_head.4                   |    20.56K              |            |
+|    decoder.dec_score_head.5                   |    20.56K              |            |
+|   decoder.dec_bbox_head                       |   0.796M               |   0.159G   |
+|    decoder.dec_bbox_head.0.layers             |    0.133M              |    39.629M |
+|    decoder.dec_bbox_head.1.layers             |    0.133M              |    39.629M |
+|    decoder.dec_bbox_head.2.layers             |    0.133M              |    39.629M |
+|    decoder.dec_bbox_head.3.layers             |    0.133M              |    39.629M |
+|    decoder.dec_bbox_head.4.layers             |    0.133M              |            |
+|    decoder.dec_bbox_head.5.layers             |    0.133M              |            |
+|  encoder                                      |  26.597M               |  26.828G   |
+|   encoder.input_proj                          |   1.381M               |   2.208G   |
+|    encoder.input_proj.0                       |    0.198M              |    1.263G  |
+|    encoder.input_proj.1                       |    0.395M              |    0.63G   |
+|    encoder.input_proj.2                       |    0.788M              |    0.315G  |
+|   encoder.encoder.0.layers.0                  |   2.17M                |   0.989G   |
+|    encoder.encoder.0.layers.0.self_attn       |    0.591M              |    0.359G  |
+|    encoder.encoder.0.layers.0.linear1         |    0.788M              |    0.315G  |
+|    encoder.encoder.0.layers.0.linear2         |    0.787M              |    0.315G  |
+|    encoder.encoder.0.layers.0.norm1           |    0.768K              |            |
+|    encoder.encoder.0.layers.0.norm2           |    0.768K              |            |
+|    encoder.encoder.0.layers.0.norm1_skippable |    0.768K              |    0.768M  |
+|    encoder.encoder.0.layers.0.norm2_skippable |    0.768K              |    0.768M  |
+|   encoder.lateral_convs                       |   0.298M               |   0.296G   |
+|    encoder.lateral_convs.0                    |    0.149M              |    59.29M  |
+|    encoder.lateral_convs.1                    |    0.149M              |    0.237G  |
+|   encoder.fpn_blocks                          |   10.045M              |   16.54G   |
+|    encoder.fpn_blocks.0                       |    5.023M              |    3.308G  |
+|    encoder.fpn_blocks.1                       |    5.023M              |    13.232G |
+|   encoder.downsample_convs                    |   2.657M               |   2.656G   |
+|    encoder.downsample_convs.0                 |    1.329M              |    2.125G  |
+|    encoder.downsample_convs.1                 |    1.329M              |    0.531G  |
+|   encoder.pan_blocks                          |   10.045M              |   4.135G   |
+|    encoder.pan_blocks.0                       |    5.023M              |    3.308G  |
+|    encoder.pan_blocks.1                       |    5.023M              |    0.827G  |
+Test:  [  0/313]  eta: 0:02:22    time: 0.4548  data: 0.3307  max mem: 2763
+Test:  [ 10/313]  eta: 0:00:44    time: 0.1477  data: 0.0412  max mem: 2763
+Test:  [ 20/313]  eta: 0:00:39    time: 0.1184  data: 0.0124  max mem: 2763
+Test:  [ 30/313]  eta: 0:00:36    time: 0.1172  data: 0.0126  max mem: 2763
+Test:  [ 40/313]  eta: 0:00:34    time: 0.1179  data: 0.0124  max mem: 2763
+Test:  [ 50/313]  eta: 0:00:32    time: 0.1198  data: 0.0124  max mem: 2763
+Test:  [ 60/313]  eta: 0:00:31    time: 0.1167  data: 0.0125  max mem: 2763
+Test:  [ 70/313]  eta: 0:00:30    time: 0.1312  data: 0.0126  max mem: 2763
+Test:  [ 80/313]  eta: 0:00:29    time: 0.1334  data: 0.0126  max mem: 2763
+Test:  [ 90/313]  eta: 0:00:28    time: 0.1365  data: 0.0126  max mem: 2763
+Test:  [100/313]  eta: 0:00:27    time: 0.1368  data: 0.0129  max mem: 2763
+Test:  [110/313]  eta: 0:00:26    time: 0.1339  data: 0.0126  max mem: 2763
+Test:  [120/313]  eta: 0:00:24    time: 0.1324  data: 0.0124  max mem: 2763
+Test:  [130/313]  eta: 0:00:23    time: 0.1347  data: 0.0124  max mem: 2763
+Test:  [140/313]  eta: 0:00:22    time: 0.1363  data: 0.0127  max mem: 2763
+Test:  [150/313]  eta: 0:00:21    time: 0.1356  data: 0.0127  max mem: 2763
+Test:  [160/313]  eta: 0:00:19    time: 0.1343  data: 0.0124  max mem: 2763
+Test:  [170/313]  eta: 0:00:18    time: 0.1375  data: 0.0126  max mem: 2763
+Test:  [180/313]  eta: 0:00:17    time: 0.1382  data: 0.0123  max mem: 2763
+Test:  [190/313]  eta: 0:00:16    time: 0.1176  data: 0.0120  max mem: 2763
+Test:  [200/313]  eta: 0:00:14    time: 0.1369  data: 0.0127  max mem: 2763
+Test:  [210/313]  eta: 0:00:13    time: 0.1402  data: 0.0130  max mem: 2763
+Test:  [220/313]  eta: 0:00:12    time: 0.1207  data: 0.0126  max mem: 2763
+Test:  [230/313]  eta: 0:00:10    time: 0.1377  data: 0.0127  max mem: 2763
+Test:  [240/313]  eta: 0:00:09    time: 0.1371  data: 0.0129  max mem: 2763
+Test:  [250/313]  eta: 0:00:08    time: 0.1393  data: 0.0126  max mem: 2763
+Test:  [260/313]  eta: 0:00:06    time: 0.1398  data: 0.0127  max mem: 2763
+Test:  [270/313]  eta: 0:00:05    time: 0.1182  data: 0.0130  max mem: 2763
+Test:  [280/313]  eta: 0:00:04    time: 0.1400  data: 0.0131  max mem: 2763
+Test:  [290/313]  eta: 0:00:03    time: 0.1393  data: 0.0128  max mem: 2763
+Test:  [300/313]  eta: 0:00:01    time: 0.1165  data: 0.0123  max mem: 2763
+Test:  [310/313]  eta: 0:00:00    time: 0.1166  data: 0.0123  max mem: 2763
+Test:  [312/313]  eta: 0:00:00    time: 0.1378  data: 0.0122  max mem: 2763
+Test: Total time: 0:00:41 (0.1326 s / it)
+Averaged stats: 
+Accumulating evaluation results...
+DONE (t=11.67s).
+IoU metric: bbox
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.526
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.705
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.571
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.336
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.568
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.708
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.391
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.653
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.717
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.527
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.756
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.895
+[rank0]:[W326 22:19:08.839953738 ProcessGroupNCCL.cpp:1479] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())

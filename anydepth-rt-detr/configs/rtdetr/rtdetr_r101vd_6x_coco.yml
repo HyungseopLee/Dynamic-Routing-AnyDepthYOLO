@@ -6,6 +6,8 @@ __include__: [
   './include/rtdetr_r50vd.yml',
 ]
 
+output_dir: ./output/baseline_rtdetr_r101vd_6x_coco
+
 PResNet:
   depth: 101
 

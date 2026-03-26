@@ -11,12 +11,18 @@ from src.misc import dist
 from src.data import get_coco_api_from_dataset
 
 from .solver import BaseSolver
-from .det_engine import train_one_epoch, evaluate
+from .det_engine import train_one_epoch, train_one_epoch_self_distill, evaluate_adn
+from .det_engine import train_one_epoch_two_backwards
 
 from torch import nn
 
 
-class DetSolver(BaseSolver):
+class DetSolverADN(BaseSolver):
+
+    def __init__(self, cfg):
+        super().__init__(cfg)
+        device = cfg.device
+        self.criterion_kd = cfg.criterion_kd.to(device) 
     
     def fit(self, ):
         print("Start training")
@@ -37,10 +43,14 @@ class DetSolver(BaseSolver):
                 self.train_dataloader.sampler.set_epoch(epoch)
             
             print(f'[woochul] scaler: {self.scaler}')
-            
-            train_stats = train_one_epoch(
-                self.model, self.criterion, self.train_dataloader, self.optimizer, self.device, epoch,
+            # orig adn
+            train_stats = train_one_epoch_self_distill(
+                self.model, 
+                self.criterion,
+                self.criterion_kd,  
+                self.train_dataloader, self.optimizer, self.device, epoch,
                 args.clip_max_norm, print_freq=args.log_step, ema=self.ema, scaler=self.scaler)
+
 
             self.lr_scheduler.step()
             
@@ -54,11 +64,27 @@ class DetSolver(BaseSolver):
 
             module = self.ema.module if self.ema else self.model
              
-            # original evaluation
-            test_stats, coco_evaluator = evaluate(
-                module, self.criterion, self.postprocessor, self.val_dataloader, base_ds, self.device, self.output_dir
+            # supernet evaluation
+            print('[supernet evaluation]') 
+            test_stats, coco_evaluator = evaluate_adn(
+                module, self.criterion, self.postprocessor, self.val_dataloader, base_ds, self.device, self.output_dir,
+                backbone_skip=[False, False, False, False], encoder_skip=[False,], decoder_depth=6
             )
 
+            # basenet evaluation
+            # print('[basenet evaluation: decoder depth 6]')
+            # test_stats, coco_evaluator = evaluate_adn(
+            #     module, self.criterion, self.postprocessor, self.val_dataloader, base_ds, self.device, self.output_dir,
+            #     backbone_skip=[True, True, True, True], encoder_skip=[True,], decoder_depth=6
+            # )
+
+            # basenet evaluation
+            print('[basenet evaluation: decoder depth 4]')
+            test_stats, coco_evaluator = evaluate_adn(
+                module, self.criterion, self.postprocessor, self.val_dataloader, base_ds, self.device, self.output_dir,
+                backbone_skip=[True, True, True, True], encoder_skip=[True,], decoder_depth=4
+            )
+            
             # TODO 
             for k in test_stats.keys():
                 if k in best_stat:
@@ -94,17 +120,14 @@ class DetSolver(BaseSolver):
         total_time_str = str(datetime.timedelta(seconds=int(total_time)))
         print('Training time {}'.format(total_time_str))
 
-
-    def val(self, ):
+    def val(self, backbone_skip=[False, False, False, False], encoder_skip=[False,], decoder_depth=6):
         self.eval()
 
         base_ds = get_coco_api_from_dataset(self.val_dataloader.dataset)
         
         module = self.ema.module if self.ema else self.model
-        test_stats, coco_evaluator = evaluate(module, self.criterion, self.postprocessor,
-                self.val_dataloader, base_ds, self.device, self.output_dir)
-                
-        if self.output_dir:
-            dist.save_on_master(coco_evaluator.coco_eval["bbox"].eval, self.output_dir / "eval.pth")
+        test_stats, coco_evaluator = evaluate_adn(module, self.criterion, self.postprocessor,
+                self.val_dataloader, base_ds, self.device, self.output_dir,
+                backbone_skip=backbone_skip, encoder_skip=encoder_skip, decoder_depth=decoder_depth)
         
         return
