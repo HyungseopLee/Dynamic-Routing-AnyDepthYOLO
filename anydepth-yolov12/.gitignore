@@ -1,11 +1,12 @@
 # logs/
-runs/
+# runs/
 __pycache__/
 pretrain/
 
 *.out
 *.err
 # *.log
+predictions.json
 
 *.pt
 

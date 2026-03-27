@@ -59,5 +59,4 @@ results = model.train(
   alpha_base=0.2, # (float) loss weight for the base model
   kd_warmup_epochs=0, # (int) number of epochs to warmup kd losses
   
-  # resume=True,
 )
