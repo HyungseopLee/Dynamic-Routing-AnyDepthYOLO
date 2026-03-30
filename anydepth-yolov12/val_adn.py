@@ -1,5 +1,4 @@
 from ultralytics import YOLO 
-from ultralytics.utils.torch_utils import model_info
 import argparse
 
 parser = argparse.ArgumentParser()

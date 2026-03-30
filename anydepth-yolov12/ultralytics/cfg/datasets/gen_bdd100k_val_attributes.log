@@ -1,0 +1,9 @@
+Done!
+  total   : 10000
+  saved   : 8801
+  skipped : 1199
+  unknown values:
+    weather: {'undefined'}
+    timeofday: {'undefined'}
+    scene: {'undefined'}
+  saved to: /media/data/bdd100k_yolo/train/attributes.json

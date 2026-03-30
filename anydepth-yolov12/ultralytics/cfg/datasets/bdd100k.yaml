@@ -1,0 +1,38 @@
+# @HyungseopLee: For object detection
+# https://www.kaggle.com/datasets/a7madmostafa/bdd100k-yolo/data?select=data.yaml
+path: /media/data/bdd100k_yolo
+train: train/images
+val: val/images
+test: test/images
+
+nc: 10
+
+names:
+  0: person # @HyungseopLee: pedestrian X (outdated)
+  1: rider
+  2: car
+  3: bus
+  4: truck
+  5: bike # @HyungseopLee: bicycle X (outdated)
+  6: motor # @HyungseopLee: motorcycle X
+  7: traffic light
+  8: traffic sign
+  9: train
+
+# ------------------------------------------------------------------------------------------------
+# @HyungseopLee: For multi-task learning
+
+attr_path:
+  train: train/attributes.json
+  val: val/attributes.json
+
+attributes:
+  weather:
+    nc: 6
+    names: {0: clear, 1: rainy, 2: snowy, 3: overcast, 4: foggy, 5: partly cloudy}
+  timeofday:
+    nc: 3
+    names: {0: daytime, 1: night, 2: dawn/dusk}
+  scene:
+    nc: 6
+    names: {0: city street, 1: highway, 2: residential, 3: parking lot, 4: tunnel, 5: gas stations}  

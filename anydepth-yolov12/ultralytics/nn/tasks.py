@@ -1222,8 +1222,8 @@ def parse_model(d, ch, verbose=True):  # model_dict, input_channels(3)
             LOGGER.info(f"{i:>3}{str(f):>20}{n_:>3}{m_.np:10.0f}  {t:<45}{str(args):<30}")  # print
         save.extend(x % i for x in ([f] if isinstance(f, int) else f) if x != -1)  # append to savelist
         layers.append(m_)
-        # debug:
-        print(f"save list: {save}")
+        # # debug:
+        # print(f"save list: {save}")
         if i == 0:
             ch = []
         ch.append(c2)
