@@ -9,7 +9,8 @@ from .dataset import (
     YOLOConcatDataset,
     YOLODataset,
     YOLOMultiModalDataset,
-)
+    DetectionWSTDataset, # @HyungseopLee
+) 
 
 __all__ = (
     "BaseDataset",
@@ -23,4 +24,5 @@ __all__ = (
     "build_grounding",
     "build_dataloader",
     "load_inference_source",
+    "DetectionWSTDataset", # @HyungseopLee
 )

@@ -8,11 +8,13 @@ parser.add_argument('--weight', type=str, default='')
 parser.add_argument('--data', type=str, default='')
 args = parser.parse_args()
 
-model = YOLO(args.weight)
-print(f"model: {model}")
+
+model = YOLO(args.weight, task='detect_wst')
+
 
 # Train the model
 results = model.train(
+  task='detect_wst', # ('w'eather, 's'cene, 't'imeofday)
   optimizer='SGD', 
   momentum=0.937,  # default 0.937
   nbs=256, # default 256,

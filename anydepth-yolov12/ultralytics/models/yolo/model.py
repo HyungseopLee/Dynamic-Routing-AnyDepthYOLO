@@ -6,6 +6,7 @@ from ultralytics.engine.model import Model
 from ultralytics.models import yolo
 from ultralytics.nn.tasks import ClassificationModel, DetectionModel, OBBModel, PoseModel, SegmentationModel, WorldModel
 from ultralytics.nn.tasks import DetectionModelAnyDepth  # woochul: YOLOv12 AnyDepth
+from ultralytics.nn.tasks import DetectionWSTModel # @HyungseopLee
 from ultralytics.utils import ROOT, yaml_load
 
 
@@ -82,6 +83,13 @@ class YOLO(Model):
                 "trainer": yolo.obb.OBBTrainer,
                 "validator": yolo.obb.OBBValidator,
                 "predictor": yolo.obb.OBBPredictor,
+            },
+            # @HyungseopLee
+            "detect_wst": { 
+                "model": DetectionWSTModel,
+                "trainer": yolo.detect_wst.DetectionWSTTrainer,
+                "validator": yolo.detect_wst.DetectionWSTValidator,
+                "predictor": yolo.detect.DetectionPredictor,
             },
         }
 

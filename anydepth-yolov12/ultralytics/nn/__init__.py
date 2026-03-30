@@ -13,6 +13,7 @@ from .tasks import (
     torch_safe_load,
     yaml_model_load,
     DetectionModelAnyDepth,  # woochul: YOLOv12 AnyDepth
+    DetectionWSTModel, # @HyungseopLee: YOLOv12 Detection + Weaterh + Scene + Timeofday (Multi-Task Learning)
 )
 
 __all__ = (
@@ -28,4 +29,5 @@ __all__ = (
     "ClassificationModel",
     "BaseModel",
     "DetectionModelAnyDepth",  # woochul: YOLOv12 AnyDepth
+    "DetectionWSTModel", # @HyungseopLee: YOLOv12 Detection + Weaterh + Scene + Timeofday (Multi-Task Learning)
 )

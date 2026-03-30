@@ -343,6 +343,10 @@ class BaseTrainer:
             self.plot_idx.extend([base_idx, base_idx + 1, base_idx + 2])
         epoch = self.start_epoch
         self.optimizer.zero_grad()  # zero any resumed gradients to ensure stability on train start
+        
+        # @HyungseopLee
+        print(f"self.model: {self.model}")
+        
         while True:
             self.epoch = epoch
             self.run_callbacks("on_train_epoch_start")
@@ -353,7 +357,7 @@ class BaseTrainer:
             self.model.train()
             if RANK != -1:
                 self.train_loader.sampler.set_epoch(epoch)
-            pbar = enumerate(self.train_loader)
+            
             # Update dataloader attributes (optional)
             if epoch == (self.epochs - self.args.close_mosaic):
                 self._close_dataloader_mosaic()
@@ -361,7 +365,6 @@ class BaseTrainer:
 
             if RANK in {-1, 0}:
                 LOGGER.info(self.progress_string())
-                # pbar = TQDM(enumerate(self.train_loader), total=nb)
             self.tloss = None
             for i, batch in enumerate(self.train_loader):
                 self.run_callbacks("on_train_batch_start")
@@ -409,15 +412,26 @@ class BaseTrainer:
                 # Log
                 if RANK in {-1, 0}:
                     loss_length = self.tloss.shape[0] if len(self.tloss.shape) else 1
+                    
                     if i % max(1, nb // 10) == 0:
-                        progress_msg = (
-                            f"Epoch {epoch + 1}/{self.epochs}, Batch {i + 1}/{nb} "
-                            f"({100 * (i + 1) / nb:.1f}%) - "
-                            # f"Memory: {self._get_memory():.3g}G, "
-                            f"Loss: {self.loss:.3f}, "
-                            f"box,cls,dfl: {self.loss_items[0]:.3f},{self.loss_items[1]:.3f},{self.loss_items[2]:.3f}"
-                        )
+                        loss_length = self.tloss.shape[0] if len(self.tloss.shape) else 1
+                        if loss_length >= 6: # @HyungseopLee: detect_wst = box, cls, dfl, weather, scene, timeofday
+                            progress_msg = (
+                                f"Epoch {epoch + 1}/{self.epochs}, Batch {i + 1}/{nb} "
+                                f"({100 * (i + 1) / nb:.1f}%) - "
+                                f"Loss: {self.loss:.3f}, "
+                                f"box,cls,dfl: {self.loss_items[0]:.3f},{self.loss_items[1]:.3f},{self.loss_items[2]:.3f}, "
+                                f"weather,scene,timeofday: {self.loss_items[3]:.3f},{self.loss_items[4]:.3f},{self.loss_items[5]:.3f}"
+                            )
+                        else: # @HyungseopLee: detect = box, cls, dfl
+                            progress_msg = (
+                                f"Epoch {epoch + 1}/{self.epochs}, Batch {i + 1}/{nb} "
+                                f"({100 * (i + 1) / nb:.1f}%) - "
+                                f"Loss: {self.loss:.3f}, "
+                                f"box,cls,dfl: {self.loss_items[0]:.3f},{self.loss_items[1]:.3f},{self.loss_items[2]:.3f}"
+                            )
                         LOGGER.info(progress_msg)
+                        
                     self.run_callbacks("on_batch_end")
                     if self.args.plots and ni in self.plot_idx:
                         self.plot_training_samples(batch, ni)

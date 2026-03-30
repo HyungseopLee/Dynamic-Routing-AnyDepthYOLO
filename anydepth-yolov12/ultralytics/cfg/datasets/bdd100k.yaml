@@ -30,9 +30,9 @@ attributes:
   weather:
     nc: 6
     names: {0: clear, 1: rainy, 2: snowy, 3: overcast, 4: foggy, 5: partly cloudy}
-  timeofday:
-    nc: 3
-    names: {0: daytime, 1: night, 2: dawn/dusk}
   scene:
     nc: 6
     names: {0: city street, 1: highway, 2: residential, 3: parking lot, 4: tunnel, 5: gas stations}  
+  timeofday:
+    nc: 3
+    names: {0: daytime, 1: night, 2: dawn/dusk}

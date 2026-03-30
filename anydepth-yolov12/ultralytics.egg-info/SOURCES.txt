@@ -38,6 +38,7 @@ ultralytics/cfg/datasets/SKU-110K.yaml
 ultralytics/cfg/datasets/VOC.yaml
 ultralytics/cfg/datasets/VisDrone.yaml
 ultralytics/cfg/datasets/african-wildlife.yaml
+ultralytics/cfg/datasets/bdd100k.yaml
 ultralytics/cfg/datasets/brain-tumor.yaml
 ultralytics/cfg/datasets/carparts-seg.yaml
 ultralytics/cfg/datasets/coco-pose.yaml
@@ -50,6 +51,7 @@ ultralytics/cfg/datasets/coco8.yaml
 ultralytics/cfg/datasets/crack-seg.yaml
 ultralytics/cfg/datasets/dog-pose.yaml
 ultralytics/cfg/datasets/dota8.yaml
+ultralytics/cfg/datasets/gen_bdd100k_attributes_json.py
 ultralytics/cfg/datasets/hand-keypoints.yaml
 ultralytics/cfg/datasets/lvis.yaml
 ultralytics/cfg/datasets/medical-pills.yaml
@@ -176,6 +178,9 @@ ultralytics/models/yolo/detect/__init__.py
 ultralytics/models/yolo/detect/predict.py
 ultralytics/models/yolo/detect/train.py
 ultralytics/models/yolo/detect/val.py
+ultralytics/models/yolo/detect_wst/__init__.py
+ultralytics/models/yolo/detect_wst/train.py
+ultralytics/models/yolo/detect_wst/val.py
 ultralytics/models/yolo/obb/__init__.py
 ultralytics/models/yolo/obb/predict.py
 ultralytics/models/yolo/obb/train.py

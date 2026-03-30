@@ -519,6 +519,98 @@ class DetectionModelAnyDepth(DetectionModel):
             return self.criterion(preds, batch)
 
 
+# @HyungseopLee
+class DetectionWSTModel(DetectionModel):
+    """
+    Detection + Attribute Classification (weather, scene, timeofday)
+    Attribute head: GAP → Linear
+    """
+
+    def __init__(self, cfg="yolov8n.yaml", ch=3, nc=None, verbose=True, data=None):
+        super().__init__(cfg, ch=ch, nc=nc, verbose=verbose)
+
+        # attribute head input channel: neck feature map channel
+        in_channels = self._get_attr_in_channels(ch)
+
+        attr_cfg = data.get("attributes", {}) if data else {}
+        nc_weather   = attr_cfg.get("weather",   {}).get("nc", 6)
+        nc_scene     = attr_cfg.get("scene",     {}).get("nc", 6)
+        nc_timeofday = attr_cfg.get("timeofday", {}).get("nc", 3)
+
+        # Attribute head: GAP → FC → 3 classifiers
+        self.attr_pool = nn.AdaptiveAvgPool2d(1)
+        self.attr_fc   = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(in_channels, 256),
+            nn.ReLU(),
+            nn.Dropout(0.0),
+        )
+        self.weather_cls   = nn.Linear(256, nc_weather)
+        self.timeofday_cls = nn.Linear(256, nc_timeofday)
+        self.scene_cls     = nn.Linear(256, nc_scene)
+
+    def _get_neck_out_channels(self):
+        """Get output channels of the last neck feature map."""
+        # model[-1]은 Detect head, model[-2]가 neck 마지막 레이어
+        for m in reversed(list(self.model.children())):
+            if hasattr(m, "cv2"):  # C2f, C3 등
+                return m.cv2[-1].conv.out_channels if hasattr(m.cv2[-1], "conv") else 256
+        return 256  # fallback
+
+    def _get_attr_in_channels(self, ch=3):
+        with torch.no_grad():
+            dummy = torch.zeros(1, ch, 256, 256)
+            y = []
+            x = dummy
+            for m in self.model:
+                if m.f != -1:
+                    x = y[m.f] if isinstance(m.f, int) else [x if j == -1 else y[j] for j in m.f]
+                x = m(x)
+                y.append(x)
+            return y[8].shape[1]  # #channels at layer 8
+
+    def forward(self, x, *args, **kwargs):
+        """Forward pass: detection + attribute classification."""
+        if isinstance(x, dict):
+            return self.loss(x, *args, **kwargs)
+
+        y = []
+        for i, m in enumerate(self.model):
+            if m.f != -1:
+                x = y[m.f] if isinstance(m.f, int) else [x if j == -1 else y[j] for j in m.f]
+            x = m(x)
+            y.append(x if m.i in self.save else None)
+
+        det_out = x
+
+        if not hasattr(self, 'attr_pool'):
+            return det_out
+
+        # last feature of backbone
+        feat = y[8]
+
+        pooled = self.attr_pool(feat)
+        fc_out = self.attr_fc(pooled)
+        attr_out = {
+            "weather":   self.weather_cls(fc_out),
+            "scene":     self.scene_cls(fc_out),
+            "timeofday": self.timeofday_cls(fc_out),
+        }
+        return det_out, attr_out
+
+    def init_criterion(self):
+        from ultralytics.utils.loss import DetectionWSTLoss
+        return DetectionWSTLoss(self)
+
+    def loss(self, batch, preds=None):
+        """Compute detection + attribute classification loss."""
+        if getattr(self, "criterion", None) is None:
+            self.criterion = self.init_criterion()
+        preds = self.forward(batch["img"]) if preds is None else preds
+        return self.criterion(preds, batch)
+
+
+
 class OBBModel(DetectionModel):
     """YOLOv8 Oriented Bounding Box (OBB) model."""
 

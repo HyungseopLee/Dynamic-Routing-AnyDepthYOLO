@@ -48,20 +48,23 @@ SOLUTION_MAP = {
 
 # Define valid tasks and modes
 MODES = {"train", "val", "predict", "export", "track", "benchmark"}
-TASKS = {"detect", "segment", "classify", "pose", "obb"}
+# TASKS = {"detect", "segment", "classify", "pose", "obb"}
+TASKS = {"detect", "segment", "classify", "pose", "obb", "detect_wst"} # @HyungseopLee: detect_wst (detection, weather, scene, timeofday)
 TASK2DATA = {
     "detect": "coco8.yaml",
     "segment": "coco8-seg.yaml",
     "classify": "imagenet10",
     "pose": "coco8-pose.yaml",
     "obb": "dota8.yaml",
+    "detect_wst": "bdd100k.yaml" # @HyungseopLee
 }
 TASK2MODEL = {
-    "detect": "yolo11n.pt",
-    "segment": "yolo11n-seg.pt",
-    "classify": "yolo11n-cls.pt",
-    "pose": "yolo11n-pose.pt",
-    "obb": "yolo11n-obb.pt",
+    "detect": "yolo12n.pt",
+    "segment": "yolo12n-seg.pt",
+    "classify": "yolo12n-cls.pt",
+    "pose": "yolo12n-pose.pt",
+    "obb": "yolo12n-obb.pt",
+    "detect_wst": "yolo12n.pt", # @HyungseopLee
 }
 TASK2METRIC = {
     "detect": "metrics/mAP50-95(B)",
@@ -69,6 +72,7 @@ TASK2METRIC = {
     "classify": "metrics/accuracy_top1",
     "pose": "metrics/mAP50-95(P)",
     "obb": "metrics/mAP50-95(B)",
+    "detect_wst": "metrics/mAP50-95(B)", # @HyungseopLee
 }
 MODELS = {TASK2MODEL[task] for task in TASKS}
 

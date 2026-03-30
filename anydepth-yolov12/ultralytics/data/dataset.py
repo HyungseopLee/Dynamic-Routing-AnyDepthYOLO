@@ -519,3 +519,51 @@ class ClassificationDataset:
             x["msgs"] = msgs  # warnings
             save_dataset_cache_file(self.prefix, path, x, DATASET_CACHE_VERSION)
             return samples
+
+
+# @HyungseopLee: for Multi-Task Learning (detection + weather cls + scene cls + timeofday cls)
+class DetectionWSTDataset(YOLODataset):
+    """
+    YOLODataset + BDD100K attribute labels (weather, scene, timeofday)
+    attributes.json: {"image_stem": {"weather": 0, "scene": 1, "timeofday": 2}}
+    -1: undefined (ignore_index for CrossEntropyLoss)
+    """
+
+    def __init__(self, *args, data=None, task="mtl", **kwargs):
+        self.attr_labels = {}  # stem -> {"weather": int, "scene": int, "timeofday": int}
+        super().__init__(*args, data=data, task="detect_wst", **kwargs)
+        self._load_attr_labels()
+
+    def _load_attr_labels(self):
+        """Load attributes.json based on train/val split."""
+        import json
+        split = "train" if "train" in self.im_files[0] else "val"
+        attr_path = self.data.get("attr_path", {}).get(split)
+        if attr_path is None:
+            raise FileNotFoundError(f"attr_path.{split} not found in data yaml")
+        root = Path(self.data.get("path", ""))
+        full_path = root / attr_path
+        if not full_path.exists():
+            raise FileNotFoundError(f"attributes.json not found: {full_path}")
+        with open(full_path) as f:
+            self.attr_labels = json.load(f)
+        LOGGER.info(f"Loaded {len(self.attr_labels)} attribute labels from {full_path}")
+
+    def __getitem__(self, index):
+        """Return item with additional attribute labels."""
+        item = super().__getitem__(index)
+        stem = Path(item["im_file"]).stem
+        attr = self.attr_labels.get(stem, {"weather": -1, "scene": -1, "timeofday": -1})
+        item["weather"]   = torch.tensor(attr["weather"],   dtype=torch.long)
+        item["scene"]     = torch.tensor(attr["scene"],     dtype=torch.long)
+        item["timeofday"] = torch.tensor(attr["timeofday"], dtype=torch.long)
+        return item
+
+    @staticmethod
+    def collate_fn(batch):
+        """Collate with attribute labels."""
+        new_batch = YOLODataset.collate_fn(batch)
+        new_batch["weather"]   = torch.stack([b["weather"]   for b in batch])
+        new_batch["scene"]     = torch.stack([b["scene"]     for b in batch])
+        new_batch["timeofday"] = torch.stack([b["timeofday"] for b in batch])
+        return new_batch

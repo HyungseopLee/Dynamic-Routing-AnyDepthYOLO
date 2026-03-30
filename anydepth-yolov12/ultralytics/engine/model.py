@@ -289,7 +289,11 @@ class Model(nn.Module, PyTorchModelHubMixin, repo_url="https://github.com/ultral
 
         if Path(weights).suffix == ".pt":
             self.model, self.ckpt = attempt_load_one_weight(weights)
-            self.task = self.model.args["task"]
+            
+            # @HyungseopLee
+            # self.task = self.model.args["task"]
+            self.task = task or self.model.args["task"]
+            
             self.overrides = self.model.args = self._reset_ckpt_args(self.model.args)
             self.ckpt_path = self.model.pt_path
         else:
@@ -380,6 +384,7 @@ class Model(nn.Module, PyTorchModelHubMixin, repo_url="https://github.com/ultral
         if isinstance(weights, (str, Path)):
             self.overrides["pretrained"] = weights  # remember the weights for DDP training
             weights, self.ckpt = attempt_load_one_weight(weights)
+            
         self.model.load(weights)
         return self
 
