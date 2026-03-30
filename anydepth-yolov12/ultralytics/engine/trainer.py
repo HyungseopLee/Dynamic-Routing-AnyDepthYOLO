@@ -344,9 +344,6 @@ class BaseTrainer:
         epoch = self.start_epoch
         self.optimizer.zero_grad()  # zero any resumed gradients to ensure stability on train start
         
-        # @HyungseopLee
-        print(f"self.model: {self.model}")
-        
         while True:
             self.epoch = epoch
             self.run_callbacks("on_train_epoch_start")
@@ -415,7 +412,8 @@ class BaseTrainer:
                     
                     if i % max(1, nb // 10) == 0:
                         loss_length = self.tloss.shape[0] if len(self.tloss.shape) else 1
-                        if loss_length >= 6: # @HyungseopLee: detect_wst = box, cls, dfl, weather, scene, timeofday
+                        # @HyungseopLee: task = "detect_wst" ->  box, cls, dfl, weather, scene, timeofday
+                        if loss_length >= 6:
                             progress_msg = (
                                 f"Epoch {epoch + 1}/{self.epochs}, Batch {i + 1}/{nb} "
                                 f"({100 * (i + 1) / nb:.1f}%) - "
@@ -423,7 +421,8 @@ class BaseTrainer:
                                 f"box,cls,dfl: {self.loss_items[0]:.3f},{self.loss_items[1]:.3f},{self.loss_items[2]:.3f}, "
                                 f"weather,scene,timeofday: {self.loss_items[3]:.3f},{self.loss_items[4]:.3f},{self.loss_items[5]:.3f}"
                             )
-                        else: # @HyungseopLee: detect = box, cls, dfl
+                        # @HyungseopLee: task="detect" -> box, cls, dfl
+                        else: 
                             progress_msg = (
                                 f"Epoch {epoch + 1}/{self.epochs}, Batch {i + 1}/{nb} "
                                 f"({100 * (i + 1) / nb:.1f}%) - "
@@ -437,6 +436,7 @@ class BaseTrainer:
                         self.plot_training_samples(batch, ni)
 
                 self.run_callbacks("on_train_batch_end")
+                # break
 
             self.lr = {f"lr/pg{ir}": x["lr"] for ir, x in enumerate(self.optimizer.param_groups)}  # for loggers
             self.run_callbacks("on_train_epoch_end")
@@ -701,7 +701,12 @@ class BaseTrainer:
                     strip_optimizer(f, updates={k: ckpt[k]} if k in ckpt else None)
                     LOGGER.info(f"\nValidating {f}...")
                     self.validator.args.plots = self.args.plots
-                    self.metrics = self.validator(model=f)
+                    from ultralytics.nn.tasks import DetectionWSTModel
+                    from ultralytics.utils.torch_utils import de_parallel
+                    if isinstance(de_parallel(self.model), DetectionWSTModel):
+                        self.metrics = self.validator(trainer=self)
+                    else:
+                        self.metrics = self.validator(model=f)
                     self.metrics.pop("fitness", None)
                     self.run_callbacks("on_fit_epoch_end")
 

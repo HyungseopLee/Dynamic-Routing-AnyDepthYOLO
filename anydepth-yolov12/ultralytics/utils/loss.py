@@ -1143,14 +1143,16 @@ class DetectionLossAnyDepth:
 # @HyungseopLee: 
 class DetectionWSTLoss:
     """
-    Detection loss + Attribute classification loss
-    attr_weight: weight for attribute losses
+    Detection loss + Attributes(Weather, Scene, Time) classification loss
     """
 
-    def __init__(self, model, attr_weight=0.1):
+    def __init__(self, model):
         self.det_loss = v8DetectionLoss(model)
         self.attr_criterion = nn.CrossEntropyLoss(ignore_index=-1)
-        self.attr_weight = attr_weight
+        self.hyp = model.args
+        # @HyungseopLee: debugging
+        if RANK in (0, -1):
+            print(f"self.hyp.wst: {self.hyp.wst}")
 
     def __call__(self, preds, batch):
         det_preds, attr_preds = preds
@@ -1163,8 +1165,8 @@ class DetectionWSTLoss:
         loss_scene     = self.attr_criterion(attr_preds["scene"],     batch["scene"].to(det_loss.device))
         loss_timeofday = self.attr_criterion(attr_preds["timeofday"], batch["timeofday"].to(det_loss.device))
 
-        attr_loss = (loss_weather + loss_timeofday + loss_scene) / 3
-        total_loss = det_loss + self.attr_weight * attr_loss
+        attr_loss = (loss_weather + loss_scene + loss_timeofday) / 3
+        total_loss = det_loss + self.hyp.wst * attr_loss
 
         # @HyungseopLee: loss_items = [box, cls, dfl, weather, scene, timeofday]
         loss_items = torch.cat([

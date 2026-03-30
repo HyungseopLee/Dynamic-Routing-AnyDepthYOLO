@@ -8,6 +8,7 @@ from ultralytics.nn.tasks import ClassificationModel, DetectionModel, OBBModel, 
 from ultralytics.nn.tasks import DetectionModelAnyDepth  # woochul: YOLOv12 AnyDepth
 from ultralytics.nn.tasks import DetectionWSTModel # @HyungseopLee
 from ultralytics.utils import ROOT, yaml_load
+from ultralytics.utils import RANK
 
 
 class YOLO(Model):
@@ -15,6 +16,11 @@ class YOLO(Model):
 
     def __init__(self, model="yolo11n.pt", task=None, verbose=False):
         """Initialize YOLO model, switching to YOLOWorld if model filename contains '-world'."""
+        
+        # @HyungseopLee: debugging
+        if RANK in {-1, 0}:
+            print(f"task: {task}")
+            
         path = Path(model)
         if "-world" in path.stem and path.suffix in {".pt", ".yaml", ".yml"}:  # if YOLOWorld PyTorch model
             new_instance = YOLOWorld(path, verbose=verbose)

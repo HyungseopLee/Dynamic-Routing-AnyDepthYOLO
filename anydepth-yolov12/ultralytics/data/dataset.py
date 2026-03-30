@@ -554,7 +554,7 @@ class DetectionWSTDataset(YOLODataset):
         item = super().__getitem__(index)
         stem = Path(item["im_file"]).stem
         attr = self.attr_labels.get(stem, {"weather": -1, "scene": -1, "timeofday": -1})
-        item["weather"]   = torch.tensor(attr["weather"],   dtype=torch.long)
+        item["weather"]   = torch.tensor(attr["weather"],   dtype=torch.long) # torch.long for nn.CrossEntropyLoss
         item["scene"]     = torch.tensor(attr["scene"],     dtype=torch.long)
         item["timeofday"] = torch.tensor(attr["timeofday"], dtype=torch.long)
         return item
