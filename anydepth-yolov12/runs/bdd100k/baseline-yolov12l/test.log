@@ -2138,3 +2138,48 @@ Epoch 10/600, Batch 1091/1094 (99.7%) - Loss: 198.867, box,cls,dfl: 1.291,0.776,
 
       Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
 Epoch 11/600, Batch 1/1094 (0.1%) - Loss: 185.905, box,cls,dfl: 1.220,0.686,0.999
+Epoch 11/600, Batch 110/1094 (10.1%) - Loss: 198.265, box,cls,dfl: 1.288,0.777,1.032
+Epoch 11/600, Batch 219/1094 (20.0%) - Loss: 196.520, box,cls,dfl: 1.317,0.746,1.008
+Epoch 11/600, Batch 328/1094 (30.0%) - Loss: 184.515, box,cls,dfl: 1.218,0.685,0.980
+Epoch 11/600, Batch 437/1094 (39.9%) - Loss: 205.828, box,cls,dfl: 1.371,0.802,1.043
+Epoch 11/600, Batch 546/1094 (49.9%) - Loss: 200.348, box,cls,dfl: 1.309,0.814,1.008
+Epoch 11/600, Batch 655/1094 (59.9%) - Loss: 201.192, box,cls,dfl: 1.320,0.791,1.033
+Epoch 11/600, Batch 764/1094 (69.8%) - Loss: 181.588, box,cls,dfl: 1.167,0.694,0.975
+Epoch 11/600, Batch 873/1094 (79.8%) - Loss: 192.280, box,cls,dfl: 1.255,0.730,1.020
+Epoch 11/600, Batch 982/1094 (89.8%) - Loss: 183.844, box,cls,dfl: 1.176,0.716,0.980
+Epoch 11/600, Batch 1091/1094 (99.7%) - Loss: 190.176, box,cls,dfl: 1.233,0.747,0.991
+                   all      10000     185578      0.715      0.458      0.508      0.287
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+Epoch 12/600, Batch 1/1094 (0.1%) - Loss: 193.002, box,cls,dfl: 1.300,0.703,1.012
+Epoch 12/600, Batch 110/1094 (10.1%) - Loss: 187.483, box,cls,dfl: 1.247,0.695,0.987
+Epoch 12/600, Batch 219/1094 (20.0%) - Loss: 187.947, box,cls,dfl: 1.234,0.728,0.975
+Epoch 12/600, Batch 328/1094 (30.0%) - Loss: 187.880, box,cls,dfl: 1.212,0.739,0.985
+Epoch 12/600, Batch 437/1094 (39.9%) - Loss: 194.397, box,cls,dfl: 1.241,0.778,1.019
+Epoch 12/600, Batch 546/1094 (49.9%) - Loss: 195.542, box,cls,dfl: 1.271,0.779,1.005
+Epoch 12/600, Batch 655/1094 (59.9%) - Loss: 199.522, box,cls,dfl: 1.318,0.784,1.016
+Epoch 12/600, Batch 764/1094 (69.8%) - Loss: 194.281, box,cls,dfl: 1.271,0.751,1.013
+Epoch 12/600, Batch 873/1094 (79.8%) - Loss: 201.016, box,cls,dfl: 1.282,0.831,1.027
+Epoch 12/600, Batch 982/1094 (89.8%) - Loss: 191.915, box,cls,dfl: 1.288,0.708,1.002
+Epoch 12/600, Batch 1091/1094 (99.7%) - Loss: 189.729, box,cls,dfl: 1.267,0.711,0.987
+                   all      10000     185578      0.705      0.465       0.51      0.289
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+Epoch 13/600, Batch 1/1094 (0.1%) - Loss: 186.113, box,cls,dfl: 1.218,0.703,0.986
+Epoch 13/600, Batch 110/1094 (10.1%) - Loss: 201.408, box,cls,dfl: 1.316,0.826,1.004
+Epoch 13/600, Batch 219/1094 (20.0%) - Loss: 190.114, box,cls,dfl: 1.271,0.697,1.002
+Epoch 13/600, Batch 328/1094 (30.0%) - Loss: 192.869, box,cls,dfl: 1.285,0.708,1.020
+Epoch 13/600, Batch 437/1094 (39.9%) - Loss: 180.896, box,cls,dfl: 1.190,0.696,0.940
+Epoch 13/600, Batch 546/1094 (49.9%) - Loss: 198.798, box,cls,dfl: 1.302,0.820,0.984
+Epoch 13/600, Batch 655/1094 (59.9%) - Loss: 199.560, box,cls,dfl: 1.324,0.784,1.010
+Epoch 13/600, Batch 764/1094 (69.8%) - Loss: 195.346, box,cls,dfl: 1.308,0.704,1.040
+Epoch 13/600, Batch 873/1094 (79.8%) - Loss: 201.373, box,cls,dfl: 1.304,0.799,1.043
+Epoch 13/600, Batch 982/1094 (89.8%) - Loss: 194.266, box,cls,dfl: 1.265,0.751,1.020
+Epoch 13/600, Batch 1091/1094 (99.7%) - Loss: 189.898, box,cls,dfl: 1.251,0.728,0.987
+                   all      10000     185578      0.712      0.469      0.518      0.293
+
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+Epoch 14/600, Batch 1/1094 (0.1%) - Loss: 179.673, box,cls,dfl: 1.161,0.655,0.991
+Epoch 14/600, Batch 110/1094 (10.1%) - Loss: 188.970, box,cls,dfl: 1.273,0.695,0.985
+Epoch 14/600, Batch 219/1094 (20.0%) - Loss: 175.927, box,cls,dfl: 1.142,0.654,0.953
+Epoch 14/600, Batch 328/1094 (30.0%) - Loss: 198.249, box,cls,dfl: 1.293,0.783,1.021

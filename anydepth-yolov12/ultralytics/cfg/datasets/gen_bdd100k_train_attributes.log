@@ -1,9 +1,5 @@
 Done!
-  total   : 69863
-  saved   : 61474
-  skipped : 8389
-  unknown values:
-    weather: {'undefined'}
-    timeofday: {'undefined'}
-    scene: {'undefined'}
-  saved to: /media/data/bdd100k_yolo/train/attributes.json
+  total     : 69863
+  saved     : 69863
+  undefined : 8389
+  saved to  : /media/data/bdd100k_yolo/train/attributes.json
