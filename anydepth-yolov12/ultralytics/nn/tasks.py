@@ -282,11 +282,36 @@ class BaseModel(nn.Module):
             verbose (bool, optional): Whether to log the transfer progress. Defaults to True.
         """
         model = weights["model"] if isinstance(weights, dict) else weights  # torchvision models are not dicts
-        csd = model.float().state_dict()  # checkpoint state_dict as FP32
-        csd = intersect_dicts(csd, self.state_dict())  # intersect
+        
+        orig_csd = model.float().state_dict()
+        csd = orig_csd.copy()
+        
+        my_state_dict = self.state_dict()
+        csd = intersect_dicts(csd, my_state_dict)  # intersect 
         self.load_state_dict(csd, strict=False)  # load
+        
         if verbose:
             LOGGER.info(f"Transferred {len(csd)}/{len(self.model.state_dict())} items from pretrained weights")
+            
+            # @HyungseopLee: logging detailed
+            missing_keys = set(my_state_dict.keys()) - set(csd.keys())
+            if missing_keys:
+                LOGGER.info(f"Not transferred items ({len(missing_keys)}):")
+                for k in sorted(missing_keys):
+                    my_shape = list(my_state_dict[k].shape)
+                    
+                    # orig_csd에는 'model.' 접두어가 있을 수도 있고 없을 수도 있으므로 안전하게 탐색
+                    orig_k = k
+                    if orig_k not in orig_csd and orig_k.replace("model.", "") in orig_csd:
+                        orig_k = orig_k.replace("model.", "")
+                    elif f"model.{orig_k}" in orig_csd:
+                        orig_k = f"model.{orig_k}"
+
+                    if orig_k in orig_csd:
+                        orig_shape = list(orig_csd[orig_k].shape)
+                        LOGGER.info(f"  - [Shape Mismatch] {k}: model {my_shape} != pretrained {orig_shape}")
+                    else:
+                        LOGGER.info(f"  - [New Layer] {k}: model {my_shape} (Not in pretrained)")
 
     def loss(self, batch, preds=None):
         """
@@ -537,7 +562,7 @@ class DetectionWSTModel(DetectionModel):
         nc_scene     = attr_cfg.get("scene",     {}).get("nc", 6)
         nc_timeofday = attr_cfg.get("timeofday", {}).get("nc", 3)
 
-        # Attribute head: GAP → FC → 3 classifiers
+        # Attribute head: GAP -> FC -> 3 classifiers
         self.attr_pool = nn.AdaptiveAvgPool2d(1)
         self.attr_fc   = nn.Sequential(
             nn.Flatten(),
@@ -548,14 +573,6 @@ class DetectionWSTModel(DetectionModel):
         self.weather_cls   = nn.Linear(256, nc_weather)
         self.timeofday_cls = nn.Linear(256, nc_timeofday)
         self.scene_cls     = nn.Linear(256, nc_scene)
-
-    def _get_neck_out_channels(self):
-        """Get output channels of the last neck feature map."""
-        # model[-1]은 Detect head, model[-2]가 neck 마지막 레이어
-        for m in reversed(list(self.model.children())):
-            if hasattr(m, "cv2"):  # C2f, C3 등
-                return m.cv2[-1].conv.out_channels if hasattr(m.cv2[-1], "conv") else 256
-        return 256  # fallback
 
     def _get_attr_in_channels(self, ch=3):
         with torch.no_grad():

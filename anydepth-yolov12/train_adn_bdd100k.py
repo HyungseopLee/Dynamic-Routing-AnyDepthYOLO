@@ -22,7 +22,7 @@ results = model.train(
 
   project=args.project,
   data=args.data,
-  epochs=50, # @HyungseopLee
+  epochs=50,
   batch=64, #s:128, l:64, orig:256,
   imgsz=args.imgsz,
   
@@ -48,15 +48,15 @@ any-depth:
 
 
 # 2 GPU
-mkdir -p ./runs/bdd100k/detect/baseline-yolov12l
+mkdir -p ./runs/bdd100k/detect_wst/baseline-yolov12l
 export CUDA_VISIBLE_DEVICES=0,1
 python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
-  --task detect \
+  --task detect_wst \
   --data bdd100k.yaml \
   --imgsz 640 \
   --weight ./pretrained/yolov12l.pt \
-  --project ./runs/bdd100k/detect/baseline-yolov12l \
-  2>&1 | tee ./runs/bdd100k/detect/baseline-yolov12l/train_50e_SGD0900_bs64_nbs256_imgsz640_scale050.log
+  --project ./runs/bdd100k/detect_wst/baseline-yolov12l \
+  2>&1 | tee ./runs/bdd100k/detect_wst/baseline-yolov12l/train_50e_SGD0900_bs64_nbs256_imgsz640_scale050_wst1.0.log
 
 
 '''

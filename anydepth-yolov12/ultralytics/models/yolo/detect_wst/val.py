@@ -19,6 +19,7 @@ class DetectionWSTValidator(DetectionValidator):
 
     def postprocess(self, preds):
         """Extract det_out from (det_out, attr_out) tuple."""
+        print(f"[DEBUG] postprocess called, type(preds)={type(preds)}, isinstance tuple={isinstance(preds, tuple)}")
         if isinstance(preds, tuple):
             self._attr_out = preds[1]  # save attr_out
             preds = preds[0]
