@@ -9,13 +9,15 @@ parser.add_argument('--task', type=str, default='')
 parser.add_argument('--data', type=str, default='')
 args = parser.parse_args()
 
-
-model = YOLO(args.weight, task=args.task)
+# yolo-ad-v12l-mtl.yaml
+# model = YOLO("./ultralytics/cfg/models/v12/yolo-ad-v12-mtl.yaml", task=args.task)
+model = YOLO("./ultralytics/cfg/models/v12/yolov12l-mtl.yaml", task=args.task)
+model.load(args.weight)
 
 
 # Train the model
 results = model.train(
-  task=args.task, # ('w'eather, 's'cene, 't'imeofday)
+  task=args.task,
   optimizer='SGD', 
   momentum=0.900,  # default 0.937
   nbs=256, # default 256,
@@ -26,7 +28,7 @@ results = model.train(
   batch=64, #s:128, l:64, orig:256,
   imgsz=args.imgsz,
   
-  wst=1.0, # loss weighting for (weather loss + scene loss + time loss)
+  wst=5.0, # loss weighting for (weather loss + scene loss + time loss)
   
   scale=0.5,  # n:0.5, S:0.9; M:0.9; L:0.9; X:0.9
   mosaic=0.0,
@@ -47,7 +49,8 @@ any-depth:
 # task: "detect", "detect_wst"
 
 
-# 2 GPU
+# Baseline
+## 2 GPU
 mkdir -p ./runs/bdd100k/detect_wst/baseline-yolov12l
 export CUDA_VISIBLE_DEVICES=0,1
 python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
@@ -56,7 +59,20 @@ python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
   --imgsz 640 \
   --weight ./pretrained/yolov12l.pt \
   --project ./runs/bdd100k/detect_wst/baseline-yolov12l \
-  2>&1 | tee ./runs/bdd100k/detect_wst/baseline-yolov12l/train_50e_SGD0900_bs64_nbs256_imgsz640_scale050_wst1.0.log
+  2>&1 | tee ./runs/bdd100k/detect_wst/baseline-yolov12l/train_50e_SGD0900_bs64_nbs256_imgsz640_scale050_wst5.0.log
+
+
+# Any-depth
+## 2 GPU
+mkdir -p ./runs/bdd100k/detect_wst/anydepth-yolov12l
+export CUDA_VISIBLE_DEVICES=0,1
+python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
+  --task detect_wst \
+  --data bdd100k.yaml \
+  --imgsz 640 \
+  --weight ./pretrained/yolo-ad-exp8_105_epoch539_0.539_0.520.pt \
+  --project ./runs/bdd100k/detect_wst/anydepth-yolov12l \
+  2>&1 | tee ./runs/bdd100k/detect_wst/anydepth-yolov12l/train_50e_SGD0900_bs64_nbs256_imgsz640_scale050_wst5.0.log
 
 
 '''

@@ -43,6 +43,7 @@ from ultralytics.nn.modules import (
     Conv2,
     ConvTranspose,
     Detect,
+    DetectWST, # @HyungseopLee
     DWConv,
     DWConvTranspose2d,
     Focus,
@@ -366,7 +367,7 @@ class DetectionModel(BaseModel):
                 """Performs a forward pass through the model, handling different Detect subclass types accordingly."""
                 if self.end2end:
                     return self.forward(x)["one2many"]
-                return self.forward(x)[0] if isinstance(m, (Segment, Pose, OBB)) else self.forward(x)
+                return self.forward(x)[0] if isinstance(m, (Segment, Pose, OBB, DetectWST)) else self.forward(x)
 
             m.stride = torch.tensor([s / x.shape[-2] for x in _forward(torch.zeros(1, ch, s, s))])  # forward
             self.stride = m.stride
@@ -428,17 +429,13 @@ class DetectionModel(BaseModel):
 class DetectionModelAnyDepth(DetectionModel):
     
     def forward(self, x, *args, **kwargs):
-
         return self.predict(x, *args, **kwargs)
     
     def predict(self, x, profile=False, visualize=False, augment=False, embed=None, skip=None, return_features=False):
         if not hasattr(self, "num_skippable_layers"):
-            # print(self.model)
-            # print(type(self.model))
             self.num_skippable_layers = sum(
                 isinstance(m, (SkippableC3k2, SwitchableC3k2, SwitchableC2f, SwitchableA2C2f, SkippableA2C2f)) for m in self.model
             )
-            # print(f"[YOLOv10AnyDepthDetectionModel] Number of skippable layers: {self.num_skippable_layers}")
         if skip is None:
             skip = [False] * self.num_skippable_layers  # default skip list
         
@@ -544,77 +541,40 @@ class DetectionModelAnyDepth(DetectionModel):
             return self.criterion(preds, batch)
 
 
-# @HyungseopLee
+
+# @HyungseopLee Detection + Weather + Scene + Timeofday for Baseline model
 class DetectionWSTModel(DetectionModel):
     """
     Detection + Attribute Classification (weather, scene, timeofday)
-    Attribute head: GAP → Linear
     """
 
     def __init__(self, cfg="yolov8n.yaml", ch=3, nc=None, verbose=True, data=None):
         super().__init__(cfg, ch=ch, nc=nc, verbose=verbose)
-
-        # attribute head input channel: neck feature map channel
-        in_channels = self._get_attr_in_channels(ch)
-
-        attr_cfg = data.get("attributes", {}) if data else {}
-        nc_weather   = attr_cfg.get("weather",   {}).get("nc", 6)
-        nc_scene     = attr_cfg.get("scene",     {}).get("nc", 6)
-        nc_timeofday = attr_cfg.get("timeofday", {}).get("nc", 3)
-
-        # Attribute head: GAP -> FC -> 3 classifiers
-        self.attr_pool = nn.AdaptiveAvgPool2d(1)
-        self.attr_fc   = nn.Sequential(
-            nn.Flatten(),
-            nn.Linear(in_channels, 256),
-            nn.ReLU(),
-            nn.Dropout(0.0),
-        )
-        self.weather_cls   = nn.Linear(256, nc_weather)
-        self.timeofday_cls = nn.Linear(256, nc_timeofday)
-        self.scene_cls     = nn.Linear(256, nc_scene)
-
-    def _get_attr_in_channels(self, ch=3):
-        with torch.no_grad():
-            dummy = torch.zeros(1, ch, 256, 256)
-            y = []
-            x = dummy
-            for m in self.model:
-                if m.f != -1:
-                    x = y[m.f] if isinstance(m.f, int) else [x if j == -1 else y[j] for j in m.f]
-                x = m(x)
-                y.append(x)
-            return y[8].shape[1]  # #channels at layer 8
+        self.data = data
 
     def forward(self, x, *args, **kwargs):
-        """Forward pass: detection + attribute classification."""
         if isinstance(x, dict):
             return self.loss(x, *args, **kwargs)
+        return self.predict(x, *args, **kwargs)
+    
+    def predict(self, x, profile=False, visualize=False, augment=False, embed=None):
+        if augment:
+            return self._predict_augment(x)
+        return self._predict_once(x, profile, visualize, embed)
 
-        y = []
-        for i, m in enumerate(self.model):
+    def _predict_once(self, x, profile=False, visualize=False, embed=None):
+        y, dt, embeddings = [], [], []
+        for m in self.model:
             if m.f != -1:
                 x = y[m.f] if isinstance(m.f, int) else [x if j == -1 else y[j] for j in m.f]
+            
+            if profile:
+                self._profile_one_layer(m, x, dt)
+            
             x = m(x)
             y.append(x if m.i in self.save else None)
-
-        det_out = x
-
-        if not hasattr(self, 'attr_pool'):
-            return det_out
-
-        # last feature of backbone
-        feat = y[8]
-
-        pooled = self.attr_pool(feat)
-        fc_out = self.attr_fc(pooled)
-        attr_out = {
-            "weather":   self.weather_cls(fc_out),
-            "scene":     self.scene_cls(fc_out),
-            "timeofday": self.timeofday_cls(fc_out),
-        }
-        return det_out, attr_out
-
+        return x
+    
     def init_criterion(self):
         from ultralytics.utils.loss import DetectionWSTLoss
         return DetectionWSTLoss(self)
@@ -626,6 +586,132 @@ class DetectionWSTModel(DetectionModel):
         preds = self.forward(batch["img"]) if preds is None else preds
         return self.criterion(preds, batch)
 
+
+
+# @HyungseopLee Detection + Weather + Scene + Timeofday for Anydepth model
+class DetectionWSTModelAnyDepth(DetectionModel):
+    """
+    DetectionModelAnyDepth + DetectionWSTModel
+    """
+    def __init__(self, cfg="yolov8n.yaml", ch=3, nc=None, verbose=True):
+        super().__init__(cfg, ch=ch, nc=nc, verbose=verbose)
+
+        # AnyDepth: count skippable layers
+        self.num_skippable_layers = sum(
+            isinstance(m, (SkippableC3k2, SwitchableC3k2, SwitchableC2f, SwitchableA2C2f, SkippableA2C2f))
+            for m in self.model
+        )
+
+
+    def forward(self, x, *args, **kwargs):
+        """
+        Training: forward to loss. 
+        Inference: forward to predict.
+        """
+        if isinstance(x, dict):
+            return self.loss(x, *args, **kwargs)
+        return self.predict(x, *args, **kwargs)
+
+    def predict(self, x, profile=False, visualize=False, augment=False, embed=None, skip=None, return_features=False):
+        if not hasattr(self, "num_skippable_layers"):
+            self.num_skippable_layers = sum(
+                isinstance(m, (SkippableC3k2, SwitchableC3k2, SwitchableC2f, SwitchableA2C2f, SkippableA2C2f)) for m in self.model
+            )
+        if skip is None:
+            skip = [False] * self.num_skippable_layers  # default skip lis
+        if augment:
+            return self._predict_augment(x)
+        return self._predict_once(x, profile, visualize, embed, skip=skip, return_features=return_features)
+
+    def _predict_once(self, x, profile=False, visualize=False, embed=None, skip=None, return_features=False):
+        y, dt, embeddings, y_features = [], [], [], []
+        i = 0  # skippable layer index
+        
+        for m in self.model:
+            # print(f"[Debug] Layer {m.i}: {type(m)}")
+            if m.f != -1:
+                x = y[m.f] if isinstance(m.f, int) else [x if j == -1 else y[j] for j in m.f] 
+            if profile:
+                self._profile_one_layer(m, x, dt)
+
+            if isinstance(m, (SkippableC3k2, SwitchableC3k2, SwitchableC2f, SwitchableA2C2f, SkippableA2C2f)):
+                if isinstance(skip, (list, tuple)):
+                    x = m(x, skip[i])
+                    i += 1
+                else:
+                    raise ValueError(f"Expected skip to be a list or tuple, but got {type(skip)}.")
+            elif isinstance(m, SwitchableConv):
+                x = m(x, skip=skip[max(i, 0)])
+            else:
+                x = m(x)  
+
+            y.append(x if m.i in self.save else None)  # save output
+            
+            if return_features and m.i in self.save:
+                height_, width_ = 1, 1
+                x_pooled = nn.functional.adaptive_avg_pool2d(x, (height_, width_))
+                y_features.append(x_pooled.view(x.shape[0], -1)) 
+                
+            if visualize:
+                feature_visualization(x, m.type, m.i, save_dir=visualize)
+            if embed and m.i in embed:
+                embeddings.append(nn.functional.adaptive_avg_pool2d(x, (1, 1)).squeeze(-1).squeeze(-1))  # flatten
+                if m.i == max(embed):
+                    return torch.unbind(torch.cat(embeddings, 1), dim=0)
+
+        if return_features:
+            return {"pred": x[0], "features": y_features, "attr_out": x[1] if isinstance(x, tuple) else None}
+        return x
+
+    def init_criterion(self):
+        """
+        criterion    : DetectionWSTLoss
+                        = v8DetectionLoss (detection)
+                        + CrossEntropyLoss (weather, scene, timeofday)
+        criterion_kd : DetectionLossAnyDepth
+                        = KD loss between super(full) and base(skipped) model
+        """
+        
+        from ultralytics.utils.loss import DetectionWSTLoss
+        criterion    = DetectionWSTLoss(self) # deteection loss + WST loss
+        criterion_kd = DetectionLossAnyDepth(self) # self KD (super -> base)
+        return criterion, criterion_kd
+
+        
+    def loss(self, batch, preds=None, preds_base=None):
+        """
+        Compute loss for DetectionWSTModelAnyDepth.
+
+        Case 1. preds_base=None (super model forward only)
+            total_loss = DetectionWSTLoss(preds, batch)
+                    = det_loss + attr_weight * attr_loss
+
+        Case 2. preds_base!=None (super + base model forward, KD training)
+            total_loss = DetectionWSTLoss(preds_super, batch)   # det + wst = dwst
+                    + DetectionLossAnyDepth(preds_base, preds_super, batch)  # KD
+
+        Note:
+            preds_super = (det_out, attr_out)
+            preds_base  = {"pred": det_out, "features": [...], "attr_out": attr_out}
+            DetectionLossAnyDepth expects preds in dict format (not raw tuple)
+        """
+        if not hasattr(self, "criterion"):
+            self.criterion, self.criterion_kd = self.init_criterion()
+
+        preds = self.forward(batch["img"]) if preds is None else preds
+
+        # Case 1 & 2: DWST loss (Det + WST) always computed on super model
+        loss_dwst, loss_items_dwst = self.criterion(preds, batch)
+
+        if preds_base is not None:
+            # Case 2: KD loss between base and super model
+            loss_kd, loss_items_kd = self.criterion_kd(preds_base, preds, batch)
+            total_loss = loss_dwst + loss_kd
+            loss_items = torch.cat([loss_items_dwst, loss_items_kd])
+            return total_loss, loss_items
+        else:
+            # Case 1: WST loss only
+            return loss_dwst, loss_items_dwst
 
 
 class OBBModel(DetectionModel):
@@ -1306,12 +1392,16 @@ def parse_model(d, ch, verbose=True):  # model_dict, input_channels(3)
             args = [ch[f]]
         elif m is Concat:
             c2 = sum(ch[x] for x in f)
-        elif m in {Detect, WorldDetect, Segment, Pose, OBB, ImagePoolingAttn, v10Detect}:
+        elif m in {Detect, WorldDetect, Segment, Pose, OBB, ImagePoolingAttn, v10Detect, DetectWST}:
             args.append([ch[x] for x in f])
             if m is Segment:
                 args[2] = make_divisible(min(args[2], max_channels) * width, 8)
             if m in {Detect, Segment, Pose, OBB}:
                 m.legacy = legacy
+            if m is DetectWST:
+                args[1] = args[1] # nc_weather
+                args[2] = args[2] # nc_scene
+                args[3] = args[3] # nc_time
         elif m is RTDETRDecoder:  # special case, channels arg must be passed in index 1
             args.insert(1, [ch[x] for x in f])
         elif m in {CBLinear, TorchVision, Index}:

@@ -88,7 +88,7 @@ from .conv import (
     SpatialAttention,
     SwitchableConv, # AnyDepth
 )
-from .head import OBB, Classify, Detect, Pose, RTDETRDecoder, Segment, WorldDetect, v10Detect
+from .head import OBB, Classify, Detect, Pose, RTDETRDecoder, Segment, WorldDetect, v10Detect, DetectWST
 from .transformer import (
     AIFI,
     MLP,
@@ -142,6 +142,7 @@ __all__ = (
     "BottleneckCSP",
     "Proto",
     "Detect",
+    "DetectWST", # @HyungseopLee
     "Segment",
     "Pose",
     "Classify",

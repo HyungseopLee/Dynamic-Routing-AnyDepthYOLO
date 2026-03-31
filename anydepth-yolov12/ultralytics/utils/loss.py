@@ -774,12 +774,6 @@ class DetectionLossAnyDepth:
 
         self.assigner = TaskAlignedAssigner(topk=tal_topk, num_classes=self.nc, alpha=0.5, beta=6.0)
 
-        # debug
-        # print(f"kd_weight_cls: {self.kd_weight_cls},"
-        #       f"kd_weight_dfl: {self.kd_weight_dfl},"
-        #       f"kd_weight_box: {self.kd_weight_box},"
-        #       f"kd_weight_feat: {self.kd_weight_feat}");
-
     def preprocess(self, targets, batch_size, scale_tensor):
         """Preprocesses the target counts and matches with the input batch size to output a tensor."""
         nl, ne = targets.shape
@@ -1059,34 +1053,6 @@ class DetectionLossAnyDepth:
 
         return kl_loss * (self.kd_temp_cls ** 2)
 
-
-    # def _classification_kl_loss(self, teacher_cls, student_cls, fg_mask, vlr_mask, target_scores, target_scores_sum):
-    #     teacher_probs = F.softmax(teacher_cls / self.kd_temp_cls, dim=-1)
-    #     student_log_probs = F.log_softmax(student_cls / self.kd_temp_cls, dim=-1)
-
-    #     # option #1: only for fg anchors and normalize by total quality score
-    #     weight = target_scores.sum(-1).view(-1).detach() # [B * Num_Anchors]
-    #     kl_loss_ = F.kl_div(student_log_probs, teacher_probs.detach(), reduction='none').sum(dim=-1) * weight  # [B * Num_Anchors] 
-    #     kl_loss = kl_loss_.sum()/ target_scores_sum  # normalize by total quality score of fg anchors
-
-    #     # option #2: include hard bg anchors
-    #     # weight_1 = student_cls.sigmoid().max(dim=-1, keepdim=False)[0].detach()  # [B * Num_Anchors] 
-    #     # bg_mask_hard = (~fg_mask) & (weight_1 > 0.05)  # mask for hard bg anchors
-    #     # weight_1 = weight_1 * bg_mask_hard.float()  # zero out easy bg anchors
-    #     # weight_1 = weight_1 * vlr_mask.float()  # halo anchors only  
-    #     # weight_2 = target_scores.sum(-1).view(-1) # [B * Num_Anchors]
-    #     # weight = torch.max(weight_1, weight_2)  # [B * Num_Anchors]
-    #     # kl_loss_ = F.kl_div(student_log_probs, teacher_probs.detach(), reduction='none').sum(dim=-1) * weight.detach()  # [B *Num_Anchors] 
-    #     # kl_loss = kl_loss_.sum()/ (weight.sum() + 1e-6)
-    #     # if RANK in (-1, 0):
-    #     if False:
-    #         print(f"[debug][_classification_kl_loss] num_bg_hard: {bg_mask_hard.sum().item()}")
-    #         print(f"[debug][_classification_kl_loss] num vlr anchors: {vlr_mask.sum().item()}")
-    #         print(f"[debug][_classification_kl_loss] weight_1 sum: {weight_1.sum().item()}")
-    #         print(f"[debug][_classification_kl_loss] num_fg: {fg_mask.sum().item()}")
-    #         print(f"[debug][_classification_kl_loss] weight_2 sum: {weight_2.sum().item()}")
-    #     return kl_loss * (self.kd_temp_cls ** 2)
-
     def bbox_loss_with_weights(
             self, 
             teacher_dfl, student_dfl, 
@@ -1155,7 +1121,12 @@ class DetectionWSTLoss:
             print(f"self.hyp.wst: {self.hyp.wst}")
 
     def __call__(self, preds, batch):
-        det_preds, attr_preds = preds
+        # det_preds, attr_preds = preds
+        if isinstance(preds, dict):
+            det_preds = preds["pred"]
+            attr_preds = preds["attr_out"]
+        else:
+            det_preds, attr_preds = preds
 
         # detection loss
         det_loss, det_loss_items = self.det_loss(det_preds, batch)

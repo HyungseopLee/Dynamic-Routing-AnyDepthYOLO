@@ -10,6 +10,7 @@ IMG_SIZE = args.imgsz
 print(f"[*] Running validation with Image Size: {IMG_SIZE}")
 
 model = YOLO(args.weight, task='detect_wst')
+print(type(model._smart_load('validator')))
 
 
 print(f"model: {model}")
@@ -49,9 +50,9 @@ model.val(
 mkdir -p runs/bdd100k/baseline-yolov12l
 python val_adn_bdd100k.py \
     --imgsz 640 \
-    --weight ./runs/bdd100k/detect_wst/baseline-yolov12l/train_50e_SGD0900_bs64_nbs256_imgsz640_scale050_wst1.0/weights/best.pt \
-    --project runs/bdd100k/detect_wst/baseline-yolov12l \
-    2>&1 | tee ./runs/bdd100k/detect_wst/baseline-yolov12l/val.log
+    --weight ./runs/bdd100k/detect/baseline-yolov12l/train_50e_SGD0900_bs64_nbs256_imgsz640_scale050/weights/best.pt \
+    --project runs/bdd100k/detect/baseline-yolov12l \
+    2>&1 | tee ./runs/bdd100k/detect/baseline-yolov12l/train_50e_SGD0900_bs64_nbs256_imgsz640_scale050/val.log
 
 '''
 

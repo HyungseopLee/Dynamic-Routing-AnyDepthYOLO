@@ -172,6 +172,35 @@ class Detect(nn.Module):
         return torch.cat([boxes[i, index // nc], scores[..., None], (index % nc)[..., None].float()], dim=-1)
 
 
+class DetectWST(Detect):
+    """Detection + WST Classification Head"""
+    def __init__(self, nc=80, nc_weather=6, nc_scene=6, nc_timeofday=3, ch=()):
+        super().__init__(nc, ch[:-1]) 
+        
+        in_channels = ch[-1]
+        self.attr_pool = nn.AdaptiveAvgPool2d(1)
+        self.attr_fc = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(in_channels, 256),
+            nn.ReLU()
+        )
+        self.weather_cls = nn.Linear(256, nc_weather)
+        self.scene_cls = nn.Linear(256, nc_scene)
+        self.timeofday_cls = nn.Linear(256, nc_timeofday)
+
+    def forward(self, x):
+        det_out = super().forward(x[:-1])
+        
+        feat = x[-1]
+        pooled = self.attr_pool(feat)
+        fc_out = self.attr_fc(pooled)
+        attr_out = {
+            "weather": self.weather_cls(fc_out),
+            "scene": self.scene_cls(fc_out),
+            "timeofday": self.timeofday_cls(fc_out),
+        }
+        return det_out, attr_out
+
 class Segment(Detect):
     """YOLO Segment head for segmentation models."""
 

@@ -14,6 +14,7 @@ from .tasks import (
     yaml_model_load,
     DetectionModelAnyDepth,  # woochul: YOLOv12 AnyDepth
     DetectionWSTModel, # @HyungseopLee: YOLOv12 Detection + Weaterh + Scene + Timeofday (Multi-Task Learning)
+    DetectionWSTModelAnyDepth,
 )
 
 __all__ = (
@@ -29,5 +30,6 @@ __all__ = (
     "ClassificationModel",
     "BaseModel",
     "DetectionModelAnyDepth",  # woochul: YOLOv12 AnyDepth
-    "DetectionWSTModel", # @HyungseopLee: YOLOv12 Detection + Weaterh + Scene + Timeofday (Multi-Task Learning)
+    "DetectionWSTModel", # @HyungseopLee: Detection + Weather + Scene + Timeofday (MTL, Multi-Task Learning)
+    "DetectionWSTModelAnyDepth", # @HyungseopLee: YOLOv12 AnyDepth + MTL
 )

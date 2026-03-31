@@ -6,7 +6,7 @@ from ultralytics.engine.model import Model
 from ultralytics.models import yolo
 from ultralytics.nn.tasks import ClassificationModel, DetectionModel, OBBModel, PoseModel, SegmentationModel, WorldModel
 from ultralytics.nn.tasks import DetectionModelAnyDepth  # woochul: YOLOv12 AnyDepth
-from ultralytics.nn.tasks import DetectionWSTModel # @HyungseopLee
+from ultralytics.nn.tasks import DetectionWSTModel, DetectionWSTModelAnyDepth # @HyungseopLee
 from ultralytics.utils import ROOT, yaml_load
 from ultralytics.utils import RANK
 
@@ -28,7 +28,8 @@ class YOLO(Model):
             self.__dict__ = new_instance.__dict__
         elif "yolo-ad" in path.stem and path.suffix in {".pt", ".yaml", ".yml"}:    # woochul: YOLOv12 AnyDepth
             print("Loading YOLOv12 Any-Depth model from", path)
-            new_instance = YOLOv12AnyDepth(path)
+            # new_instance = YOLOv12AnyDepth(path)
+            new_instance = YOLOv12AnyDepth(path, task=task, verbose=verbose) # @HyungseopLee: 
             self.__class__ = type(new_instance)
             self.__dict__ = new_instance.__dict__
         else:
@@ -107,13 +108,19 @@ class YOLO(Model):
                 "validator": yolo.detect.DetectionValidatorAnyDepth,
                 "predictor": yolo.detect.DetectionPredictor,
             }
+            _map['detect_wst'] = { # @HyungseopLee: Anydepth mode + task:'detect_wst'
+                "model": DetectionWSTModelAnyDepth,
+                "trainer": yolo.detect_wst.DetectionWSTTrainerAnyDepth,
+                "validator": yolo.detect_wst.DetectionWSTValidatorAnyDepth,
+                "predictor": yolo.detect.DetectionPredictor,
+            }
         return _map
 
 
 class YOLOv12AnyDepth(Model):
-
-    def __init__(self, model: str | Path = "yolo12ad.pt", verbose: bool = False) -> None:
-        super().__init__(model=model, task="detect", verbose=verbose)
+    def __init__(self, model: str | Path = "yolo12ad.pt", task=None, verbose: bool = False) -> None:
+        # super().__init__(model=model, task="detect", verbose=verbose)
+        super().__init__(model=model, task=task or "detect", verbose=verbose) # @HyungseopLee: no hardcoding
 
     def val(self, validator=None, **kwargs):
         """Validate with optional skip argument for AnyDepth models."""
@@ -136,6 +143,12 @@ class YOLOv12AnyDepth(Model):
                 "validator": yolo.detect.DetectionValidatorAnyDepth,
                 "predictor": yolo.detect.DetectionPredictor,
             },
+            "detect_wst": {
+                "model": DetectionWSTModelAnyDepth,
+                "trainer": yolo.detect_wst.DetectionWSTTrainerAnyDepth,
+                "validator": yolo.detect_wst.DetectionWSTValidatorAnyDepth,
+                "predictor": yolo.detect.DetectionPredictor,
+            }
         }
 
 
