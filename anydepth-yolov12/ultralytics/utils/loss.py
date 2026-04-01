@@ -1121,12 +1121,26 @@ class DetectionWSTLoss:
             print(f"self.hyp.wst: {self.hyp.wst}")
 
     def __call__(self, preds, batch):
-        # det_preds, attr_preds = preds
-        if isinstance(preds, dict):
-            det_preds = preds["pred"]
-            attr_preds = preds["attr_out"]
-        else:
-            det_preds, attr_preds = preds
+        """
+        preds (dict):
+            'pred': [
+                tensor[b, 74, 80, 80], # P3: low-level
+                tensor[b, 74, 40, 40], # P4: mid-level
+                tensor[b, 74, 20, 20]  # P5: high-level
+            ],
+            'features': [
+                tensor[b, c], # 0 (intermediate features for KD)
+                ...           # 1 ~ 5
+                tensor[b, c]  # 6
+            ],
+            'attr_out': {
+                'weather':   tensor[b, 6],
+                'scene':     tensor[b, 6],
+                'timeofday': tensor[b, 3]
+            }
+        """        
+        det_preds = preds["pred"]
+        attr_preds = preds["attr_out"]
 
         # detection loss
         det_loss, det_loss_items = self.det_loss(det_preds, batch)

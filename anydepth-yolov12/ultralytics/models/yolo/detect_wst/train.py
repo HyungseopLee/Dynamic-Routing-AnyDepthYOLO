@@ -97,14 +97,14 @@ class DetectionWSTTrainerAnyDepth(DetectionTrainer):
     def get_model(self, cfg=None, weights=None, verbose=True):
         from ultralytics.nn.tasks import DetectionWSTModelAnyDepth
         model = DetectionWSTModelAnyDepth(
-            cfg, nc=self.data["nc"], verbose=verbose and RANK == -1, data=self.data
+            cfg, nc=self.data["nc"], verbose=verbose and RANK == -1, # data=self.data
         )
         if weights:
             model.load(weights)
         return model
     
     def get_validator(self):
-        from ultralytics.models.yolo.detect_wst.val import DetectWSTValidator
+        from ultralytics.models.yolo.detect_wst.val import DetectionWSTValidatorAnyDepth
         # super: box_loss, cls_loss, dfl_loss, weather_loss, scene_loss, timeofday_loss
         # base:  same
         # kd:    box_kd, cls_kd, dfl_kd, feat_kd
@@ -113,7 +113,7 @@ class DetectionWSTTrainerAnyDepth(DetectionTrainer):
             "base/box",  "base/cls",  "base/dfl",  "base/weather",  "base/scene",  "base/timeofday",
             "kd/box",    "kd/cls",    "kd/dfl",    "kd/feat",
         )
-        return DetectWSTValidator(
+        return DetectionWSTValidatorAnyDepth(
             self.test_loader, save_dir=self.save_dir, args=copy(self.args), _callbacks=self.callbacks
         )
         
@@ -189,22 +189,67 @@ class DetectionWSTTrainerAnyDepth(DetectionTrainer):
                         )
                         if "momentum" in x:
                             x["momentum"] = np.interp(ni, xi, [self.args.warmup_momentum, self.args.momentum])
- 
+
                 with autocast(self.amp):
                     batch = self.preprocess_batch(batch)
                     
                     # ── Forward super (skip=False) ──────────────────────────
-                    skip_super = [False] * len(skip)
+                    skip_super = [False,] * len(skip)
                     preds_super = self.model(batch["img"], skip=skip_super, return_features=True)
- 
-                    # MTL(Detect + WST) loss for super model
-                    loss_super, self.loss_items_super = unwrap_model(self.model).loss(batch, preds=preds_super)
+                    
+                    
+                    # # @HyungseopLee: preds_super
+                    # print(f"\n=== [DEBUG] preds_super ===")
+                    # print(f"preds_super.keys(): {preds_super.keys()}")
+                    # # 1. pred
+                    # print("1. 'pred' (List of Tensors):")
+                    # for i, p in enumerate(preds_super.get('pred', [])):
+                    #     print(f"   [{i}] shape: {p.shape}")
+                    # # 2. features
+                    # print("2. 'features' (List of Tensors):")
+                    # for i, f in enumerate(preds_super.get('features', [])):
+                    #     print(f"   [{i}] shape: {f.shape}")
+                    # # 3. attr_out
+                    # print("3. 'attr_out' (Dict of Tensors):")
+                    # attr_out = preds_super.get('attr_out', {})
+                    # if isinstance(attr_out, dict):
+                    #     for k, v in attr_out.items():
+                    #         print(f"   ['{k}'] shape: {v.shape}")
+                    # else:
+                    #     print(f"   attr_out is not dict, it's {type(attr_out)}")
+                    # print("================================\n")
+                    '''
+                    preds_super (dict):
+                        'pred': [ # detection out
+                            tensor[b, 74, 80, 80], # P3: low-level
+                            tensor[b, 74, 40, 40], # P4: mid-level
+                            tensor[b, 74, 20, 20]  # P5: high-level
+                        ],
+                        'features': [ # intermediate features
+                            tensor[b, c], # 0 (intermediate features for KD)
+                            ...           # 1 ~ 5
+                            tensor[b, c]  # 6
+                        ],
+                        'attr_out': { # attributes(WST) out
+                            'weather':   tensor[b, 6],
+                            'scene':     tensor[b, 6],
+                            'timeofday': tensor[b, 3]
+                        }
+                    '''
+
+                    # @HyungseopLee: give all raw preds_super (det_out, features, attr_out) to loss() for training Detect+WST, below preds_ (commented out) is det_out only.
+                    # # Extract predictions from dictionary if return_features=True
+                    # if isinstance(preds_super, dict) and "pred" in preds_super:
+                    #     preds_ = preds_super["pred"]
+                    # else:
+                    #     preds_ = preds_super
+                    loss_super, self.loss_items = unwrap_model(self.model).loss(batch, preds_super) # preds_ is only det_out
+
                     self.loss_super = loss_super.sum()
                     if RANK != -1:
                         self.loss_super *= world_size
                     self.tloss_super = (
-                        (self.tloss_super * i + self.loss_items_super) / (i + 1)
-                        if self.tloss_super is not None else self.loss_items_super
+                        (self.tloss_super * i + self.loss_items) / (i + 1) if self.tloss_super is not None else self.loss_items
                     )
                     
                     # Backward super
@@ -212,17 +257,16 @@ class DetectionWSTTrainerAnyDepth(DetectionTrainer):
                         self.scaler.scale(self.loss_super).backward()
  
                     # ── Forward base (skip=True) ────────────────────────────
-                    skip_base = [True] * len(skip)
+                    skip_base = [True,] * len(skip)
                     preds_base = self.model(batch["img"], skip=skip_base, return_features=True)
  
-                    # MTL(Detect + WST) loss for base model
-                    loss_base, self.loss_items_base = unwrap_model(self.model).loss(batch, preds=preds_base)
+                    # MTL(Detect + WST) loss + KD loss for base model
+                    loss_base, self.loss_items_base = unwrap_model(self.model).loss(batch, preds_base)
                     self.loss_base = loss_base.sum()
                     if RANK != -1:
                         self.loss_base *= world_size
                     self.tloss_base = (
-                        (self.tloss_base * i + self.loss_items_base) / (i + 1)
-                        if self.tloss_base is not None else self.loss_items_base
+                        (self.tloss_base * i + self.loss_items_base) / (i + 1) if self.tloss_base is not None else self.loss_items_base
                     )
  
                     # ── KD loss (super -> base) ──────────────────────────────

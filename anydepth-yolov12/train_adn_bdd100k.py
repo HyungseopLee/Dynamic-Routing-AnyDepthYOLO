@@ -10,8 +10,8 @@ parser.add_argument('--data', type=str, default='')
 args = parser.parse_args()
 
 # yolo-ad-v12l-mtl.yaml
-# model = YOLO("./ultralytics/cfg/models/v12/yolo-ad-v12-mtl.yaml", task=args.task)
-model = YOLO("./ultralytics/cfg/models/v12/yolov12l-mtl.yaml", task=args.task)
+model = YOLO("./ultralytics/cfg/models/v12/yolo-ad-v12l-mtl.yaml", task=args.task)
+# model = YOLO("./ultralytics/cfg/models/v12/yolov12l-mtl.yaml", task=args.task)
 model.load(args.weight)
 
 

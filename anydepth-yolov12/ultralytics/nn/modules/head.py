@@ -199,7 +199,24 @@ class DetectWST(Detect):
             "scene": self.scene_cls(fc_out),
             "timeofday": self.timeofday_cls(fc_out),
         }
-        return det_out, attr_out
+        
+        # print(f"[DEBUG] DetectWST.forward() > ")
+        # for i in range(len(det_out)):
+        #     print(f"\tdet_out[{i}].shape: {det_out[i].shape}")
+        # print(f"\tattr_out.keys(): {attr_out.keys()}")
+        
+        """
+        return tuple(
+                    det_out=list[low-, mid-, high-level],
+                    attr_out={
+                        "weather", -> (1, 6)
+                        "scene", -> (1, 6)
+                        "timeofday" -> (1, 3)
+                    }
+                )
+        """
+        return det_out, attr_out 
+        
 
 class Segment(Detect):
     """YOLO Segment head for segmentation models."""

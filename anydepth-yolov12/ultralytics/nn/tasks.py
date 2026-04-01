@@ -7,6 +7,8 @@ import types
 from copy import deepcopy
 from pathlib import Path
 
+from ultralytics.utils import LOGGER, RANK
+
 import thop
 import torch
 import torch.nn as nn
@@ -525,7 +527,7 @@ class DetectionModelAnyDepth(DetectionModel):
         """
 
         if not hasattr(self, "criterion"):
-            self.criterion, self.criterion_kd = self.init_criterion()
+            self.criterion, self.criterion_kd = self.init_criterion() # v8DetectionLoss, DetectionLossAnyDepth
   
         assert preds is not None, "preds must be provided for loss computation" 
 
@@ -609,7 +611,9 @@ class DetectionWSTModelAnyDepth(DetectionModel):
         Inference: forward to predict.
         """
         if isinstance(x, dict):
+            # print(f"x is dict !")
             return self.loss(x, *args, **kwargs)
+        # print(f"x is not dict !")
         return self.predict(x, *args, **kwargs)
 
     def predict(self, x, profile=False, visualize=False, augment=False, embed=None, skip=None, return_features=False):
@@ -658,9 +662,29 @@ class DetectionWSTModelAnyDepth(DetectionModel):
                 embeddings.append(nn.functional.adaptive_avg_pool2d(x, (1, 1)).squeeze(-1).squeeze(-1))  # flatten
                 if m.i == max(embed):
                     return torch.unbind(torch.cat(embeddings, 1), dim=0)
-
+        
+        
         if return_features:
             return {"pred": x[0], "features": y_features, "attr_out": x[1] if isinstance(x, tuple) else None}
+        
+        # if RANK in {-1, 0}:
+        #     det_out = x[0]
+        #     for i, d in enumerate(det_out):
+        #         print(f"det_out[{i}] type: {type(d)}, shape: {d.shape}")
+        #     attr_out = x[1]
+        #     for k, v in attr_out.items():
+        #         print(f"attr_out['{k}'] type: {type(v)}, shape: {v.shape}")
+        """"
+        return tuple(
+                    det_out=list[low-, mid-, high-level],
+                    attr_out={
+                        "weather", -> (1, 6)
+                        "scene", -> (1, 6)
+                        "timeofday" -> (1, 3)
+                    }
+                )
+        """
+        
         return x
 
     def init_criterion(self):
@@ -691,7 +715,7 @@ class DetectionWSTModelAnyDepth(DetectionModel):
                     + DetectionLossAnyDepth(preds_base, preds_super, batch)  # KD
 
         Note:
-            preds_super = (det_out, attr_out)
+            preds_super = {"pred": det_out, "features": [...], "attr_out": attr_out}
             preds_base  = {"pred": det_out, "features": [...], "attr_out": attr_out}
             DetectionLossAnyDepth expects preds in dict format (not raw tuple)
         """
@@ -699,19 +723,19 @@ class DetectionWSTModelAnyDepth(DetectionModel):
             self.criterion, self.criterion_kd = self.init_criterion()
 
         preds = self.forward(batch["img"]) if preds is None else preds
-
-        # Case 1 & 2: DWST loss (Det + WST) always computed on super model
+        
+        # Case 1 & 2: DWST loss (Det + WST) always computed on both super and base
         loss_dwst, loss_items_dwst = self.criterion(preds, batch)
 
-        if preds_base is not None:
-            # Case 2: KD loss between base and super model
+        # Case 1: For super, (Detect + WST) loss, not KD loss
+        if preds_base is None:
+            return loss_dwst, loss_items_dwst
+        else:
+            # Case 2: For base, (Detect + WST) loss + KD loss
             loss_kd, loss_items_kd = self.criterion_kd(preds_base, preds, batch)
             total_loss = loss_dwst + loss_kd
             loss_items = torch.cat([loss_items_dwst, loss_items_kd])
             return total_loss, loss_items
-        else:
-            # Case 1: WST loss only
-            return loss_dwst, loss_items_dwst
 
 
 class OBBModel(DetectionModel):
