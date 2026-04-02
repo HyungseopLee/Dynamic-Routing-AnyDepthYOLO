@@ -1139,8 +1139,13 @@ class DetectionWSTLoss:
                 'timeofday': tensor[b, 3]
             }
         """        
-        det_preds = preds["pred"]
-        attr_preds = preds["attr_out"]
+        if isinstance(preds, dict):
+            # When training, dict
+            det_preds = preds["pred"]
+            attr_preds = preds["attr_out"]
+        else:
+            # When validation, tuple(det_out, attr_out)
+            det_preds, attr_preds = preds
 
         # detection loss
         det_loss, det_loss_items = self.det_loss(det_preds, batch)

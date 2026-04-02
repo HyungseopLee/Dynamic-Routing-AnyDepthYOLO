@@ -12,7 +12,7 @@ from ultralytics.utils import RANK
 from ultralytics.utils.torch_utils import smart_inference_mode
 from fvcore.nn import FlopCountAnalysis, flop_count_table
 
-
+# for baseline, Detect + WST
 class DetectionWSTValidator(DetectionValidator):
     """
     Validator for DetectionWSTModel.
@@ -171,7 +171,7 @@ class DetectionWSTValidator(DetectionValidator):
             print(f"  {'Overall':<20} {self.attr_correct[key]:>6}/{total:<8} {acc:>7.2f}%")
            
 
-
+# for any-depth, Detect + WST
 class DetectionWSTValidatorAnyDepth(DetectionWSTValidator):
     """
     Validator for DetectionWSTModelAnyDepth.
@@ -183,39 +183,33 @@ class DetectionWSTValidatorAnyDepth(DetectionWSTValidator):
     @smart_inference_mode()    
     def __call__(self, trainer=None, model=None, skip=None):
         if skip is not None:
-            # print(f"Using skip={skip} for DetectionWSTValidatorAnyDepth")
+            print(f"Using skip={skip} for DetectionWSTValidatorAnyDepth")
             self.skip = skip
         
         model_args = {'skip': self.skip} if hasattr(self, 'skip') else {}
-
-        target_model = model or getattr(trainer, 'model', None) or getattr(self, 'model', None)
         
-        if target_model is not None and FlopCountAnalysis is not None:
-            class FLOPsWrapper(torch.nn.Module):
-                def __init__(self, base_model, skip_args):
-                    super().__init__()
-                    self.base_model = base_model
-                    self.skip_args = skip_args
-                def forward(self, x):
-                    # 모델 포워드 시 skip 인자를 함께 전달
-                    return self.base_model(x, **self.skip_args)
+        # target_model = model or getattr(trainer, 'model', None) or getattr(self, 'model', None)
+        # if target_model is not None and FlopCountAnalysis is not None:
+        #     class FLOPsWrapper(torch.nn.Module):
+        #         def __init__(self, base_model, skip_args):
+        #             super().__init__()
+        #             self.base_model = base_model
+        #             self.skip_args = skip_args
+        #         def forward(self, x):
+        #             return self.base_model(x, **self.skip_args)
             
-            imgsz = self.args.imgsz
-            if isinstance(imgsz, int):
-                imgsz = (imgsz, imgsz)
-            device = next(target_model.parameters()).device
-            dummy_input = torch.randn(1, 3, *imgsz).to(device)
+        #     imgsz = self.args.imgsz
+        #     if isinstance(imgsz, int):
+        #         imgsz = (imgsz, imgsz)
+        #     device = next(target_model.parameters()).device
+        #     dummy_input = torch.randn(1, 3, *imgsz).to(device)
             
-            try:
-                wrapper = FLOPsWrapper(target_model, model_args)
-                flops = FlopCountAnalysis(wrapper, dummy_input)
-                print(f"\n[*] FLOPs calculated at resolution: {imgsz[0]}x{imgsz[1]}")
-                print(flop_count_table(flops))
-            except Exception as e:
-                print(f"[Warning] Failed to calculate FLOPs: {e}")
+        #     try:
+        #         wrapper = FLOPsWrapper(target_model, model_args)
+        #         flops = FlopCountAnalysis(wrapper, dummy_input)
+        #         print(f"\n[*] FLOPs calculated at resolution: {imgsz[0]}x{imgsz[1]}")
+        #         print(flop_count_table(flops))
+        #     except Exception as e:
+        #         print(f"[Warning] Failed to calculate FLOPs: {e}")
 
-        # 3. DetectionValidator의 핵심 검증 루프 실행
-        # super(DetectionWSTValidator, self).__call__ 을 호출함으로써 
-        # Base 클래스의 검증 루프를 돌면서 DetectionWSTValidator에 정의된 
-        # preprocess, postprocess, update_metrics 등이 자연스럽게 실행됩니다.
         return super(DetectionWSTValidator, self).__call__(trainer=trainer, model=model, model_args=model_args)

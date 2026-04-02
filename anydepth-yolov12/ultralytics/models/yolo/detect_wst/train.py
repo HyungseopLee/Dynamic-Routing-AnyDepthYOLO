@@ -118,11 +118,40 @@ class DetectionWSTTrainerAnyDepth(DetectionTrainer):
         )
         
     def validate(self, skip=None):
+        orig_loss_items = getattr(self, "loss_items", None)
+        ref_tensor = getattr(self, "loss_items_super", getattr(self, "loss_items_base", None))
+        if ref_tensor is not None:
+            self.loss_items = torch.zeros_like(ref_tensor)
+        else:
+            self.loss_items = torch.zeros(6, device=self.device)
+            
         metrics = self.validator(self, skip=skip)
-        fitness = metrics.pop("fitness", -self.loss.detach().cpu().numpy())
-        if not self.best_fitness or self.best_fitness < fitness:
+        fitness = metrics.pop("fitness", -self.loss.detach().cpu().numpy()) # use loss as fitness measure if not found
+        
+        # if not self.best_fitness or self.best_fitness < fitness:
+        #     self.best_fitness = fitness
+            
+        # update best_fitness when only super model
+        is_super = skip is None or not any(skip)
+        if is_super and (not self.best_fitness or self.best_fitness < fitness):
             self.best_fitness = fitness
+            
+        self.loss_items = orig_loss_items
+            
         return metrics, fitness
+    
+    
+    def save_metrics(self, metrics):
+        keys, vals = list(metrics.keys()), list(metrics.values())
+        n = len(metrics) + 2  # number of cols
+        s = "" if self.csv.exists() else (("%s," * n % tuple(["epoch", "time"] + keys)).rstrip(",") + "\n")  
+        t = time.time() - self.train_time_start
+        row_vals = [self.epoch + 1, t] + vals
+        row_str = ",".join([f"{v}" if isinstance(v, str) else f"{v:.6g}" for v in row_vals]) + "\n"
+        
+        with open(self.csv, "a") as f:
+            f.write(s + row_str)
+    
     
     def _do_train(self, world_size=1):
         if world_size > 1:
@@ -151,6 +180,43 @@ class DetectionWSTTrainerAnyDepth(DetectionTrainer):
  
         epoch = self.start_epoch
         self.optimizer.zero_grad() # zero any resumed gradients to ensure stability on train start
+ 
+        if RANK in {-1, 0}:
+            try:
+                from fvcore.nn import FlopCountAnalysis, flop_count_table
+                class FLOPsWrapper(torch.nn.Module):
+                    def __init__(self, base_model, skip):
+                        super().__init__()
+                        self.base_model = base_model
+                        self.skip = skip
+                    def forward(self, x):
+                        return self.base_model(x, skip=self.skip)
+
+                imgsz = self.args.imgsz
+                if isinstance(imgsz, int):
+                    imgsz = (imgsz, imgsz)
+                num_skip = unwrap_model(self.model).num_skippable_layers
+                dummy = torch.randn(1, 3, *imgsz).to(self.device)
+                self.model.eval()
+
+                # Super
+                wrapper_super = FLOPsWrapper(unwrap_model(self.model), [False] * num_skip)
+                flops_super = FlopCountAnalysis(wrapper_super, dummy)
+                LOGGER.info(f"\n[FLOPs] Super model (skip=False) @ {imgsz[0]}x{imgsz[1]}:")
+                LOGGER.info(flop_count_table(flops_super))
+                LOGGER.info(f"  MACs  (super): {flops_super.total() / 1e9:.2f} GMACs")
+                LOGGER.info(f"  FLOPs (super): {flops_super.total() * 2 / 1e9:.2f} GFLOPs")
+
+                # Base
+                wrapper_base = FLOPsWrapper(unwrap_model(self.model), [True] * num_skip)
+                flops_base = FlopCountAnalysis(wrapper_base, dummy)
+                LOGGER.info(f"\n[FLOPs] Base model (skip=True) @ {imgsz[0]}x{imgsz[1]}:")
+                LOGGER.info(flop_count_table(flops_base))
+                LOGGER.info(f"  MACs  (base): {flops_base.total() / 1e9:.2f} GMACs")
+                LOGGER.info(f"  FLOPs (base): {flops_base.total() * 2 / 1e9:.2f} GFLOPs")
+
+            except Exception as e:
+                LOGGER.warning(f"[Warning] Failed to calculate FLOPs: {e}")
  
         while True:
             self.epoch = epoch
@@ -237,27 +303,28 @@ class DetectionWSTTrainerAnyDepth(DetectionTrainer):
                         }
                     '''
 
-                    # @HyungseopLee: give all raw preds_super (det_out, features, attr_out) to loss() for training Detect+WST, below preds_ (commented out) is det_out only.
+                    # @HyungseopLee: give all raw preds_super (det_out, features, attr_out) to loss() for training Detect+WST, below code commented out (preds_) is det_out only.
                     # # Extract predictions from dictionary if return_features=True
                     # if isinstance(preds_super, dict) and "pred" in preds_super:
                     #     preds_ = preds_super["pred"]
                     # else:
                     #     preds_ = preds_super
-                    loss_super, self.loss_items = unwrap_model(self.model).loss(batch, preds_super) # preds_ is only det_out
+                    loss_super, self.loss_items_super = unwrap_model(self.model).loss(batch, preds_super) # preds_ is only det_out
 
                     self.loss_super = loss_super.sum()
                     if RANK != -1:
                         self.loss_super *= world_size
                     self.tloss_super = (
-                        (self.tloss_super * i + self.loss_items) / (i + 1) if self.tloss_super is not None else self.loss_items
+                        (self.tloss_super * i + self.loss_items_super) / (i + 1) if self.tloss_super is not None else self.loss_items_super
                     )
                     
                     # Backward super
                     with torch.amp.autocast('cuda', enabled=False):
+                        # print("XXXXXX Backward super XXXXXX")
                         self.scaler.scale(self.loss_super).backward()
  
                     # ── Forward base (skip=True) ────────────────────────────
-                    skip_base = [True,] * len(skip)
+                    skip_base = [True] * len(skip)
                     preds_base = self.model(batch["img"], skip=skip_base, return_features=True)
  
                     # MTL(Detect + WST) loss + KD loss for base model
@@ -276,6 +343,7 @@ class DetectionWSTTrainerAnyDepth(DetectionTrainer):
                         preds_base=preds_base
                     )
                     self.loss_kd = loss_kd.sum()
+                    
                     if RANK != -1:
                         self.loss_kd *= world_size
                     self.tloss_kd = (
@@ -290,6 +358,7 @@ class DetectionWSTTrainerAnyDepth(DetectionTrainer):
         
                     # Backward base
                     with torch.amp.autocast('cuda', enabled=False):
+                        # print("XXXXXX Backward base XXXXXX")
                         self.scaler.scale(self.loss).backward()
                         
  
@@ -325,6 +394,8 @@ class DetectionWSTTrainerAnyDepth(DetectionTrainer):
                         self.plot_training_samples(batch, ni)
  
                 self.run_callbacks("on_train_batch_end")
+                # break
+                
  
             self.lr = {f"lr/pg{ir}": x["lr"] for ir, x in enumerate(self.optimizer.param_groups)}
             self.run_callbacks("on_train_epoch_end")
@@ -333,16 +404,31 @@ class DetectionWSTTrainerAnyDepth(DetectionTrainer):
                 final_epoch = epoch + 1 >= self.epochs
                 self.ema.update_attr(self.model, include=["yaml", "nc", "args", "names", "stride", "class_weights"])
  
+                train_loss_keys = ["train/box", "train/cls", "train/dfl", "train/weather", "train/scene", "train/timeofday"]
+ 
                 # Validation: super
-                print("XXXXXX Validation super XXXXXX")
                 if self.args.val or final_epoch or self.stopper.possible_stop or self.stop:
                     self.metrics, self.fitness = self.validate(skip=[False] * len(skip))
-                self.save_metrics(metrics={**self.label_loss_items(self.tloss_super, prefix="train/super"), **self.metrics, **self.lr})
+                clean_metrics_super = {k.replace("super/", "").replace("base/", ""): v for k, v in self.metrics.items()}
+                train_loss_super = dict(zip(train_loss_keys, self.tloss_super))
+                self.save_metrics(metrics={
+                    "config": "super",
+                    **train_loss_super,
+                    **clean_metrics_super,
+                    **self.lr
+                })
  
                 # Validation: base
                 if self.args.val or final_epoch or self.stopper.possible_stop or self.stop:
-                    self.metrics, self.fitness = self.validate(skip=[True] * len(skip))
-                self.save_metrics(metrics={**self.label_loss_items(self.tloss_base, prefix="train/base"), **self.metrics, **self.lr})
+                    self.metrics, _ = self.validate(skip=[True] * len(skip))
+                clean_metrics_base = {k.replace("super/", "").replace("base/", ""): v for k, v in self.metrics.items()}
+                train_loss_base = dict(zip(train_loss_keys, self.tloss_base))
+                self.save_metrics(metrics={
+                    "config": "base",
+                    **train_loss_base,
+                    **clean_metrics_base,
+                    **self.lr
+                })
  
                 self.stop |= self.stopper(epoch + 1, self.fitness) or final_epoch
                 if self.args.time:

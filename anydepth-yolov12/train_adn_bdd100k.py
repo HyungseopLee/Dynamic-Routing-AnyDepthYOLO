@@ -11,7 +11,7 @@ args = parser.parse_args()
 
 # yolo-ad-v12l-mtl.yaml
 model = YOLO("./ultralytics/cfg/models/v12/yolo-ad-v12l-mtl.yaml", task=args.task)
-# model = YOLO("./ultralytics/cfg/models/v12/yolov12l-mtl.yaml", task=args.task)
+# model = YOLO("./ultralytics/cfg/models/v12/yolov12l.yaml", task=args.task)
 model.load(args.weight)
 
 
@@ -28,7 +28,10 @@ results = model.train(
   batch=64, #s:128, l:64, orig:256,
   imgsz=args.imgsz,
   
-  wst=5.0, # loss weighting for (weather loss + scene loss + time loss)
+  lr0=0.01, # initial lr (i.e. SGD=1E-2, Adam=1E-3)
+  lrf=0.01, # lr0 ~ (lr0 * lrf)
+  
+  wst=1.0, # loss weighting for (weather loss + scene loss + time loss)
   
   scale=0.5,  # n:0.5, S:0.9; M:0.9; L:0.9; X:0.9
   mosaic=0.0,
@@ -72,7 +75,7 @@ python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
   --imgsz 640 \
   --weight ./pretrained/yolo-ad-exp8_105_epoch539_0.539_0.520.pt \
   --project ./runs/bdd100k/detect_wst/anydepth-yolov12l \
-  2>&1 | tee ./runs/bdd100k/detect_wst/anydepth-yolov12l/train_50e_SGD0900_bs64_nbs256_imgsz640_scale050_wst5.0.log
+  2>&1 | tee ./runs/bdd100k/detect_wst/anydepth-yolov12l/train_50e_SGD0900_bs64_nbs256_imgsz640_scale050_wst1.0.log
 
 
 '''

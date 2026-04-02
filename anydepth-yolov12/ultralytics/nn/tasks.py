@@ -631,8 +631,13 @@ class DetectionWSTModelAnyDepth(DetectionModel):
         y, dt, embeddings, y_features = [], [], [], []
         i = 0  # skippable layer index
         
+        # if RANK in {-1, 0}:
+        #     print(f"[DEBUG] skip: {skip}")
+        
         for m in self.model:
-            # print(f"[Debug] Layer {m.i}: {type(m)}")
+            # if RANK in {-1, 0}:
+            #     print(f"[DEBUG] Layer {m.i}: {type(m)}")
+                
             if m.f != -1:
                 x = y[m.f] if isinstance(m.f, int) else [x if j == -1 else y[j] for j in m.f] 
             if profile:
@@ -724,18 +729,13 @@ class DetectionWSTModelAnyDepth(DetectionModel):
 
         preds = self.forward(batch["img"]) if preds is None else preds
         
-        # Case 1 & 2: DWST loss (Det + WST) always computed on both super and base
-        loss_dwst, loss_items_dwst = self.criterion(preds, batch)
 
         # Case 1: For super, (Detect + WST) loss, not KD loss
         if preds_base is None:
-            return loss_dwst, loss_items_dwst
+            return self.criterion(preds, batch)
         else:
             # Case 2: For base, (Detect + WST) loss + KD loss
-            loss_kd, loss_items_kd = self.criterion_kd(preds_base, preds, batch)
-            total_loss = loss_dwst + loss_kd
-            loss_items = torch.cat([loss_items_dwst, loss_items_kd])
-            return total_loss, loss_items
+            return self.criterion_kd(preds_base, preds, batch)
 
 
 class OBBModel(DetectionModel):
