@@ -13,8 +13,6 @@ from ultralytics.utils.checks import check_requirements
 from ultralytics.utils.metrics import ConfusionMatrix, DetMetrics, box_iou
 from ultralytics.utils.plotting import output_to_target, plot_images
 
-from ultralytics.utils.torch_utils import smart_inference_mode
-from fvcore.nn import FlopCountAnalysis, flop_count_table
 
 class DetectionValidator(BaseValidator):
     """
@@ -190,6 +188,7 @@ class DetectionValidator(BaseValidator):
 
     def print_results(self):
         """Prints training/validation set metrics per class."""
+        LOGGER.info(self.get_desc())
         pf = "%22s" + "%11i" * 2 + "%11.3g" * len(self.metrics.keys)  # print format
         LOGGER.info(pf % ("all", self.seen, self.nt_per_class.sum(), *self.metrics.mean_results()))
         if self.nt_per_class.sum() == 0:
@@ -343,38 +342,3 @@ class DetectionValidatorAnyDepth(DetectionValidator):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.args.save_json |= self.is_coco
-
-    @smart_inference_mode()    
-    def __call__(self, trainer=None, model=None, skip=None):
-        # Use skip parameter if provided, otherwise use config
-        if skip is not None:
-            print(f"Using skip={skip} for DetectionValidatorAnyDepth")
-            self.skip = skip
-        
-        model_args = {'skip': self.skip} if hasattr(self, 'skip') else {}
-
-        # @HyungseopLee: FLOPs
-        target_model = model or getattr(trainer, 'model', None) or getattr(self, 'model', None)
-        if target_model is not None:
-            class FLOPsWrapper(torch.nn.Module):
-                def __init__(self, base_model, skip_args):
-                    super().__init__()
-                    self.base_model = base_model
-                    self.skip_args = skip_args
-                def forward(self, x):
-                    return self.base_model(x, **self.skip_args)
-            imgsz = self.args.imgsz
-            if isinstance(imgsz, int):
-                imgsz = (imgsz, imgsz)
-            device = next(target_model.parameters()).device
-            dummy_input = torch.randn(1, 3, *imgsz).to(device)
-            try:
-                wrapper = FLOPsWrapper(target_model, model_args)
-                flops = FlopCountAnalysis(wrapper, dummy_input)
-                print(f"\n[*] FLOPs calculated at resolution: {imgsz[0]}x{imgsz[1]}")
-                print(flop_count_table(flops))
-            except Exception as e:
-                print(f"[Warning] Failed to calculate FLOPs: {e}")
-        
-
-        return super().__call__(trainer=trainer, model=model, model_args=model_args)

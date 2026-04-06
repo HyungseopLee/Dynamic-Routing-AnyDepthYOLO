@@ -104,8 +104,13 @@ class BaseValidator:
         self.callbacks = _callbacks or callbacks.get_default_callbacks()
 
     @smart_inference_mode()
-    def __call__(self, trainer=None, model=None, model_args=None):
+    def __call__(self, trainer=None, model=None, model_args=None, skip=None):
         """Executes validation process, running inference on dataloader and computing performance metrics."""
+        # Convert skip to model_args for AnyDepth models
+        if skip is not None:
+            model_args = model_args or {}
+            model_args['skip'] = skip
+
         self.training = trainer is not None
         augment = self.args.augment and (not self.training)
         if self.training:
@@ -157,6 +162,37 @@ class BaseValidator:
 
             model.eval()
             model.warmup(imgsz=(1 if pt else self.args.batch, 3, imgsz, imgsz))  # warmup
+
+        # FLOPs calculation
+        target_model = model or getattr(trainer, 'model', None)
+        if target_model is not None:
+            raw_model = target_model.module if hasattr(target_model, 'module') else target_model
+            imgsz = self.args.imgsz
+            if isinstance(imgsz, int):
+                imgsz = (imgsz, imgsz)
+            device = next(raw_model.parameters()).device
+            dummy_input = torch.randn(1, 3, *imgsz).to(device)
+            _fwd_args = {k: v for k, v in (model_args or {}).items() if k != 'augment'}
+            try:
+                from fvcore.nn import FlopCountAnalysis, flop_count_table
+
+                class _FLOPsWrapper(torch.nn.Module):
+                    def __init__(self, base_model, fwd_args):
+                        super().__init__()
+                        self.base_model = base_model
+                        self.fwd_args = fwd_args
+                    def forward(self, x):
+                        return self.base_model(x, **self.fwd_args)
+
+                wrapper = _FLOPsWrapper(raw_model, _fwd_args)
+                flops = FlopCountAnalysis(wrapper, dummy_input)
+                LOGGER.info(f"\n[*] FLOPs calculated at resolution: {imgsz[0]}x{imgsz[1]}")
+                if not self.training:
+                    LOGGER.info(flop_count_table(flops))
+                LOGGER.info(f"  MACs  : {flops.total() / 1e9:.2f} GMACs")
+                LOGGER.info(f"  FLOPs : {flops.total() * 2 / 1e9:.2f} GFLOPs")
+            except Exception as e:
+                LOGGER.warning(f"[Warning] Failed to calculate FLOPs: {e}")
 
         self.run_callbacks("on_val_start")
         dt = (

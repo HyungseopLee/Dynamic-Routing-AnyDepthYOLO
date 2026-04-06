@@ -3,14 +3,9 @@
 from pathlib import Path
 import numpy as np
 
-import torch
-
 from ultralytics.data.build import build_dataloader
 from ultralytics.models.yolo.detect.val import DetectionValidator
 from ultralytics.utils import RANK
-
-from ultralytics.utils.torch_utils import smart_inference_mode
-from fvcore.nn import FlopCountAnalysis, flop_count_table
 
 # for baseline, Detect + WST
 class DetectionWSTValidator(DetectionValidator):
@@ -179,37 +174,3 @@ class DetectionWSTValidatorAnyDepth(DetectionWSTValidator):
     def __init__(self, dataloader=None, save_dir=None, pbar=None, args=None, _callbacks=None):
         super().__init__(dataloader, save_dir, pbar, args, _callbacks)
         self.args.save_json |= self.is_coco
-
-    @smart_inference_mode()    
-    def __call__(self, trainer=None, model=None, skip=None):
-        if skip is not None:
-            print(f"Using skip={skip} for DetectionWSTValidatorAnyDepth")
-            self.skip = skip
-        
-        model_args = {'skip': self.skip} if hasattr(self, 'skip') else {}
-        
-        # target_model = model or getattr(trainer, 'model', None) or getattr(self, 'model', None)
-        # if target_model is not None and FlopCountAnalysis is not None:
-        #     class FLOPsWrapper(torch.nn.Module):
-        #         def __init__(self, base_model, skip_args):
-        #             super().__init__()
-        #             self.base_model = base_model
-        #             self.skip_args = skip_args
-        #         def forward(self, x):
-        #             return self.base_model(x, **self.skip_args)
-            
-        #     imgsz = self.args.imgsz
-        #     if isinstance(imgsz, int):
-        #         imgsz = (imgsz, imgsz)
-        #     device = next(target_model.parameters()).device
-        #     dummy_input = torch.randn(1, 3, *imgsz).to(device)
-            
-        #     try:
-        #         wrapper = FLOPsWrapper(target_model, model_args)
-        #         flops = FlopCountAnalysis(wrapper, dummy_input)
-        #         print(f"\n[*] FLOPs calculated at resolution: {imgsz[0]}x{imgsz[1]}")
-        #         print(flop_count_table(flops))
-        #     except Exception as e:
-        #         print(f"[Warning] Failed to calculate FLOPs: {e}")
-
-        return super(DetectionWSTValidator, self).__call__(trainer=trainer, model=model, model_args=model_args)

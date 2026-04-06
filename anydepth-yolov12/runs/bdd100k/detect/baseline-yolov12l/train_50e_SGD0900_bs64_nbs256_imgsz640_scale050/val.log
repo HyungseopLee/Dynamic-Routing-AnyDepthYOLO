@@ -1,8 +1,6 @@
-[*] Running validation with Image Size: 640
-task: detect_wst
-<class 'type'>
+task: detect
 model: YOLO(
-  (model): DetectionWSTModel(
+  (model): DetectionModel(
     (model): Sequential(
       (0): Conv(
         (conv): Conv2d(3, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
@@ -563,7 +561,7 @@ model: YOLO(
           )
         )
       )
-      (21): DetectWST(
+      (21): Detect(
         (cv2): ModuleList(
           (0): Sequential(
             (0): Conv(
@@ -651,20 +649,154 @@ model: YOLO(
         (dfl): DFL(
           (conv): Conv2d(16, 1, kernel_size=(1, 1), stride=(1, 1), bias=False)
         )
-        (attr_pool): AdaptiveAvgPool2d(output_size=1)
-        (attr_fc): Sequential(
-          (0): Flatten(start_dim=1, end_dim=-1)
-          (1): Linear(in_features=512, out_features=256, bias=True)
-          (2): ReLU(inplace=True)
-        )
-        (weather_cls): Linear(in_features=256, out_features=6, bias=True)
-        (scene_cls): Linear(in_features=256, out_features=6, bias=True)
-        (timeofday_cls): Linear(in_features=256, out_features=3, bias=True)
       )
     )
   )
 )
+[*] AnyDepth model: False, num_skippable_layers: 0
+[*] Running validation with Image Size: 640
 Ultralytics 8.3.63 🚀 Python-3.11.13 torch-2.2.2+cu121 CUDA:0 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
-YOLOv12l-mtl summary (fused): 682 layers, 26,536,445 parameters, 0 gradients, 82.2 GFLOPs
-val: Scanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]val: Scanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
-Loaded 10000 attribute labels from /media/data/bdd100k_yolo/val/attributes.json
+YOLOv12l summary (fused): 674 layers, 26,401,262 parameters, 0 gradients, 82.1 GFLOPs
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s][34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
+
+[*] FLOPs calculated at resolution: 640x640
+| module                 | #parameters or shape   | #flops   |
+|:-----------------------|:-----------------------|:---------|
+| base_model.model.model | 26.401M                | 41.05G   |
+| 0.conv                 | 1.792K                 | 0.177G   |
+| 0.conv.weight          | (64, 3, 3, 3)          |          |
+| 0.conv.bias            | (64,)                  |          |
+| 1.conv                 | 36.992K                | 0.944G   |
+| 1.conv.weight          | (128, 32, 3, 3)        |          |
+| 1.conv.bias            | (128,)                 |          |
+| 2                      | 0.173M                 | 4.404G   |
+| 2.cv1.conv             | 16.512K                | 0.419G   |
+| 2.cv1.conv.weight      | (128, 128, 1, 1)       |          |
+| 2.cv1.conv.bias        | (128,)                 |          |
+| 2.cv2.conv             | 65.792K                | 1.678G   |
+| 2.cv2.conv.weight      | (256, 256, 1, 1)       |          |
+| 2.cv2.conv.bias        | (256,)                 |          |
+| 2.m                    | 90.624K                | 2.307G   |
+| 2.m.0                  | 45.312K                | 1.153G   |
+| 2.m.1                  | 45.312K                | 1.153G   |
+| 3.conv                 | 0.148M                 | 0.944G   |
+| 3.conv.weight          | (256, 64, 3, 3)        |          |
+| 3.conv.bias            | (256,)                 |          |
+| 4                      | 0.69M                  | 4.404G   |
+| 4.cv1.conv             | 65.792K                | 0.419G   |
+| 4.cv1.conv.weight      | (256, 256, 1, 1)       |          |
+| 4.cv1.conv.bias        | (256,)                 |          |
+| 4.cv2.conv             | 0.263M                 | 1.678G   |
+| 4.cv2.conv.weight      | (512, 512, 1, 1)       |          |
+| 4.cv2.conv.bias        | (512,)                 |          |
+| 4.m                    | 0.361M                 | 2.307G   |
+| 4.m.0                  | 0.181M                 | 1.153G   |
+| 4.m.1                  | 0.181M                 | 1.153G   |
+| 5.conv                 | 2.36M                  | 3.775G   |
+| 5.conv.weight          | (512, 512, 3, 3)       |          |
+| 5.conv.bias            | (512,)                 |          |
+| 6                      | 4.524M                 | 7.212G   |
+| 6.gamma                | (512,)                 |          |
+| 6.cv1.conv             | 0.131M                 | 0.21G    |
+| 6.cv1.conv.weight      | (256, 512, 1, 1)       |          |
+| 6.cv1.conv.bias        | (256,)                 |          |
+| 6.cv2.conv             | 0.656M                 | 1.049G   |
+| 6.cv2.conv.weight      | (512, 1280, 1, 1)      |          |
+| 6.cv2.conv.bias        | (512,)                 |          |
+| 6.m                    | 3.737M                 | 5.954G   |
+| 6.m.0                  | 0.934M                 | 1.488G   |
+| 6.m.1                  | 0.934M                 | 1.488G   |
+| 6.m.2                  | 0.934M                 | 1.488G   |
+| 6.m.3                  | 0.934M                 | 1.488G   |
+| 7.conv                 | 2.36M                  | 0.944G   |
+| 7.conv.weight          | (512, 512, 3, 3)       |          |
+| 7.conv.bias            | (512,)                 |          |
+| 8                      | 4.524M                 | 1.803G   |
+| 8.gamma                | (512,)                 |          |
+| 8.cv1.conv             | 0.131M                 | 52.429M  |
+| 8.cv1.conv.weight      | (256, 512, 1, 1)       |          |
+| 8.cv1.conv.bias        | (256,)                 |          |
+| 8.cv2.conv             | 0.656M                 | 0.262G   |
+| 8.cv2.conv.weight      | (512, 1280, 1, 1)      |          |
+| 8.cv2.conv.bias        | (512,)                 |          |
+| 8.m                    | 3.737M                 | 1.488G   |
+| 8.m.0                  | 0.934M                 | 0.372G   |
+| 8.m.1                  | 0.934M                 | 0.372G   |
+| 8.m.2                  | 0.934M                 | 0.372G   |
+| 8.m.3                  | 0.934M                 | 0.372G   |
+| 11                     | 2.1M                   | 3.355G   |
+| 11.cv1.conv            | 0.262M                 | 0.419G   |
+| 11.cv1.conv.weight     | (256, 1024, 1, 1)      |          |
+| 11.cv1.conv.bias       | (256,)                 |          |
+| 11.cv2.conv            | 0.394M                 | 0.629G   |
+| 11.cv2.conv.weight     | (512, 768, 1, 1)       |          |
+| 11.cv2.conv.bias       | (512,)                 |          |
+| 11.m                   | 1.444M                 | 2.307G   |
+| 11.m.0                 | 0.722M                 | 1.153G   |
+| 11.m.1                 | 0.722M                 | 1.153G   |
+| 14                     | 0.591M                 | 3.775G   |
+| 14.cv1.conv            | 0.131M                 | 0.839G   |
+| 14.cv1.conv.weight     | (128, 1024, 1, 1)      |          |
+| 14.cv1.conv.bias       | (128,)                 |          |
+| 14.cv2.conv            | 98.56K                 | 0.629G   |
+| 14.cv2.conv.weight     | (256, 384, 1, 1)       |          |
+| 14.cv2.conv.bias       | (256,)                 |          |
+| 14.m                   | 0.361M                 | 2.307G   |
+| 14.m.0                 | 0.181M                 | 1.153G   |
+| 14.m.1                 | 0.181M                 | 1.153G   |
+| 15.conv                | 0.59M                  | 0.944G   |
+| 15.conv.weight         | (256, 256, 3, 3)       |          |
+| 15.conv.bias           | (256,)                 |          |
+| 17                     | 2.034M                 | 3.251G   |
+| 17.cv1.conv            | 0.197M                 | 0.315G   |
+| 17.cv1.conv.weight     | (256, 768, 1, 1)       |          |
+| 17.cv1.conv.bias       | (256,)                 |          |
+| 17.cv2.conv            | 0.394M                 | 0.629G   |
+| 17.cv2.conv.weight     | (512, 768, 1, 1)       |          |
+| 17.cv2.conv.bias       | (512,)                 |          |
+| 17.m                   | 1.444M                 | 2.307G   |
+| 17.m.0                 | 0.722M                 | 1.153G   |
+| 17.m.1                 | 0.722M                 | 1.153G   |
+| 18.conv                | 2.36M                  | 0.944G   |
+| 18.conv.weight         | (512, 512, 3, 3)       |          |
+| 18.conv.bias           | (512,)                 |          |
+| 20                     | 2.493M                 | 0.996G   |
+| 20.cv1.conv            | 0.525M                 | 0.21G    |
+| 20.cv1.conv.weight     | (512, 1024, 1, 1)      |          |
+| 20.cv1.conv.bias       | (512,)                 |          |
+| 20.cv2.conv            | 0.525M                 | 0.21G    |
+| 20.cv2.conv.weight     | (512, 1024, 1, 1)      |          |
+| 20.cv2.conv.bias       | (512,)                 |          |
+| 20.m                   | 1.444M                 | 0.577G   |
+| 20.m.0                 | 0.722M                 | 0.288G   |
+| 20.m.1                 | 0.722M                 | 0.288G   |
+| 21                     | 1.415M                 | 3.175G   |
+| 21.cv2                 | 0.861M                 | 1.878G   |
+| 21.cv2.0               | 0.189M                 | 1.206G   |
+| 21.cv2.1               | 0.336M                 | 0.537G   |
+| 21.cv2.2               | 0.336M                 | 0.134G   |
+| 21.cv3                 | 0.554M                 | 1.297G   |
+| 21.cv3.0               | 0.139M                 | 0.885G   |
+| 21.cv3.1               | 0.207M                 | 0.33G    |
+| 21.cv3.2               | 0.207M                 | 82.432M  |
+| 21.dfl.conv            | 16                     | 0.538M   |
+| 21.dfl.conv.weight     | (1, 16, 1, 1)          |          |
+| 9                      |                        | 0.819M   |
+| 12                     |                        | 3.277M   |
+  MACs  : 41.05 GMACs
+  FLOPs : 82.10 GFLOPs
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.746      0.495      0.561      0.326
+                person       3220      13265      0.776      0.562      0.653      0.342
+                 rider        515        649      0.671      0.438      0.487      0.259
+                   car       9879     102540      0.807      0.732      0.795      0.495
+                   bus       1242       1597      0.708       0.57      0.653      0.501
+                 truck       2689       4247      0.689      0.587      0.661      0.487
+                  bike        578       1007      0.615       0.48      0.511      0.264
+                 motor        334        452      0.729       0.44        0.5      0.251
+         traffic light       5653      26891      0.717      0.545      0.588       0.23
+          traffic sign       8221      34915      0.747      0.599       0.67      0.363
+                 train         14         15          1          0     0.0942     0.0688
+Speed: 0.0ms preprocess, 2.2ms inference, 0.0ms loss, 0.2ms postprocess per image
+Saving runs/bdd100k/detect/baseline-yolov12l/Base_6403/predictions.json...
+Results saved to [1mruns/bdd100k/detect/baseline-yolov12l/Base_6403[0m
