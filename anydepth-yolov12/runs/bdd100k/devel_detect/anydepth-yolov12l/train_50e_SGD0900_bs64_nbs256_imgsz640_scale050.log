@@ -25,12 +25,16 @@ Freezing layer 'model.21.dfl.conv.weight'
 [34m[1mAMP: [0mrunning Automatic Mixed Precision (AMP) checks...
 task: None
 [34m[1mAMP: [0mchecks passed ✅
-[34m[1mtrain: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s][34m[1mtrain: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s]
+
+[34m[1mtrain: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s]
+[34m[1mtrain: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s]
 [34m[1mtrain: [0mWARNING ⚠️ /media/data/bdd100k_yolo/train/images/75055858-7d04a650.jpg: 1 duplicate labels removed
 /home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/albumentations/__init__.py:28: UserWarning: A new version of Albumentations is available: '2.0.8' (you have '2.0.4'). Upgrade using: pip install -U albumentations. To disable automatic update checks, set the environment variable NO_ALBUMENTATIONS_UPDATE to 1.
   check_for_updates()
 [34m[1malbumentations: [0mBlur(p=0.01, blur_limit=(3, 7)), MedianBlur(p=0.01, blur_limit=(3, 7)), ToGray(p=0.01, num_output_channels=3, method='weighted_average'), CLAHE(p=0.01, clip_limit=(1.0, 4.0), tile_grid_size=(8, 8))
-[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s][34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
+
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
 /home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/albumentations/__init__.py:28: UserWarning: A new version of Albumentations is available: '2.0.8' (you have '2.0.4'). Upgrade using: pip install -U albumentations. To disable automatic update checks, set the environment variable NO_ALBUMENTATIONS_UPDATE to 1.
   check_for_updates()
 Plotting labels to runs/bdd100k/detect/anydepth-yolov12l/train/labels.jpg... 
@@ -3777,59 +3781,3 @@ base_model.model.11.cv1.bn, base_model.model.11.cv2.bn, base_model.model.11.cv2.
 50 epochs completed in 11.025 hours.
 Optimizer stripped from runs/bdd100k/detect/anydepth-yolov12l/train/weights/last.pt, 55.6MB
 Optimizer stripped from runs/bdd100k/detect/anydepth-yolov12l/train/weights/best.pt, 55.6MB
-
-Validating runs/bdd100k/detect/anydepth-yolov12l/train/weights/best.pt...
-Traceback (most recent call last):
-  File "/home/hslee/context-anydepth-det/anydepth-yolov12/train_adn_bdd100k.py", line 29, in <module>
-    results = model.train(
-              ^^^^^^^^^^^^
-  File "/home/hslee/context-anydepth-det/anydepth-yolov12/ultralytics/engine/model.py", line 817, in train
-    self.trainer.train()
-  File "/home/hslee/context-anydepth-det/anydepth-yolov12/ultralytics/engine/trainer.py", line 207, in train
-    self._do_train(world_size)
-  File "/home/hslee/context-anydepth-det/anydepth-yolov12/ultralytics/models/yolo/detect/train.py", line 517, in _do_train
-    self.final_eval()
-  File "/home/hslee/context-anydepth-det/anydepth-yolov12/ultralytics/engine/trainer.py", line 711, in final_eval
-    self.metrics = self.validator(model=f)
-                   ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
-    return func(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/context-anydepth-det/anydepth-yolov12/ultralytics/models/yolo/detect/val.py", line 372, in __call__
-    device = next(raw_model.parameters()).device
-                  ^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'PosixPath' object has no attribute 'parameters'
-[2026-04-04 01:01:23,026] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: 1) local_rank: 0 (pid: 318788) of binary: /home/hslee/anaconda3/envs/yolov12/bin/python
-Traceback (most recent call last):
-  File "<frozen runpy>", line 198, in _run_module_as_main
-  File "<frozen runpy>", line 88, in _run_code
-  File "/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/distributed/run.py", line 816, in <module>
-    main()
-  File "/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 347, in wrapper
-    return f(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/distributed/run.py", line 812, in main
-    run(args)
-  File "/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/distributed/run.py", line 803, in run
-    elastic_launch(
-  File "/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 135, in __call__
-    return launch_agent(self._config, self._entrypoint, list(args))
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 268, in launch_agent
-    raise ChildFailedError(
-torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
-============================================================
-train_adn_bdd100k.py FAILED
-------------------------------------------------------------
-Failures:
-  <NO_OTHER_FAILURES>
-------------------------------------------------------------
-Root Cause (first observed failure):
-[0]:
-  time      : 2026-04-04_01:01:23
-  host      : pascal
-  rank      : 0 (local_rank: 0)
-  exitcode  : 1 (pid: 318788)
-  error_file: <N/A>
-  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
-============================================================

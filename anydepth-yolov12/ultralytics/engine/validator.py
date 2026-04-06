@@ -212,9 +212,11 @@ class BaseValidator:
 
             # Inference
             with dt[1]:
+                if batch_i == 0:
+                    LOGGER.info(f"[*] Validation input tensor shape: {batch['img'].shape}")
                 if model_args is not None:
                     model_args = {**model_args, "augment": augment}
-                else:     
+                else:
                     model_args = {"augment": augment}
                 preds = model(batch["img"], **(model_args))
 

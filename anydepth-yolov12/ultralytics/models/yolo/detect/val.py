@@ -297,16 +297,20 @@ class DetectionValidator(BaseValidator):
 
     def eval_json(self, stats):
         """Evaluates YOLO output in JSON format and returns performance statistics."""
-        if self.args.save_json and (self.is_coco or self.is_lvis) and len(self.jdict):
-            pred_json = self.save_dir / "predictions.json"  # predictions
+        if not (self.args.save_json and len(self.jdict)):
+            return stats
+
+        pred_json = self.save_dir / "predictions.json"
+
+        if self.is_coco or self.is_lvis:
             anno_json = (
                 self.data["path"]
                 / "annotations"
                 / ("instances_val2017.json" if self.is_coco else f"lvis_v1_{self.args.split}.json")
-            )  # annotations
+            )
             pkg = "pycocotools" if self.is_coco else "lvis"
             LOGGER.info(f"\nEvaluating {pkg} mAP using {pred_json} and {anno_json}...")
-            try:  # https://github.com/cocodataset/cocoapi/blob/master/PythonAPI/pycocoEvalDemo.ipynb
+            try:
                 for x in pred_json, anno_json:
                     assert x.is_file(), f"{x} file not found"
                 check_requirements("pycocotools>=2.0.6" if self.is_coco else "lvis>=0.5.3")
@@ -314,27 +318,99 @@ class DetectionValidator(BaseValidator):
                     from pycocotools.coco import COCO  # noqa
                     from pycocotools.cocoeval import COCOeval  # noqa
 
-                    anno = COCO(str(anno_json))  # init annotations api
-                    pred = anno.loadRes(str(pred_json))  # init predictions api (must pass string, not Path)
+                    anno = COCO(str(anno_json))
+                    pred = anno.loadRes(str(pred_json))
                     val = COCOeval(anno, pred, "bbox")
                 else:
                     from lvis import LVIS, LVISEval
 
-                    anno = LVIS(str(anno_json))  # init annotations api
-                    pred = anno._load_json(str(pred_json))  # init predictions api (must pass string, not Path)
+                    anno = LVIS(str(anno_json))
+                    pred = anno._load_json(str(pred_json))
                     val = LVISEval(anno, pred, "bbox")
-                val.params.imgIds = [int(Path(x).stem) for x in self.dataloader.dataset.im_files]  # images to eval
+                val.params.imgIds = [int(Path(x).stem) for x in self.dataloader.dataset.im_files]
                 val.evaluate()
                 val.accumulate()
                 val.summarize()
                 if self.is_lvis:
-                    val.print_results()  # explicitly call print_results
-                # update mAP50-95 and mAP50
+                    val.print_results()
                 stats[self.metrics.keys[-1]], stats[self.metrics.keys[-2]] = (
                     val.stats[:2] if self.is_coco else [val.results["AP50"], val.results["AP"]]
                 )
             except Exception as e:
                 LOGGER.warning(f"{pkg} unable to run: {e}")
+        else:
+            # Generic COCO-style evaluation for any dataset (e.g. BDD100K)
+            LOGGER.info(f"\nEvaluating COCO-style mAP using {pred_json} and dataset labels...")
+            try:
+                from pycocotools.coco import COCO  # noqa
+                from pycocotools.cocoeval import COCOeval  # noqa
+                from PIL import Image
+                from ultralytics.data.utils import img2label_paths, load_dataset_cache_file
+
+                dataset = self.dataloader.dataset
+
+                # Load image shapes from labels cache (shape is popped from labels by set_rectangle)
+                cache_path = Path(img2label_paths(dataset.im_files)[0]).parent.with_suffix(".cache")
+                shape_map = {}  # im_file -> (h, w)
+                if cache_path.exists():
+                    cache = load_dataset_cache_file(cache_path)
+                    for lbl in cache.get("labels", []):
+                        shape_map[lbl["im_file"]] = lbl["shape"]
+
+                # Build COCO-format GT from dataset labels
+                gt_dataset = {"images": [], "annotations": [], "categories": []}
+                for i, name in self.names.items():
+                    gt_dataset["categories"].append({"id": self.class_map[i], "name": name})
+
+                ann_id = 0
+                img_ids = []
+                for i in range(len(dataset)):
+                    im_file = dataset.im_files[i]
+                    stem = Path(im_file).stem
+                    img_id = int(stem) if stem.isnumeric() else stem
+                    img_ids.append(img_id)
+                    label = dataset.labels[i]
+
+                    # Get original image shape
+                    if im_file in shape_map:
+                        h, w = shape_map[im_file]
+                    else:
+                        w, h = Image.open(im_file).size  # PIL returns (w, h)
+
+                    gt_dataset["images"].append({"id": img_id, "file_name": Path(im_file).name, "height": h, "width": w})
+
+                    if len(label["cls"]):
+                        for cls_id, bbox in zip(label["cls"].flatten().tolist(), label["bboxes"].tolist()):
+                            # normalized xywh (center) -> pixel xywh (top-left corner)
+                            cx, cy, bw, bh = bbox
+                            x1 = (cx - bw / 2) * w
+                            y1 = (cy - bh / 2) * h
+                            bw_px = bw * w
+                            bh_px = bh * h
+                            gt_dataset["annotations"].append({
+                                "id": ann_id,
+                                "image_id": img_id,
+                                "category_id": self.class_map[int(cls_id)],
+                                "bbox": [round(x, 3) for x in [x1, y1, bw_px, bh_px]],
+                                "area": round(bw_px * bh_px, 3),
+                                "iscrowd": 0,
+                            })
+                            ann_id += 1
+
+                anno = COCO()
+                anno.dataset = gt_dataset
+                anno.createIndex()
+
+                pred = anno.loadRes(str(pred_json))
+                val = COCOeval(anno, pred, "bbox")
+                val.params.imgIds = img_ids
+                val.evaluate()
+                val.accumulate()
+                val.summarize()
+
+                stats[self.metrics.keys[-1]], stats[self.metrics.keys[-2]] = val.stats[:2]
+            except Exception as e:
+                LOGGER.warning(f"COCO-style evaluation failed: {e}")
         return stats
 
 

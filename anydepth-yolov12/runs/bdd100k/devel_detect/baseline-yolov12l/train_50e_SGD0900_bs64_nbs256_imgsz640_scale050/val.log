@@ -657,7 +657,9 @@ model: YOLO(
 [*] Running validation with Image Size: 640
 Ultralytics 8.3.63 🚀 Python-3.11.13 torch-2.2.2+cu121 CUDA:0 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
 YOLOv12l summary (fused): 674 layers, 26,401,262 parameters, 0 gradients, 82.1 GFLOPs
-[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s][34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
+
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
 
 [*] FLOPs calculated at resolution: 640x640
 | module                 | #parameters or shape   | #flops   |
@@ -785,18 +787,44 @@ YOLOv12l summary (fused): 674 layers, 26,401,262 parameters, 0 gradients, 82.1 G
 | 12                     |                        | 3.277M   |
   MACs  : 41.05 GMACs
   FLOPs : 82.10 GFLOPs
+[*] Validation input tensor shape: torch.Size([16, 3, 640, 640])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.746      0.495      0.561      0.326
-                person       3220      13265      0.776      0.562      0.653      0.342
-                 rider        515        649      0.671      0.438      0.487      0.259
-                   car       9879     102540      0.807      0.732      0.795      0.495
-                   bus       1242       1597      0.708       0.57      0.653      0.501
-                 truck       2689       4247      0.689      0.587      0.661      0.487
-                  bike        578       1007      0.615       0.48      0.511      0.264
-                 motor        334        452      0.729       0.44        0.5      0.251
-         traffic light       5653      26891      0.717      0.545      0.588       0.23
-          traffic sign       8221      34915      0.747      0.599       0.67      0.363
-                 train         14         15          1          0     0.0942     0.0688
-Speed: 0.0ms preprocess, 2.2ms inference, 0.0ms loss, 0.2ms postprocess per image
-Saving runs/bdd100k/detect/baseline-yolov12l/Base_6403/predictions.json...
-Results saved to [1mruns/bdd100k/detect/baseline-yolov12l/Base_6403[0m
+                   all      10000     185578      0.742      0.505      0.567       0.33
+                person       3220      13265      0.765      0.573      0.661      0.344
+                 rider        515        649      0.667      0.447      0.501      0.262
+                   car       9879     102540      0.817      0.733      0.803      0.507
+                   bus       1242       1597      0.699      0.579      0.655      0.507
+                 truck       2689       4247      0.661      0.612      0.666      0.492
+                  bike        578       1007      0.613      0.485      0.513      0.263
+                 motor        334        452      0.711      0.462      0.506      0.255
+         traffic light       5653      26891      0.744      0.546      0.627       0.25
+          traffic sign       8221      34915      0.742      0.611      0.686      0.373
+                 train         14         15          1          0     0.0575     0.0436
+Speed: 0.1ms preprocess, 3.7ms inference, 0.0ms loss, 0.3ms postprocess per image
+Saving runs/bdd100k/detect/baseline-yolov12l/Base_640/predictions.json...
+
+Evaluating COCO-style mAP using runs/bdd100k/detect/baseline-yolov12l/Base_640/predictions.json and dataset labels...
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=5.24s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=68.14s).
+Accumulating evaluation results...
+DONE (t=7.71s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.326
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.563
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.317
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.122
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.383
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.598
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.240
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.437
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.471
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.258
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.547
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.710
+Results saved to [1mruns/bdd100k/detect/baseline-yolov12l/Base_640[0m
