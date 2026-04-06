@@ -189,9 +189,9 @@ class DetectWST(Detect):
         self.timeofday_cls = nn.Linear(256, nc_timeofday)
 
     def forward(self, x):
-        det_out = super().forward(x[:-1])
+        det_out = super().forward(x[:-1]) # detection
         
-        feat = x[-1]
+        feat = x[-1] # x[14, 17, 20, **8**]: feature of the last layer in backbone for WST prediction
         pooled = self.attr_pool(feat)
         fc_out = self.attr_fc(pooled)
         attr_out = {

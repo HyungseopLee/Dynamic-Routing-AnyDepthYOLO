@@ -677,8 +677,10 @@ class BaseTrainer:
         n = len(metrics) + 2  # number of cols
         s = "" if self.csv.exists() else (("%s," * n % tuple(["epoch", "time"] + keys)).rstrip(",") + "\n")  # header
         t = time.time() - self.train_time_start
+        all_vals = [self.epoch + 1, t] + vals
+        val_strs = [("%.6g" % v if isinstance(v, (int, float)) else str(v)) for v in all_vals]
         with open(self.csv, "a") as f:
-            f.write(s + ("%.6g," * n % tuple([self.epoch + 1, t] + vals)).rstrip(",") + "\n")
+            f.write(s + ",".join(val_strs) + "\n")
 
     def plot_metrics(self):
         """Plot and display metrics visually."""

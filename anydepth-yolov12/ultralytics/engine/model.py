@@ -645,9 +645,10 @@ class Model(nn.Module, PyTorchModelHubMixin, repo_url="https://github.com/ultral
         """
         custom = {"rect": True}  # method defaults
         args = {**self.overrides, **custom, **kwargs, "mode": "val"}  # highest priority args on the right
+        skip = args.pop("skip", None)  # extract skip for AnyDepth validator
 
         validator = (validator or self._smart_load("validator"))(args=args, _callbacks=self.callbacks)
-        validator(model=self.model)
+        validator(model=self.model, skip=skip)
         self.metrics = validator.metrics
         return validator.metrics
 

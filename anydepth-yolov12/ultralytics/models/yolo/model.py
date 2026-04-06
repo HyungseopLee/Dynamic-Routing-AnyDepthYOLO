@@ -122,17 +122,6 @@ class YOLOv12AnyDepth(Model):
         # super().__init__(model=model, task="detect", verbose=verbose)
         super().__init__(model=model, task=task or "detect", verbose=verbose) # @HyungseopLee: no hardcoding
 
-    def val(self, validator=None, **kwargs):
-        """Validate with optional skip argument for AnyDepth models."""
-        custom = {"rect": True}  # method defaults
-        args = {**self.overrides, **custom, **kwargs, "mode": "val"}  # highest priority args on the right
-        skip = args.pop("skip", None)  # extract skip for validator call
-
-        validator = (validator or self._smart_load("validator"))(args=args, _callbacks=self.callbacks)
-        validator(model=self.model, skip=skip)
-        self.metrics = validator.metrics
-        return validator.metrics
-
     @property
     def task_map(self):
         """Map head to model, trainer, validator, and predictor classes."""

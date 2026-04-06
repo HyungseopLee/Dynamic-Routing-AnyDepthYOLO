@@ -183,15 +183,26 @@ class DetectionTrainerAnyDepth(DetectionTrainer):
         return model
     
     def validate(self, skip=None):
-        """
-        Runs validation on test set using self.validator.
-
-        The returned dict is expected to contain "fitness" key.
-        """
+        orig_loss_items = getattr(self, "loss_items", None)
+        ref_tensor = getattr(self, "loss_items_super", getattr(self, "loss_items_base", None))
+        if ref_tensor is not None:
+            self.loss_items = torch.zeros_like(ref_tensor)
+        else:
+            self.loss_items = torch.zeros(3, device=self.device)
+            
         metrics = self.validator(self, skip=skip)
-        fitness = metrics.pop("fitness", -self.loss.detach().cpu().numpy())  # use loss as fitness measure if not found
-        if not self.best_fitness or self.best_fitness < fitness:
+        fitness = metrics.pop("fitness", -self.loss.detach().cpu().numpy()) # use loss as fitness measure if not found
+        
+        # if not self.best_fitness or self.best_fitness < fitness:
+        #     self.best_fitness = fitness
+            
+        # update best_fitness when only super model
+        is_super = skip is None or not any(skip)
+        if is_super and (not self.best_fitness or self.best_fitness < fitness):
             self.best_fitness = fitness
+            
+        self.loss_items = orig_loss_items
+            
         return metrics, fitness
 
     def _do_train(self, world_size=1):
@@ -224,20 +235,49 @@ class DetectionTrainerAnyDepth(DetectionTrainer):
             self.plot_idx.extend([base_idx, base_idx + 1, base_idx + 2])
         epoch = self.start_epoch
         self.optimizer.zero_grad()  # zero any resumed gradients to ensure stability on train start
+        train_loss_keys = [f"train/{x}" for x in ("box_loss", "cls_loss", "dfl_loss")]
+        
+        # @HyungseopLee: FLOPs
+        if RANK in {-1, 0}:
+            try:
+                from fvcore.nn import FlopCountAnalysis, flop_count_table
+                class FLOPsWrapper(torch.nn.Module):
+                    def __init__(self, base_model, skip):
+                        super().__init__()
+                        self.base_model = base_model
+                        self.skip = skip
+                    def forward(self, x):
+                        return self.base_model(x, skip=self.skip)
+
+                imgsz = self.args.imgsz
+                if isinstance(imgsz, int):
+                    imgsz = (imgsz, imgsz)
+                num_skip = unwrap_model(self.model).num_skippable_layers
+                dummy = torch.randn(1, 3, *imgsz).to(self.device)
+                self.model.eval()
+
+                # Super
+                wrapper_super = FLOPsWrapper(unwrap_model(self.model), [False] * num_skip)
+                flops_super = FlopCountAnalysis(wrapper_super, dummy)
+                LOGGER.info(f"\n[FLOPs] Super model (skip=False) @ {imgsz[0]}x{imgsz[1]}:")
+                LOGGER.info(flop_count_table(flops_super))
+                LOGGER.info(f"  MACs  (super): {flops_super.total() / 1e9:.2f} GMACs")
+                LOGGER.info(f"  FLOPs (super): {flops_super.total() * 2 / 1e9:.2f} GFLOPs")
+
+                # Base
+                wrapper_base = FLOPsWrapper(unwrap_model(self.model), [True] * num_skip)
+                flops_base = FlopCountAnalysis(wrapper_base, dummy)
+                LOGGER.info(f"\n[FLOPs] Base model (skip=True) @ {imgsz[0]}x{imgsz[1]}:")
+                LOGGER.info(flop_count_table(flops_base))
+                LOGGER.info(f"  MACs  (base): {flops_base.total() / 1e9:.2f} GMACs")
+                LOGGER.info(f"  FLOPs (base): {flops_base.total() * 2 / 1e9:.2f} GFLOPs")
+
+            except Exception as e:
+                LOGGER.warning(f"[Warning] Failed to calculate FLOPs: {e}")
+ 
+        
         while True:
             self.epoch = epoch
-            
-            # XXXXXXXXXXXXXXXXXXXXXXX
-            # experimental: update momentum at epoch 500 to 0.9 for SGD optimizer
-            # this makes model more agile in the final stage of training
-            # if self.epoch >= 500:
-            #     target_momentum = 0.9
-            #     if any("momentum" in x and abs(x["momentum"] - target_momentum) > 1e-5 for x in self.optimizer.param_groups):
-            #         LOGGER.info(f"Updating momentum to {target_momentum} at epoch {self.epoch}")
-            #         for x in self.optimizer.param_groups:
-            #             if "momentum" in x:
-            #                 x["momentum"] = target_momentum
-
             self.run_callbacks("on_train_epoch_start")
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")  # suppress 'Detected lr_scheduler.step() before optimizer.step()'
@@ -246,15 +286,13 @@ class DetectionTrainerAnyDepth(DetectionTrainer):
             self.model.train()
             if RANK != -1:
                 self.train_loader.sampler.set_epoch(epoch)
-            pbar = enumerate(self.train_loader)
-            # Update dataloader attributes (optional)
             if epoch == (self.epochs - self.args.close_mosaic):
                 self._close_dataloader_mosaic()
                 self.train_loader.reset()
 
             if RANK in {-1, 0}:
                 LOGGER.info(self.progress_string())
-                # pbar = TQDM(enumerate(self.train_loader), total=nb)
+            
             self.tloss_super = None
             self.tloss_base = None
             self.tloss_kd = None
@@ -276,49 +314,64 @@ class DetectionTrainerAnyDepth(DetectionTrainer):
                         if "momentum" in x:
                             x["momentum"] = np.interp(ni, xi, [self.args.warmup_momentum, self.args.momentum])
 
-                # Forward super
                 with autocast(self.amp):
                     batch = self.preprocess_batch(batch)
-                    # exp: False for super, True for base
-                    skip = [False,] * len(skip)
-                    preds_super = self.model(batch["img"], skip=skip, return_features=True)
+                    
+                    # ── Forward super (skip=False) ──────────────────────────
+                    skip_super = [False,] * len(skip)
+                    preds_super = self.model(batch["img"], skip=skip_super, return_features=True)
 
+                    # # @HyungseopLee: preds_super
+                    # print(f"\n=== [DEBUG] preds_super ===")
+                    # print(f"preds_super.keys(): {preds_super.keys()}")
+                    # # 1. pred
+                    # print("1. 'pred' (List of Tensors):")
+                    # for i, p in enumerate(preds_super.get('pred', [])):
+                    #     print(f"   [{i}] shape: {p.shape}")
+                    # # 2. features
+                    # print("2. 'features' (List of Tensors):")
+                    # for i, f in enumerate(preds_super.get('features', [])):
+                    #     print(f"   [{i}] shape: {f.shape}")
+                    # print("================================\n")
+                    '''
+                    preds_super (dict):
+                        'pred': [ # detection out
+                            tensor[b, 74, 80, 80], # P3: low-level
+                            tensor[b, 74, 40, 40], # P4: mid-level
+                            tensor[b, 74, 20, 20]  # P5: high-level
+                        ],
+                        'features': [ # intermediate features
+                            tensor[b, c], # 0 (intermediate features for KD)
+                            ...           # 1 ~ 5
+                            tensor[b, c]  # 6
+                        ],
+                    '''
+                    
                     # Extract predictions from dictionary if return_features=True
                     if isinstance(preds_super, dict) and "pred" in preds_super:
                         preds_ = preds_super["pred"]
                     else:
                         preds_ = preds_super
-                    loss_super, self.loss_items = unwrap_model(self.model).loss(batch, preds_)
+                    loss_super, self.loss_items_super = unwrap_model(self.model).loss(batch, preds_) # preds: only det_out
 
                     self.loss_super = loss_super.sum()
                     if RANK != -1:
                         self.loss_super *= world_size
                     self.tloss_super = (
-                        (self.tloss_super * i + self.loss_items) / (i + 1) if self.tloss_super is not None else self.loss_items
+                        (self.tloss_super * i + self.loss_items_super) / (i + 1) if self.tloss_super is not None else self.loss_items_super
                     )
-
+                    
+                    # Backward super
                     with torch.amp.autocast('cuda', enabled=False):
-                        # Backward base
-                        # print("XXXXXX Backward base XXXXXX")
-                        # self.scaler.scale(self.loss).backward(retain_graph=True)
                         self.scaler.scale(self.loss_super).backward()
 
-                
-                    # experiment: freeze detection head for base model
-                    '''
-                    from ultralytics.nn.modules.head import Detect
-                    for module in unwrap_model(self.model).modules():
-                        if isinstance(module, Detect):
-                            for param in module.parameters():
-                                param.requires_grad = False
-                            # print("XXXXXX Freeze detection head for base model XXXXXX")
 
-                    '''
-                    # Forward base
-                    # print("XXXXXX Forward super XXXXXX")
-                    skip = [True,] * len(skip)
-                    preds_base = self.model(batch["img"], skip=skip, return_features=True)
-                    # Extract predictions from dictionary if return_features=True
+                    
+                    # ── Forward base (skip=True) ────────────────────────────
+                    skip_base = [True,] * len(skip)
+                    preds_base = self.model(batch["img"], skip=skip_base, return_features=True)
+                    
+                    # ── Detect + KD loss (super -> base) ──────────────────────────────
                     if isinstance(preds_base, dict) and "pred" in preds_base:
                         preds_ = preds_base["pred"]
                     else:
@@ -337,48 +390,24 @@ class DetectionTrainerAnyDepth(DetectionTrainer):
                         preds_base=preds_base,
                     )
                     self.loss_kd = loss_kd.sum()
-                      # print(f"XXXXXX {self.loss} {self.loss_items} XXXXXX")
-
+                    
                     if RANK != -1:
                         self.loss_kd *= world_size
                     self.tloss_kd = (
                         (self.tloss_kd * i + self.loss_items_kd) / (i + 1) if self.tloss_kd is not None else self.loss_items_kd
                     )
 
-                    # warmup 
-                    # warmup_epochs = self.args.kd_warmup_epochs if hasattr(self.args, 'kd_warmup_epochs') else 30
-                    # kd_scale = 1.0
-                    # if epoch < warmup_epochs:
-                    #     kd_scale = 0.5 * (1 - math.cos(math.pi * epoch / warmup_epochs))
-                    
-                    # XXXXXXXXXXXXXXXXXXXXXXX
-                    # experimental: reduce kd loss weight by half after epoch 500 
-                    # for more agile final training stage
-                    # if epoch >= 500:
-                    if False:
-                        kd_scale = 0.5                        
-                    else:
-                        kd_scale = 1.0
-
+                    # ── Total loss = alpha * base + (1-alpha) * kd ──────────
+                    kd_scale = 1.0
                     self.loss = self.args.alpha_base * self.loss_base + \
                         (1 - self.args.alpha_base) * self.loss_kd * kd_scale
 
                         
-                                   
-                    # self.loss = self.loss_kd
+                    # Backward base
                     with torch.amp.autocast('cuda', enabled=False):
-                        # Backward base
-                        # print("XXXXXX Backward base XXXXXX")
                         self.scaler.scale(self.loss).backward()
-                    '''
-                    # unfreeze detection head after base model backward
-                    for module in unwrap_model(self.model).modules():
-                        if isinstance(module, Detect):
-                            for param in module.parameters():
-                                param.requires_grad = True
-                            # print("XXXXXX Unfreeze detection head for base model XXXXXX")
-                    '''
-
+                    
+                    
 
                 # Optimize - https://pytorch.org/docs/master/notes/amp_examples.html
                 if ni - last_opt_step >= self.accumulate:
@@ -397,18 +426,13 @@ class DetectionTrainerAnyDepth(DetectionTrainer):
 
                 # Log
                 if RANK in {-1, 0}:
-                    loss_length = self.tloss_super.shape[0] if len(self.tloss_super.shape) else 1
                     if i % max(1, nb // 10) == 0:
+                        mem = f"{torch.cuda.memory_reserved() / 1E9 if torch.cuda.is_available() else 0:.2f}G"
                         progress_msg = (
-                            f"Epoch {epoch + 1}/{self.epochs}, Batch {i + 1}/{nb} "
-                            f"({100 * (i + 1) / nb:.1f}%) - "
-                            # f"Memory: {self._get_memory():.3g}G, "
-                            f"Loss base: {self.loss_base:.3f}, "
-                            f"Loss super: {self.loss_super:.3f}, "
-                            f"Loss kd: {self.loss_kd:.3f}, "
-                            f"base box,cls,dfl: {self.loss_items_base[0]:.3f},{self.loss_items_base[1]:.3f},{self.loss_items_base[2]:.3f}, "
-                            f"super box,cls,dfl: {self.loss_items[0]:.3f},{self.loss_items[1]:.3f},{self.loss_items[2]:.3f}, "
-                            f"kd box,cls,dfl,feat: {self.loss_items_kd[0]:.5f},{self.loss_items_kd[1]:.5f},{self.loss_items_kd[2]:.5f},{self.loss_items_kd[3]:.5f}"
+                            f"  Epoch {epoch+1}/{self.epochs}  Batch {i+1}/{nb} ({100*(i+1)/nb:.1f}%)"
+                            f"  | Super {self.loss_super:.3f} (box {self.loss_items_super[0]:.4f}  cls {self.loss_items_super[1]:.4f}  dfl {self.loss_items_super[2]:.4f})"
+                            f"  | Base {self.loss_base:.3f} (box {self.loss_items_base[0]:.4f}  cls {self.loss_items_base[1]:.4f}  dfl {self.loss_items_base[2]:.4f})"
+                            f"  | KD {self.loss_kd:.3f} (box {self.loss_items_kd[0]:.5f}  cls {self.loss_items_kd[1]:.5f}  dfl {self.loss_items_kd[2]:.5f}  feat {self.loss_items_kd[3]:.5f})"
                         )
                         LOGGER.info(progress_msg)
                     self.run_callbacks("on_batch_end")
@@ -416,25 +440,45 @@ class DetectionTrainerAnyDepth(DetectionTrainer):
                         self.plot_training_samples(batch, ni)
 
                 self.run_callbacks("on_train_batch_end")
+                # break
 
-            self.lr = {f"lr/pg{ir}": x["lr"] for ir, x in enumerate(self.optimizer.param_groups)}  # for loggers
+            self.lr = {f"lr/pg{ir}": x["lr"] for ir, x in enumerate(self.optimizer.param_groups)}
             self.run_callbacks("on_train_epoch_end")
+            
             if RANK in {-1, 0}:
                 final_epoch = epoch + 1 >= self.epochs
                 self.ema.update_attr(self.model, include=["yaml", "nc", "args", "names", "stride", "class_weights"])
 
-                # Validation
-                #'''
-                print("XXXXXX Validation super XXXXXX")
+                # Validation: super
+                LOGGER.info(f"\n{'=' * 80}")
+                LOGGER.info(f"  [Validation] Super model (skip=False)  |  Epoch {epoch + 1}/{self.epochs}")
+                LOGGER.info(f"{'=' * 80}")
                 if self.args.val or final_epoch or self.stopper.possible_stop or self.stop:
-                    self.metrics, self.fitness = self.validate(skip=[False,] * len(skip))
-                self.save_metrics(metrics={**self.label_loss_items(self.tloss_super), **self.metrics, **self.lr})
-                #'''
-                print("XXXXXX Validation base XXXXXX")
+                    self.metrics, self.fitness = self.validate(skip=[False] * len(skip), )
+                clean_metrics_super = {k.replace("super/", "").replace("base/", ""): v for k, v in self.metrics.items()}
+                train_loss_super = {k: v.item() if hasattr(v, 'item') else v for k, v in zip(train_loss_keys, self.tloss_super)}
+                self.save_metrics(metrics={
+                    "config": "super",
+                    **train_loss_super,
+                    **clean_metrics_super,
+                    **self.lr
+                })
+
+                # Validation: base
+                LOGGER.info(f"\n{'=' * 80}")
+                LOGGER.info(f"  [Validation] Base model  (skip=True)   |  Epoch {epoch + 1}/{self.epochs}")
+                LOGGER.info(f"{'=' * 80}")
                 if self.args.val or final_epoch or self.stopper.possible_stop or self.stop:
-                    self.metrics, self.fitness = self.validate(skip=[True,] * len(skip))
-                self.save_metrics(metrics={**self.label_loss_items(self.tloss_base), **self.metrics, **self.lr})
-                #'''                            
+                    self.metrics, _ = self.validate(skip=[True] * len(skip))
+                clean_metrics_base = {k.replace("super/", "").replace("base/", ""): v for k, v in self.metrics.items()}
+                train_loss_base = {k: v.item() if hasattr(v, 'item') else v for k, v in zip(train_loss_keys, self.tloss_base)}
+                self.save_metrics(metrics={
+                    "config": "base",
+                    **train_loss_base,
+                    **clean_metrics_base,
+                    **self.lr
+                })
+                            
                 self.stop |= self.stopper(epoch + 1, self.fitness) or final_epoch
                 if self.args.time:
                     self.stop |= (time.time() - self.train_time_start) > (self.args.time * 3600)

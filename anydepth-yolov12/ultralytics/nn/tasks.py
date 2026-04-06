@@ -532,12 +532,6 @@ class DetectionModelAnyDepth(DetectionModel):
         assert preds is not None, "preds must be provided for loss computation" 
 
         if preds_base is not None:
-            # If pred_base is provided, use it for knowledge distillation loss.
-            # Note: we assume loss has been already computed for preds.
-            
-            # assert hasattr(self.criterion, "last_fg_mask"), \
-            #     "criterion.last_fg_mask must be set before computing knowledge distillation loss"
-
             return self.criterion_kd(preds_base, preds, batch)
         else:
             return self.criterion(preds, batch)
