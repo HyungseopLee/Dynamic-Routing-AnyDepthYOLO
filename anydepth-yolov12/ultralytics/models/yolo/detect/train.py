@@ -249,9 +249,10 @@ class DetectionTrainerAnyDepth(DetectionTrainer):
                     def forward(self, x):
                         return self.base_model(x, skip=self.skip)
 
-                imgsz = self.args.imgsz
-                if isinstance(imgsz, int):
-                    imgsz = (imgsz, imgsz)
+                first_batch = next(iter(self.train_loader))
+                h, w = first_batch["img"].shape[2], first_batch["img"].shape[3]
+                imgsz = (h, w)
+                del first_batch
                 num_skip = unwrap_model(self.model).num_skippable_layers
                 dummy = torch.randn(1, 3, *imgsz).to(self.device)
                 self.model.eval()

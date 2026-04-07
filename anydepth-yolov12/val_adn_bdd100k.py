@@ -2,7 +2,7 @@ from ultralytics import YOLO
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--imgsz', type=int, default=640, help='Validation image size')
+parser.add_argument('--imgsz', type=int, default=640, help='Image size (long side, e.g., 640 or 1280)')
 parser.add_argument('--project', type=str, default='')
 parser.add_argument('--weight', type=str, default='')
 args = parser.parse_args()
@@ -28,7 +28,7 @@ if is_anydepth:
         name=f'Full_{IMG_SIZE}',
         
         imgsz=IMG_SIZE,
-        rect=False, # for IMG_SIZE x IMG_SIZE
+        rect=True, # for IMG_SIZE x IMG_SIZE
     )
     # Base
     skip = [True,] * model.num_skippable_layers
@@ -41,7 +41,7 @@ if is_anydepth:
         name=f'Base_{IMG_SIZE}',
         
         imgsz=IMG_SIZE,
-        rect=False,
+        rect=True,
     )
 
 else:
@@ -53,7 +53,7 @@ else:
         name=f'Baseline_{IMG_SIZE}',
         
         imgsz=IMG_SIZE,
-        rect=False,
+        rect=True,
     )
 
     
@@ -70,9 +70,9 @@ else:
 mkdir -p ./runs/bdd100k/detect/baseline-yolov12l
 python val_adn_bdd100k.py \
     --imgsz 640 \
-    --weight ./runs/bdd100k/detect/baseline-yolov12l/train_50e_SGD0900_bs64_nbs256_imgsz640_scale050/weights/best.pt \
-    --project ./runs/bdd100k/detect/baseline-yolov12l/train_50e_SGD0900_bs64_nbs256_imgsz640_scale050 \
-    2>&1 | tee ./runs/bdd100k/detect/baseline-yolov12l/train_50e_SGD0900_bs64_nbs256_imgsz640_scale050/val.log
+    --weight /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/baseline-yolov12l/50e_SGD0900_bs32_nbs256_1e-2_1e-4_640-360_singleScale_augNothing/weights/best.pt \
+    --project /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/baseline-yolov12l/50e_SGD0900_bs32_nbs256_1e-2_1e-4_640-360_singleScale_augNothing \
+    2>&1 | tee /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/baseline-yolov12l/50e_SGD0900_bs32_nbs256_1e-2_1e-4_640-360_singleScale_augNothing/val.log
 
 
 # any-depth
@@ -80,9 +80,9 @@ python val_adn_bdd100k.py \
 mkdir -p ./runs/bdd100k/detect_wst/anydepth-yolov12l
 python val_adn_bdd100k.py \
     --imgsz 640 \
-    --weight ./runs/bdd100k/detect/anydepth-yolov12l/train_50e_SGD0900_bs64_nbs256_imgsz640_scale050/weights/best.pt \
-    --project  ./runs/bdd100k/detect/anydepth-yolov12l/train_50e_SGD0900_bs64_nbs256_imgsz640_scale050 \
-    2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12l/train_50e_SGD0900_bs64_nbs256_imgsz640_scale050/val.log
+    --weight /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/anydepth-yolov12l/50e_SGD0900_bs32_nbs256_1e-3_1e-5_640-360_singleScale_augNothing/weights/best.pt \
+    --project /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/anydepth-yolov12l/50e_SGD0900_bs32_nbs256_1e-3_1e-5_640-360_singleScale_augNothing \
+    2>&1 | tee /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/anydepth-yolov12l/50e_SGD0900_bs32_nbs256_1e-3_1e-5_640-360_singleScale_augNothing/val.log
 
 
 

@@ -325,6 +325,26 @@ class BaseTrainer:
         if RANK in {-1, 0}:
             print(self.model)  # print model
 
+            # Log actual input shape and FLOPs using first batch
+            first_batch = next(iter(self.train_loader))
+            first_batch = self.preprocess_batch(first_batch)
+            actual_shape = first_batch["img"].shape
+            LOGGER.info(f"[*] Training input tensor shape: {actual_shape}")
+            h, w = actual_shape[2], actual_shape[3]
+            raw_model = self.model.module if hasattr(self.model, 'module') else self.model
+            device = next(raw_model.parameters()).device
+            dummy_input = torch.randn(1, 3, h, w).to(device)
+            try:
+                from fvcore.nn import FlopCountAnalysis, flop_count_table
+                flops = FlopCountAnalysis(raw_model, dummy_input)
+                LOGGER.info(f"\n[*] FLOPs calculated at resolution: {h}x{w}")
+                LOGGER.info(flop_count_table(flops))
+                LOGGER.info(f"  MACs  : {flops.total() / 1e9:.2f} GMACs")
+                LOGGER.info(f"  FLOPs : {flops.total() * 2 / 1e9:.2f} GFLOPs")
+            except Exception as e:
+                LOGGER.warning(f"[Warning] Failed to calculate FLOPs: {e}")
+            del first_batch, dummy_input
+
         nb = len(self.train_loader)  # number of batches
         nw = max(round(self.args.warmup_epochs * nb), 100) if self.args.warmup_epochs > 0 else -1  # warmup iterations
         last_opt_step = -1
@@ -333,7 +353,7 @@ class BaseTrainer:
         self.train_time_start = time.time()
         self.run_callbacks("on_train_start")
         LOGGER.info(
-            f"Image sizes {self.args.imgsz} train, {self.args.imgsz} val\n"
+            f"Image sizes {self.args.imgsz} train(rect={self.args.rect}), val(rect={self.args.rect})\n"
             f"Using {self.train_loader.num_workers * (world_size or 1)} dataloader workers\n"
             f"Logging results to {colorstr('bold', self.save_dir)}\n"
             f"Starting training for " + (f"{self.args.time} hours..." if self.args.time else f"{self.epochs} epochs...")
@@ -381,6 +401,7 @@ class BaseTrainer:
                 # Forward
                 with autocast(self.amp):
                     batch = self.preprocess_batch(batch)
+                    # LOGGER.info(f"[Epoch {epoch}] input shape: {batch['img'].shape}")
                     self.loss, self.loss_items = self.model(batch)
                     if RANK != -1:
                         self.loss *= world_size

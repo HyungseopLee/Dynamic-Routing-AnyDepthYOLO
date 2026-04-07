@@ -163,15 +163,18 @@ class BaseValidator:
             model.eval()
             model.warmup(imgsz=(1 if pt else self.args.batch, 3, imgsz, imgsz))  # warmup
 
-        # FLOPs calculation
+        # FLOPs calculation using actual input shape from first batch (skip during training to avoid repeated computation)
         target_model = model or getattr(trainer, 'model', None)
-        if target_model is not None:
+        if target_model is not None and not self.training:
+            first_batch = next(iter(self.dataloader))
+            first_batch = self.preprocess(first_batch)
+            h, w = first_batch["img"].shape[2], first_batch["img"].shape[3]
+            del first_batch
+
             raw_model = target_model.module if hasattr(target_model, 'module') else target_model
-            imgsz = self.args.imgsz
-            if isinstance(imgsz, int):
-                imgsz = (imgsz, imgsz)
+            dtype = next(raw_model.parameters()).dtype
             device = next(raw_model.parameters()).device
-            dummy_input = torch.randn(1, 3, *imgsz).to(device)
+            dummy_input = torch.randn(1, 3, h, w, dtype=dtype, device=device)
             _fwd_args = {k: v for k, v in (model_args or {}).items() if k != 'augment'}
             try:
                 from fvcore.nn import FlopCountAnalysis, flop_count_table
@@ -186,13 +189,14 @@ class BaseValidator:
 
                 wrapper = _FLOPsWrapper(raw_model, _fwd_args)
                 flops = FlopCountAnalysis(wrapper, dummy_input)
-                LOGGER.info(f"\n[*] FLOPs calculated at resolution: {imgsz[0]}x{imgsz[1]}")
+                LOGGER.info(f"\n[*] FLOPs calculated at resolution: {h}x{w}")
                 if not self.training:
                     LOGGER.info(flop_count_table(flops))
                 LOGGER.info(f"  MACs  : {flops.total() / 1e9:.2f} GMACs")
                 LOGGER.info(f"  FLOPs : {flops.total() * 2 / 1e9:.2f} GFLOPs")
             except Exception as e:
                 LOGGER.warning(f"[Warning] Failed to calculate FLOPs: {e}")
+            del dummy_input
 
         self.run_callbacks("on_val_start")
         dt = (
