@@ -1,0 +1,1806 @@
+WARNING:__main__:
+*****************************************
+Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+*****************************************
+[*] Image size: 640
+[*] Starting new training using weight: ./pretrained/yolov12l.pt
+task: detect
+Transferred 1341/1341 items from pretrained weights
+Ultralytics 8.3.63 🚀 Python-3.11.13 torch-2.2.2+cu121 CUDA:0 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
+                                                       CUDA:1 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
+Overriding model.yaml nc=80 with nc=10
+Transferred 1335/1341 items from pretrained weights
+Not transferred items (6):
+  - [Shape Mismatch] model.21.cv3.0.2.bias: model [10] != pretrained [80]
+  - [Shape Mismatch] model.21.cv3.0.2.weight: model [10, 256, 1, 1] != pretrained [80, 256, 1, 1]
+  - [Shape Mismatch] model.21.cv3.1.2.bias: model [10] != pretrained [80]
+  - [Shape Mismatch] model.21.cv3.1.2.weight: model [10, 256, 1, 1] != pretrained [80, 256, 1, 1]
+  - [Shape Mismatch] model.21.cv3.2.2.bias: model [10] != pretrained [80]
+  - [Shape Mismatch] model.21.cv3.2.2.weight: model [10, 256, 1, 1] != pretrained [80, 256, 1, 1]
+Freezing layer 'model.21.dfl.conv.weight'
+[34m[1mAMP: [0mrunning Automatic Mixed Precision (AMP) checks...
+task: None
+[34m[1mAMP: [0mchecks passed ✅
+
+[34m[1mtrain: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s]
+[34m[1mtrain: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s]
+[34m[1mtrain: [0mWARNING ⚠️ /media/data/bdd100k_yolo/train/images/75055858-7d04a650.jpg: 1 duplicate labels removed
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/albumentations/__init__.py:28: UserWarning: A new version of Albumentations is available: '2.0.8' (you have '2.0.4'). Upgrade using: pip install -U albumentations. To disable automatic update checks, set the environment variable NO_ALBUMENTATIONS_UPDATE to 1.
+  check_for_updates()
+[34m[1malbumentations: [0mBlur(p=0.01, blur_limit=(3, 7)), MedianBlur(p=0.01, blur_limit=(3, 7)), ToGray(p=0.01, num_output_channels=3, method='weighted_average'), CLAHE(p=0.01, clip_limit=(1.0, 4.0), tile_grid_size=(8, 8))
+WARNING ⚠️ 'rect=True' is incompatible with DataLoader shuffle, setting shuffle=False
+
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
+Plotting labels to runs/bdd100k/detect/baseline-yolov12l/train/labels.jpg... 
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/albumentations/__init__.py:28: UserWarning: A new version of Albumentations is available: '2.0.8' (you have '2.0.4'). Upgrade using: pip install -U albumentations. To disable automatic update checks, set the environment variable NO_ALBUMENTATIONS_UPDATE to 1.
+  check_for_updates()
+[34m[1moptimizer:[0m SGD(lr=0.001, momentum=0.9) with parameter groups 221 weight(decay=0.0), 230 weight(decay=0.0005), 227 bias(decay=0.0)
+DistributedDataParallel(
+  (module): DetectionModel(
+    (model): Sequential(
+      (0): Conv(
+        (conv): Conv2d(3, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+      (1): Conv(
+        (conv): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=2, bias=False)
+        (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+      (2): C3k2(
+        (cv1): Conv(
+          (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): Conv(
+          (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0-1): 2 x C3k(
+            (cv1): Conv(
+              (conv): Conv2d(64, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): Conv(
+              (conv): Conv2d(64, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): Conv(
+              (conv): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): Sequential(
+              (0): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+        )
+      )
+      (3): Conv(
+        (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=4, bias=False)
+        (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+      (4): C3k2(
+        (cv1): Conv(
+          (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): Conv(
+          (conv): Conv2d(512, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0-1): 2 x C3k(
+            (cv1): Conv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): Conv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): Conv(
+              (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): Sequential(
+              (0): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+        )
+      )
+      (5): Conv(
+        (conv): Conv2d(512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+      (6): A2C2f(
+        (cv1): Conv(
+          (conv): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): Conv(
+          (conv): Conv2d(1280, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0-3): 4 x Sequential(
+            (0): ABlock(
+              (attn): AAttn(
+                (qk): Conv(
+                  (conv): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (v): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (proj): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (pe): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=256, bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+              (mlp): Sequential(
+                (0): Conv(
+                  (conv): Conv2d(256, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(384, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (1): Conv(
+                  (conv): Conv2d(384, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+            )
+            (1): ABlock(
+              (attn): AAttn(
+                (qk): Conv(
+                  (conv): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (v): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (proj): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (pe): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=256, bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+              (mlp): Sequential(
+                (0): Conv(
+                  (conv): Conv2d(256, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(384, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (1): Conv(
+                  (conv): Conv2d(384, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+            )
+          )
+        )
+      )
+      (7): Conv(
+        (conv): Conv2d(512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+      (8): A2C2f(
+        (cv1): Conv(
+          (conv): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): Conv(
+          (conv): Conv2d(1280, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0-3): 4 x Sequential(
+            (0): ABlock(
+              (attn): AAttn(
+                (qk): Conv(
+                  (conv): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (v): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (proj): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (pe): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=256, bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+              (mlp): Sequential(
+                (0): Conv(
+                  (conv): Conv2d(256, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(384, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (1): Conv(
+                  (conv): Conv2d(384, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+            )
+            (1): ABlock(
+              (attn): AAttn(
+                (qk): Conv(
+                  (conv): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (v): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (proj): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (pe): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=256, bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+              (mlp): Sequential(
+                (0): Conv(
+                  (conv): Conv2d(256, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(384, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (1): Conv(
+                  (conv): Conv2d(384, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+            )
+          )
+        )
+      )
+      (9): Upsample(scale_factor=2.0, mode='nearest')
+      (10): Concat()
+      (11): A2C2f(
+        (cv1): Conv(
+          (conv): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): Conv(
+          (conv): Conv2d(768, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0-1): 2 x C3k(
+            (cv1): Conv(
+              (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): Conv(
+              (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): Conv(
+              (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): Sequential(
+              (0): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+        )
+      )
+      (12): Upsample(scale_factor=2.0, mode='nearest')
+      (13): Concat()
+      (14): A2C2f(
+        (cv1): Conv(
+          (conv): Conv2d(1024, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): Conv(
+          (conv): Conv2d(384, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0-1): 2 x C3k(
+            (cv1): Conv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): Conv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): Conv(
+              (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): Sequential(
+              (0): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+        )
+      )
+      (15): Conv(
+        (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+      (16): Concat()
+      (17): A2C2f(
+        (cv1): Conv(
+          (conv): Conv2d(768, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): Conv(
+          (conv): Conv2d(768, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0-1): 2 x C3k(
+            (cv1): Conv(
+              (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): Conv(
+              (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): Conv(
+              (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): Sequential(
+              (0): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+        )
+      )
+      (18): Conv(
+        (conv): Conv2d(512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+      (19): Concat()
+      (20): C3k2(
+        (cv1): Conv(
+          (conv): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): Conv(
+          (conv): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0-1): 2 x C3k(
+            (cv1): Conv(
+              (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): Conv(
+              (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): Conv(
+              (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): Sequential(
+              (0): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+        )
+      )
+      (21): Detect(
+        (cv2): ModuleList(
+          (0): Sequential(
+            (0): Conv(
+              (conv): Conv2d(256, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (1): Conv(
+              (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (2): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (1-2): 2 x Sequential(
+            (0): Conv(
+              (conv): Conv2d(512, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (1): Conv(
+              (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (2): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1))
+          )
+        )
+        (cv3): ModuleList(
+          (0): Sequential(
+            (0): Sequential(
+              (0): DWConv(
+                (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256, bias=False)
+                (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+              (1): Conv(
+                (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+            )
+            (1): Sequential(
+              (0): DWConv(
+                (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256, bias=False)
+                (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+              (1): Conv(
+                (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+            )
+            (2): Conv2d(256, 10, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (1-2): 2 x Sequential(
+            (0): Sequential(
+              (0): DWConv(
+                (conv): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=512, bias=False)
+                (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+              (1): Conv(
+                (conv): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+            )
+            (1): Sequential(
+              (0): DWConv(
+                (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256, bias=False)
+                (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+              (1): Conv(
+                (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+            )
+            (2): Conv2d(256, 10, kernel_size=(1, 1), stride=(1, 1))
+          )
+        )
+        (dfl): DFL(
+          (conv): Conv2d(16, 1, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        )
+      )
+    )
+  )
+)
+[*] Training input tensor shape: torch.Size([16, 3, 384, 640])
+
+[*] FLOPs calculated at resolution: 384x640
+| module             | #parameters or shape   | #flops   |
+|:-------------------|:-----------------------|:---------|
+| model              | 26.453M                | 24.957G  |
+| 0                  | 1.856K                 | 0.126G   |
+| 0.conv             | 1.728K                 | 0.106G   |
+| 0.conv.weight      | (64, 3, 3, 3)          |          |
+| 0.bn               | 0.128K                 | 19.661M  |
+| 0.bn.weight        | (64,)                  |          |
+| 0.bn.bias          | (64,)                  |          |
+| 1                  | 37.12K                 | 0.576G   |
+| 1.conv             | 36.864K                | 0.566G   |
+| 1.conv.weight      | (128, 32, 3, 3)        |          |
+| 1.bn               | 0.256K                 | 9.83M    |
+| 1.bn.weight        | (128,)                 |          |
+| 1.bn.bias          | (128,)                 |          |
+| 2                  | 0.174M                 | 2.711G   |
+| 2.cv1              | 16.64K                 | 0.261G   |
+| 2.cv1.conv         | 16.384K                | 0.252G   |
+| 2.cv1.bn           | 0.256K                 | 9.83M    |
+| 2.cv2              | 66.048K                | 1.026G   |
+| 2.cv2.conv         | 65.536K                | 1.007G   |
+| 2.cv2.bn           | 0.512K                 | 19.661M  |
+| 2.m                | 91.136K                | 1.423G   |
+| 2.m.0              | 45.568K                | 0.712G   |
+| 2.m.1              | 45.568K                | 0.712G   |
+| 3                  | 0.148M                 | 0.571G   |
+| 3.conv             | 0.147M                 | 0.566G   |
+| 3.conv.weight      | (256, 64, 3, 3)        |          |
+| 3.bn               | 0.512K                 | 4.915M   |
+| 3.bn.weight        | (256,)                 |          |
+| 3.bn.bias          | (256,)                 |          |
+| 4                  | 0.692M                 | 2.677G   |
+| 4.cv1              | 66.048K                | 0.257G   |
+| 4.cv1.conv         | 65.536K                | 0.252G   |
+| 4.cv1.bn           | 0.512K                 | 4.915M   |
+| 4.cv2              | 0.263M                 | 1.016G   |
+| 4.cv2.conv         | 0.262M                 | 1.007G   |
+| 4.cv2.bn           | 1.024K                 | 9.83M    |
+| 4.m                | 0.362M                 | 1.404G   |
+| 4.m.0              | 0.181M                 | 0.702G   |
+| 4.m.1              | 0.181M                 | 0.702G   |
+| 5                  | 2.36M                  | 2.267G   |
+| 5.conv             | 2.359M                 | 2.265G   |
+| 5.conv.weight      | (512, 512, 3, 3)       |          |
+| 5.bn               | 1.024K                 | 2.458M   |
+| 5.bn.weight        | (512,)                 |          |
+| 5.bn.bias          | (512,)                 |          |
+| 6                  | 4.54M                  | 4.405G   |
+| 6.gamma            | (512,)                 |          |
+| 6.cv1              | 0.132M                 | 0.127G   |
+| 6.cv1.conv         | 0.131M                 | 0.126G   |
+| 6.cv1.bn           | 0.512K                 | 1.229M   |
+| 6.cv2              | 0.656M                 | 0.632G   |
+| 6.cv2.conv         | 0.655M                 | 0.629G   |
+| 6.cv2.bn           | 1.024K                 | 2.458M   |
+| 6.m                | 3.752M                 | 3.646G   |
+| 6.m.0              | 0.938M                 | 0.912G   |
+| 6.m.1              | 0.938M                 | 0.912G   |
+| 6.m.2              | 0.938M                 | 0.912G   |
+| 6.m.3              | 0.938M                 | 0.912G   |
+| 7                  | 2.36M                  | 0.567G   |
+| 7.conv             | 2.359M                 | 0.566G   |
+| 7.conv.weight      | (512, 512, 3, 3)       |          |
+| 7.bn               | 1.024K                 | 0.614M   |
+| 7.bn.weight        | (512,)                 |          |
+| 7.bn.bias          | (512,)                 |          |
+| 8                  | 4.54M                  | 1.101G   |
+| 8.gamma            | (512,)                 |          |
+| 8.cv1              | 0.132M                 | 31.764M  |
+| 8.cv1.conv         | 0.131M                 | 31.457M  |
+| 8.cv1.bn           | 0.512K                 | 0.307M   |
+| 8.cv2              | 0.656M                 | 0.158G   |
+| 8.cv2.conv         | 0.655M                 | 0.157G   |
+| 8.cv2.bn           | 1.024K                 | 0.614M   |
+| 8.m                | 3.752M                 | 0.912G   |
+| 8.m.0              | 0.938M                 | 0.228G   |
+| 8.m.1              | 0.938M                 | 0.228G   |
+| 8.m.2              | 0.938M                 | 0.228G   |
+| 8.m.3              | 0.938M                 | 0.228G   |
+| 11                 | 2.103M                 | 2.027G   |
+| 11.cv1             | 0.263M                 | 0.253G   |
+| 11.cv1.conv        | 0.262M                 | 0.252G   |
+| 11.cv1.bn          | 0.512K                 | 1.229M   |
+| 11.cv2             | 0.394M                 | 0.38G    |
+| 11.cv2.conv        | 0.393M                 | 0.377G   |
+| 11.cv2.bn          | 1.024K                 | 2.458M   |
+| 11.m               | 1.446M                 | 1.394G   |
+| 11.m.0             | 0.723M                 | 0.697G   |
+| 11.m.1             | 0.723M                 | 0.697G   |
+| 14                 | 0.593M                 | 2.292G   |
+| 14.cv1             | 0.131M                 | 0.506G   |
+| 14.cv1.conv        | 0.131M                 | 0.503G   |
+| 14.cv1.bn          | 0.256K                 | 2.458M   |
+| 14.cv2             | 98.816K                | 0.382G   |
+| 14.cv2.conv        | 98.304K                | 0.377G   |
+| 14.cv2.bn          | 0.512K                 | 4.915M   |
+| 14.m               | 0.362M                 | 1.404G   |
+| 14.m.0             | 0.181M                 | 0.702G   |
+| 14.m.1             | 0.181M                 | 0.702G   |
+| 15                 | 0.59M                  | 0.567G   |
+| 15.conv            | 0.59M                  | 0.566G   |
+| 15.conv.weight     | (256, 256, 3, 3)       |          |
+| 15.bn              | 0.512K                 | 1.229M   |
+| 15.bn.weight       | (256,)                 |          |
+| 15.bn.bias         | (256,)                 |          |
+| 17                 | 2.037M                 | 1.964G   |
+| 17.cv1             | 0.197M                 | 0.19G    |
+| 17.cv1.conv        | 0.197M                 | 0.189G   |
+| 17.cv1.bn          | 0.512K                 | 1.229M   |
+| 17.cv2             | 0.394M                 | 0.38G    |
+| 17.cv2.conv        | 0.393M                 | 0.377G   |
+| 17.cv2.bn          | 1.024K                 | 2.458M   |
+| 17.m               | 1.446M                 | 1.394G   |
+| 17.m.0             | 0.723M                 | 0.697G   |
+| 17.m.1             | 0.723M                 | 0.697G   |
+| 18                 | 2.36M                  | 0.567G   |
+| 18.conv            | 2.359M                 | 0.566G   |
+| 18.conv.weight     | (512, 512, 3, 3)       |          |
+| 18.bn              | 1.024K                 | 0.614M   |
+| 18.bn.weight       | (512,)                 |          |
+| 18.bn.bias         | (512,)                 |          |
+| 20                 | 2.497M                 | 0.601G   |
+| 20.cv1             | 0.525M                 | 0.126G   |
+| 20.cv1.conv        | 0.524M                 | 0.126G   |
+| 20.cv1.bn          | 1.024K                 | 0.614M   |
+| 20.cv2             | 0.525M                 | 0.126G   |
+| 20.cv2.conv        | 0.524M                 | 0.126G   |
+| 20.cv2.bn          | 1.024K                 | 0.614M   |
+| 20.m               | 1.446M                 | 0.348G   |
+| 20.m.0             | 0.723M                 | 0.174G   |
+| 20.m.1             | 0.723M                 | 0.174G   |
+| 21                 | 1.419M                 | 1.935G   |
+| 21.cv2             | 0.861M                 | 1.13G    |
+| 21.cv2.0           | 0.189M                 | 0.726G   |
+| 21.cv2.1           | 0.336M                 | 0.323G   |
+| 21.cv2.2           | 0.336M                 | 80.763M  |
+| 21.cv3             | 0.558M                 | 0.805G   |
+| 21.cv3.0           | 0.14M                  | 0.551G   |
+| 21.cv3.1           | 0.209M                 | 0.204G   |
+| 21.cv3.2           | 0.209M                 | 50.995M  |
+| 21.dfl.conv        | 16                     |          |
+| 21.dfl.conv.weight | (1, 16, 1, 1)          |          |
+| 9                  |                        | 0.492M   |
+| 12                 |                        | 1.966M   |
+  MACs  : 24.96 GMACs
+  FLOPs : 49.91 GFLOPs
+Image sizes 640 train(rect=True), val(rect=True)
+Using 16 dataloader workers
+Logging results to [1mruns/bdd100k/detect/baseline-yolov12l/train[0m
+Starting training for 50 epochs...
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+[rank0]:[W reducer.cpp:1360] Warning: find_unused_parameters=True was specified in DDP constructor, but did not find any unused parameters in the forward pass. This flag results in an extra traversal of the autograd graph every iteration,  which can adversely affect performance. If your model indeed never has any unused parameters in the forward pass, consider turning this flag off. Note that this warning may be a false positive if your model has flow control causing later iterations to have unused parameters. (function operator())
+[rank1]:[W reducer.cpp:1360] Warning: find_unused_parameters=True was specified in DDP constructor, but did not find any unused parameters in the forward pass. This flag results in an extra traversal of the autograd graph every iteration,  which can adversely affect performance. If your model indeed never has any unused parameters in the forward pass, consider turning this flag off. Note that this warning may be a false positive if your model has flow control causing later iterations to have unused parameters. (function operator())
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/autograd/__init__.py:266: UserWarning: Grad strides do not match bucket view strides. This may indicate grad was not created according to the gradient layout contract, or that the param's strides changed since DDP was constructed.  This is not an error, but may impair performance.
+grad.sizes() = [256, 256, 1, 1], strides() = [256, 1, 256, 256]
+bucket_view.sizes() = [256, 256, 1, 1], strides() = [256, 1, 1, 1] (Triggered internally at ../torch/csrc/distributed/c10d/reducer.cpp:322.)
+  Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/autograd/__init__.py:266: UserWarning: Grad strides do not match bucket view strides. This may indicate grad was not created according to the gradient layout contract, or that the param's strides changed since DDP was constructed.  This is not an error, but may impair performance.
+grad.sizes() = [256, 256, 1, 1], strides() = [256, 1, 256, 256]
+bucket_view.sizes() = [256, 256, 1, 1], strides() = [256, 1, 1, 1] (Triggered internally at ../torch/csrc/distributed/c10d/reducer.cpp:322.)
+  Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+Epoch 1/50, Batch 1/2188 (0.0%) - Loss: 150.902, box,cls,dfl: 1.450,2.033,1.233
+Epoch 1/50, Batch 219/2188 (10.0%) - Loss: 124.893, box,cls,dfl: 1.494,1.240,1.168
+Epoch 1/50, Batch 437/2188 (20.0%) - Loss: 127.492, box,cls,dfl: 1.699,1.143,1.142
+Epoch 1/50, Batch 655/2188 (29.9%) - Loss: 103.474, box,cls,dfl: 1.323,0.889,1.021
+Epoch 1/50, Batch 873/2188 (39.9%) - Loss: 114.582, box,cls,dfl: 1.513,1.017,1.051
+Epoch 1/50, Batch 1091/2188 (49.9%) - Loss: 101.794, box,cls,dfl: 1.347,0.835,0.999
+Epoch 1/50, Batch 1309/2188 (59.8%) - Loss: 91.084, box,cls,dfl: 1.126,0.786,0.935
+Epoch 1/50, Batch 1527/2188 (69.8%) - Loss: 104.579, box,cls,dfl: 1.302,0.924,1.042
+Epoch 1/50, Batch 1745/2188 (79.8%) - Loss: 98.621, box,cls,dfl: 1.270,0.805,1.008
+Epoch 1/50, Batch 1963/2188 (89.7%) - Loss: 101.349, box,cls,dfl: 1.289,0.852,1.026
+Epoch 1/50, Batch 2181/2188 (99.7%) - Loss: 100.048, box,cls,dfl: 1.326,0.756,1.044
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.672      0.417      0.447      0.255
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 2/50, Batch 1/2188 (0.0%) - Loss: 110.403, box,cls,dfl: 1.439,0.902,1.109
+Epoch 2/50, Batch 219/2188 (10.0%) - Loss: 102.222, box,cls,dfl: 1.367,0.778,1.049
+Epoch 2/50, Batch 437/2188 (20.0%) - Loss: 121.788, box,cls,dfl: 1.652,0.999,1.155
+Epoch 2/50, Batch 655/2188 (29.9%) - Loss: 96.562, box,cls,dfl: 1.240,0.772,1.005
+Epoch 2/50, Batch 873/2188 (39.9%) - Loss: 106.161, box,cls,dfl: 1.392,0.817,1.109
+Epoch 2/50, Batch 1091/2188 (49.9%) - Loss: 96.315, box,cls,dfl: 1.312,0.737,0.961
+Epoch 2/50, Batch 1309/2188 (59.8%) - Loss: 86.606, box,cls,dfl: 1.077,0.676,0.953
+Epoch 2/50, Batch 1527/2188 (69.8%) - Loss: 100.061, box,cls,dfl: 1.301,0.812,1.014
+Epoch 2/50, Batch 1745/2188 (79.8%) - Loss: 96.285, box,cls,dfl: 1.297,0.724,0.989
+Epoch 2/50, Batch 1963/2188 (89.7%) - Loss: 91.934, box,cls,dfl: 1.168,0.775,0.930
+Epoch 2/50, Batch 2181/2188 (99.7%) - Loss: 101.322, box,cls,dfl: 1.334,0.807,1.026
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.693      0.441      0.484      0.278
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 3/50, Batch 1/2188 (0.0%) - Loss: 97.383, box,cls,dfl: 1.245,0.774,1.024
+Epoch 3/50, Batch 219/2188 (10.0%) - Loss: 103.356, box,cls,dfl: 1.400,0.770,1.060
+Epoch 3/50, Batch 437/2188 (20.0%) - Loss: 108.074, box,cls,dfl: 1.505,0.851,1.022
+Epoch 3/50, Batch 655/2188 (29.9%) - Loss: 92.728, box,cls,dfl: 1.233,0.705,0.960
+Epoch 3/50, Batch 873/2188 (39.9%) - Loss: 105.748, box,cls,dfl: 1.375,0.851,1.079
+Epoch 3/50, Batch 1091/2188 (49.9%) - Loss: 91.506, box,cls,dfl: 1.242,0.662,0.955
+Epoch 3/50, Batch 1309/2188 (59.8%) - Loss: 94.179, box,cls,dfl: 1.272,0.675,0.996
+Epoch 3/50, Batch 1527/2188 (69.8%) - Loss: 100.726, box,cls,dfl: 1.308,0.774,1.066
+Epoch 3/50, Batch 1745/2188 (79.8%) - Loss: 97.507, box,cls,dfl: 1.319,0.736,0.992
+Epoch 3/50, Batch 1963/2188 (89.7%) - Loss: 100.786, box,cls,dfl: 1.360,0.746,1.044
+Epoch 3/50, Batch 2181/2188 (99.7%) - Loss: 100.437, box,cls,dfl: 1.341,0.714,1.084
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.698      0.452      0.496      0.286
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 4/50, Batch 1/2188 (0.0%) - Loss: 97.893, box,cls,dfl: 1.266,0.721,1.073
+Epoch 4/50, Batch 219/2188 (10.0%) - Loss: 103.897, box,cls,dfl: 1.419,0.740,1.087
+Epoch 4/50, Batch 437/2188 (20.0%) - Loss: 105.795, box,cls,dfl: 1.480,0.798,1.028
+Epoch 4/50, Batch 655/2188 (29.9%) - Loss: 93.288, box,cls,dfl: 1.230,0.681,1.005
+Epoch 4/50, Batch 873/2188 (39.9%) - Loss: 100.868, box,cls,dfl: 1.314,0.797,1.041
+Epoch 4/50, Batch 1091/2188 (49.9%) - Loss: 91.968, box,cls,dfl: 1.235,0.671,0.969
+Epoch 4/50, Batch 1309/2188 (59.8%) - Loss: 88.104, box,cls,dfl: 1.158,0.622,0.973
+Epoch 4/50, Batch 1527/2188 (69.8%) - Loss: 97.723, box,cls,dfl: 1.297,0.739,1.018
+Epoch 4/50, Batch 1745/2188 (79.8%) - Loss: 95.594, box,cls,dfl: 1.308,0.690,0.989
+Epoch 4/50, Batch 1963/2188 (89.7%) - Loss: 94.818, box,cls,dfl: 1.254,0.727,0.982
+Epoch 4/50, Batch 2181/2188 (99.7%) - Loss: 97.158, box,cls,dfl: 1.292,0.685,1.060
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.717      0.459      0.506      0.292
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 5/50, Batch 1/2188 (0.0%) - Loss: 96.629, box,cls,dfl: 1.301,0.743,0.976
+Epoch 5/50, Batch 219/2188 (10.0%) - Loss: 97.137, box,cls,dfl: 1.330,0.744,0.961
+Epoch 5/50, Batch 437/2188 (20.0%) - Loss: 109.172, box,cls,dfl: 1.532,0.831,1.048
+Epoch 5/50, Batch 655/2188 (29.9%) - Loss: 93.903, box,cls,dfl: 1.252,0.679,1.003
+Epoch 5/50, Batch 873/2188 (39.9%) - Loss: 103.857, box,cls,dfl: 1.355,0.829,1.061
+Epoch 5/50, Batch 1091/2188 (49.9%) - Loss: 94.707, box,cls,dfl: 1.246,0.661,1.053
+Epoch 5/50, Batch 1309/2188 (59.8%) - Loss: 89.664, box,cls,dfl: 1.185,0.621,0.996
+Epoch 5/50, Batch 1527/2188 (69.8%) - Loss: 101.851, box,cls,dfl: 1.367,0.783,1.032
+Epoch 5/50, Batch 1745/2188 (79.8%) - Loss: 94.369, box,cls,dfl: 1.261,0.700,0.988
+Epoch 5/50, Batch 1963/2188 (89.7%) - Loss: 92.873, box,cls,dfl: 1.203,0.708,0.991
+Epoch 5/50, Batch 2181/2188 (99.7%) - Loss: 106.342, box,cls,dfl: 1.451,0.725,1.148
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.715      0.464      0.515      0.296
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 6/50, Batch 1/2188 (0.0%) - Loss: 93.457, box,cls,dfl: 1.227,0.691,1.003
+Epoch 6/50, Batch 219/2188 (10.0%) - Loss: 94.726, box,cls,dfl: 1.242,0.671,1.047
+Epoch 6/50, Batch 437/2188 (20.0%) - Loss: 106.684, box,cls,dfl: 1.530,0.774,1.030
+Epoch 6/50, Batch 655/2188 (29.9%) - Loss: 94.877, box,cls,dfl: 1.254,0.711,0.999
+Epoch 6/50, Batch 873/2188 (39.9%) - Loss: 105.672, box,cls,dfl: 1.393,0.794,1.115
+Epoch 6/50, Batch 1091/2188 (49.9%) - Loss: 89.602, box,cls,dfl: 1.202,0.633,0.966
+Epoch 6/50, Batch 1309/2188 (59.8%) - Loss: 93.138, box,cls,dfl: 1.245,0.670,0.995
+Epoch 6/50, Batch 1527/2188 (69.8%) - Loss: 93.705, box,cls,dfl: 1.219,0.707,1.002
+Epoch 6/50, Batch 1745/2188 (79.8%) - Loss: 86.889, box,cls,dfl: 1.161,0.623,0.932
+Epoch 6/50, Batch 1963/2188 (89.7%) - Loss: 96.247, box,cls,dfl: 1.281,0.720,1.007
+Epoch 6/50, Batch 2181/2188 (99.7%) - Loss: 95.312, box,cls,dfl: 1.310,0.665,1.004
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.712      0.471      0.521      0.302
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 7/50, Batch 1/2188 (0.0%) - Loss: 94.289, box,cls,dfl: 1.267,0.694,0.985
+Epoch 7/50, Batch 219/2188 (10.0%) - Loss: 98.798, box,cls,dfl: 1.355,0.723,1.009
+Epoch 7/50, Batch 437/2188 (20.0%) - Loss: 101.837, box,cls,dfl: 1.443,0.740,0.999
+Epoch 7/50, Batch 655/2188 (29.9%) - Loss: 91.673, box,cls,dfl: 1.241,0.652,0.972
+Epoch 7/50, Batch 873/2188 (39.9%) - Loss: 93.348, box,cls,dfl: 1.270,0.685,0.962
+Epoch 7/50, Batch 1091/2188 (49.9%) - Loss: 88.420, box,cls,dfl: 1.174,0.672,0.917
+Epoch 7/50, Batch 1309/2188 (59.8%) - Loss: 85.937, box,cls,dfl: 1.102,0.585,0.999
+Epoch 7/50, Batch 1527/2188 (69.8%) - Loss: 99.202, box,cls,dfl: 1.296,0.778,1.026
+Epoch 7/50, Batch 1745/2188 (79.8%) - Loss: 86.590, box,cls,dfl: 1.188,0.594,0.924
+Epoch 7/50, Batch 1963/2188 (89.7%) - Loss: 95.061, box,cls,dfl: 1.315,0.714,0.941
+Epoch 7/50, Batch 2181/2188 (99.7%) - Loss: 107.321, box,cls,dfl: 1.442,0.762,1.150
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.727      0.468      0.524      0.303
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 8/50, Batch 1/2188 (0.0%) - Loss: 96.409, box,cls,dfl: 1.292,0.689,1.032
+Epoch 8/50, Batch 219/2188 (10.0%) - Loss: 88.764, box,cls,dfl: 1.186,0.627,0.961
+Epoch 8/50, Batch 437/2188 (20.0%) - Loss: 106.242, box,cls,dfl: 1.495,0.790,1.035
+Epoch 8/50, Batch 655/2188 (29.9%) - Loss: 87.584, box,cls,dfl: 1.176,0.605,0.955
+Epoch 8/50, Batch 873/2188 (39.9%) - Loss: 104.957, box,cls,dfl: 1.383,0.825,1.072
+Epoch 8/50, Batch 1091/2188 (49.9%) - Loss: 88.868, box,cls,dfl: 1.192,0.609,0.976
+Epoch 8/50, Batch 1309/2188 (59.8%) - Loss: 86.601, box,cls,dfl: 1.146,0.616,0.944
+Epoch 8/50, Batch 1527/2188 (69.8%) - Loss: 95.664, box,cls,dfl: 1.279,0.720,0.990
+Epoch 8/50, Batch 1745/2188 (79.8%) - Loss: 96.074, box,cls,dfl: 1.320,0.666,1.016
+Epoch 8/50, Batch 1963/2188 (89.7%) - Loss: 91.562, box,cls,dfl: 1.238,0.652,0.971
+Epoch 8/50, Batch 2181/2188 (99.7%) - Loss: 99.442, box,cls,dfl: 1.340,0.680,1.087
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.632      0.476       0.53      0.308
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 9/50, Batch 1/2188 (0.0%) - Loss: 88.763, box,cls,dfl: 1.152,0.626,0.997
+Epoch 9/50, Batch 219/2188 (10.0%) - Loss: 95.917, box,cls,dfl: 1.330,0.668,0.999
+Epoch 9/50, Batch 437/2188 (20.0%) - Loss: 102.889, box,cls,dfl: 1.450,0.744,1.021
+Epoch 9/50, Batch 655/2188 (29.9%) - Loss: 89.302, box,cls,dfl: 1.200,0.630,0.961
+Epoch 9/50, Batch 873/2188 (39.9%) - Loss: 103.219, box,cls,dfl: 1.446,0.740,1.040
+Epoch 9/50, Batch 1091/2188 (49.9%) - Loss: 97.553, box,cls,dfl: 1.354,0.685,1.009
+Epoch 9/50, Batch 1309/2188 (59.8%) - Loss: 90.655, box,cls,dfl: 1.181,0.654,0.998
+Epoch 9/50, Batch 1527/2188 (69.8%) - Loss: 94.013, box,cls,dfl: 1.236,0.722,0.980
+Epoch 9/50, Batch 1745/2188 (79.8%) - Loss: 91.589, box,cls,dfl: 1.198,0.661,1.004
+Epoch 9/50, Batch 1963/2188 (89.7%) - Loss: 88.113, box,cls,dfl: 1.142,0.664,0.947
+Epoch 9/50, Batch 2181/2188 (99.7%) - Loss: 102.111, box,cls,dfl: 1.402,0.683,1.106
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.633      0.478      0.536      0.311
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 10/50, Batch 1/2188 (0.0%) - Loss: 94.436, box,cls,dfl: 1.223,0.719,1.009
+Epoch 10/50, Batch 219/2188 (10.0%) - Loss: 96.414, box,cls,dfl: 1.319,0.675,1.019
+Epoch 10/50, Batch 437/2188 (20.0%) - Loss: 110.020, box,cls,dfl: 1.607,0.774,1.057
+Epoch 10/50, Batch 655/2188 (29.9%) - Loss: 93.448, box,cls,dfl: 1.278,0.671,0.971
+Epoch 10/50, Batch 873/2188 (39.9%) - Loss: 101.003, box,cls,dfl: 1.315,0.787,1.054
+Epoch 10/50, Batch 1091/2188 (49.9%) - Loss: 92.997, box,cls,dfl: 1.245,0.699,0.962
+Epoch 10/50, Batch 1309/2188 (59.8%) - Loss: 87.434, box,cls,dfl: 1.157,0.593,0.982
+Epoch 10/50, Batch 1527/2188 (69.8%) - Loss: 93.480, box,cls,dfl: 1.224,0.717,0.980
+Epoch 10/50, Batch 1745/2188 (79.8%) - Loss: 87.029, box,cls,dfl: 1.153,0.616,0.951
+Epoch 10/50, Batch 1963/2188 (89.7%) - Loss: 91.278, box,cls,dfl: 1.229,0.645,0.978
+Epoch 10/50, Batch 2181/2188 (99.7%) - Loss: 98.935, box,cls,dfl: 1.285,0.708,1.098
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.633      0.478      0.537      0.312
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 11/50, Batch 1/2188 (0.0%) - Loss: 94.026, box,cls,dfl: 1.241,0.687,1.011
+Epoch 11/50, Batch 219/2188 (10.0%) - Loss: 104.469, box,cls,dfl: 1.459,0.748,1.058
+Epoch 11/50, Batch 437/2188 (20.0%) - Loss: 99.873, box,cls,dfl: 1.409,0.748,0.964
+Epoch 11/50, Batch 655/2188 (29.9%) - Loss: 89.534, box,cls,dfl: 1.202,0.630,0.967
+Epoch 11/50, Batch 873/2188 (39.9%) - Loss: 106.194, box,cls,dfl: 1.415,0.816,1.087
+Epoch 11/50, Batch 1091/2188 (49.9%) - Loss: 90.335, box,cls,dfl: 1.237,0.611,0.975
+Epoch 11/50, Batch 1309/2188 (59.8%) - Loss: 83.957, box,cls,dfl: 1.112,0.554,0.957
+Epoch 11/50, Batch 1527/2188 (69.8%) - Loss: 95.732, box,cls,dfl: 1.274,0.741,0.977
+Epoch 11/50, Batch 1745/2188 (79.8%) - Loss: 91.757, box,cls,dfl: 1.238,0.620,1.010
+Epoch 11/50, Batch 1963/2188 (89.7%) - Loss: 90.276, box,cls,dfl: 1.180,0.665,0.976
+Epoch 11/50, Batch 2181/2188 (99.7%) - Loss: 99.682, box,cls,dfl: 1.348,0.685,1.082
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578       0.63      0.485      0.537      0.312
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 12/50, Batch 1/2188 (0.0%) - Loss: 96.013, box,cls,dfl: 1.274,0.732,0.995
+Epoch 12/50, Batch 219/2188 (10.0%) - Loss: 97.183, box,cls,dfl: 1.349,0.687,1.001
+Epoch 12/50, Batch 437/2188 (20.0%) - Loss: 99.765, box,cls,dfl: 1.402,0.701,1.015
+Epoch 12/50, Batch 655/2188 (29.9%) - Loss: 89.587, box,cls,dfl: 1.188,0.639,0.972
+Epoch 12/50, Batch 873/2188 (39.9%) - Loss: 108.055, box,cls,dfl: 1.389,0.876,1.112
+Epoch 12/50, Batch 1091/2188 (49.9%) - Loss: 89.598, box,cls,dfl: 1.249,0.596,0.955
+Epoch 12/50, Batch 1309/2188 (59.8%) - Loss: 89.365, box,cls,dfl: 1.139,0.656,0.998
+Epoch 12/50, Batch 1527/2188 (69.8%) - Loss: 96.204, box,cls,dfl: 1.268,0.757,0.982
+Epoch 12/50, Batch 1745/2188 (79.8%) - Loss: 93.247, box,cls,dfl: 1.245,0.649,1.021
+Epoch 12/50, Batch 1963/2188 (89.7%) - Loss: 88.801, box,cls,dfl: 1.209,0.668,0.898
+Epoch 12/50, Batch 2181/2188 (99.7%) - Loss: 97.267, box,cls,dfl: 1.318,0.690,1.031
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.632      0.485      0.542      0.315
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 13/50, Batch 1/2188 (0.0%) - Loss: 96.543, box,cls,dfl: 1.283,0.698,1.035
+Epoch 13/50, Batch 219/2188 (10.0%) - Loss: 94.563, box,cls,dfl: 1.321,0.631,1.003
+Epoch 13/50, Batch 437/2188 (20.0%) - Loss: 102.345, box,cls,dfl: 1.437,0.731,1.030
+Epoch 13/50, Batch 655/2188 (29.9%) - Loss: 90.536, box,cls,dfl: 1.246,0.618,0.965
+Epoch 13/50, Batch 873/2188 (39.9%) - Loss: 100.159, box,cls,dfl: 1.333,0.770,1.026
+Epoch 13/50, Batch 1091/2188 (49.9%) - Loss: 93.636, box,cls,dfl: 1.276,0.659,0.992
+Epoch 13/50, Batch 1309/2188 (59.8%) - Loss: 83.670, box,cls,dfl: 1.080,0.572,0.963
+Epoch 13/50, Batch 1527/2188 (69.8%) - Loss: 97.183, box,cls,dfl: 1.299,0.703,1.035
+Epoch 13/50, Batch 1745/2188 (79.8%) - Loss: 91.833, box,cls,dfl: 1.244,0.634,0.991
+Epoch 13/50, Batch 1963/2188 (89.7%) - Loss: 89.884, box,cls,dfl: 1.191,0.633,0.984
+Epoch 13/50, Batch 2181/2188 (99.7%) - Loss: 89.659, box,cls,dfl: 1.190,0.643,0.969
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.634      0.485      0.544      0.316
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 14/50, Batch 1/2188 (0.0%) - Loss: 95.259, box,cls,dfl: 1.294,0.656,1.026
+Epoch 14/50, Batch 219/2188 (10.0%) - Loss: 95.832, box,cls,dfl: 1.280,0.701,1.013
+Epoch 14/50, Batch 437/2188 (20.0%) - Loss: 99.042, box,cls,dfl: 1.415,0.674,1.006
+Epoch 14/50, Batch 655/2188 (29.9%) - Loss: 89.022, box,cls,dfl: 1.169,0.655,0.958
+Epoch 14/50, Batch 873/2188 (39.9%) - Loss: 103.047, box,cls,dfl: 1.400,0.776,1.045
+Epoch 14/50, Batch 1091/2188 (49.9%) - Loss: 91.216, box,cls,dfl: 1.244,0.646,0.960
+Epoch 14/50, Batch 1309/2188 (59.8%) - Loss: 87.266, box,cls,dfl: 1.135,0.613,0.978
+Epoch 14/50, Batch 1527/2188 (69.8%) - Loss: 93.042, box,cls,dfl: 1.230,0.695,0.983
+Epoch 14/50, Batch 1745/2188 (79.8%) - Loss: 83.736, box,cls,dfl: 1.115,0.562,0.940
+Epoch 14/50, Batch 1963/2188 (89.7%) - Loss: 97.743, box,cls,dfl: 1.308,0.695,1.052
+Epoch 14/50, Batch 2181/2188 (99.7%) - Loss: 98.132, box,cls,dfl: 1.332,0.673,1.061
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.638      0.487      0.546      0.317
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 15/50, Batch 1/2188 (0.0%) - Loss: 96.027, box,cls,dfl: 1.285,0.689,1.027
+Epoch 15/50, Batch 219/2188 (10.0%) - Loss: 101.809, box,cls,dfl: 1.421,0.721,1.040
+Epoch 15/50, Batch 437/2188 (20.0%) - Loss: 100.864, box,cls,dfl: 1.429,0.706,1.016
+Epoch 15/50, Batch 655/2188 (29.9%) - Loss: 89.951, box,cls,dfl: 1.216,0.636,0.959
+Epoch 15/50, Batch 873/2188 (39.9%) - Loss: 94.528, box,cls,dfl: 1.256,0.678,1.020
+Epoch 15/50, Batch 1091/2188 (49.9%) - Loss: 89.094, box,cls,dfl: 1.143,0.650,0.992
+Epoch 15/50, Batch 1309/2188 (59.8%) - Loss: 85.391, box,cls,dfl: 1.144,0.603,0.921
+Epoch 15/50, Batch 1527/2188 (69.8%) - Loss: 91.156, box,cls,dfl: 1.236,0.636,0.977
+Epoch 15/50, Batch 1745/2188 (79.8%) - Loss: 86.755, box,cls,dfl: 1.181,0.583,0.948
+Epoch 15/50, Batch 1963/2188 (89.7%) - Loss: 88.726, box,cls,dfl: 1.175,0.624,0.974
+Epoch 15/50, Batch 2181/2188 (99.7%) - Loss: 94.982, box,cls,dfl: 1.238,0.729,1.001
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.739      0.487      0.547      0.318
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 16/50, Batch 1/2188 (0.0%) - Loss: 97.322, box,cls,dfl: 1.307,0.695,1.039
+Epoch 16/50, Batch 219/2188 (10.0%) - Loss: 93.966, box,cls,dfl: 1.267,0.659,1.011
+Epoch 16/50, Batch 437/2188 (20.0%) - Loss: 102.406, box,cls,dfl: 1.460,0.723,1.017
+Epoch 16/50, Batch 655/2188 (29.9%) - Loss: 87.538, box,cls,dfl: 1.144,0.614,0.978
+Epoch 16/50, Batch 873/2188 (39.9%) - Loss: 95.606, box,cls,dfl: 1.257,0.724,1.007
+Epoch 16/50, Batch 1091/2188 (49.9%) - Loss: 82.767, box,cls,dfl: 1.095,0.558,0.933
+Epoch 16/50, Batch 1309/2188 (59.8%) - Loss: 82.974, box,cls,dfl: 1.046,0.569,0.979
+Epoch 16/50, Batch 1527/2188 (69.8%) - Loss: 93.114, box,cls,dfl: 1.217,0.682,1.012
+Epoch 16/50, Batch 1745/2188 (79.8%) - Loss: 92.414, box,cls,dfl: 1.273,0.631,0.983
+Epoch 16/50, Batch 1963/2188 (89.7%) - Loss: 80.434, box,cls,dfl: 1.022,0.549,0.942
+Epoch 16/50, Batch 2181/2188 (99.7%) - Loss: 95.070, box,cls,dfl: 1.246,0.674,1.050
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.627      0.494      0.547       0.32
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 17/50, Batch 1/2188 (0.0%) - Loss: 101.498, box,cls,dfl: 1.373,0.742,1.057
+Epoch 17/50, Batch 219/2188 (10.0%) - Loss: 93.874, box,cls,dfl: 1.288,0.651,0.995
+Epoch 17/50, Batch 437/2188 (20.0%) - Loss: 101.091, box,cls,dfl: 1.447,0.679,1.033
+Epoch 17/50, Batch 655/2188 (29.9%) - Loss: 95.372, box,cls,dfl: 1.313,0.652,1.016
+Epoch 17/50, Batch 873/2188 (39.9%) - Loss: 95.389, box,cls,dfl: 1.237,0.744,1.000
+Epoch 17/50, Batch 1091/2188 (49.9%) - Loss: 88.672, box,cls,dfl: 1.179,0.628,0.965
+Epoch 17/50, Batch 1309/2188 (59.8%) - Loss: 82.075, box,cls,dfl: 1.054,0.571,0.939
+Epoch 17/50, Batch 1527/2188 (69.8%) - Loss: 91.544, box,cls,dfl: 1.223,0.676,0.962
+Epoch 17/50, Batch 1745/2188 (79.8%) - Loss: 93.718, box,cls,dfl: 1.277,0.665,0.986
+Epoch 17/50, Batch 1963/2188 (89.7%) - Loss: 95.373, box,cls,dfl: 1.275,0.710,0.995
+Epoch 17/50, Batch 2181/2188 (99.7%) - Loss: 95.274, box,cls,dfl: 1.291,0.654,1.032
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578       0.63      0.493      0.548       0.32
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 18/50, Batch 1/2188 (0.0%) - Loss: 90.778, box,cls,dfl: 1.182,0.654,1.001
+Epoch 18/50, Batch 219/2188 (10.0%) - Loss: 99.225, box,cls,dfl: 1.349,0.706,1.045
+Epoch 18/50, Batch 437/2188 (20.0%) - Loss: 99.090, box,cls,dfl: 1.370,0.709,1.017
+Epoch 18/50, Batch 655/2188 (29.9%) - Loss: 89.000, box,cls,dfl: 1.228,0.596,0.958
+Epoch 18/50, Batch 873/2188 (39.9%) - Loss: 98.195, box,cls,dfl: 1.294,0.721,1.054
+Epoch 18/50, Batch 1091/2188 (49.9%) - Loss: 82.463, box,cls,dfl: 1.090,0.593,0.894
+Epoch 18/50, Batch 1309/2188 (59.8%) - Loss: 84.084, box,cls,dfl: 1.121,0.578,0.929
+Epoch 18/50, Batch 1527/2188 (69.8%) - Loss: 95.190, box,cls,dfl: 1.301,0.671,1.003
+Epoch 18/50, Batch 1745/2188 (79.8%) - Loss: 97.145, box,cls,dfl: 1.336,0.677,1.023
+Epoch 18/50, Batch 1963/2188 (89.7%) - Loss: 86.305, box,cls,dfl: 1.152,0.592,0.953
+Epoch 18/50, Batch 2181/2188 (99.7%) - Loss: 95.029, box,cls,dfl: 1.278,0.658,1.034
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.737      0.497      0.553      0.322
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 19/50, Batch 1/2188 (0.0%) - Loss: 91.568, box,cls,dfl: 1.209,0.671,0.981
+Epoch 19/50, Batch 219/2188 (10.0%) - Loss: 99.260, box,cls,dfl: 1.381,0.730,0.991
+Epoch 19/50, Batch 437/2188 (20.0%) - Loss: 100.384, box,cls,dfl: 1.424,0.717,0.995
+Epoch 19/50, Batch 655/2188 (29.9%) - Loss: 87.661, box,cls,dfl: 1.170,0.617,0.953
+Epoch 19/50, Batch 873/2188 (39.9%) - Loss: 99.595, box,cls,dfl: 1.331,0.740,1.041
+Epoch 19/50, Batch 1091/2188 (49.9%) - Loss: 90.330, box,cls,dfl: 1.225,0.628,0.970
+Epoch 19/50, Batch 1309/2188 (59.8%) - Loss: 91.034, box,cls,dfl: 1.238,0.618,0.988
+Epoch 19/50, Batch 1527/2188 (69.8%) - Loss: 87.948, box,cls,dfl: 1.144,0.611,0.993
+Epoch 19/50, Batch 1745/2188 (79.8%) - Loss: 91.502, box,cls,dfl: 1.229,0.617,1.014
+Epoch 19/50, Batch 1963/2188 (89.7%) - Loss: 85.145, box,cls,dfl: 1.129,0.582,0.949
+Epoch 19/50, Batch 2181/2188 (99.7%) - Loss: 93.359, box,cls,dfl: 1.281,0.613,1.023
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.638      0.494      0.552      0.323
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 20/50, Batch 1/2188 (0.0%) - Loss: 92.961, box,cls,dfl: 1.216,0.676,1.013
+Epoch 20/50, Batch 219/2188 (10.0%) - Loss: 95.958, box,cls,dfl: 1.302,0.649,1.047
+Epoch 20/50, Batch 437/2188 (20.0%) - Loss: 108.875, box,cls,dfl: 1.569,0.756,1.077
+Epoch 20/50, Batch 655/2188 (29.9%) - Loss: 84.212, box,cls,dfl: 1.109,0.591,0.932
+Epoch 20/50, Batch 873/2188 (39.9%) - Loss: 95.303, box,cls,dfl: 1.295,0.675,1.009
+Epoch 20/50, Batch 1091/2188 (49.9%) - Loss: 89.736, box,cls,dfl: 1.216,0.615,0.973
+Epoch 20/50, Batch 1309/2188 (59.8%) - Loss: 85.151, box,cls,dfl: 1.090,0.602,0.969
+Epoch 20/50, Batch 1527/2188 (69.8%) - Loss: 89.344, box,cls,dfl: 1.182,0.634,0.977
+Epoch 20/50, Batch 1745/2188 (79.8%) - Loss: 84.325, box,cls,dfl: 1.128,0.587,0.921
+Epoch 20/50, Batch 1963/2188 (89.7%) - Loss: 88.215, box,cls,dfl: 1.153,0.619,0.985
+Epoch 20/50, Batch 2181/2188 (99.7%) - Loss: 94.801, box,cls,dfl: 1.272,0.694,0.996
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.643      0.495      0.557      0.327
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 21/50, Batch 1/2188 (0.0%) - Loss: 86.646, box,cls,dfl: 1.170,0.601,0.936
+Epoch 21/50, Batch 219/2188 (10.0%) - Loss: 96.292, box,cls,dfl: 1.291,0.698,1.020
+Epoch 21/50, Batch 437/2188 (20.0%) - Loss: 100.664, box,cls,dfl: 1.430,0.708,1.008
+Epoch 21/50, Batch 655/2188 (29.9%) - Loss: 88.228, box,cls,dfl: 1.156,0.655,0.946
+Epoch 21/50, Batch 873/2188 (39.9%) - Loss: 96.092, box,cls,dfl: 1.260,0.707,1.036
+Epoch 21/50, Batch 1091/2188 (49.9%) - Loss: 89.031, box,cls,dfl: 1.205,0.611,0.966
+Epoch 21/50, Batch 1309/2188 (59.8%) - Loss: 89.351, box,cls,dfl: 1.164,0.622,1.006
+Epoch 21/50, Batch 1527/2188 (69.8%) - Loss: 87.967, box,cls,dfl: 1.140,0.668,0.941
+Epoch 21/50, Batch 1745/2188 (79.8%) - Loss: 86.949, box,cls,dfl: 1.200,0.561,0.956
+Epoch 21/50, Batch 1963/2188 (89.7%) - Loss: 88.440, box,cls,dfl: 1.207,0.619,0.938
+Epoch 21/50, Batch 2181/2188 (99.7%) - Loss: 97.267, box,cls,dfl: 1.337,0.668,1.034
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.626      0.502      0.554      0.324
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 22/50, Batch 1/2188 (0.0%) - Loss: 96.479, box,cls,dfl: 1.310,0.663,1.042
+Epoch 22/50, Batch 219/2188 (10.0%) - Loss: 89.853, box,cls,dfl: 1.215,0.616,0.977
+Epoch 22/50, Batch 437/2188 (20.0%) - Loss: 98.963, box,cls,dfl: 1.407,0.694,0.991
+Epoch 22/50, Batch 655/2188 (29.9%) - Loss: 87.584, box,cls,dfl: 1.182,0.604,0.951
+Epoch 22/50, Batch 873/2188 (39.9%) - Loss: 101.912, box,cls,dfl: 1.369,0.729,1.087
+Epoch 22/50, Batch 1091/2188 (49.9%) - Loss: 87.203, box,cls,dfl: 1.186,0.582,0.957
+Epoch 22/50, Batch 1309/2188 (59.8%) - Loss: 87.440, box,cls,dfl: 1.129,0.612,0.992
+Epoch 22/50, Batch 1527/2188 (69.8%) - Loss: 92.881, box,cls,dfl: 1.242,0.660,1.001
+Epoch 22/50, Batch 1745/2188 (79.8%) - Loss: 85.177, box,cls,dfl: 1.150,0.566,0.945
+Epoch 22/50, Batch 1963/2188 (89.7%) - Loss: 88.179, box,cls,dfl: 1.184,0.605,0.967
+Epoch 22/50, Batch 2181/2188 (99.7%) - Loss: 93.925, box,cls,dfl: 1.263,0.653,1.019
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.622       0.52      0.559      0.327
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 23/50, Batch 1/2188 (0.0%) - Loss: 85.666, box,cls,dfl: 1.124,0.613,0.940
+Epoch 23/50, Batch 219/2188 (10.0%) - Loss: 94.974, box,cls,dfl: 1.293,0.635,1.040
+Epoch 23/50, Batch 437/2188 (20.0%) - Loss: 103.284, box,cls,dfl: 1.438,0.732,1.057
+Epoch 23/50, Batch 655/2188 (29.9%) - Loss: 88.446, box,cls,dfl: 1.205,0.622,0.938
+Epoch 23/50, Batch 873/2188 (39.9%) - Loss: 100.318, box,cls,dfl: 1.380,0.727,1.028
+Epoch 23/50, Batch 1091/2188 (49.9%) - Loss: 84.305, box,cls,dfl: 1.117,0.568,0.949
+Epoch 23/50, Batch 1309/2188 (59.8%) - Loss: 88.493, box,cls,dfl: 1.144,0.615,1.007
+Epoch 23/50, Batch 1527/2188 (69.8%) - Loss: 84.613, box,cls,dfl: 1.142,0.544,0.958
+Epoch 23/50, Batch 1745/2188 (79.8%) - Loss: 83.835, box,cls,dfl: 1.111,0.549,0.960
+Epoch 23/50, Batch 1963/2188 (89.7%) - Loss: 91.497, box,cls,dfl: 1.203,0.670,0.987
+Epoch 23/50, Batch 2181/2188 (99.7%) - Loss: 92.644, box,cls,dfl: 1.238,0.664,0.993
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.629      0.535       0.56      0.328
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 24/50, Batch 1/2188 (0.0%) - Loss: 89.855, box,cls,dfl: 1.194,0.631,0.983
+Epoch 24/50, Batch 219/2188 (10.0%) - Loss: 93.326, box,cls,dfl: 1.275,0.647,0.994
+Epoch 24/50, Batch 437/2188 (20.0%) - Loss: 98.993, box,cls,dfl: 1.375,0.721,0.998
+Epoch 24/50, Batch 655/2188 (29.9%) - Loss: 84.616, box,cls,dfl: 1.135,0.586,0.924
+Epoch 24/50, Batch 873/2188 (39.9%) - Loss: 100.786, box,cls,dfl: 1.328,0.792,1.030
+Epoch 24/50, Batch 1091/2188 (49.9%) - Loss: 90.015, box,cls,dfl: 1.205,0.621,0.987
+Epoch 24/50, Batch 1309/2188 (59.8%) - Loss: 83.840, box,cls,dfl: 1.100,0.580,0.940
+Epoch 24/50, Batch 1527/2188 (69.8%) - Loss: 90.759, box,cls,dfl: 1.214,0.670,0.952
+Epoch 24/50, Batch 1745/2188 (79.8%) - Loss: 87.826, box,cls,dfl: 1.179,0.598,0.967
+Epoch 24/50, Batch 1963/2188 (89.7%) - Loss: 97.468, box,cls,dfl: 1.275,0.737,1.034
+Epoch 24/50, Batch 2181/2188 (99.7%) - Loss: 96.670, box,cls,dfl: 1.298,0.693,1.030
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.656      0.504      0.558      0.326
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 25/50, Batch 1/2188 (0.0%) - Loss: 87.894, box,cls,dfl: 1.171,0.588,0.988
+Epoch 25/50, Batch 219/2188 (10.0%) - Loss: 94.170, box,cls,dfl: 1.294,0.626,1.023
+Epoch 25/50, Batch 437/2188 (20.0%) - Loss: 106.770, box,cls,dfl: 1.572,0.752,1.013
+Epoch 25/50, Batch 655/2188 (29.9%) - Loss: 88.524, box,cls,dfl: 1.198,0.602,0.967
+Epoch 25/50, Batch 873/2188 (39.9%) - Loss: 95.000, box,cls,dfl: 1.240,0.722,1.007
+Epoch 25/50, Batch 1091/2188 (49.9%) - Loss: 88.813, box,cls,dfl: 1.226,0.623,0.926
+Epoch 25/50, Batch 1309/2188 (59.8%) - Loss: 85.839, box,cls,dfl: 1.121,0.589,0.972
+Epoch 25/50, Batch 1527/2188 (69.8%) - Loss: 94.227, box,cls,dfl: 1.265,0.671,1.008
+Epoch 25/50, Batch 1745/2188 (79.8%) - Loss: 91.604, box,cls,dfl: 1.251,0.628,0.984
+Epoch 25/50, Batch 1963/2188 (89.7%) - Loss: 85.320, box,cls,dfl: 1.160,0.559,0.947
+Epoch 25/50, Batch 2181/2188 (99.7%) - Loss: 100.196, box,cls,dfl: 1.396,0.612,1.123
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.648      0.507      0.559      0.328
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 26/50, Batch 1/2188 (0.0%) - Loss: 95.240, box,cls,dfl: 1.267,0.687,1.022
+Epoch 26/50, Batch 219/2188 (10.0%) - Loss: 90.661, box,cls,dfl: 1.250,0.615,0.967
+Epoch 26/50, Batch 437/2188 (20.0%) - Loss: 98.898, box,cls,dfl: 1.411,0.682,0.998
+Epoch 26/50, Batch 655/2188 (29.9%) - Loss: 87.655, box,cls,dfl: 1.185,0.606,0.949
+Epoch 26/50, Batch 873/2188 (39.9%) - Loss: 90.791, box,cls,dfl: 1.189,0.633,1.016
+Epoch 26/50, Batch 1091/2188 (49.9%) - Loss: 91.343, box,cls,dfl: 1.220,0.614,1.020
+Epoch 26/50, Batch 1309/2188 (59.8%) - Loss: 84.237, box,cls,dfl: 1.110,0.584,0.939
+Epoch 26/50, Batch 1527/2188 (69.8%) - Loss: 89.691, box,cls,dfl: 1.169,0.648,0.986
+Epoch 26/50, Batch 1745/2188 (79.8%) - Loss: 86.873, box,cls,dfl: 1.170,0.586,0.958
+Epoch 26/50, Batch 1963/2188 (89.7%) - Loss: 85.721, box,cls,dfl: 1.160,0.592,0.926
+Epoch 26/50, Batch 2181/2188 (99.7%) - Loss: 93.123, box,cls,dfl: 1.221,0.651,1.038
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.648       0.51      0.559      0.328
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 27/50, Batch 1/2188 (0.0%) - Loss: 91.661, box,cls,dfl: 1.225,0.662,0.977
+Epoch 27/50, Batch 219/2188 (10.0%) - Loss: 87.210, box,cls,dfl: 1.170,0.630,0.926
+Epoch 27/50, Batch 437/2188 (20.0%) - Loss: 99.806, box,cls,dfl: 1.468,0.689,0.962
+Epoch 27/50, Batch 655/2188 (29.9%) - Loss: 88.732, box,cls,dfl: 1.221,0.579,0.973
+Epoch 27/50, Batch 873/2188 (39.9%) - Loss: 95.069, box,cls,dfl: 1.258,0.702,1.011
+Epoch 27/50, Batch 1091/2188 (49.9%) - Loss: 84.289, box,cls,dfl: 1.146,0.558,0.930
+Epoch 27/50, Batch 1309/2188 (59.8%) - Loss: 84.947, box,cls,dfl: 1.095,0.577,0.982
+Epoch 27/50, Batch 1527/2188 (69.8%) - Loss: 88.348, box,cls,dfl: 1.208,0.616,0.937
+Epoch 27/50, Batch 1745/2188 (79.8%) - Loss: 96.307, box,cls,dfl: 1.304,0.659,1.047
+Epoch 27/50, Batch 1963/2188 (89.7%) - Loss: 88.305, box,cls,dfl: 1.165,0.632,0.962
+Epoch 27/50, Batch 2181/2188 (99.7%) - Loss: 98.399, box,cls,dfl: 1.346,0.651,1.078
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.631      0.522      0.559      0.327
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 28/50, Batch 1/2188 (0.0%) - Loss: 90.773, box,cls,dfl: 1.202,0.634,1.001
+Epoch 28/50, Batch 219/2188 (10.0%) - Loss: 85.193, box,cls,dfl: 1.100,0.611,0.952
+Epoch 28/50, Batch 437/2188 (20.0%) - Loss: 100.934, box,cls,dfl: 1.465,0.685,1.004
+Epoch 28/50, Batch 655/2188 (29.9%) - Loss: 85.002, box,cls,dfl: 1.135,0.566,0.955
+Epoch 28/50, Batch 873/2188 (39.9%) - Loss: 96.334, box,cls,dfl: 1.303,0.670,1.038
+Epoch 28/50, Batch 1091/2188 (49.9%) - Loss: 83.483, box,cls,dfl: 1.122,0.569,0.918
+Epoch 28/50, Batch 1309/2188 (59.8%) - Loss: 77.176, box,cls,dfl: 0.967,0.539,0.906
+Epoch 28/50, Batch 1527/2188 (69.8%) - Loss: 93.729, box,cls,dfl: 1.262,0.682,0.986
+Epoch 28/50, Batch 1745/2188 (79.8%) - Loss: 88.000, box,cls,dfl: 1.175,0.589,0.985
+Epoch 28/50, Batch 1963/2188 (89.7%) - Loss: 85.835, box,cls,dfl: 1.105,0.629,0.949
+Epoch 28/50, Batch 2181/2188 (99.7%) - Loss: 94.915, box,cls,dfl: 1.267,0.644,1.055
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.626       0.53       0.56      0.327
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 29/50, Batch 1/2188 (0.0%) - Loss: 91.810, box,cls,dfl: 1.228,0.647,0.994
+Epoch 29/50, Batch 219/2188 (10.0%) - Loss: 86.003, box,cls,dfl: 1.170,0.566,0.952
+Epoch 29/50, Batch 437/2188 (20.0%) - Loss: 101.323, box,cls,dfl: 1.440,0.713,1.013
+Epoch 29/50, Batch 655/2188 (29.9%) - Loss: 89.506, box,cls,dfl: 1.192,0.653,0.952
+Epoch 29/50, Batch 873/2188 (39.9%) - Loss: 95.235, box,cls,dfl: 1.276,0.701,0.999
+Epoch 29/50, Batch 1091/2188 (49.9%) - Loss: 88.013, box,cls,dfl: 1.180,0.593,0.977
+Epoch 29/50, Batch 1309/2188 (59.8%) - Loss: 83.222, box,cls,dfl: 1.109,0.583,0.909
+Epoch 29/50, Batch 1527/2188 (69.8%) - Loss: 92.133, box,cls,dfl: 1.251,0.618,1.010
+Epoch 29/50, Batch 1745/2188 (79.8%) - Loss: 88.224, box,cls,dfl: 1.203,0.577,0.977
+Epoch 29/50, Batch 1963/2188 (89.7%) - Loss: 92.181, box,cls,dfl: 1.256,0.630,0.995
+Epoch 29/50, Batch 2181/2188 (99.7%) - Loss: 89.973, box,cls,dfl: 1.214,0.610,0.988
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.633      0.531       0.56      0.328
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 30/50, Batch 1/2188 (0.0%) - Loss: 91.788, box,cls,dfl: 1.258,0.623,0.987
+Epoch 30/50, Batch 219/2188 (10.0%) - Loss: 87.988, box,cls,dfl: 1.178,0.588,0.984
+Epoch 30/50, Batch 437/2188 (20.0%) - Loss: 99.891, box,cls,dfl: 1.434,0.691,0.996
+Epoch 30/50, Batch 655/2188 (29.9%) - Loss: 87.775, box,cls,dfl: 1.157,0.602,0.983
+Epoch 30/50, Batch 873/2188 (39.9%) - Loss: 104.567, box,cls,dfl: 1.372,0.816,1.080
+Epoch 30/50, Batch 1091/2188 (49.9%) - Loss: 85.537, box,cls,dfl: 1.160,0.571,0.942
+Epoch 30/50, Batch 1309/2188 (59.8%) - Loss: 81.074, box,cls,dfl: 1.066,0.527,0.941
+Epoch 30/50, Batch 1527/2188 (69.8%) - Loss: 90.451, box,cls,dfl: 1.201,0.619,1.007
+Epoch 30/50, Batch 1745/2188 (79.8%) - Loss: 87.127, box,cls,dfl: 1.176,0.609,0.937
+Epoch 30/50, Batch 1963/2188 (89.7%) - Loss: 93.394, box,cls,dfl: 1.260,0.649,1.010
+Epoch 30/50, Batch 2181/2188 (99.7%) - Loss: 91.054, box,cls,dfl: 1.216,0.618,1.011
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.649       0.51       0.56      0.328
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 31/50, Batch 1/2188 (0.0%) - Loss: 99.151, box,cls,dfl: 1.313,0.714,1.071
+Epoch 31/50, Batch 219/2188 (10.0%) - Loss: 94.520, box,cls,dfl: 1.311,0.646,0.997
+Epoch 31/50, Batch 437/2188 (20.0%) - Loss: 102.829, box,cls,dfl: 1.475,0.704,1.035
+Epoch 31/50, Batch 655/2188 (29.9%) - Loss: 84.890, box,cls,dfl: 1.170,0.541,0.942
+Epoch 31/50, Batch 873/2188 (39.9%) - Loss: 97.404, box,cls,dfl: 1.343,0.682,1.019
+Epoch 31/50, Batch 1091/2188 (49.9%) - Loss: 85.865, box,cls,dfl: 1.147,0.584,0.952
+Epoch 31/50, Batch 1309/2188 (59.8%) - Loss: 87.812, box,cls,dfl: 1.194,0.582,0.968
+Epoch 31/50, Batch 1527/2188 (69.8%) - Loss: 92.012, box,cls,dfl: 1.261,0.647,0.968
+Epoch 31/50, Batch 1745/2188 (79.8%) - Loss: 95.039, box,cls,dfl: 1.324,0.642,1.004
+Epoch 31/50, Batch 1963/2188 (89.7%) - Loss: 83.467, box,cls,dfl: 1.126,0.570,0.913
+Epoch 31/50, Batch 2181/2188 (99.7%) - Loss: 96.454, box,cls,dfl: 1.316,0.650,1.049
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.662      0.507      0.563      0.329
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 32/50, Batch 1/2188 (0.0%) - Loss: 87.101, box,cls,dfl: 1.143,0.623,0.956
+Epoch 32/50, Batch 219/2188 (10.0%) - Loss: 88.108, box,cls,dfl: 1.179,0.619,0.956
+Epoch 32/50, Batch 437/2188 (20.0%) - Loss: 98.675, box,cls,dfl: 1.420,0.653,1.010
+Epoch 32/50, Batch 655/2188 (29.9%) - Loss: 88.538, box,cls,dfl: 1.180,0.599,0.988
+Epoch 32/50, Batch 873/2188 (39.9%) - Loss: 101.025, box,cls,dfl: 1.409,0.731,1.017
+Epoch 32/50, Batch 1091/2188 (49.9%) - Loss: 87.081, box,cls,dfl: 1.175,0.570,0.977
+Epoch 32/50, Batch 1309/2188 (59.8%) - Loss: 90.538, box,cls,dfl: 1.204,0.657,0.968
+Epoch 32/50, Batch 1527/2188 (69.8%) - Loss: 85.421, box,cls,dfl: 1.111,0.602,0.957
+Epoch 32/50, Batch 1745/2188 (79.8%) - Loss: 84.383, box,cls,dfl: 1.103,0.576,0.957
+Epoch 32/50, Batch 1963/2188 (89.7%) - Loss: 86.581, box,cls,dfl: 1.170,0.559,0.977
+Epoch 32/50, Batch 2181/2188 (99.7%) - Loss: 94.964, box,cls,dfl: 1.313,0.636,1.019
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578       0.66      0.513      0.565      0.329
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 33/50, Batch 1/2188 (0.0%) - Loss: 82.107, box,cls,dfl: 1.091,0.581,0.894
+Epoch 33/50, Batch 219/2188 (10.0%) - Loss: 92.485, box,cls,dfl: 1.265,0.631,0.995
+Epoch 33/50, Batch 437/2188 (20.0%) - Loss: 97.537, box,cls,dfl: 1.405,0.658,0.985
+Epoch 33/50, Batch 655/2188 (29.9%) - Loss: 90.461, box,cls,dfl: 1.238,0.643,0.946
+Epoch 33/50, Batch 873/2188 (39.9%) - Loss: 100.675, box,cls,dfl: 1.368,0.733,1.045
+Epoch 33/50, Batch 1091/2188 (49.9%) - Loss: 87.589, box,cls,dfl: 1.165,0.584,0.988
+Epoch 33/50, Batch 1309/2188 (59.8%) - Loss: 84.354, box,cls,dfl: 1.092,0.599,0.945
+Epoch 33/50, Batch 1527/2188 (69.8%) - Loss: 88.651, box,cls,dfl: 1.212,0.609,0.950
+Epoch 33/50, Batch 1745/2188 (79.8%) - Loss: 85.435, box,cls,dfl: 1.156,0.561,0.954
+Epoch 33/50, Batch 1963/2188 (89.7%) - Loss: 85.640, box,cls,dfl: 1.103,0.611,0.962
+Epoch 33/50, Batch 2181/2188 (99.7%) - Loss: 90.692, box,cls,dfl: 1.203,0.608,1.024
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.651      0.521      0.564      0.329
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 34/50, Batch 1/2188 (0.0%) - Loss: 86.878, box,cls,dfl: 1.123,0.611,0.981
+Epoch 34/50, Batch 219/2188 (10.0%) - Loss: 87.704, box,cls,dfl: 1.199,0.569,0.973
+Epoch 34/50, Batch 437/2188 (20.0%) - Loss: 98.961, box,cls,dfl: 1.399,0.696,0.997
+Epoch 34/50, Batch 655/2188 (29.9%) - Loss: 82.602, box,cls,dfl: 1.072,0.590,0.919
+Epoch 34/50, Batch 873/2188 (39.9%) - Loss: 95.092, box,cls,dfl: 1.253,0.689,1.029
+Epoch 34/50, Batch 1091/2188 (49.9%) - Loss: 89.675, box,cls,dfl: 1.241,0.608,0.953
+Epoch 34/50, Batch 1309/2188 (59.8%) - Loss: 77.774, box,cls,dfl: 0.996,0.504,0.930
+Epoch 34/50, Batch 1527/2188 (69.8%) - Loss: 85.797, box,cls,dfl: 1.178,0.576,0.927
+Epoch 34/50, Batch 1745/2188 (79.8%) - Loss: 87.241, box,cls,dfl: 1.210,0.559,0.958
+Epoch 34/50, Batch 1963/2188 (89.7%) - Loss: 89.433, box,cls,dfl: 1.205,0.616,0.974
+Epoch 34/50, Batch 2181/2188 (99.7%) - Loss: 84.098, box,cls,dfl: 1.093,0.581,0.955
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.657      0.509      0.562      0.329
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 35/50, Batch 1/2188 (0.0%) - Loss: 88.213, box,cls,dfl: 1.158,0.595,1.004
+Epoch 35/50, Batch 219/2188 (10.0%) - Loss: 89.299, box,cls,dfl: 1.208,0.594,0.988
+Epoch 35/50, Batch 437/2188 (20.0%) - Loss: 100.737, box,cls,dfl: 1.430,0.692,1.026
+Epoch 35/50, Batch 655/2188 (29.9%) - Loss: 87.256, box,cls,dfl: 1.184,0.600,0.943
+Epoch 35/50, Batch 873/2188 (39.9%) - Loss: 102.153, box,cls,dfl: 1.373,0.764,1.055
+Epoch 35/50, Batch 1091/2188 (49.9%) - Loss: 86.189, box,cls,dfl: 1.170,0.559,0.965
+Epoch 35/50, Batch 1309/2188 (59.8%) - Loss: 84.581, box,cls,dfl: 1.089,0.590,0.964
+Epoch 35/50, Batch 1527/2188 (69.8%) - Loss: 94.643, box,cls,dfl: 1.237,0.711,1.009
+Epoch 35/50, Batch 1745/2188 (79.8%) - Loss: 91.103, box,cls,dfl: 1.231,0.612,1.004
+Epoch 35/50, Batch 1963/2188 (89.7%) - Loss: 84.722, box,cls,dfl: 1.148,0.588,0.911
+Epoch 35/50, Batch 2181/2188 (99.7%) - Loss: 96.163, box,cls,dfl: 1.309,0.661,1.035
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.656      0.512      0.563      0.328
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 36/50, Batch 1/2188 (0.0%) - Loss: 91.590, box,cls,dfl: 1.191,0.645,1.026
+Epoch 36/50, Batch 219/2188 (10.0%) - Loss: 87.654, box,cls,dfl: 1.175,0.600,0.964
+Epoch 36/50, Batch 437/2188 (20.0%) - Loss: 103.224, box,cls,dfl: 1.482,0.698,1.046
+Epoch 36/50, Batch 655/2188 (29.9%) - Loss: 83.858, box,cls,dfl: 1.111,0.558,0.951
+Epoch 36/50, Batch 873/2188 (39.9%) - Loss: 97.249, box,cls,dfl: 1.311,0.739,0.989
+Epoch 36/50, Batch 1091/2188 (49.9%) - Loss: 84.543, box,cls,dfl: 1.147,0.547,0.948
+Epoch 36/50, Batch 1309/2188 (59.8%) - Loss: 83.883, box,cls,dfl: 1.040,0.584,0.997
+Epoch 36/50, Batch 1527/2188 (69.8%) - Loss: 89.067, box,cls,dfl: 1.214,0.609,0.961
+Epoch 36/50, Batch 1745/2188 (79.8%) - Loss: 86.629, box,cls,dfl: 1.169,0.562,0.976
+Epoch 36/50, Batch 1963/2188 (89.7%) - Loss: 90.465, box,cls,dfl: 1.228,0.636,0.963
+Epoch 36/50, Batch 2181/2188 (99.7%) - Loss: 94.745, box,cls,dfl: 1.297,0.648,1.016
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.659      0.506      0.562      0.328
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 37/50, Batch 1/2188 (0.0%) - Loss: 90.232, box,cls,dfl: 1.200,0.616,1.004
+Epoch 37/50, Batch 219/2188 (10.0%) - Loss: 95.832, box,cls,dfl: 1.317,0.647,1.031
+Epoch 37/50, Batch 437/2188 (20.0%) - Loss: 102.071, box,cls,dfl: 1.425,0.703,1.061
+Epoch 37/50, Batch 655/2188 (29.9%) - Loss: 87.237, box,cls,dfl: 1.187,0.578,0.961
+Epoch 37/50, Batch 873/2188 (39.9%) - Loss: 99.367, box,cls,dfl: 1.325,0.739,1.042
+Epoch 37/50, Batch 1091/2188 (49.9%) - Loss: 88.030, box,cls,dfl: 1.183,0.593,0.975
+Epoch 37/50, Batch 1309/2188 (59.8%) - Loss: 79.186, box,cls,dfl: 1.012,0.534,0.928
+Epoch 37/50, Batch 1527/2188 (69.8%) - Loss: 87.268, box,cls,dfl: 1.163,0.597,0.968
+Epoch 37/50, Batch 1745/2188 (79.8%) - Loss: 90.393, box,cls,dfl: 1.241,0.592,0.992
+Epoch 37/50, Batch 1963/2188 (89.7%) - Loss: 80.387, box,cls,dfl: 1.059,0.597,0.856
+Epoch 37/50, Batch 2181/2188 (99.7%) - Loss: 96.444, box,cls,dfl: 1.312,0.669,1.034
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.635      0.532      0.564      0.329
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 38/50, Batch 1/2188 (0.0%) - Loss: 87.595, box,cls,dfl: 1.178,0.579,0.981
+Epoch 38/50, Batch 219/2188 (10.0%) - Loss: 95.056, box,cls,dfl: 1.367,0.645,0.959
+Epoch 38/50, Batch 437/2188 (20.0%) - Loss: 98.567, box,cls,dfl: 1.393,0.661,1.026
+Epoch 38/50, Batch 655/2188 (29.9%) - Loss: 84.909, box,cls,dfl: 1.134,0.587,0.932
+Epoch 38/50, Batch 873/2188 (39.9%) - Loss: 94.118, box,cls,dfl: 1.254,0.697,0.990
+Epoch 38/50, Batch 1091/2188 (49.9%) - Loss: 86.134, box,cls,dfl: 1.161,0.582,0.949
+Epoch 38/50, Batch 1309/2188 (59.8%) - Loss: 84.955, box,cls,dfl: 1.100,0.578,0.977
+Epoch 38/50, Batch 1527/2188 (69.8%) - Loss: 88.765, box,cls,dfl: 1.209,0.587,0.978
+Epoch 38/50, Batch 1745/2188 (79.8%) - Loss: 87.203, box,cls,dfl: 1.176,0.573,0.976
+Epoch 38/50, Batch 1963/2188 (89.7%) - Loss: 90.999, box,cls,dfl: 1.232,0.632,0.980
+Epoch 38/50, Batch 2181/2188 (99.7%) - Loss: 93.474, box,cls,dfl: 1.261,0.660,1.000
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.652      0.524      0.564      0.329
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 39/50, Batch 1/2188 (0.0%) - Loss: 87.378, box,cls,dfl: 1.152,0.582,0.996
+Epoch 39/50, Batch 219/2188 (10.0%) - Loss: 88.088, box,cls,dfl: 1.206,0.602,0.945
+Epoch 39/50, Batch 437/2188 (20.0%) - Loss: 99.305, box,cls,dfl: 1.446,0.689,0.969
+Epoch 39/50, Batch 655/2188 (29.9%) - Loss: 86.005, box,cls,dfl: 1.150,0.587,0.951
+Epoch 39/50, Batch 873/2188 (39.9%) - Loss: 92.854, box,cls,dfl: 1.182,0.710,1.010
+Epoch 39/50, Batch 1091/2188 (49.9%) - Loss: 81.538, box,cls,dfl: 1.086,0.541,0.922
+Epoch 39/50, Batch 1309/2188 (59.8%) - Loss: 81.267, box,cls,dfl: 1.060,0.517,0.963
+Epoch 39/50, Batch 1527/2188 (69.8%) - Loss: 85.187, box,cls,dfl: 1.151,0.576,0.935
+Epoch 39/50, Batch 1745/2188 (79.8%) - Loss: 82.389, box,cls,dfl: 1.117,0.531,0.926
+Epoch 39/50, Batch 1963/2188 (89.7%) - Loss: 80.840, box,cls,dfl: 1.073,0.512,0.941
+Epoch 39/50, Batch 2181/2188 (99.7%) - Loss: 86.745, box,cls,dfl: 1.210,0.544,0.957
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.659       0.52      0.565       0.33
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 40/50, Batch 1/2188 (0.0%) - Loss: 81.861, box,cls,dfl: 1.091,0.579,0.888
+Epoch 40/50, Batch 219/2188 (10.0%) - Loss: 89.184, box,cls,dfl: 1.180,0.626,0.982
+Epoch 40/50, Batch 437/2188 (20.0%) - Loss: 98.367, box,cls,dfl: 1.392,0.670,1.012
+Epoch 40/50, Batch 655/2188 (29.9%) - Loss: 85.179, box,cls,dfl: 1.134,0.593,0.935
+Epoch 40/50, Batch 873/2188 (39.9%) - Loss: 95.315, box,cls,dfl: 1.290,0.696,0.993
+Epoch 40/50, Batch 1091/2188 (49.9%) - Loss: 83.981, box,cls,dfl: 1.133,0.562,0.929
+Epoch 40/50, Batch 1309/2188 (59.8%) - Loss: 86.307, box,cls,dfl: 1.126,0.586,0.984
+Epoch 40/50, Batch 1527/2188 (69.8%) - Loss: 88.787, box,cls,dfl: 1.212,0.607,0.955
+Epoch 40/50, Batch 1745/2188 (79.8%) - Loss: 89.984, box,cls,dfl: 1.202,0.601,1.009
+Epoch 40/50, Batch 1963/2188 (89.7%) - Loss: 84.730, box,cls,dfl: 1.124,0.574,0.949
+Epoch 40/50, Batch 2181/2188 (99.7%) - Loss: 89.692, box,cls,dfl: 1.226,0.558,1.019
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.663      0.518      0.565       0.33
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 41/50, Batch 1/2188 (0.0%) - Loss: 85.701, box,cls,dfl: 1.141,0.573,0.964
+Epoch 41/50, Batch 219/2188 (10.0%) - Loss: 89.496, box,cls,dfl: 1.251,0.578,0.969
+Epoch 41/50, Batch 437/2188 (20.0%) - Loss: 96.350, box,cls,dfl: 1.370,0.664,0.977
+Epoch 41/50, Batch 655/2188 (29.9%) - Loss: 86.295, box,cls,dfl: 1.173,0.558,0.966
+Epoch 41/50, Batch 873/2188 (39.9%) - Loss: 97.598, box,cls,dfl: 1.302,0.709,1.039
+Epoch 41/50, Batch 1091/2188 (49.9%) - Loss: 85.241, box,cls,dfl: 1.166,0.554,0.943
+Epoch 41/50, Batch 1309/2188 (59.8%) - Loss: 83.601, box,cls,dfl: 1.117,0.554,0.941
+Epoch 41/50, Batch 1527/2188 (69.8%) - Loss: 85.899, box,cls,dfl: 1.151,0.573,0.960
+Epoch 41/50, Batch 1745/2188 (79.8%) - Loss: 93.008, box,cls,dfl: 1.292,0.599,1.016
+Epoch 41/50, Batch 1963/2188 (89.7%) - Loss: 86.813, box,cls,dfl: 1.143,0.634,0.936
+Epoch 41/50, Batch 2181/2188 (99.7%) - Loss: 86.981, box,cls,dfl: 1.170,0.569,0.979
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.642      0.528      0.566       0.33
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 42/50, Batch 1/2188 (0.0%) - Loss: 92.092, box,cls,dfl: 1.219,0.620,1.039
+Epoch 42/50, Batch 219/2188 (10.0%) - Loss: 87.014, box,cls,dfl: 1.193,0.561,0.965
+Epoch 42/50, Batch 437/2188 (20.0%) - Loss: 102.138, box,cls,dfl: 1.448,0.704,1.039
+Epoch 42/50, Batch 655/2188 (29.9%) - Loss: 84.636, box,cls,dfl: 1.121,0.567,0.957
+Epoch 42/50, Batch 873/2188 (39.9%) - Loss: 90.167, box,cls,dfl: 1.216,0.598,1.004
+Epoch 42/50, Batch 1091/2188 (49.9%) - Loss: 86.074, box,cls,dfl: 1.159,0.585,0.946
+Epoch 42/50, Batch 1309/2188 (59.8%) - Loss: 83.065, box,cls,dfl: 1.109,0.552,0.935
+Epoch 42/50, Batch 1527/2188 (69.8%) - Loss: 88.405, box,cls,dfl: 1.200,0.593,0.969
+Epoch 42/50, Batch 1745/2188 (79.8%) - Loss: 84.448, box,cls,dfl: 1.142,0.559,0.938
+Epoch 42/50, Batch 1963/2188 (89.7%) - Loss: 86.350, box,cls,dfl: 1.129,0.585,0.984
+Epoch 42/50, Batch 2181/2188 (99.7%) - Loss: 85.306, box,cls,dfl: 1.161,0.557,0.948
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.627      0.535      0.566       0.33
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 43/50, Batch 1/2188 (0.0%) - Loss: 88.433, box,cls,dfl: 1.176,0.591,0.996
+Epoch 43/50, Batch 219/2188 (10.0%) - Loss: 93.269, box,cls,dfl: 1.258,0.667,0.989
+Epoch 43/50, Batch 437/2188 (20.0%) - Loss: 94.613, box,cls,dfl: 1.358,0.628,0.970
+Epoch 43/50, Batch 655/2188 (29.9%) - Loss: 84.003, box,cls,dfl: 1.115,0.568,0.942
+Epoch 43/50, Batch 873/2188 (39.9%) - Loss: 93.405, box,cls,dfl: 1.288,0.633,0.998
+Epoch 43/50, Batch 1091/2188 (49.9%) - Loss: 85.761, box,cls,dfl: 1.132,0.596,0.952
+Epoch 43/50, Batch 1309/2188 (59.8%) - Loss: 79.080, box,cls,dfl: 0.996,0.551,0.925
+Epoch 43/50, Batch 1527/2188 (69.8%) - Loss: 89.029, box,cls,dfl: 1.172,0.619,0.991
+Epoch 43/50, Batch 1745/2188 (79.8%) - Loss: 93.004, box,cls,dfl: 1.280,0.663,0.964
+Epoch 43/50, Batch 1963/2188 (89.7%) - Loss: 83.633, box,cls,dfl: 1.094,0.539,0.981
+Epoch 43/50, Batch 2181/2188 (99.7%) - Loss: 89.817, box,cls,dfl: 1.192,0.627,0.987
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.628      0.535      0.563       0.33
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 44/50, Batch 1/2188 (0.0%) - Loss: 89.034, box,cls,dfl: 1.207,0.593,0.983
+Epoch 44/50, Batch 219/2188 (10.0%) - Loss: 84.652, box,cls,dfl: 1.152,0.557,0.936
+Epoch 44/50, Batch 437/2188 (20.0%) - Loss: 98.491, box,cls,dfl: 1.431,0.673,0.973
+Epoch 44/50, Batch 655/2188 (29.9%) - Loss: 85.665, box,cls,dfl: 1.173,0.567,0.938
+Epoch 44/50, Batch 873/2188 (39.9%) - Loss: 92.499, box,cls,dfl: 1.236,0.629,1.026
+Epoch 44/50, Batch 1091/2188 (49.9%) - Loss: 83.646, box,cls,dfl: 1.120,0.566,0.928
+Epoch 44/50, Batch 1309/2188 (59.8%) - Loss: 85.764, box,cls,dfl: 1.112,0.586,0.983
+Epoch 44/50, Batch 1527/2188 (69.8%) - Loss: 82.683, box,cls,dfl: 1.152,0.546,0.886
+Epoch 44/50, Batch 1745/2188 (79.8%) - Loss: 90.708, box,cls,dfl: 1.262,0.583,0.989
+Epoch 44/50, Batch 1963/2188 (89.7%) - Loss: 87.047, box,cls,dfl: 1.172,0.620,0.929
+Epoch 44/50, Batch 2181/2188 (99.7%) - Loss: 89.047, box,cls,dfl: 1.185,0.632,0.967
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.635      0.532      0.564       0.33
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 45/50, Batch 1/2188 (0.0%) - Loss: 88.327, box,cls,dfl: 1.163,0.599,0.998
+Epoch 45/50, Batch 219/2188 (10.0%) - Loss: 89.572, box,cls,dfl: 1.210,0.589,1.000
+Epoch 45/50, Batch 437/2188 (20.0%) - Loss: 100.472, box,cls,dfl: 1.428,0.686,1.025
+Epoch 45/50, Batch 655/2188 (29.9%) - Loss: 87.745, box,cls,dfl: 1.179,0.602,0.960
+Epoch 45/50, Batch 873/2188 (39.9%) - Loss: 94.327, box,cls,dfl: 1.283,0.662,1.002
+Epoch 45/50, Batch 1091/2188 (49.9%) - Loss: 87.612, box,cls,dfl: 1.202,0.595,0.941
+Epoch 45/50, Batch 1309/2188 (59.8%) - Loss: 80.370, box,cls,dfl: 1.043,0.527,0.942
+Epoch 45/50, Batch 1527/2188 (69.8%) - Loss: 89.757, box,cls,dfl: 1.236,0.586,0.983
+Epoch 45/50, Batch 1745/2188 (79.8%) - Loss: 84.382, box,cls,dfl: 1.099,0.588,0.950
+Epoch 45/50, Batch 1963/2188 (89.7%) - Loss: 82.005, box,cls,dfl: 1.094,0.504,0.964
+Epoch 45/50, Batch 2181/2188 (99.7%) - Loss: 86.421, box,cls,dfl: 1.165,0.557,0.979
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.637      0.531      0.564       0.33
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 46/50, Batch 1/2188 (0.0%) - Loss: 84.927, box,cls,dfl: 1.111,0.600,0.943
+Epoch 46/50, Batch 219/2188 (10.0%) - Loss: 88.462, box,cls,dfl: 1.214,0.588,0.963
+Epoch 46/50, Batch 437/2188 (20.0%) - Loss: 97.133, box,cls,dfl: 1.380,0.651,1.004
+Epoch 46/50, Batch 655/2188 (29.9%) - Loss: 83.464, box,cls,dfl: 1.125,0.545,0.938
+Epoch 46/50, Batch 873/2188 (39.9%) - Loss: 96.788, box,cls,dfl: 1.306,0.684,1.035
+Epoch 46/50, Batch 1091/2188 (49.9%) - Loss: 88.199, box,cls,dfl: 1.201,0.596,0.959
+Epoch 46/50, Batch 1309/2188 (59.8%) - Loss: 83.993, box,cls,dfl: 1.091,0.563,0.970
+Epoch 46/50, Batch 1527/2188 (69.8%) - Loss: 89.382, box,cls,dfl: 1.210,0.582,1.001
+Epoch 46/50, Batch 1745/2188 (79.8%) - Loss: 85.634, box,cls,dfl: 1.144,0.557,0.975
+Epoch 46/50, Batch 1963/2188 (89.7%) - Loss: 92.948, box,cls,dfl: 1.248,0.639,1.018
+Epoch 46/50, Batch 2181/2188 (99.7%) - Loss: 95.683, box,cls,dfl: 1.311,0.629,1.050
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.628      0.537      0.564       0.33
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 47/50, Batch 1/2188 (0.0%) - Loss: 91.074, box,cls,dfl: 1.247,0.613,0.986
+Epoch 47/50, Batch 219/2188 (10.0%) - Loss: 91.403, box,cls,dfl: 1.243,0.617,0.997
+Epoch 47/50, Batch 437/2188 (20.0%) - Loss: 103.722, box,cls,dfl: 1.481,0.719,1.041
+Epoch 47/50, Batch 655/2188 (29.9%) - Loss: 82.521, box,cls,dfl: 1.115,0.536,0.928
+Epoch 47/50, Batch 873/2188 (39.9%) - Loss: 94.814, box,cls,dfl: 1.288,0.687,0.987
+Epoch 47/50, Batch 1091/2188 (49.9%) - Loss: 83.071, box,cls,dfl: 1.111,0.549,0.936
+Epoch 47/50, Batch 1309/2188 (59.8%) - Loss: 88.396, box,cls,dfl: 1.164,0.593,1.006
+Epoch 47/50, Batch 1527/2188 (69.8%) - Loss: 87.128, box,cls,dfl: 1.159,0.589,0.975
+Epoch 47/50, Batch 1745/2188 (79.8%) - Loss: 86.947, box,cls,dfl: 1.188,0.578,0.952
+Epoch 47/50, Batch 1963/2188 (89.7%) - Loss: 82.315, box,cls,dfl: 1.077,0.554,0.941
+Epoch 47/50, Batch 2181/2188 (99.7%) - Loss: 91.500, box,cls,dfl: 1.235,0.604,1.021
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.635      0.533      0.564       0.33
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 48/50, Batch 1/2188 (0.0%) - Loss: 83.976, box,cls,dfl: 1.097,0.549,0.978
+Epoch 48/50, Batch 219/2188 (10.0%) - Loss: 92.168, box,cls,dfl: 1.270,0.609,1.001
+Epoch 48/50, Batch 437/2188 (20.0%) - Loss: 97.316, box,cls,dfl: 1.397,0.654,0.990
+Epoch 48/50, Batch 655/2188 (29.9%) - Loss: 84.426, box,cls,dfl: 1.136,0.565,0.937
+Epoch 48/50, Batch 873/2188 (39.9%) - Loss: 93.152, box,cls,dfl: 1.259,0.671,0.981
+Epoch 48/50, Batch 1091/2188 (49.9%) - Loss: 84.131, box,cls,dfl: 1.115,0.565,0.949
+Epoch 48/50, Batch 1309/2188 (59.8%) - Loss: 83.875, box,cls,dfl: 1.107,0.586,0.928
+Epoch 48/50, Batch 1527/2188 (69.8%) - Loss: 90.737, box,cls,dfl: 1.214,0.612,1.010
+Epoch 48/50, Batch 1745/2188 (79.8%) - Loss: 88.492, box,cls,dfl: 1.204,0.576,0.985
+Epoch 48/50, Batch 1963/2188 (89.7%) - Loss: 84.155, box,cls,dfl: 1.132,0.580,0.918
+Epoch 48/50, Batch 2181/2188 (99.7%) - Loss: 92.802, box,cls,dfl: 1.255,0.602,1.043
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+s                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.635      0.533      0.564       0.33
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 49/50, Batch 1/2188 (0.0%) - Loss: 85.003, box,cls,dfl: 1.129,0.562,0.965
+Epoch 49/50, Batch 219/2188 (10.0%) - Loss: 89.270, box,cls,dfl: 1.231,0.564,0.995
+Epoch 49/50, Batch 437/2188 (20.0%) - Loss: 97.522, box,cls,dfl: 1.402,0.659,0.987
+Epoch 49/50, Batch 655/2188 (29.9%) - Loss: 83.055, box,cls,dfl: 1.140,0.535,0.920
+Epoch 49/50, Batch 873/2188 (39.9%) - Loss: 98.844, box,cls,dfl: 1.326,0.693,1.070
+Epoch 49/50, Batch 1091/2188 (49.9%) - Loss: 79.828, box,cls,dfl: 1.080,0.512,0.903
+Epoch 49/50, Batch 1309/2188 (59.8%) - Loss: 86.753, box,cls,dfl: 1.134,0.617,0.960
+Epoch 49/50, Batch 1527/2188 (69.8%) - Loss: 90.742, box,cls,dfl: 1.280,0.558,0.997
+Epoch 49/50, Batch 1745/2188 (79.8%) - Loss: 80.238, box,cls,dfl: 1.078,0.520,0.909
+Epoch 49/50, Batch 1963/2188 (89.7%) - Loss: 86.027, box,cls,dfl: 1.141,0.607,0.940
+Epoch 49/50, Batch 2181/2188 (99.7%) - Loss: 89.591, box,cls,dfl: 1.205,0.560,1.034
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.632      0.533      0.564       0.33
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 50/50, Batch 1/2188 (0.0%) - Loss: 89.443, box,cls,dfl: 1.182,0.577,1.036
+Epoch 50/50, Batch 219/2188 (10.0%) - Loss: 82.607, box,cls,dfl: 1.120,0.519,0.942
+Epoch 50/50, Batch 437/2188 (20.0%) - Loss: 102.009, box,cls,dfl: 1.474,0.668,1.046
+Epoch 50/50, Batch 655/2188 (29.9%) - Loss: 84.477, box,cls,dfl: 1.128,0.599,0.912
+Epoch 50/50, Batch 873/2188 (39.9%) - Loss: 91.100, box,cls,dfl: 1.233,0.637,0.976
+Epoch 50/50, Batch 1091/2188 (49.9%) - Loss: 87.393, box,cls,dfl: 1.168,0.602,0.961
+Epoch 50/50, Batch 1309/2188 (59.8%) - Loss: 81.191, box,cls,dfl: 1.060,0.528,0.948
+Epoch 50/50, Batch 1527/2188 (69.8%) - Loss: 88.688, box,cls,dfl: 1.229,0.592,0.950
+Epoch 50/50, Batch 1745/2188 (79.8%) - Loss: 88.828, box,cls,dfl: 1.207,0.587,0.982
+Epoch 50/50, Batch 1963/2188 (89.7%) - Loss: 88.773, box,cls,dfl: 1.185,0.578,1.011
+Epoch 50/50, Batch 2181/2188 (99.7%) - Loss: 94.969, box,cls,dfl: 1.243,0.687,1.038
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.619      0.531      0.564       0.33
+
+50 epochs completed in 4.016 hours.
+Optimizer stripped from runs/bdd100k/detect/baseline-yolov12l/train/weights/last.pt, 53.7MB
+Optimizer stripped from runs/bdd100k/detect/baseline-yolov12l/train/weights/best.pt, 53.7MB
+
+Validating runs/bdd100k/detect/baseline-yolov12l/train/weights/best.pt...
+Ultralytics 8.3.63 🚀 Python-3.11.13 torch-2.2.2+cu121 CUDA:0 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
+                                                       CUDA:1 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
+YOLOv12l summary (fused): 674 layers, 26,401,262 parameters, 0 gradients, 82.1 GFLOPs
+
+[*] FLOPs calculated at resolution: 384x672
+| module                 | #parameters or shape   | #flops   |
+|:-----------------------|:-----------------------|:---------|
+| base_model.model.model | 26.401M                | 25.861G  |
+| 0.conv                 | 1.792K                 | 0.111G   |
+| 0.conv.weight          | (64, 3, 3, 3)          |          |
+| 0.conv.bias            | (64,)                  |          |
+| 1.conv                 | 36.992K                | 0.595G   |
+| 1.conv.weight          | (128, 32, 3, 3)        |          |
+| 1.conv.bias            | (128,)                 |          |
+| 2                      | 0.173M                 | 2.775G   |
+| 2.cv1.conv             | 16.512K                | 0.264G   |
+| 2.cv1.conv.weight      | (128, 128, 1, 1)       |          |
+| 2.cv1.conv.bias        | (128,)                 |          |
+| 2.cv2.conv             | 65.792K                | 1.057G   |
+| 2.cv2.conv.weight      | (256, 256, 1, 1)       |          |
+| 2.cv2.conv.bias        | (256,)                 |          |
+| 2.m                    | 90.624K                | 1.453G   |
+| 2.m.0                  | 45.312K                | 0.727G   |
+| 2.m.1                  | 45.312K                | 0.727G   |
+| 3.conv                 | 0.148M                 | 0.595G   |
+| 3.conv.weight          | (256, 64, 3, 3)        |          |
+| 3.conv.bias            | (256,)                 |          |
+| 4                      | 0.69M                  | 2.775G   |
+| 4.cv1.conv             | 65.792K                | 0.264G   |
+| 4.cv1.conv.weight      | (256, 256, 1, 1)       |          |
+| 4.cv1.conv.bias        | (256,)                 |          |
+| 4.cv2.conv             | 0.263M                 | 1.057G   |
+| 4.cv2.conv.weight      | (512, 512, 1, 1)       |          |
+| 4.cv2.conv.bias        | (512,)                 |          |
+| 4.m                    | 0.361M                 | 1.453G   |
+| 4.m.0                  | 0.181M                 | 0.727G   |
+| 4.m.1                  | 0.181M                 | 0.727G   |
+| 5.conv                 | 2.36M                  | 2.378G   |
+| 5.conv.weight          | (512, 512, 3, 3)       |          |
+| 5.conv.bias            | (512,)                 |          |
+| 6                      | 4.524M                 | 4.544G   |
+| 6.gamma                | (512,)                 |          |
+| 6.cv1.conv             | 0.131M                 | 0.132G   |
+| 6.cv1.conv.weight      | (256, 512, 1, 1)       |          |
+| 6.cv1.conv.bias        | (256,)                 |          |
+| 6.cv2.conv             | 0.656M                 | 0.661G   |
+| 6.cv2.conv.weight      | (512, 1280, 1, 1)      |          |
+| 6.cv2.conv.bias        | (512,)                 |          |
+| 6.m                    | 3.737M                 | 3.751G   |
+| 6.m.0                  | 0.934M                 | 0.938G   |
+| 6.m.1                  | 0.934M                 | 0.938G   |
+| 6.m.2                  | 0.934M                 | 0.938G   |
+| 6.m.3                  | 0.934M                 | 0.938G   |
+| 7.conv                 | 2.36M                  | 0.595G   |
+| 7.conv.weight          | (512, 512, 3, 3)       |          |
+| 7.conv.bias            | (512,)                 |          |
+| 8                      | 4.524M                 | 1.136G   |
+| 8.gamma                | (512,)                 |          |
+| 8.cv1.conv             | 0.131M                 | 33.03M   |
+| 8.cv1.conv.weight      | (256, 512, 1, 1)       |          |
+| 8.cv1.conv.bias        | (256,)                 |          |
+| 8.cv2.conv             | 0.656M                 | 0.165G   |
+| 8.cv2.conv.weight      | (512, 1280, 1, 1)      |          |
+| 8.cv2.conv.bias        | (512,)                 |          |
+| 8.m                    | 3.737M                 | 0.938G   |
+| 8.m.0                  | 0.934M                 | 0.234G   |
+| 8.m.1                  | 0.934M                 | 0.234G   |
+| 8.m.2                  | 0.934M                 | 0.234G   |
+| 8.m.3                  | 0.934M                 | 0.234G   |
+| 11                     | 2.1M                   | 2.114G   |
+| 11.cv1.conv            | 0.262M                 | 0.264G   |
+| 11.cv1.conv.weight     | (256, 1024, 1, 1)      |          |
+| 11.cv1.conv.bias       | (256,)                 |          |
+| 11.cv2.conv            | 0.394M                 | 0.396G   |
+| 11.cv2.conv.weight     | (512, 768, 1, 1)       |          |
+| 11.cv2.conv.bias       | (512,)                 |          |
+| 11.m                   | 1.444M                 | 1.453G   |
+| 11.m.0                 | 0.722M                 | 0.727G   |
+| 11.m.1                 | 0.722M                 | 0.727G   |
+| 14                     | 0.591M                 | 2.378G   |
+| 14.cv1.conv            | 0.131M                 | 0.528G   |
+| 14.cv1.conv.weight     | (128, 1024, 1, 1)      |          |
+| 14.cv1.conv.bias       | (128,)                 |          |
+| 14.cv2.conv            | 98.56K                 | 0.396G   |
+| 14.cv2.conv.weight     | (256, 384, 1, 1)       |          |
+| 14.cv2.conv.bias       | (256,)                 |          |
+| 14.m                   | 0.361M                 | 1.453G   |
+| 14.m.0                 | 0.181M                 | 0.727G   |
+| 14.m.1                 | 0.181M                 | 0.727G   |
+| 15.conv                | 0.59M                  | 0.595G   |
+| 15.conv.weight         | (256, 256, 3, 3)       |          |
+| 15.conv.bias           | (256,)                 |          |
+| 17                     | 2.034M                 | 2.048G   |
+| 17.cv1.conv            | 0.197M                 | 0.198G   |
+| 17.cv1.conv.weight     | (256, 768, 1, 1)       |          |
+| 17.cv1.conv.bias       | (256,)                 |          |
+| 17.cv2.conv            | 0.394M                 | 0.396G   |
+| 17.cv2.conv.weight     | (512, 768, 1, 1)       |          |
+| 17.cv2.conv.bias       | (512,)                 |          |
+| 17.m                   | 1.444M                 | 1.453G   |
+| 17.m.0                 | 0.722M                 | 0.727G   |
+| 17.m.1                 | 0.722M                 | 0.727G   |
+| 18.conv                | 2.36M                  | 0.595G   |
+| 18.conv.weight         | (512, 512, 3, 3)       |          |
+| 18.conv.bias           | (512,)                 |          |
+| 20                     | 2.493M                 | 0.628G   |
+| 20.cv1.conv            | 0.525M                 | 0.132G   |
+| 20.cv1.conv.weight     | (512, 1024, 1, 1)      |          |
+| 20.cv1.conv.bias       | (512,)                 |          |
+| 20.cv2.conv            | 0.525M                 | 0.132G   |
+| 20.cv2.conv.weight     | (512, 1024, 1, 1)      |          |
+| 20.cv2.conv.bias       | (512,)                 |          |
+| 20.m                   | 1.444M                 | 0.363G   |
+| 20.m.0                 | 0.722M                 | 0.182G   |
+| 20.m.1                 | 0.722M                 | 0.182G   |
+| 21                     | 1.415M                 | 2G       |
+| 21.cv2                 | 0.861M                 | 1.183G   |
+| 21.cv2.0               | 0.189M                 | 0.76G    |
+| 21.cv2.1               | 0.336M                 | 0.339G   |
+| 21.cv2.2               | 0.336M                 | 84.64M   |
+| 21.cv3                 | 0.554M                 | 0.817G   |
+| 21.cv3.0               | 0.139M                 | 0.557G   |
+| 21.cv3.1               | 0.207M                 | 0.208G   |
+| 21.cv3.2               | 0.207M                 | 51.932M  |
+| 21.dfl.conv            | 16                     | 0.339M   |
+| 21.dfl.conv.weight     | (1, 16, 1, 1)          |          |
+| 9                      |                        | 0.516M   |
+| 12                     |                        | 2.064M   |
+  MACs  : 25.86 GMACs
+  FLOPs : 51.72 GFLOPs
+[*] Validation input tensor shape: torch.Size([32, 3, 384, 672])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.643      0.527      0.566      0.331
+                person       3220      13265      0.733      0.603      0.669      0.354
+                 rider        515        649      0.674      0.444      0.502      0.269
+                   car       9879     102540      0.803      0.735        0.8      0.507
+                   bus       1242       1597      0.665      0.587      0.648      0.509
+                 truck       2689       4247      0.634      0.631      0.655      0.486
+                  bike        578       1007      0.598      0.515      0.528      0.271
+                 motor        334        452      0.684      0.482      0.516      0.273
+         traffic light       5653      26891      0.734      0.537      0.613      0.242
+          traffic sign       8221      34915      0.725      0.619      0.681      0.369
+                 train         14         15      0.179      0.118     0.0455     0.0256
+Speed: 0.0ms preprocess, 1.2ms inference, 0.0ms loss, 0.3ms postprocess per image
+Results saved to [1mruns/bdd100k/detect/baseline-yolov12l/train[0m

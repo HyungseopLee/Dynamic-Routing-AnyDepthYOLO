@@ -41,7 +41,7 @@ else:
       epochs=50,
       optimizer='SGD', 
       momentum=0.900,  # default 0.937
-      batch=32, #s:128, l:64, orig:256,
+      batch=64, #s:128, l:64, orig:256,
       nbs=256, # default 256,
       lr0=1e-3, # initial lr: fromscratch=1e-2, finetuning:1e-3 or 1e-4
       lrf=1e-2, # lr0 ~ (lr0 * lrf)
@@ -50,9 +50,8 @@ else:
       imgsz=IMG_SIZE, 
       rect=True, # for 1280x720 (bdd100k). not 1280x1280
       
-      # single-? multi-scale?
-      # multi_scale=True,
-      # scale=0.5,  # image scale random augmentation +/- gain (n:0.5, S:0.9; M:0.9; L:0.9; X:0.9)
+      # # single-? multi-scale?
+      # scale=0.9,  # (float) image scale (+/- gain) (n:0.5, S:0.9; M:0.9; L:0.9; X:0.9)
       
       # data augmentation
       mosaic=0.0, # mosaic augmentation prob.
@@ -88,10 +87,10 @@ python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
   --task detect \
   --config ./ultralytics/cfg/models/v12/yolov12l.yaml \
   --data bdd100k.yaml \
-  --imgsz 1280 \
+  --imgsz 640 \
   --weight ./pretrained/yolov12l.pt \
   --project ./runs/bdd100k/detect/baseline-yolov12l \
-  2>&1 | tee ./runs/bdd100k/detect/baseline-yolov12l/50e_SGD0900_bs32_nbs256_1e-2_1e-4_640-360_singleScale_augNothing.log
+  2>&1 | tee ./runs/bdd100k/detect/baseline-yolov12l/50e_SGD0900_bs32_nbs256_1e-3_1e-5_640-640_singleScale_augNothing.log
 
 
 # Any-depth
@@ -105,7 +104,7 @@ python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
   --imgsz 640 \
   --weight ./pretrained/yolo-ad-exp8_105_epoch539_0.539_0.520.pt \
   --project ./runs/bdd100k/detect/anydepth-yolov12l \
-  2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12l/50e_SGD0900_bs32_nbs256_1e-3_1e-5_640-360_singleScale_test.log
+  2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12l/50e_SGD0900_bs64_nbs256_1e-3_1e-5_640-360_singleScale_augNothing.log
 
 
 '''
