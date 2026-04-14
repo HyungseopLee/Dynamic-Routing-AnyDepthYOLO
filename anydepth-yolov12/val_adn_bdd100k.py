@@ -70,9 +70,9 @@ else:
 mkdir -p ./runs/bdd100k/detect/baseline-yolov12l
 python val_adn_bdd100k.py \
     --imgsz 640 \
-    --weight /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/baseline-yolov12l/train/weights/best.pt \
-    --project /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/baseline-yolov12l/train \
-    2>&1 | tee /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/baseline-yolov12l/train/val.log
+    --weight /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/baseline-yolov12l/50e_SGD0937_bs32_nbs256_1e-3_1e-5_640-320_singleScale_augNothing/weights/best.pt \
+    --project /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/baseline-yolov12l/50e_SGD0937_bs32_nbs256_1e-3_1e-5_640-320_singleScale_augNothing \
+    2>&1 | tee /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/baseline-yolov12l/50e_SGD0937_bs32_nbs256_1e-3_1e-5_640-320_singleScale_augNothing/val.log
 
 
 # any-depth
@@ -80,9 +80,9 @@ python val_adn_bdd100k.py \
 mkdir -p ./runs/bdd100k/detect_wst/anydepth-yolov12l
 python val_adn_bdd100k.py \
     --imgsz 640 \
-    --weight /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/anydepth-yolov12l/50e_SGD0900_bs64_nbs256_1e-3_1e-5_640-360_singleScale_augNothing/weights/best.pt \
-    --project /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/anydepth-yolov12l/50e_SGD0900_bs64_nbs256_1e-3_1e-5_640-360_singleScale_augNothing \
-    2>&1 | tee /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/anydepth-yolov12l/50e_SGD0900_bs64_nbs256_1e-3_1e-5_640-360_singleScale_augNothing/val.log
+    --weight /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/anydepth-yolov12l/100e_SGD0900_bs32_nbs256_1e-3_1e-5_640-360_singleScale_augNothing/weights/best.pt \
+    --project /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/anydepth-yolov12l/100e_SGD0900_bs32_nbs256_1e-3_1e-5_640-360_singleScale_augNothing \
+    2>&1 | tee /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/anydepth-yolov12l/100e_SGD0900_bs32_nbs256_1e-3_1e-5_640-360_singleScale_augNothing/val.log
 
 
 

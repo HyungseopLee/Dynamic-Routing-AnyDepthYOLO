@@ -19,3 +19,4 @@ safetensors==0.4.3
 numpy==1.26.4
 supervision==0.22.0
 scikit-learn
+fvore
