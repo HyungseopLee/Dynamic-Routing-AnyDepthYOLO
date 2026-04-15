@@ -1,0 +1,40 @@
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:54: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+FlashAttention is not available on this device. Using scaled_dot_product_attention instead.
+[*] Loading model: /home/hslee/Desktop/Embedded_AI/context-anydepth-det/anydepth-yolov12/bdd_finetuned/baseline_best.pt
+task: detect
+Detected YOLOv12AnyDepth model from weights, switching to AnyDepth task_map
+[*] AnyDepth: True, num_skippable_layers: 8
+[*] Image size: (192, 640), Conf threshold: 0.5
+[*] Sequences: ['0000', '0001']
+[*] Output: ./runs/kitti/tracking/baseline-yolov12l/20260414_180310
+
+[*] Sequence 0000: 154 frames, 154 frames with GT
+  [50/154] latency=20.0ms  fps=50.1  det=7  gt=3
+  [100/154] latency=20.2ms  fps=49.6  det=6  gt=3
+  [150/154] latency=20.1ms  fps=49.7  det=13  gt=11
+  [154/154] latency=20.1ms  fps=49.8  det=12  gt=9
+
+  >> Seq 0000: mAP@50=0.4065  FPS=49.7  Latency=20.1ms  Energy=2757.0mJ
+
+[*] Sequence 0001: 447 frames, 426 frames with GT
+  [50/447] latency=20.2ms  fps=49.5  det=10  gt=8
+  [100/447] latency=20.0ms  fps=50.0  det=14  gt=10
+  [150/447] latency=19.8ms  fps=50.4  det=7  gt=6
+  [200/447] latency=19.8ms  fps=50.6  det=6  gt=3
+  [250/447] latency=19.8ms  fps=50.5  det=8  gt=9
+  [300/447] latency=19.9ms  fps=50.3  det=12  gt=9
+  [350/447] latency=20.1ms  fps=49.9  det=6  gt=7
+  [400/447] latency=19.8ms  fps=50.5  det=7  gt=2
+  [447/447] latency=19.8ms  fps=50.5  det=7  gt=0
+
+  >> Seq 0001: mAP@50=0.4058  FPS=49.9  Latency=20.0ms  Energy=2807.9mJ
+
+============================================================
+Overall Results (2 sequences, 601 frames):
+  mean AP@50:     0.4062
+  mean FPS:       49.8
+  mean Latency:   20.1 ms
+  mean Energy:    2782.4 mJ
+============================================================
+Results saved to: ./runs/kitti/tracking/baseline-yolov12l/20260414_180310
