@@ -1,0 +1,2438 @@
+WARNING:__main__:
+*****************************************
+Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+*****************************************
+Loading YOLOv12 Any-Depth model from ultralytics/cfg/models/v12/yolo-ad-v12l.yaml
+[*] Image size: 1280
+[*] Starting new training using weight: ./pretrained/yolo-ad-exp8_105_epoch539_0.539_0.520.pt
+task: detect
+Loading YOLOv12 Any-Depth model from ultralytics/cfg/models/v12/yolo-ad-v12l.yaml
+Found YOLOv12 Any-Depth model scale: l
+Found YOLOv12 Any-Depth model scale: l
+Transferred 1943/1943 items from pretrained weights
+Ultralytics 8.3.63 🚀 Python-3.11.13 torch-2.2.2+cu121 CUDA:0 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
+                                                       CUDA:1 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
+Overriding model.yaml nc=80 with nc=10
+Transferred 1937/1943 items from pretrained weights
+Not transferred items (6):
+  - [Shape Mismatch] model.21.cv3.0.2.bias: model [10] != pretrained [80]
+  - [Shape Mismatch] model.21.cv3.0.2.weight: model [10, 256, 1, 1] != pretrained [80, 256, 1, 1]
+  - [Shape Mismatch] model.21.cv3.1.2.bias: model [10] != pretrained [80]
+  - [Shape Mismatch] model.21.cv3.1.2.weight: model [10, 256, 1, 1] != pretrained [80, 256, 1, 1]
+  - [Shape Mismatch] model.21.cv3.2.2.bias: model [10] != pretrained [80]
+  - [Shape Mismatch] model.21.cv3.2.2.weight: model [10, 256, 1, 1] != pretrained [80, 256, 1, 1]
+Freezing layer 'model.21.dfl.conv.weight'
+[34m[1mAMP: [0mrunning Automatic Mixed Precision (AMP) checks...
+task: None
+[34m[1mAMP: [0mchecks passed ✅
+[34m[1mtrain: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s][34m[1mtrain: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s]
+[34m[1mtrain: [0mWARNING ⚠️ /media/data/bdd100k_yolo/train/images/75055858-7d04a650.jpg: 1 duplicate labels removed
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/albumentations/__init__.py:28: UserWarning: A new version of Albumentations is available: '2.0.8' (you have '2.0.4'). Upgrade using: pip install -U albumentations. To disable automatic update checks, set the environment variable NO_ALBUMENTATIONS_UPDATE to 1.
+  check_for_updates()
+[34m[1malbumentations: [0mBlur(p=0.01, blur_limit=(3, 7)), MedianBlur(p=0.01, blur_limit=(3, 7)), ToGray(p=0.01, num_output_channels=3, method='weighted_average'), CLAHE(p=0.01, clip_limit=(1.0, 4.0), tile_grid_size=(8, 8))
+WARNING ⚠️ 'rect=True' is incompatible with DataLoader shuffle, setting shuffle=False
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s][34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/albumentations/__init__.py:28: UserWarning: A new version of Albumentations is available: '2.0.8' (you have '2.0.4'). Upgrade using: pip install -U albumentations. To disable automatic update checks, set the environment variable NO_ALBUMENTATIONS_UPDATE to 1.
+  check_for_updates()
+Plotting labels to runs/bdd100k/detect/anydepth-yolov12l/train/labels.jpg... 
+[34m[1moptimizer:[0m SGD(lr=0.001, momentum=0.9) with parameter groups 341 weight(decay=0.0), 232 weight(decay=0.0005), 347 bias(decay=0.0)
+DistributedDataParallel(
+  (module): DetectionModelAnyDepth(
+    (model): Sequential(
+      (0): Conv(
+        (conv): Conv2d(3, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+      (1): Conv(
+        (conv): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=2, bias=False)
+        (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+      (2): SwitchableC3k2(
+        (cv1): SwitchableConv(
+          (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): SwitchableConv(
+          (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0-1): 2 x SkippableC3k(
+            (cv1): SwitchableConv(
+              (conv): Conv2d(64, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): SwitchableConv(
+              (conv): Conv2d(64, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): SwitchableConv(
+              (conv): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): SkippableSequential(
+              (0): Bottleneck(
+                (cv1): SwitchableConv(
+                  (conv): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): SwitchableConv(
+                  (conv): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+        )
+      )
+      (3): SwitchableConv(
+        (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=4, bias=False)
+        (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+      (4): SwitchableC3k2(
+        (cv1): SwitchableConv(
+          (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): SwitchableConv(
+          (conv): Conv2d(512, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0-1): 2 x SkippableC3k(
+            (cv1): SwitchableConv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): SwitchableConv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): SwitchableConv(
+              (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): SkippableSequential(
+              (0): Bottleneck(
+                (cv1): SwitchableConv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): SwitchableConv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+        )
+      )
+      (5): SwitchableConv(
+        (conv): Conv2d(512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (bn_skip): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+      (6): SkippableA2C2f(
+        (cv1): SwitchableConv(
+          (conv): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): SwitchableConv(
+          (conv): Conv2d(1280, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (conv_skip): Conv2d(768, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0-1): 2 x SwitchableSequential(
+            (0): ABlock(
+              (attn): SwitchableAAttn(
+                (qk): SwitchableConv(
+                  (conv): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (v): SwitchableConv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (proj): SwitchableConv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (pe): SwitchableConv(
+                  (conv): Conv2d(256, 256, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=256, bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+              (mlp): SwitchableSequential(
+                (0): SwitchableConv(
+                  (conv): Conv2d(256, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(384, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(384, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (1): SwitchableConv(
+                  (conv): Conv2d(384, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+            )
+            (1): ABlock(
+              (attn): SwitchableAAttn(
+                (qk): SwitchableConv(
+                  (conv): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (v): SwitchableConv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (proj): SwitchableConv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (pe): SwitchableConv(
+                  (conv): Conv2d(256, 256, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=256, bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+              (mlp): SwitchableSequential(
+                (0): SwitchableConv(
+                  (conv): Conv2d(256, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(384, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(384, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (1): SwitchableConv(
+                  (conv): Conv2d(384, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+            )
+          )
+          (2-3): 2 x Sequential(
+            (0): ABlock(
+              (attn): AAttn(
+                (qk): Conv(
+                  (conv): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (v): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (proj): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (pe): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=256, bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+              (mlp): Sequential(
+                (0): Conv(
+                  (conv): Conv2d(256, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(384, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (1): Conv(
+                  (conv): Conv2d(384, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+            )
+            (1): ABlock(
+              (attn): AAttn(
+                (qk): Conv(
+                  (conv): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (v): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (proj): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (pe): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=256, bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+              (mlp): Sequential(
+                (0): Conv(
+                  (conv): Conv2d(256, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(384, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (1): Conv(
+                  (conv): Conv2d(384, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+            )
+          )
+        )
+      )
+      (7): SwitchableConv(
+        (conv): Conv2d(512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (bn_skip): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+      (8): SkippableA2C2f(
+        (cv1): SwitchableConv(
+          (conv): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): SwitchableConv(
+          (conv): Conv2d(1280, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (conv_skip): Conv2d(768, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0-1): 2 x SwitchableSequential(
+            (0): ABlock(
+              (attn): SwitchableAAttn(
+                (qk): SwitchableConv(
+                  (conv): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (v): SwitchableConv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (proj): SwitchableConv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (pe): SwitchableConv(
+                  (conv): Conv2d(256, 256, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=256, bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+              (mlp): SwitchableSequential(
+                (0): SwitchableConv(
+                  (conv): Conv2d(256, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(384, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(384, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (1): SwitchableConv(
+                  (conv): Conv2d(384, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+            )
+            (1): ABlock(
+              (attn): SwitchableAAttn(
+                (qk): SwitchableConv(
+                  (conv): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (v): SwitchableConv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (proj): SwitchableConv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (pe): SwitchableConv(
+                  (conv): Conv2d(256, 256, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=256, bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+              (mlp): SwitchableSequential(
+                (0): SwitchableConv(
+                  (conv): Conv2d(256, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(384, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(384, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (1): SwitchableConv(
+                  (conv): Conv2d(384, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+            )
+          )
+          (2-3): 2 x Sequential(
+            (0): ABlock(
+              (attn): AAttn(
+                (qk): Conv(
+                  (conv): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (v): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (proj): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (pe): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=256, bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+              (mlp): Sequential(
+                (0): Conv(
+                  (conv): Conv2d(256, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(384, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (1): Conv(
+                  (conv): Conv2d(384, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+            )
+            (1): ABlock(
+              (attn): AAttn(
+                (qk): Conv(
+                  (conv): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (v): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (proj): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (pe): Conv(
+                  (conv): Conv2d(256, 256, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=256, bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+              (mlp): Sequential(
+                (0): Conv(
+                  (conv): Conv2d(256, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(384, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (1): Conv(
+                  (conv): Conv2d(384, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+            )
+          )
+        )
+      )
+      (9): Upsample(scale_factor=2.0, mode='nearest')
+      (10): Concat()
+      (11): SkippableA2C2f(
+        (cv1): SwitchableConv(
+          (conv): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): SwitchableConv(
+          (conv): Conv2d(768, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0): C3k(
+            (cv1): SwitchableConv(
+              (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): SwitchableConv(
+              (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): SwitchableConv(
+              (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): SwitchableSequential(
+              (0): Bottleneck(
+                (cv1): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+          (1): C3k(
+            (cv1): Conv(
+              (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): Conv(
+              (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): Conv(
+              (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): Sequential(
+              (0): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+        )
+      )
+      (12): Upsample(scale_factor=2.0, mode='nearest')
+      (13): Concat()
+      (14): SkippableA2C2f(
+        (cv1): SwitchableConv(
+          (conv): Conv2d(1024, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): SwitchableConv(
+          (conv): Conv2d(384, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0): C3k(
+            (cv1): SwitchableConv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): SwitchableConv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): SwitchableConv(
+              (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): SwitchableSequential(
+              (0): Bottleneck(
+                (cv1): SwitchableConv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): SwitchableConv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): SwitchableConv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): SwitchableConv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+          (1): C3k(
+            (cv1): Conv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): Conv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): Conv(
+              (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): Sequential(
+              (0): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+        )
+      )
+      (15): SwitchableConv(
+        (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+      (16): Concat()
+      (17): SkippableA2C2f(
+        (cv1): SwitchableConv(
+          (conv): Conv2d(768, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): SwitchableConv(
+          (conv): Conv2d(768, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0): C3k(
+            (cv1): SwitchableConv(
+              (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): SwitchableConv(
+              (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): SwitchableConv(
+              (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): SwitchableSequential(
+              (0): Bottleneck(
+                (cv1): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+          (1): C3k(
+            (cv1): Conv(
+              (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): Conv(
+              (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): Conv(
+              (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): Sequential(
+              (0): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+        )
+      )
+      (18): SwitchableConv(
+        (conv): Conv2d(512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (bn_skip): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+      (19): Concat()
+      (20): SwitchableC3k2(
+        (cv1): SwitchableConv(
+          (conv): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): SwitchableConv(
+          (conv): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0-1): 2 x SkippableC3k(
+            (cv1): SwitchableConv(
+              (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): SwitchableConv(
+              (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): SwitchableConv(
+              (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): SkippableSequential(
+              (0): Bottleneck(
+                (cv1): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+        )
+      )
+      (21): Detect(
+        (cv2): ModuleList(
+          (0): Sequential(
+            (0): Conv(
+              (conv): Conv2d(256, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (1): Conv(
+              (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (2): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (1-2): 2 x Sequential(
+            (0): Conv(
+              (conv): Conv2d(512, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (1): Conv(
+              (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (2): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1))
+          )
+        )
+        (cv3): ModuleList(
+          (0): Sequential(
+            (0): Sequential(
+              (0): DWConv(
+                (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256, bias=False)
+                (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+              (1): Conv(
+                (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+            )
+            (1): Sequential(
+              (0): DWConv(
+                (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256, bias=False)
+                (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+              (1): Conv(
+                (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+            )
+            (2): Conv2d(256, 10, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (1-2): 2 x Sequential(
+            (0): Sequential(
+              (0): DWConv(
+                (conv): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=512, bias=False)
+                (bn): BatchNorm2d(512, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+              (1): Conv(
+                (conv): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+            )
+            (1): Sequential(
+              (0): DWConv(
+                (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256, bias=False)
+                (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+              (1): Conv(
+                (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+            )
+            (2): Conv2d(256, 10, kernel_size=(1, 1), stride=(1, 1))
+          )
+        )
+        (dfl): DFL(
+          (conv): Conv2d(16, 1, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        )
+      )
+    )
+  )
+)
+Image sizes 1280 train, 1280 val
+Using 16 dataloader workers
+Logging results to [1mruns/bdd100k/detect/anydepth-yolov12l/train[0m
+Starting training for 30 epochs...
+
+[FLOPs] Super model (skip=False) @ 736x1280:
+| module             | #parameters or shape   | #flops   |
+|:-------------------|:-----------------------|:---------|
+| base_model.model   | 27.296M                | 94.917G  |
+| 0                  | 1.856K                 | 0.437G   |
+| 0.conv             | 1.728K                 | 0.407G   |
+| 0.conv.weight      | (64, 3, 3, 3)          |          |
+| 0.bn               | 0.128K                 | 30.147M  |
+| 0.bn.weight        | (64,)                  |          |
+| 0.bn.bias          | (64,)                  |          |
+| 1                  | 37.12K                 | 2.186G   |
+| 1.conv             | 36.864K                | 2.171G   |
+| 1.conv.weight      | (128, 32, 3, 3)        |          |
+| 1.bn               | 0.256K                 | 15.073M  |
+| 1.bn.weight        | (128,)                 |          |
+| 1.bn.bias          | (128,)                 |          |
+| 2                  | 0.175M                 | 10.235G  |
+| 2.cv1              | 16.896K                | 0.98G    |
+| 2.cv1.conv         | 16.384K                | 0.965G   |
+| 2.cv1.bn           | 0.256K                 | 15.073M  |
+| 2.cv1.bn_skip      | 0.256K                 |          |
+| 2.cv2              | 66.56K                 | 3.889G   |
+| 2.cv2.conv         | 65.536K                | 3.859G   |
+| 2.cv2.bn           | 0.512K                 | 30.147M  |
+| 2.cv2.bn_skip      | 0.512K                 |          |
+| 2.m                | 91.904K                | 5.366G   |
+| 2.m.0              | 45.952K                | 2.683G   |
+| 2.m.1              | 45.952K                | 2.683G   |
+| 3                  | 0.148M                 | 2.178G   |
+| 3.conv             | 0.147M                 | 2.171G   |
+| 3.conv.weight      | (256, 64, 3, 3)        |          |
+| 3.bn               | 0.512K                 | 7.537M   |
+| 3.bn.weight        | (256,)                 |          |
+| 3.bn.bias          | (256,)                 |          |
+| 3.bn_skip          | 0.512K                 |          |
+| 3.bn_skip.weight   | (256,)                 |          |
+| 3.bn_skip.bias     | (256,)                 |          |
+| 4                  | 0.695M                 | 10.182G  |
+| 4.cv1              | 66.56K                 | 0.972G   |
+| 4.cv1.conv         | 65.536K                | 0.965G   |
+| 4.cv1.bn           | 0.512K                 | 7.537M   |
+| 4.cv1.bn_skip      | 0.512K                 |          |
+| 4.cv2              | 0.264M                 | 3.874G   |
+| 4.cv2.conv         | 0.262M                 | 3.859G   |
+| 4.cv2.bn           | 1.024K                 | 15.073M  |
+| 4.cv2.bn_skip      | 1.024K                 |          |
+| 4.m                | 0.364M                 | 5.336G   |
+| 4.m.0              | 0.182M                 | 2.668G   |
+| 4.m.1              | 0.182M                 | 2.668G   |
+| 5                  | 2.361M                 | 8.686G   |
+| 5.conv             | 2.359M                 | 8.682G   |
+| 5.conv.weight      | (512, 512, 3, 3)       |          |
+| 5.bn               | 1.024K                 | 3.768M   |
+| 5.bn.weight        | (512,)                 |          |
+| 5.bn.bias          | (512,)                 |          |
+| 5.bn_skip          | 1.024K                 |          |
+| 5.bn_skip.weight   | (512,)                 |          |
+| 5.bn_skip.bias     | (512,)                 |          |
+| 6                  | 4.951M                 | 16.707G  |
+| 6.gamma            | (512,)                 |          |
+| 6.cv1              | 0.132M                 | 0.484G   |
+| 6.cv1.conv         | 0.131M                 | 0.482G   |
+| 6.cv1.bn           | 0.512K                 | 1.884M   |
+| 6.cv1.bn_skip      | 0.512K                 |          |
+| 6.cv2              | 1.051M                 | 2.415G   |
+| 6.cv2.conv         | 0.655M                 | 2.412G   |
+| 6.cv2.bn           | 1.024K                 | 3.768M   |
+| 6.cv2.bn_skip      | 1.024K                 |          |
+| 6.cv2.conv_skip    | 0.393M                 |          |
+| 6.m                | 3.767M                 | 13.807G  |
+| 6.m.0              | 0.946M                 | 3.452G   |
+| 6.m.1              | 0.946M                 | 3.452G   |
+| 6.m.2              | 0.938M                 | 3.452G   |
+| 6.m.3              | 0.938M                 | 3.452G   |
+| 7                  | 2.361M                 | 2.171G   |
+| 7.conv             | 2.359M                 | 2.171G   |
+| 7.conv.weight      | (512, 512, 3, 3)       |          |
+| 7.bn               | 1.024K                 | 0.942M   |
+| 7.bn.weight        | (512,)                 |          |
+| 7.bn.bias          | (512,)                 |          |
+| 7.bn_skip          | 1.024K                 |          |
+| 7.bn_skip.weight   | (512,)                 |          |
+| 7.bn_skip.bias     | (512,)                 |          |
+| 8                  | 4.951M                 | 4.177G   |
+| 8.gamma            | (512,)                 |          |
+| 8.cv1              | 0.132M                 | 0.121G   |
+| 8.cv1.conv         | 0.131M                 | 0.121G   |
+| 8.cv1.bn           | 0.512K                 | 0.471M   |
+| 8.cv1.bn_skip      | 0.512K                 |          |
+| 8.cv2              | 1.051M                 | 0.604G   |
+| 8.cv2.conv         | 0.655M                 | 0.603G   |
+| 8.cv2.bn           | 1.024K                 | 0.942M   |
+| 8.cv2.bn_skip      | 1.024K                 |          |
+| 8.cv2.conv_skip    | 0.393M                 |          |
+| 8.m                | 3.767M                 | 3.452G   |
+| 8.m.0              | 0.946M                 | 0.863G   |
+| 8.m.1              | 0.946M                 | 0.863G   |
+| 8.m.2              | 0.938M                 | 0.863G   |
+| 8.m.3              | 0.938M                 | 0.863G   |
+| 11                 | 2.106M                 | 7.738G   |
+| 11.cv1             | 0.263M                 | 0.967G   |
+| 11.cv1.conv        | 0.262M                 | 0.965G   |
+| 11.cv1.bn          | 0.512K                 | 1.884M   |
+| 11.cv1.bn_skip     | 0.512K                 |          |
+| 11.cv2             | 0.395M                 | 1.451G   |
+| 11.cv2.conv        | 0.393M                 | 1.447G   |
+| 11.cv2.bn          | 1.024K                 | 3.768M   |
+| 11.cv2.bn_skip     | 1.024K                 |          |
+| 11.m               | 1.448M                 | 5.321G   |
+| 11.m.0             | 0.725M                 | 2.66G    |
+| 11.m.1             | 0.723M                 | 2.66G    |
+| 14                 | 0.594M                 | 8.724G   |
+| 14.cv1             | 0.132M                 | 1.933G   |
+| 14.cv1.conv        | 0.131M                 | 1.929G   |
+| 14.cv1.bn          | 0.256K                 | 3.768M   |
+| 14.cv1.bn_skip     | 0.256K                 |          |
+| 14.cv2             | 99.328K                | 1.455G   |
+| 14.cv2.conv        | 98.304K                | 1.447G   |
+| 14.cv2.bn          | 0.512K                 | 7.537M   |
+| 14.cv2.bn_skip     | 0.512K                 |          |
+| 14.m               | 0.364M                 | 5.336G   |
+| 14.m.0             | 0.182M                 | 2.668G   |
+| 14.m.1             | 0.181M                 | 2.668G   |
+| 15                 | 0.591M                 | 2.172G   |
+| 15.conv            | 0.59M                  | 2.171G   |
+| 15.conv.weight     | (256, 256, 3, 3)       |          |
+| 15.bn              | 0.512K                 | 1.884M   |
+| 15.bn.weight       | (256,)                 |          |
+| 15.bn.bias         | (256,)                 |          |
+| 15.bn_skip         | 0.512K                 |          |
+| 15.bn_skip.weight  | (256,)                 |          |
+| 15.bn_skip.bias    | (256,)                 |          |
+| 17                 | 2.041M                 | 7.497G   |
+| 17.cv1             | 0.198M                 | 0.725G   |
+| 17.cv1.conv        | 0.197M                 | 0.724G   |
+| 17.cv1.bn          | 0.512K                 | 1.884M   |
+| 17.cv1.bn_skip     | 0.512K                 |          |
+| 17.cv2             | 0.395M                 | 1.451G   |
+| 17.cv2.conv        | 0.393M                 | 1.447G   |
+| 17.cv2.bn          | 1.024K                 | 3.768M   |
+| 17.cv2.bn_skip     | 1.024K                 |          |
+| 17.m               | 1.448M                 | 5.321G   |
+| 17.m.0             | 0.725M                 | 2.66G    |
+| 17.m.1             | 0.723M                 | 2.66G    |
+| 18                 | 2.361M                 | 2.171G   |
+| 18.conv            | 2.359M                 | 2.171G   |
+| 18.conv.weight     | (512, 512, 3, 3)       |          |
+| 18.bn              | 1.024K                 | 0.942M   |
+| 18.bn.weight       | (512,)                 |          |
+| 18.bn.bias         | (512,)                 |          |
+| 18.bn_skip         | 1.024K                 |          |
+| 18.bn_skip.weight  | (512,)                 |          |
+| 18.bn_skip.bias    | (512,)                 |          |
+| 20                 | 2.502M                 | 2.297G   |
+| 20.cv1             | 0.526M                 | 0.483G   |
+| 20.cv1.conv        | 0.524M                 | 0.482G   |
+| 20.cv1.bn          | 1.024K                 | 0.942M   |
+| 20.cv1.bn_skip     | 1.024K                 |          |
+| 20.cv2             | 0.526M                 | 0.483G   |
+| 20.cv2.conv        | 0.524M                 | 0.482G   |
+| 20.cv2.bn          | 1.024K                 | 0.942M   |
+| 20.cv2.bn_skip     | 1.024K                 |          |
+| 20.m               | 1.449M                 | 1.33G    |
+| 20.m.0             | 0.724M                 | 0.665G   |
+| 20.m.1             | 0.724M                 | 0.665G   |
+| 21                 | 1.419M                 | 7.349G   |
+| 21.cv2             | 0.861M                 | 4.323G   |
+| 21.cv2.0           | 0.189M                 | 2.777G   |
+| 21.cv2.1           | 0.336M                 | 1.237G   |
+| 21.cv2.2           | 0.336M                 | 0.309G   |
+| 21.cv3             | 0.558M                 | 3.025G   |
+| 21.cv3.0           | 0.14M                  | 2.065G   |
+| 21.cv3.1           | 0.209M                 | 0.768G   |
+| 21.cv3.2           | 0.209M                 | 0.192G   |
+| 21.dfl.conv        | 16                     | 1.236M   |
+| 21.dfl.conv.weight | (1, 16, 1, 1)          |          |
+| 9                  |                        | 1.884M   |
+| 12                 |                        | 7.537M   |
+  MACs  (super): 94.92 GMACs
+  FLOPs (super): 189.83 GFLOPs
+
+[FLOPs] Base model (skip=True) @ 736x1280:
+| module             | #parameters or shape   | #flops   |
+|:-------------------|:-----------------------|:---------|
+| base_model.model   | 27.296M                | 70.739G  |
+| 0                  | 1.856K                 | 0.437G   |
+| 0.conv             | 1.728K                 | 0.407G   |
+| 0.conv.weight      | (64, 3, 3, 3)          |          |
+| 0.bn               | 0.128K                 | 30.147M  |
+| 0.bn.weight        | (64,)                  |          |
+| 0.bn.bias          | (64,)                  |          |
+| 1                  | 37.12K                 | 2.186G   |
+| 1.conv             | 36.864K                | 2.171G   |
+| 1.conv.weight      | (128, 32, 3, 3)        |          |
+| 1.bn               | 0.256K                 | 15.073M  |
+| 1.bn.weight        | (128,)                 |          |
+| 1.bn.bias          | (128,)                 |          |
+| 2                  | 0.175M                 | 8.049G   |
+| 2.cv1              | 16.896K                | 0.98G    |
+| 2.cv1.conv         | 16.384K                | 0.965G   |
+| 2.cv1.bn           | 0.256K                 |          |
+| 2.cv1.bn_skip      | 0.256K                 | 15.073M  |
+| 2.cv2              | 66.56K                 | 3.889G   |
+| 2.cv2.conv         | 65.536K                | 3.859G   |
+| 2.cv2.bn           | 0.512K                 |          |
+| 2.cv2.bn_skip      | 0.512K                 | 30.147M  |
+| 2.m                | 91.904K                | 3.18G    |
+| 2.m.0              | 45.952K                | 1.59G    |
+| 2.m.1              | 45.952K                | 1.59G    |
+| 3                  | 0.148M                 | 2.178G   |
+| 3.conv             | 0.147M                 | 2.171G   |
+| 3.conv.weight      | (256, 64, 3, 3)        |          |
+| 3.bn               | 0.512K                 |          |
+| 3.bn.weight        | (256,)                 |          |
+| 3.bn.bias          | (256,)                 |          |
+| 3.bn_skip          | 0.512K                 | 7.537M   |
+| 3.bn_skip.weight   | (256,)                 |          |
+| 3.bn_skip.bias     | (256,)                 |          |
+| 4                  | 0.695M                 | 8.004G   |
+| 4.cv1              | 66.56K                 | 0.972G   |
+| 4.cv1.conv         | 65.536K                | 0.965G   |
+| 4.cv1.bn           | 0.512K                 |          |
+| 4.cv1.bn_skip      | 0.512K                 | 7.537M   |
+| 4.cv2              | 0.264M                 | 3.874G   |
+| 4.cv2.conv         | 0.262M                 | 3.859G   |
+| 4.cv2.bn           | 1.024K                 |          |
+| 4.cv2.bn_skip      | 1.024K                 | 15.073M  |
+| 4.m                | 0.364M                 | 3.158G   |
+| 4.m.0              | 0.182M                 | 1.579G   |
+| 4.m.1              | 0.182M                 | 1.579G   |
+| 5                  | 2.361M                 | 8.686G   |
+| 5.conv             | 2.359M                 | 8.682G   |
+| 5.conv.weight      | (512, 512, 3, 3)       |          |
+| 5.bn               | 1.024K                 |          |
+| 5.bn.weight        | (512,)                 |          |
+| 5.bn.bias          | (512,)                 |          |
+| 5.bn_skip          | 1.024K                 | 3.768M   |
+| 5.bn_skip.weight   | (512,)                 |          |
+| 5.bn_skip.bias     | (512,)                 |          |
+| 6                  | 4.951M                 | 8.839G   |
+| 6.gamma            | (512,)                 |          |
+| 6.cv1              | 0.132M                 | 0.484G   |
+| 6.cv1.conv         | 0.131M                 | 0.482G   |
+| 6.cv1.bn           | 0.512K                 |          |
+| 6.cv1.bn_skip      | 0.512K                 | 1.884M   |
+| 6.cv2              | 1.051M                 | 1.451G   |
+| 6.cv2.conv         | 0.655M                 |          |
+| 6.cv2.bn           | 1.024K                 |          |
+| 6.cv2.bn_skip      | 1.024K                 | 3.768M   |
+| 6.cv2.conv_skip    | 0.393M                 | 1.447G   |
+| 6.m                | 3.767M                 | 6.904G   |
+| 6.m.0              | 0.946M                 | 3.452G   |
+| 6.m.1              | 0.946M                 | 3.452G   |
+| 6.m.2              | 0.938M                 |          |
+| 6.m.3              | 0.938M                 |          |
+| 7                  | 2.361M                 | 2.171G   |
+| 7.conv             | 2.359M                 | 2.171G   |
+| 7.conv.weight      | (512, 512, 3, 3)       |          |
+| 7.bn               | 1.024K                 |          |
+| 7.bn.weight        | (512,)                 |          |
+| 7.bn.bias          | (512,)                 |          |
+| 7.bn_skip          | 1.024K                 | 0.942M   |
+| 7.bn_skip.weight   | (512,)                 |          |
+| 7.bn_skip.bias     | (512,)                 |          |
+| 8                  | 4.951M                 | 2.21G    |
+| 8.gamma            | (512,)                 |          |
+| 8.cv1              | 0.132M                 | 0.121G   |
+| 8.cv1.conv         | 0.131M                 | 0.121G   |
+| 8.cv1.bn           | 0.512K                 |          |
+| 8.cv1.bn_skip      | 0.512K                 | 0.471M   |
+| 8.cv2              | 1.051M                 | 0.363G   |
+| 8.cv2.conv         | 0.655M                 |          |
+| 8.cv2.bn           | 1.024K                 |          |
+| 8.cv2.bn_skip      | 1.024K                 | 0.942M   |
+| 8.cv2.conv_skip    | 0.393M                 | 0.362G   |
+| 8.m                | 3.767M                 | 1.726G   |
+| 8.m.0              | 0.946M                 | 0.863G   |
+| 8.m.1              | 0.946M                 | 0.863G   |
+| 8.m.2              | 0.938M                 |          |
+| 8.m.3              | 0.938M                 |          |
+| 11                 | 2.106M                 | 4.595G   |
+| 11.cv1             | 0.263M                 | 0.967G   |
+| 11.cv1.conv        | 0.262M                 | 0.965G   |
+| 11.cv1.bn          | 0.512K                 |          |
+| 11.cv1.bn_skip     | 0.512K                 | 1.884M   |
+| 11.cv2             | 0.395M                 | 0.968G   |
+| 11.cv2.conv        | 0.393M                 |          |
+| 11.cv2.bn          | 1.024K                 |          |
+| 11.cv2.bn_skip     | 1.024K                 | 3.768M   |
+| 11.m               | 1.448M                 | 2.66G    |
+| 11.m.0             | 0.725M                 | 2.66G    |
+| 11.m.1             | 0.723M                 |          |
+| 14                 | 0.594M                 | 5.573G   |
+| 14.cv1             | 0.132M                 | 1.933G   |
+| 14.cv1.conv        | 0.131M                 | 1.929G   |
+| 14.cv1.bn          | 0.256K                 |          |
+| 14.cv1.bn_skip     | 0.256K                 | 3.768M   |
+| 14.cv2             | 99.328K                | 0.972G   |
+| 14.cv2.conv        | 98.304K                |          |
+| 14.cv2.bn          | 0.512K                 |          |
+| 14.cv2.bn_skip     | 0.512K                 | 7.537M   |
+| 14.m               | 0.364M                 | 2.668G   |
+| 14.m.0             | 0.182M                 | 2.668G   |
+| 14.m.1             | 0.181M                 |          |
+| 15                 | 0.591M                 | 2.172G   |
+| 15.conv            | 0.59M                  | 2.171G   |
+| 15.conv.weight     | (256, 256, 3, 3)       |          |
+| 15.bn              | 0.512K                 |          |
+| 15.bn.weight       | (256,)                 |          |
+| 15.bn.bias         | (256,)                 |          |
+| 15.bn_skip         | 0.512K                 | 1.884M   |
+| 15.bn_skip.weight  | (256,)                 |          |
+| 15.bn_skip.bias    | (256,)                 |          |
+| 17                 | 2.041M                 | 4.354G   |
+| 17.cv1             | 0.198M                 | 0.725G   |
+| 17.cv1.conv        | 0.197M                 | 0.724G   |
+| 17.cv1.bn          | 0.512K                 |          |
+| 17.cv1.bn_skip     | 0.512K                 | 1.884M   |
+| 17.cv2             | 0.395M                 | 0.968G   |
+| 17.cv2.conv        | 0.393M                 |          |
+| 17.cv2.bn          | 1.024K                 |          |
+| 17.cv2.bn_skip     | 1.024K                 | 3.768M   |
+| 17.m               | 1.448M                 | 2.66G    |
+| 17.m.0             | 0.725M                 | 2.66G    |
+| 17.m.1             | 0.723M                 |          |
+| 18                 | 2.361M                 | 2.171G   |
+| 18.conv            | 2.359M                 | 2.171G   |
+| 18.conv.weight     | (512, 512, 3, 3)       |          |
+| 18.bn              | 1.024K                 |          |
+| 18.bn.weight       | (512,)                 |          |
+| 18.bn.bias         | (512,)                 |          |
+| 18.bn_skip         | 1.024K                 | 0.942M   |
+| 18.bn_skip.weight  | (512,)                 |          |
+| 18.bn_skip.bias    | (512,)                 |          |
+| 20                 | 2.502M                 | 1.753G   |
+| 20.cv1             | 0.526M                 | 0.483G   |
+| 20.cv1.conv        | 0.524M                 | 0.482G   |
+| 20.cv1.bn          | 1.024K                 |          |
+| 20.cv1.bn_skip     | 1.024K                 | 0.942M   |
+| 20.cv2             | 0.526M                 | 0.483G   |
+| 20.cv2.conv        | 0.524M                 | 0.482G   |
+| 20.cv2.bn          | 1.024K                 |          |
+| 20.cv2.bn_skip     | 1.024K                 | 0.942M   |
+| 20.m               | 1.449M                 | 0.787G   |
+| 20.m.0             | 0.724M                 | 0.393G   |
+| 20.m.1             | 0.724M                 | 0.393G   |
+| 21                 | 1.419M                 | 7.349G   |
+| 21.cv2             | 0.861M                 | 4.323G   |
+| 21.cv2.0           | 0.189M                 | 2.777G   |
+| 21.cv2.1           | 0.336M                 | 1.237G   |
+| 21.cv2.2           | 0.336M                 | 0.309G   |
+| 21.cv3             | 0.558M                 | 3.025G   |
+| 21.cv3.0           | 0.14M                  | 2.065G   |
+| 21.cv3.1           | 0.209M                 | 0.768G   |
+| 21.cv3.2           | 0.209M                 | 0.192G   |
+| 21.dfl.conv        | 16                     | 1.236M   |
+| 21.dfl.conv.weight | (1, 16, 1, 1)          |          |
+| 9                  |                        | 1.884M   |
+| 12                 |                        | 7.537M   |
+  MACs  (base): 70.74 GMACs
+  FLOPs (base): 141.48 GFLOPs
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/autograd/__init__.py:266: UserWarning: Grad strides do not match bucket view strides. This may indicate grad was not created according to the gradient layout contract, or that the param's strides changed since DDP was constructed.  This is not an error, but may impair performance.
+grad.sizes() = [256, 256, 1, 1], strides() = [256, 1, 256, 256]
+bucket_view.sizes() = [256, 256, 1, 1], strides() = [256, 1, 1, 1] (Triggered internally at ../torch/csrc/distributed/c10d/reducer.cpp:322.)
+  Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/autograd/__init__.py:266: UserWarning: Grad strides do not match bucket view strides. This may indicate grad was not created according to the gradient layout contract, or that the param's strides changed since DDP was constructed.  This is not an error, but may impair performance.
+grad.sizes() = [256, 256, 1, 1], strides() = [256, 1, 256, 256]
+bucket_view.sizes() = [256, 256, 1, 1], strides() = [256, 1, 1, 1] (Triggered internally at ../torch/csrc/distributed/c10d/reducer.cpp:322.)
+  Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+  Epoch 1/30  Batch 1/2188 (0.0%)  | Super 206.257 (box 1.5349  cls 3.6475  dfl 1.2632)  | Base 208.472 (box 1.5546  cls 3.6960  dfl 1.2641)  | KD 19.952 (box 0.51605  cls 0.10424  dfl 0.00146  feat 0.00174)
+  Epoch 1/30  Batch 219/2188 (10.0%)  | Super 164.836 (box 1.6718  cls 2.1337  dfl 1.3457)  | Base 165.799 (box 1.6534  cls 2.1904  dfl 1.3375)  | KD 20.161 (box 0.58102  cls 0.04532  dfl 0.00172  feat 0.00197)
+  Epoch 1/30  Batch 437/2188 (20.0%)  | Super 146.957 (box 1.7670  cls 1.5012  dfl 1.3242)  | Base 152.890 (box 1.7972  cls 1.6512  dfl 1.3294)  | KD 20.089 (box 0.58676  cls 0.03746  dfl 0.00163  feat 0.00193)
+  Epoch 1/30  Batch 655/2188 (29.9%)  | Super 118.806 (box 1.4171  cls 1.1332  dfl 1.1623)  | Base 121.961 (box 1.4306  cls 1.2162  dfl 1.1645)  | KD 13.168 (box 0.37929  cls 0.02978  dfl 0.00095  feat 0.00149)
+  Epoch 1/30  Batch 873/2188 (39.9%)  | Super 130.683 (box 1.5216  cls 1.3072  dfl 1.2550)  | Base 132.852 (box 1.5220  cls 1.3848  dfl 1.2447)  | KD 16.518 (box 0.47169  cls 0.04168  dfl 0.00121  feat 0.00162)
+  Epoch 1/30  Batch 1091/2188 (49.9%)  | Super 110.534 (box 1.3588  cls 0.9525  dfl 1.1429)  | Base 114.446 (box 1.3801  cls 1.0420  dfl 1.1543)  | KD 11.403 (box 0.33532  cls 0.01900  dfl 0.00077  feat 0.00127)
+  Epoch 1/30  Batch 1309/2188 (59.8%)  | Super 108.720 (box 1.3177  cls 0.9832  dfl 1.0966)  | Base 112.493 (box 1.3425  cls 1.0527  dfl 1.1202)  | KD 12.745 (box 0.36396  cls 0.03205  dfl 0.00087  feat 0.00139)
+  Epoch 1/30  Batch 1527/2188 (69.8%)  | Super 119.587 (box 1.4425  cls 1.1017  dfl 1.1928)  | Base 122.050 (box 1.4796  cls 1.1331  dfl 1.2013)  | KD 12.855 (box 0.36989  cls 0.02953  dfl 0.00086  feat 0.00144)
+  Epoch 1/30  Batch 1745/2188 (79.8%)  | Super 108.256 (box 1.3225  cls 0.9397  dfl 1.1207)  | Base 109.589 (box 1.3229  cls 0.9897  dfl 1.1120)  | KD 11.937 (box 0.34953  cls 0.02130  dfl 0.00074  feat 0.00144)
+  Epoch 1/30  Batch 1963/2188 (89.7%)  | Super 110.979 (box 1.3618  cls 0.9554  dfl 1.1509)  | Base 113.506 (box 1.3704  cls 1.0192  dfl 1.1576)  | KD 10.970 (box 0.32255  cls 0.01783  dfl 0.00075  feat 0.00169)
+  Epoch 1/30  Batch 2181/2188 (99.7%)  | Super 111.204 (box 1.3868  cls 0.9186  dfl 1.1697)  | Base 111.215 (box 1.3783  cls 0.9367  dfl 1.1605)  | KD 11.050 (box 0.31966  cls 0.02341  dfl 0.00071  feat 0.00154)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 1/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.699      0.422      0.477      0.274
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 1/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.666      0.414      0.464      0.262
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 2/30  Batch 1/2188 (0.0%)  | Super 118.025 (box 1.4370  cls 0.9926  dfl 1.2587)  | Base 121.805 (box 1.4762  cls 1.0412  dfl 1.2890)  | KD 12.227 (box 0.35065  cls 0.02902  dfl 0.00084  feat 0.00158)
+  Epoch 2/30  Batch 219/2188 (10.0%)  | Super 110.151 (box 1.4202  cls 0.8962  dfl 1.1258)  | Base 113.260 (box 1.4505  cls 0.9509  dfl 1.1380)  | KD 11.488 (box 0.33992  cls 0.01678  dfl 0.00081  feat 0.00149)
+  Epoch 2/30  Batch 437/2188 (20.0%)  | Super 127.987 (box 1.6718  cls 1.0270  dfl 1.3008)  | Base 129.582 (box 1.6614  cls 1.0922  dfl 1.2958)  | KD 13.427 (box 0.40229  cls 0.01485  dfl 0.00088  feat 0.00158)
+  Epoch 2/30  Batch 655/2188 (29.9%)  | Super 106.469 (box 1.3407  cls 0.8565  dfl 1.1300)  | Base 107.726 (box 1.3487  cls 0.8980  dfl 1.1197)  | KD 10.597 (box 0.31463  cls 0.01442  dfl 0.00066  feat 0.00145)
+  Epoch 2/30  Batch 873/2188 (39.9%)  | Super 122.874 (box 1.5054  cls 1.0831  dfl 1.2513)  | Base 124.614 (box 1.5205  cls 1.1283  dfl 1.2454)  | KD 12.087 (box 0.35953  cls 0.01586  dfl 0.00086  feat 0.00146)
+  Epoch 2/30  Batch 1091/2188 (49.9%)  | Super 99.679 (box 1.2923  cls 0.7632  dfl 1.0595)  | Base 102.087 (box 1.3121  cls 0.8160  dfl 1.0621)  | KD 9.524 (box 0.28544  cls 0.01028  dfl 0.00069  feat 0.00121)
+  Epoch 2/30  Batch 1309/2188 (59.8%)  | Super 100.406 (box 1.2921  cls 0.7898  dfl 1.0558)  | Base 101.478 (box 1.2959  cls 0.8196  dfl 1.0557)  | KD 9.553 (box 0.28450  cls 0.01217  dfl 0.00066  feat 0.00120)
+  Epoch 2/30  Batch 1527/2188 (69.8%)  | Super 112.856 (box 1.4282  cls 0.9182  dfl 1.1803)  | Base 115.284 (box 1.4426  cls 0.9744  dfl 1.1856)  | KD 10.359 (box 0.29713  cls 0.02467  dfl 0.00068  feat 0.00124)
+  Epoch 2/30  Batch 1745/2188 (79.8%)  | Super 103.836 (box 1.3035  cls 0.8204  dfl 1.1210)  | Base 106.923 (box 1.3428  cls 0.8661  dfl 1.1325)  | KD 10.304 (box 0.30520  cls 0.01489  dfl 0.00070  feat 0.00121)
+  Epoch 2/30  Batch 1963/2188 (89.7%)  | Super 105.522 (box 1.3312  cls 0.8551  dfl 1.1112)  | Base 107.475 (box 1.3350  cls 0.9188  dfl 1.1048)  | KD 10.013 (box 0.29920  cls 0.01176  dfl 0.00066  feat 0.00128)
+  Epoch 2/30  Batch 2181/2188 (99.7%)  | Super 106.663 (box 1.3687  cls 0.8045  dfl 1.1600)  | Base 108.479 (box 1.3680  cls 0.8663  dfl 1.1557)  | KD 9.809 (box 0.29187  cls 0.01261  dfl 0.00071  feat 0.00134)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 2/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.722      0.506       0.56      0.324
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 2/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.717       0.49      0.543       0.31
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 3/30  Batch 1/2188 (0.0%)  | Super 108.714 (box 1.3587  cls 0.8666  dfl 1.1720)  | Base 110.936 (box 1.3799  cls 0.9175  dfl 1.1694)  | KD 10.034 (box 0.29705  cls 0.01454  dfl 0.00068  feat 0.00131)
+  Epoch 3/30  Batch 219/2188 (10.0%)  | Super 112.871 (box 1.4509  cls 0.8935  dfl 1.1828)  | Base 113.594 (box 1.4481  cls 0.9228  dfl 1.1789)  | KD 10.312 (box 0.30502  cls 0.01518  dfl 0.00073  feat 0.00133)
+  Epoch 3/30  Batch 437/2188 (20.0%)  | Super 115.620 (box 1.5616  cls 0.9039  dfl 1.1476)  | Base 117.187 (box 1.5774  cls 0.9349  dfl 1.1498)  | KD 11.274 (box 0.33997  cls 0.01015  dfl 0.00069  feat 0.00150)
+  Epoch 3/30  Batch 655/2188 (29.9%)  | Super 104.270 (box 1.3208  cls 0.8091  dfl 1.1286)  | Base 105.644 (box 1.3415  cls 0.8354  dfl 1.1245)  | KD 8.936 (box 0.26719  cls 0.01023  dfl 0.00055  feat 0.00128)
+  Epoch 3/30  Batch 873/2188 (39.9%)  | Super 111.389 (box 1.4159  cls 0.9361  dfl 1.1288)  | Base 111.292 (box 1.4059  cls 0.9731  dfl 1.0988)  | KD 11.320 (box 0.33759  cls 0.01410  dfl 0.00079  feat 0.00128)
+  Epoch 3/30  Batch 1091/2188 (49.9%)  | Super 103.118 (box 1.3415  cls 0.7697  dfl 1.1113)  | Base 103.845 (box 1.3468  cls 0.7891  dfl 1.1093)  | KD 7.889 (box 0.23533  cls 0.00960  dfl 0.00049  feat 0.00111)
+  Epoch 3/30  Batch 1309/2188 (59.8%)  | Super 101.862 (box 1.2788  cls 0.7592  dfl 1.1452)  | Base 104.427 (box 1.3042  cls 0.8115  dfl 1.1476)  | KD 9.830 (box 0.29337  cls 0.01180  dfl 0.00065  feat 0.00135)
+  Epoch 3/30  Batch 1527/2188 (69.8%)  | Super 110.413 (box 1.4119  cls 0.8688  dfl 1.1697)  | Base 113.096 (box 1.4482  cls 0.9120  dfl 1.1741)  | KD 10.455 (box 0.30545  cls 0.01931  dfl 0.00081  feat 0.00113)
+  Epoch 3/30  Batch 1745/2188 (79.8%)  | Super 107.728 (box 1.3908  cls 0.8315  dfl 1.1442)  | Base 108.877 (box 1.3982  cls 0.8608  dfl 1.1434)  | KD 10.359 (box 0.31205  cls 0.00983  dfl 0.00076  feat 0.00109)
+  Epoch 3/30  Batch 1963/2188 (89.7%)  | Super 108.381 (box 1.3387  cls 0.8879  dfl 1.1603)  | Base 111.247 (box 1.3766  cls 0.9302  dfl 1.1697)  | KD 9.900 (box 0.29575  cls 0.01167  dfl 0.00066  feat 0.00130)
+  Epoch 3/30  Batch 2181/2188 (99.7%)  | Super 109.155 (box 1.4129  cls 0.7958  dfl 1.2023)  | Base 110.485 (box 1.4303  cls 0.8206  dfl 1.2017)  | KD 8.323 (box 0.24834  cls 0.01013  dfl 0.00051  feat 0.00111)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 3/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.632      0.529      0.582      0.339
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 3/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.631      0.512      0.569      0.327
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 4/30  Batch 1/2188 (0.0%)  | Super 106.820 (box 1.3614  cls 0.8102  dfl 1.1666)  | Base 108.035 (box 1.3625  cls 0.8470  dfl 1.1665)  | KD 9.706 (box 0.28755  cls 0.01406  dfl 0.00061  feat 0.00109)
+  Epoch 4/30  Batch 219/2188 (10.0%)  | Super 113.870 (box 1.4677  cls 0.8890  dfl 1.2018)  | Base 114.200 (box 1.4818  cls 0.9020  dfl 1.1849)  | KD 9.382 (box 0.28075  cls 0.01052  dfl 0.00067  feat 0.00125)
+  Epoch 4/30  Batch 437/2188 (20.0%)  | Super 114.040 (box 1.5431  cls 0.8793  dfl 1.1413)  | Base 115.402 (box 1.5579  cls 0.9099  dfl 1.1385)  | KD 11.334 (box 0.34329  cls 0.00908  dfl 0.00063  feat 0.00119)
+  Epoch 4/30  Batch 655/2188 (29.9%)  | Super 101.525 (box 1.2978  cls 0.7850  dfl 1.0899)  | Base 103.094 (box 1.3062  cls 0.8275  dfl 1.0880)  | KD 8.316 (box 0.25035  cls 0.00801  dfl 0.00051  feat 0.00101)
+  Epoch 4/30  Batch 873/2188 (39.9%)  | Super 113.109 (box 1.4355  cls 0.9012  dfl 1.1980)  | Base 113.601 (box 1.4346  cls 0.9196  dfl 1.1959)  | KD 10.278 (box 0.30887  cls 0.01050  dfl 0.00074  feat 0.00108)
+  Epoch 4/30  Batch 1091/2188 (49.9%)  | Super 98.452 (box 1.2922  cls 0.7232  dfl 1.0613)  | Base 99.679 (box 1.3098  cls 0.7437  dfl 1.0614)  | KD 7.778 (box 0.23532  cls 0.00628  dfl 0.00047  feat 0.00098)
+  Epoch 4/30  Batch 1309/2188 (59.8%)  | Super 99.336 (box 1.2870  cls 0.7174  dfl 1.0999)  | Base 99.595 (box 1.2855  cls 0.7362  dfl 1.0906)  | KD 8.156 (box 0.24646  cls 0.00678  dfl 0.00054  feat 0.00109)
+  Epoch 4/30  Batch 1527/2188 (69.8%)  | Super 108.274 (box 1.4087  cls 0.8370  dfl 1.1379)  | Base 111.146 (box 1.4502  cls 0.8812  dfl 1.1419)  | KD 9.281 (box 0.27408  cls 0.01422  dfl 0.00063  feat 0.00110)
+  Epoch 4/30  Batch 1745/2188 (79.8%)  | Super 101.259 (box 1.2970  cls 0.7678  dfl 1.0996)  | Base 102.898 (box 1.3068  cls 0.8079  dfl 1.1009)  | KD 9.365 (box 0.28218  cls 0.00867  dfl 0.00066  feat 0.00114)
+  Epoch 4/30  Batch 1963/2188 (89.7%)  | Super 103.613 (box 1.3312  cls 0.7823  dfl 1.1244)  | Base 104.779 (box 1.3296  cls 0.8310  dfl 1.1137)  | KD 8.576 (box 0.25894  cls 0.00722  dfl 0.00058  feat 0.00127)
+  Epoch 4/30  Batch 2181/2188 (99.7%)  | Super 106.576 (box 1.3808  cls 0.7389  dfl 1.2108)  | Base 108.957 (box 1.4193  cls 0.7652  dfl 1.2204)  | KD 8.144 (box 0.24363  cls 0.00906  dfl 0.00054  feat 0.00126)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 4/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.647      0.531      0.594      0.348
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 4/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.634      0.524      0.582      0.338
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 5/30  Batch 1/2188 (0.0%)  | Super 106.676 (box 1.3472  cls 0.8147  dfl 1.1717)  | Base 107.797 (box 1.3677  cls 0.8363  dfl 1.1646)  | KD 9.031 (box 0.26818  cls 0.01252  dfl 0.00055  feat 0.00097)
+  Epoch 5/30  Batch 219/2188 (10.0%)  | Super 105.112 (box 1.3839  cls 0.8112  dfl 1.0896)  | Base 106.077 (box 1.4038  cls 0.8169  dfl 1.0943)  | KD 8.841 (box 0.26703  cls 0.00757  dfl 0.00062  feat 0.00107)
+  Epoch 5/30  Batch 437/2188 (20.0%)  | Super 114.158 (box 1.5352  cls 0.8577  dfl 1.1745)  | Base 115.014 (box 1.5407  cls 0.8831  dfl 1.1704)  | KD 10.280 (box 0.31035  cls 0.00899  dfl 0.00065  feat 0.00124)
+  Epoch 5/30  Batch 655/2188 (29.9%)  | Super 101.514 (box 1.3213  cls 0.7371  dfl 1.1139)  | Base 102.752 (box 1.3367  cls 0.7839  dfl 1.0904)  | KD 8.022 (box 0.23918  cls 0.00998  dfl 0.00053  feat 0.00100)
+  Epoch 5/30  Batch 873/2188 (39.9%)  | Super 113.364 (box 1.4247  cls 0.9069  dfl 1.2111)  | Base 114.906 (box 1.4508  cls 0.9392  dfl 1.2008)  | KD 10.898 (box 0.32739  cls 0.01136  dfl 0.00075  feat 0.00107)
+  Epoch 5/30  Batch 1091/2188 (49.9%)  | Super 104.007 (box 1.3276  cls 0.7613  dfl 1.1613)  | Base 104.997 (box 1.3370  cls 0.7900  dfl 1.1542)  | KD 8.264 (box 0.24779  cls 0.00877  dfl 0.00052  feat 0.00117)
+  Epoch 5/30  Batch 1309/2188 (59.8%)  | Super 98.132 (box 1.2387  cls 0.7139  dfl 1.1140)  | Base 99.365 (box 1.2480  cls 0.7617  dfl 1.0955)  | KD 8.633 (box 0.25690  cls 0.01129  dfl 0.00059  feat 0.00102)
+  Epoch 5/30  Batch 1527/2188 (69.8%)  | Super 112.926 (box 1.4740  cls 0.8497  dfl 1.2052)  | Base 113.965 (box 1.4745  cls 0.8940  dfl 1.1929)  | KD 9.086 (box 0.26407  cls 0.01822  dfl 0.00065  feat 0.00100)
+  Epoch 5/30  Batch 1745/2188 (79.8%)  | Super 102.262 (box 1.3137  cls 0.7508  dfl 1.1311)  | Base 103.010 (box 1.3191  cls 0.7839  dfl 1.1161)  | KD 8.989 (box 0.27059  cls 0.00870  dfl 0.00063  feat 0.00100)
+  Epoch 5/30  Batch 1963/2188 (89.7%)  | Super 99.698 (box 1.2609  cls 0.7524  dfl 1.1022)  | Base 100.345 (box 1.2644  cls 0.7799  dfl 1.0915)  | KD 8.867 (box 0.26394  cls 0.01147  dfl 0.00055  feat 0.00115)
+  Epoch 5/30  Batch 2181/2188 (99.7%)  | Super 107.822 (box 1.3920  cls 0.7562  dfl 1.2212)  | Base 108.520 (box 1.4073  cls 0.7866  dfl 1.1974)  | KD 8.282 (box 0.24901  cls 0.00806  dfl 0.00049  feat 0.00125)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 5/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.641      0.541        0.6      0.352
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 5/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.635      0.533      0.591      0.343
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 6/30  Batch 1/2188 (0.0%)  | Super 104.655 (box 1.3428  cls 0.7764  dfl 1.1513)  | Base 105.483 (box 1.3450  cls 0.8120  dfl 1.1393)  | KD 8.559 (box 0.25445  cls 0.01151  dfl 0.00056  feat 0.00093)
+  Epoch 6/30  Batch 219/2188 (10.0%)  | Super 105.911 (box 1.3834  cls 0.7586  dfl 1.1678)  | Base 106.159 (box 1.3986  cls 0.7837  dfl 1.1352)  | KD 8.068 (box 0.24353  cls 0.00696  dfl 0.00058  feat 0.00106)
+  Epoch 6/30  Batch 437/2188 (20.0%)  | Super 115.314 (box 1.5471  cls 0.8849  dfl 1.1716)  | Base 115.705 (box 1.5438  cls 0.9148  dfl 1.1571)  | KD 10.345 (box 0.31374  cls 0.00790  dfl 0.00060  feat 0.00104)
+  Epoch 6/30  Batch 655/2188 (29.9%)  | Super 103.814 (box 1.3523  cls 0.7378  dfl 1.1540)  | Base 104.288 (box 1.3559  cls 0.7627  dfl 1.1404)  | KD 7.918 (box 0.23700  cls 0.00889  dfl 0.00049  feat 0.00107)
+  Epoch 6/30  Batch 873/2188 (39.9%)  | Super 113.566 (box 1.4162  cls 0.9200  dfl 1.2127)  | Base 115.012 (box 1.4334  cls 0.9502  dfl 1.2105)  | KD 10.380 (box 0.30874  cls 0.01386  dfl 0.00082  feat 0.00097)
+  Epoch 6/30  Batch 1091/2188 (49.9%)  | Super 99.506 (box 1.3004  cls 0.7215  dfl 1.0877)  | Base 101.056 (box 1.3241  cls 0.7525  dfl 1.0814)  | KD 8.295 (box 0.25118  cls 0.00647  dfl 0.00060  feat 0.00096)
+  Epoch 6/30  Batch 1309/2188 (59.8%)  | Super 99.658 (box 1.2817  cls 0.7390  dfl 1.0937)  | Base 100.811 (box 1.2915  cls 0.7607  dfl 1.0981)  | KD 9.126 (box 0.27309  cls 0.01046  dfl 0.00063  feat 0.00100)
+  Epoch 6/30  Batch 1527/2188 (69.8%)  | Super 108.494 (box 1.3994  cls 0.8164  dfl 1.1746)  | Base 110.479 (box 1.4281  cls 0.8592  dfl 1.1652)  | KD 8.077 (box 0.23992  cls 0.01094  dfl 0.00054  feat 0.00103)
+  Epoch 6/30  Batch 1745/2188 (79.8%)  | Super 96.650 (box 1.2623  cls 0.7064  dfl 1.0517)  | Base 98.737 (box 1.2866  cls 0.7497  dfl 1.0492)  | KD 8.024 (box 0.24150  cls 0.00775  dfl 0.00054  feat 0.00095)
+  Epoch 6/30  Batch 1963/2188 (89.7%)  | Super 101.047 (box 1.2828  cls 0.7740  dfl 1.1009)  | Base 102.893 (box 1.3053  cls 0.8043  dfl 1.1057)  | KD 8.515 (box 0.25512  cls 0.00926  dfl 0.00058  feat 0.00112)
+  Epoch 6/30  Batch 2181/2188 (99.7%)  | Super 100.852 (box 1.3267  cls 0.7013  dfl 1.1236)  | Base 101.790 (box 1.3368  cls 0.7193  dfl 1.1249)  | KD 7.520 (box 0.22576  cls 0.00770  dfl 0.00048  feat 0.00105)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 6/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.652      0.545      0.607      0.356
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 6/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.633      0.543      0.597      0.348
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 7/30  Batch 1/2188 (0.0%)  | Super 106.242 (box 1.3828  cls 0.7773  dfl 1.1600)  | Base 107.024 (box 1.3906  cls 0.8062  dfl 1.1477)  | KD 8.562 (box 0.25669  cls 0.00941  dfl 0.00045  feat 0.00102)
+  Epoch 7/30  Batch 219/2188 (10.0%)  | Super 106.832 (box 1.4046  cls 0.8213  dfl 1.1126)  | Base 108.522 (box 1.4260  cls 0.8438  dfl 1.1215)  | KD 8.216 (box 0.24426  cls 0.01085  dfl 0.00063  feat 0.00101)
+  Epoch 7/30  Batch 437/2188 (20.0%)  | Super 110.257 (box 1.5028  cls 0.8135  dfl 1.1293)  | Base 111.426 (box 1.5079  cls 0.8511  dfl 1.1230)  | KD 9.623 (box 0.29048  cls 0.00872  dfl 0.00048  feat 0.00105)
+  Epoch 7/30  Batch 655/2188 (29.9%)  | Super 98.251 (box 1.2961  cls 0.6965  dfl 1.0778)  | Base 99.788 (box 1.3128  cls 0.7291  dfl 1.0765)  | KD 7.123 (box 0.21214  cls 0.00906  dfl 0.00042  feat 0.00096)
+  Epoch 7/30  Batch 873/2188 (39.9%)  | Super 110.465 (box 1.4073  cls 0.8741  dfl 1.1706)  | Base 111.370 (box 1.4186  cls 0.9054  dfl 1.1562)  | KD 9.509 (box 0.28682  cls 0.00878  dfl 0.00063  feat 0.00093)
+  Epoch 7/30  Batch 1091/2188 (49.9%)  | Super 95.157 (box 1.2454  cls 0.6757  dfl 1.0525)  | Base 96.751 (box 1.2700  cls 0.7002  dfl 1.0534)  | KD 7.416 (box 0.22496  cls 0.00543  dfl 0.00048  feat 0.00089)
+  Epoch 7/30  Batch 1309/2188 (59.8%)  | Super 98.261 (box 1.2471  cls 0.7032  dfl 1.1203)  | Base 99.203 (box 1.2571  cls 0.7294  dfl 1.1136)  | KD 8.202 (box 0.24743  cls 0.00731  dfl 0.00060  feat 0.00097)
+  Epoch 7/30  Batch 1527/2188 (69.8%)  | Super 108.193 (box 1.4147  cls 0.7989  dfl 1.1674)  | Base 108.395 (box 1.4119  cls 0.8347  dfl 1.1408)  | KD 8.121 (box 0.23862  cls 0.01359  dfl 0.00056  feat 0.00101)
+  Epoch 7/30  Batch 1745/2188 (79.8%)  | Super 99.498 (box 1.2976  cls 0.7149  dfl 1.0968)  | Base 99.993 (box 1.2988  cls 0.7413  dfl 1.0847)  | KD 8.751 (box 0.26622  cls 0.00570  dfl 0.00065  feat 0.00091)
+  Epoch 7/30  Batch 1963/2188 (89.7%)  | Super 102.742 (box 1.3373  cls 0.7605  dfl 1.1129)  | Base 102.980 (box 1.3314  cls 0.7857  dfl 1.1010)  | KD 8.786 (box 0.26301  cls 0.00998  dfl 0.00062  feat 0.00097)
+  Epoch 7/30  Batch 2181/2188 (99.7%)  | Super 106.475 (box 1.3870  cls 0.7139  dfl 1.2264)  | Base 107.798 (box 1.4063  cls 0.7367  dfl 1.2257)  | KD 7.309 (box 0.21913  cls 0.00768  dfl 0.00046  feat 0.00113)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 7/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.655      0.543      0.608      0.359
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 7/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.644      0.541        0.6       0.35
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 8/30  Batch 1/2188 (0.0%)  | Super 103.923 (box 1.3264  cls 0.7768  dfl 1.1445)  | Base 105.399 (box 1.3439  cls 0.8035  dfl 1.1463)  | KD 7.708 (box 0.23041  cls 0.00896  dfl 0.00052  feat 0.00099)
+  Epoch 8/30  Batch 219/2188 (10.0%)  | Super 104.619 (box 1.4168  cls 0.7426  dfl 1.1099)  | Base 105.244 (box 1.4330  cls 0.7681  dfl 1.0877)  | KD 7.752 (box 0.23368  cls 0.00703  dfl 0.00054  feat 0.00100)
+  Epoch 8/30  Batch 437/2188 (20.0%)  | Super 110.033 (box 1.5113  cls 0.8066  dfl 1.1206)  | Base 110.644 (box 1.5227  cls 0.8212  dfl 1.1138)  | KD 8.955 (box 0.27236  cls 0.00603  dfl 0.00050  feat 0.00097)
+  Epoch 8/30  Batch 655/2188 (29.9%)  | Super 95.704 (box 1.2483  cls 0.6911  dfl 1.0514)  | Base 96.685 (box 1.2521  cls 0.7191  dfl 1.0502)  | KD 7.509 (box 0.22827  cls 0.00502  dfl 0.00047  feat 0.00089)
+  Epoch 8/30  Batch 873/2188 (39.9%)  | Super 116.086 (box 1.5030  cls 0.9017  dfl 1.2230)  | Base 118.195 (box 1.5324  cls 0.9335  dfl 1.2277)  | KD 9.771 (box 0.29356  cls 0.00997  dfl 0.00069  feat 0.00112)
+  Epoch 8/30  Batch 1091/2188 (49.9%)  | Super 97.361 (box 1.2768  cls 0.6844  dfl 1.0814)  | Base 98.254 (box 1.2921  cls 0.6986  dfl 1.0797)  | KD 7.679 (box 0.22984  cls 0.00873  dfl 0.00053  feat 0.00086)
+  Epoch 8/30  Batch 1309/2188 (59.8%)  | Super 97.345 (box 1.2471  cls 0.6965  dfl 1.0984)  | Base 97.973 (box 1.2519  cls 0.7179  dfl 1.0918)  | KD 8.140 (box 0.24659  cls 0.00626  dfl 0.00060  feat 0.00091)
+  Epoch 8/30  Batch 1527/2188 (69.8%)  | Super 108.960 (box 1.4202  cls 0.8365  dfl 1.1483)  | Base 111.219 (box 1.4424  cls 0.8777  dfl 1.1555)  | KD 8.921 (box 0.26303  cls 0.01410  dfl 0.00064  feat 0.00103)
+  Epoch 8/30  Batch 1745/2188 (79.8%)  | Super 100.918 (box 1.3094  cls 0.7313  dfl 1.1130)  | Base 101.324 (box 1.3089  cls 0.7508  dfl 1.1066)  | KD 8.597 (box 0.26052  cls 0.00653  dfl 0.00060  feat 0.00100)
+  Epoch 8/30  Batch 1963/2188 (89.7%)  | Super 100.267 (box 1.2751  cls 0.7546  dfl 1.1037)  | Base 100.747 (box 1.2753  cls 0.7841  dfl 1.0890)  | KD 7.809 (box 0.23460  cls 0.00778  dfl 0.00054  feat 0.00111)
+  Epoch 8/30  Batch 2181/2188 (99.7%)  | Super 104.130 (box 1.3454  cls 0.7205  dfl 1.1882)  | Base 105.246 (box 1.3593  cls 0.7495  dfl 1.1801)  | KD 7.460 (box 0.22640  cls 0.00507  dfl 0.00048  feat 0.00117)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 8/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.655      0.547       0.61      0.361
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 8/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.643      0.547      0.602      0.353
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 9/30  Batch 1/2188 (0.0%)  | Super 98.936 (box 1.2636  cls 0.7382  dfl 1.0899)  | Base 100.513 (box 1.2870  cls 0.7793  dfl 1.0747)  | KD 7.647 (box 0.22952  cls 0.00796  dfl 0.00052  feat 0.00096)
+  Epoch 9/30  Batch 219/2188 (10.0%)  | Super 111.447 (box 1.4653  cls 0.7966  dfl 1.2209)  | Base 111.506 (box 1.4773  cls 0.8162  dfl 1.1911)  | KD 8.055 (box 0.24252  cls 0.00779  dfl 0.00056  feat 0.00084)
+  Epoch 9/30  Batch 437/2188 (20.0%)  | Super 111.664 (box 1.5325  cls 0.8276  dfl 1.1294)  | Base 113.028 (box 1.5406  cls 0.8577  dfl 1.1339)  | KD 8.800 (box 0.26793  cls 0.00548  dfl 0.00053  feat 0.00107)
+  Epoch 9/30  Batch 655/2188 (29.9%)  | Super 95.379 (box 1.2661  cls 0.6714  dfl 1.0431)  | Base 96.042 (box 1.2688  cls 0.6979  dfl 1.0346)  | KD 7.225 (box 0.21626  cls 0.00821  dfl 0.00048  feat 0.00084)
+  Epoch 9/30  Batch 873/2188 (39.9%)  | Super 111.659 (box 1.4463  cls 0.8773  dfl 1.1658)  | Base 112.408 (box 1.4415  cls 0.9106  dfl 1.1607)  | KD 8.846 (box 0.26690  cls 0.00807  dfl 0.00062  feat 0.00084)
+  Epoch 9/30  Batch 1091/2188 (49.9%)  | Super 98.716 (box 1.3016  cls 0.6983  dfl 1.0850)  | Base 99.915 (box 1.3205  cls 0.7117  dfl 1.0902)  | KD 7.254 (box 0.21990  cls 0.00544  dfl 0.00046  feat 0.00088)
+  Epoch 9/30  Batch 1309/2188 (59.8%)  | Super 98.896 (box 1.2689  cls 0.7378  dfl 1.0838)  | Base 99.307 (box 1.2766  cls 0.7412  dfl 1.0855)  | KD 8.052 (box 0.24246  cls 0.00760  dfl 0.00062  feat 0.00094)
+  Epoch 9/30  Batch 1527/2188 (69.8%)  | Super 106.321 (box 1.3938  cls 0.7898  dfl 1.1389)  | Base 108.532 (box 1.4178  cls 0.8400  dfl 1.1339)  | KD 8.658 (box 0.25564  cls 0.01324  dfl 0.00068  feat 0.00100)
+  Epoch 9/30  Batch 1745/2188 (79.8%)  | Super 99.396 (box 1.2684  cls 0.7274  dfl 1.1103)  | Base 101.822 (box 1.2991  cls 0.7655  dfl 1.1173)  | KD 8.455 (box 0.25512  cls 0.00767  dfl 0.00055  feat 0.00087)
+  Epoch 9/30  Batch 1963/2188 (89.7%)  | Super 94.552 (box 1.1966  cls 0.7014  dfl 1.0568)  | Base 96.251 (box 1.2224  cls 0.7323  dfl 1.0531)  | KD 7.546 (box 0.22782  cls 0.00653  dfl 0.00054  feat 0.00094)
+  Epoch 9/30  Batch 2181/2188 (99.7%)  | Super 105.117 (box 1.3514  cls 0.7533  dfl 1.1802)  | Base 104.593 (box 1.3532  cls 0.7605  dfl 1.1548)  | KD 8.453 (box 0.25467  cls 0.00784  dfl 0.00063  feat 0.00101)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 9/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.756      0.555      0.617      0.363
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 9/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.751      0.548      0.611      0.359
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 10/30  Batch 1/2188 (0.0%)  | Super 105.292 (box 1.3690  cls 0.7558  dfl 1.1656)  | Base 106.650 (box 1.3875  cls 0.7847  dfl 1.1606)  | KD 7.891 (box 0.23848  cls 0.00654  dfl 0.00056  feat 0.00100)
+  Epoch 10/30  Batch 219/2188 (10.0%)  | Super 108.569 (box 1.4325  cls 0.7883  dfl 1.1720)  | Base 108.773 (box 1.4420  cls 0.7973  dfl 1.1599)  | KD 7.528 (box 0.22058  cls 0.01312  dfl 0.00046  feat 0.00110)
+  Epoch 10/30  Batch 437/2188 (20.0%)  | Super 112.465 (box 1.5357  cls 0.8047  dfl 1.1742)  | Base 114.024 (box 1.5545  cls 0.8382  dfl 1.1705)  | KD 8.611 (box 0.26123  cls 0.00649  dfl 0.00050  feat 0.00088)
+  Epoch 10/30  Batch 655/2188 (29.9%)  | Super 101.972 (box 1.3393  cls 0.7335  dfl 1.1139)  | Base 102.913 (box 1.3502  cls 0.7534  dfl 1.1124)  | KD 7.837 (box 0.23575  cls 0.00774  dfl 0.00047  feat 0.00094)
+  Epoch 10/30  Batch 873/2188 (39.9%)  | Super 114.399 (box 1.4408  cls 0.9149  dfl 1.2193)  | Base 115.176 (box 1.4559  cls 0.9424  dfl 1.2010)  | KD 9.131 (box 0.27256  cls 0.01110  dfl 0.00060  feat 0.00110)
+  Epoch 10/30  Batch 1091/2188 (49.9%)  | Super 100.146 (box 1.3009  cls 0.7225  dfl 1.1061)  | Base 101.691 (box 1.3142  cls 0.7574  dfl 1.1062)  | KD 7.893 (box 0.23486  cls 0.01041  dfl 0.00055  feat 0.00084)
+  Epoch 10/30  Batch 1309/2188 (59.8%)  | Super 98.995 (box 1.2477  cls 0.7234  dfl 1.1225)  | Base 100.584 (box 1.2735  cls 0.7418  dfl 1.1279)  | KD 8.252 (box 0.24802  cls 0.00836  dfl 0.00054  feat 0.00094)
+  Epoch 10/30  Batch 1527/2188 (69.8%)  | Super 106.079 (box 1.3873  cls 0.7809  dfl 1.1468)  | Base 107.827 (box 1.4229  cls 0.8025  dfl 1.1442)  | KD 8.755 (box 0.26006  cls 0.01191  dfl 0.00060  feat 0.00102)
+  Epoch 10/30  Batch 1745/2188 (79.8%)  | Super 97.689 (box 1.2730  cls 0.6919  dfl 1.0879)  | Base 99.500 (box 1.2843  cls 0.7464  dfl 1.0787)  | KD 8.034 (box 0.24153  cls 0.00799  dfl 0.00061  feat 0.00092)
+  Epoch 10/30  Batch 1963/2188 (89.7%)  | Super 98.024 (box 1.2565  cls 0.6904  dfl 1.1163)  | Base 99.719 (box 1.2720  cls 0.7294  dfl 1.1148)  | KD 7.457 (box 0.22289  cls 0.00855  dfl 0.00049  feat 0.00109)
+  Epoch 10/30  Batch 2181/2188 (99.7%)  | Super 104.210 (box 1.3533  cls 0.7164  dfl 1.1868)  | Base 104.932 (box 1.3568  cls 0.7387  dfl 1.1837)  | KD 7.709 (box 0.23344  cls 0.00602  dfl 0.00050  feat 0.00094)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 10/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.753      0.556      0.619      0.368
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 10/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578       0.75      0.547      0.613      0.361
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 11/30  Batch 1/2188 (0.0%)  | Super 105.007 (box 1.3410  cls 0.7747  dfl 1.1658)  | Base 104.378 (box 1.3245  cls 0.7919  dfl 1.1454)  | KD 7.755 (box 0.22973  cls 0.01109  dfl 0.00047  feat 0.00105)
+  Epoch 11/30  Batch 219/2188 (10.0%)  | Super 111.644 (box 1.4744  cls 0.8162  dfl 1.1982)  | Base 112.714 (box 1.4873  cls 0.8403  dfl 1.1948)  | KD 8.252 (box 0.24481  cls 0.01147  dfl 0.00055  feat 0.00104)
+  Epoch 11/30  Batch 437/2188 (20.0%)  | Super 111.259 (box 1.5310  cls 0.8109  dfl 1.1350)  | Base 111.473 (box 1.5177  cls 0.8424  dfl 1.1234)  | KD 9.537 (box 0.29025  cls 0.00630  dfl 0.00056  feat 0.00092)
+  Epoch 11/30  Batch 655/2188 (29.9%)  | Super 97.663 (box 1.2774  cls 0.6867  dfl 1.0879)  | Base 98.076 (box 1.2809  cls 0.7165  dfl 1.0675)  | KD 7.184 (box 0.21615  cls 0.00688  dfl 0.00045  feat 0.00102)
+  Epoch 11/30  Batch 873/2188 (39.9%)  | Super 113.214 (box 1.4212  cls 0.8860  dfl 1.2307)  | Base 113.585 (box 1.4333  cls 0.8974  dfl 1.2188)  | KD 10.051 (box 0.30239  cls 0.01001  dfl 0.00064  feat 0.00104)
+  Epoch 11/30  Batch 1091/2188 (49.9%)  | Super 98.556 (box 1.2798  cls 0.6917  dfl 1.1083)  | Base 99.789 (box 1.2975  cls 0.7263  dfl 1.0946)  | KD 7.873 (box 0.23888  cls 0.00579  dfl 0.00049  feat 0.00086)
+  Epoch 11/30  Batch 1309/2188 (59.8%)  | Super 93.696 (box 1.2144  cls 0.6565  dfl 1.0571)  | Base 94.452 (box 1.2257  cls 0.6860  dfl 1.0399)  | KD 7.554 (box 0.22979  cls 0.00490  dfl 0.00048  feat 0.00090)
+  Epoch 11/30  Batch 1527/2188 (69.8%)  | Super 107.791 (box 1.4111  cls 0.7990  dfl 1.1584)  | Base 108.930 (box 1.4227  cls 0.8408  dfl 1.1406)  | KD 8.101 (box 0.23591  cls 0.01578  dfl 0.00056  feat 0.00092)
+  Epoch 11/30  Batch 1745/2188 (79.8%)  | Super 99.176 (box 1.2995  cls 0.7039  dfl 1.0959)  | Base 101.265 (box 1.3288  cls 0.7401  dfl 1.0957)  | KD 8.711 (box 0.26234  cls 0.00834  dfl 0.00071  feat 0.00082)
+  Epoch 11/30  Batch 1963/2188 (89.7%)  | Super 96.383 (box 1.2250  cls 0.7121  dfl 1.0749)  | Base 96.825 (box 1.2366  cls 0.7273  dfl 1.0619)  | KD 8.031 (box 0.24194  cls 0.00754  dfl 0.00054  feat 0.00094)
+  Epoch 11/30  Batch 2181/2188 (99.7%)  | Super 104.525 (box 1.3536  cls 0.6971  dfl 1.2157)  | Base 105.780 (box 1.3589  cls 0.7268  dfl 1.2200)  | KD 7.293 (box 0.22035  cls 0.00605  dfl 0.00047  feat 0.00104)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 11/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.755       0.56      0.622      0.367
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 11/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.754      0.549      0.615      0.362
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 12/30  Batch 1/2188 (0.0%)  | Super 101.795 (box 1.3117  cls 0.7292  dfl 1.1401)  | Base 103.365 (box 1.3254  cls 0.7551  dfl 1.1496)  | KD 9.010 (box 0.27172  cls 0.00829  dfl 0.00066  feat 0.00091)
+  Epoch 12/30  Batch 219/2188 (10.0%)  | Super 108.864 (box 1.4496  cls 0.7898  dfl 1.1625)  | Base 109.033 (box 1.4499  cls 0.8027  dfl 1.1547)  | KD 7.689 (box 0.23158  cls 0.00718  dfl 0.00052  feat 0.00101)
+  Epoch 12/30  Batch 437/2188 (20.0%)  | Super 108.910 (box 1.4914  cls 0.7883  dfl 1.1237)  | Base 109.121 (box 1.5023  cls 0.8057  dfl 1.1020)  | KD 9.207 (box 0.28035  cls 0.00582  dfl 0.00056  feat 0.00099)
+  Epoch 12/30  Batch 655/2188 (29.9%)  | Super 98.392 (box 1.2891  cls 0.6896  dfl 1.0961)  | Base 99.072 (box 1.2947  cls 0.7147  dfl 1.0867)  | KD 7.163 (box 0.21753  cls 0.00494  dfl 0.00043  feat 0.00097)
+  Epoch 12/30  Batch 873/2188 (39.9%)  | Super 116.069 (box 1.4524  cls 0.9320  dfl 1.2427)  | Base 116.912 (box 1.4547  cls 0.9681  dfl 1.2307)  | KD 9.139 (box 0.27477  cls 0.00927  dfl 0.00060  feat 0.00095)
+  Epoch 12/30  Batch 1091/2188 (49.9%)  | Super 96.825 (box 1.2742  cls 0.6870  dfl 1.0645)  | Base 97.181 (box 1.2706  cls 0.7057  dfl 1.0606)  | KD 6.897 (box 0.20946  cls 0.00485  dfl 0.00043  feat 0.00079)
+  Epoch 12/30  Batch 1309/2188 (59.8%)  | Super 98.983 (box 1.2687  cls 0.7296  dfl 1.0950)  | Base 99.108 (box 1.2725  cls 0.7428  dfl 1.0818)  | KD 8.255 (box 0.24576  cls 0.01067  dfl 0.00059  feat 0.00094)
+  Epoch 12/30  Batch 1527/2188 (69.8%)  | Super 107.966 (box 1.4181  cls 0.8031  dfl 1.1527)  | Base 109.070 (box 1.4208  cls 0.8378  dfl 1.1498)  | KD 7.658 (box 0.22654  cls 0.01137  dfl 0.00054  feat 0.00085)
+  Epoch 12/30  Batch 1745/2188 (79.8%)  | Super 98.245 (box 1.2968  cls 0.6814  dfl 1.0920)  | Base 98.825 (box 1.2996  cls 0.7072  dfl 1.0815)  | KD 7.772 (box 0.23476  cls 0.00673  dfl 0.00056  feat 0.00083)
+  Epoch 12/30  Batch 1963/2188 (89.7%)  | Super 96.979 (box 1.2741  cls 0.7308  dfl 1.0256)  | Base 97.631 (box 1.2869  cls 0.7497  dfl 1.0144)  | KD 9.122 (box 0.27371  cls 0.00972  dfl 0.00069  feat 0.00095)
+  Epoch 12/30  Batch 2181/2188 (99.7%)  | Super 104.651 (box 1.3807  cls 0.7302  dfl 1.1594)  | Base 104.636 (box 1.3694  cls 0.7422  dfl 1.1582)  | KD 7.172 (box 0.21484  cls 0.00781  dfl 0.00050  feat 0.00096)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 12/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578       0.76      0.557      0.623      0.369
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 12/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578       0.75      0.552      0.615      0.363
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 13/30  Batch 1/2188 (0.0%)  | Super 106.446 (box 1.3639  cls 0.7979  dfl 1.1646)  | Base 106.247 (box 1.3617  cls 0.8204  dfl 1.1381)  | KD 8.150 (box 0.24064  cls 0.01257  dfl 0.00059  feat 0.00088)
+  Epoch 13/30  Batch 219/2188 (10.0%)  | Super 105.520 (box 1.4011  cls 0.7808  dfl 1.1156)  | Base 106.668 (box 1.4099  cls 0.8031  dfl 1.1204)  | KD 7.201 (box 0.21741  cls 0.00628  dfl 0.00045  feat 0.00091)
+  Epoch 13/30  Batch 437/2188 (20.0%)  | Super 111.067 (box 1.5294  cls 0.7811  dfl 1.1604)  | Base 111.767 (box 1.5361  cls 0.8114  dfl 1.1452)  | KD 8.540 (box 0.25973  cls 0.00572  dfl 0.00046  feat 0.00097)
+  Epoch 13/30  Batch 655/2188 (29.9%)  | Super 98.569 (box 1.3106  cls 0.6833  dfl 1.0864)  | Base 99.070 (box 1.3195  cls 0.7027  dfl 1.0737)  | KD 7.204 (box 0.21481  cls 0.00892  dfl 0.00056  feat 0.00083)
+  Epoch 13/30  Batch 873/2188 (39.9%)  | Super 110.476 (box 1.4312  cls 0.8352  dfl 1.1860)  | Base 111.018 (box 1.4455  cls 0.8577  dfl 1.1662)  | KD 8.948 (box 0.27096  cls 0.00724  dfl 0.00057  feat 0.00086)
+  Epoch 13/30  Batch 1091/2188 (49.9%)  | Super 99.721 (box 1.3064  cls 0.6996  dfl 1.1103)  | Base 101.149 (box 1.3199  cls 0.7362  dfl 1.1048)  | KD 7.209 (box 0.21900  cls 0.00504  dfl 0.00046  feat 0.00079)
+  Epoch 13/30  Batch 1309/2188 (59.8%)  | Super 95.496 (box 1.1880  cls 0.7048  dfl 1.0914)  | Base 96.290 (box 1.2099  cls 0.7131  dfl 1.0860)  | KD 8.225 (box 0.24836  cls 0.00722  dfl 0.00058  feat 0.00088)
+  Epoch 13/30  Batch 1527/2188 (69.8%)  | Super 105.437 (box 1.3714  cls 0.7806  dfl 1.1429)  | Base 107.393 (box 1.3956  cls 0.8159  dfl 1.1446)  | KD 8.592 (box 0.25412  cls 0.01272  dfl 0.00068  feat 0.00098)
+  Epoch 13/30  Batch 1745/2188 (79.8%)  | Super 99.407 (box 1.2909  cls 0.7094  dfl 1.1062)  | Base 101.605 (box 1.3187  cls 0.7433  dfl 1.1132)  | KD 8.002 (box 0.24264  cls 0.00584  dfl 0.00066  feat 0.00094)
+  Epoch 13/30  Batch 1963/2188 (89.7%)  | Super 100.876 (box 1.2738  cls 0.7633  dfl 1.1153)  | Base 102.430 (box 1.2912  cls 0.7934  dfl 1.1164)  | KD 7.896 (box 0.23781  cls 0.00744  dfl 0.00052  feat 0.00097)
+  Epoch 13/30  Batch 2181/2188 (99.7%)  | Super 102.755 (box 1.3439  cls 0.6918  dfl 1.1753)  | Base 102.609 (box 1.3434  cls 0.7067  dfl 1.1564)  | KD 6.880 (box 0.20622  cls 0.00727  dfl 0.00041  feat 0.00109)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 13/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.764      0.555      0.624      0.371
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 13/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.755      0.553      0.619      0.365
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 14/30  Batch 1/2188 (0.0%)  | Super 99.897 (box 1.2742  cls 0.7194  dfl 1.1281)  | Base 100.807 (box 1.2844  cls 0.7404  dfl 1.1254)  | KD 8.148 (box 0.24285  cls 0.01036  dfl 0.00060  feat 0.00083)
+  Epoch 14/30  Batch 219/2188 (10.0%)  | Super 108.083 (box 1.4275  cls 0.7861  dfl 1.1640)  | Base 108.719 (box 1.4359  cls 0.8097  dfl 1.1519)  | KD 7.717 (box 0.23150  cls 0.00812  dfl 0.00052  feat 0.00101)
+  Epoch 14/30  Batch 437/2188 (20.0%)  | Super 109.206 (box 1.5181  cls 0.7599  dfl 1.1347)  | Base 109.700 (box 1.5234  cls 0.7841  dfl 1.1206)  | KD 8.773 (box 0.26769  cls 0.00497  dfl 0.00050  feat 0.00099)
+  Epoch 14/30  Batch 655/2188 (29.9%)  | Super 97.532 (box 1.2544  cls 0.7176  dfl 1.0759)  | Base 98.382 (box 1.2607  cls 0.7387  dfl 1.0750)  | KD 6.842 (box 0.20596  cls 0.00656  dfl 0.00042  feat 0.00087)
+  Epoch 14/30  Batch 873/2188 (39.9%)  | Super 115.276 (box 1.4833  cls 0.8977  dfl 1.2214)  | Base 114.900 (box 1.4892  cls 0.8950  dfl 1.2065)  | KD 9.592 (box 0.29201  cls 0.00626  dfl 0.00060  feat 0.00089)
+  Epoch 14/30  Batch 1091/2188 (49.9%)  | Super 97.015 (box 1.2756  cls 0.6847  dfl 1.0714)  | Base 98.228 (box 1.2922  cls 0.7039  dfl 1.0735)  | KD 7.377 (box 0.21962  cls 0.00963  dfl 0.00046  feat 0.00082)
+  Epoch 14/30  Batch 1309/2188 (59.8%)  | Super 100.945 (box 1.2899  cls 0.7251  dfl 1.1396)  | Base 101.155 (box 1.2903  cls 0.7396  dfl 1.1313)  | KD 7.765 (box 0.23506  cls 0.00625  dfl 0.00053  feat 0.00082)
+  Epoch 14/30  Batch 1527/2188 (69.8%)  | Super 105.206 (box 1.4006  cls 0.7692  dfl 1.1179)  | Base 105.801 (box 1.4155  cls 0.7877  dfl 1.1031)  | KD 7.944 (box 0.23409  cls 0.01270  dfl 0.00059  feat 0.00087)
+  Epoch 14/30  Batch 1745/2188 (79.8%)  | Super 92.702 (box 1.2269  cls 0.6274  dfl 1.0426)  | Base 94.509 (box 1.2445  cls 0.6646  dfl 1.0443)  | KD 7.532 (box 0.22663  cls 0.00741  dfl 0.00049  feat 0.00083)
+  Epoch 14/30  Batch 1963/2188 (89.7%)  | Super 103.046 (box 1.3195  cls 0.7494  dfl 1.1513)  | Base 103.153 (box 1.3061  cls 0.7812  dfl 1.1363)  | KD 7.493 (box 0.22613  cls 0.00664  dfl 0.00049  feat 0.00090)
+  Epoch 14/30  Batch 2181/2188 (99.7%)  | Super 100.940 (box 1.3045  cls 0.7088  dfl 1.1411)  | Base 102.232 (box 1.3321  cls 0.7305  dfl 1.1321)  | KD 6.867 (box 0.20637  cls 0.00673  dfl 0.00050  feat 0.00100)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 14/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.761      0.559      0.623      0.369
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 14/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.752      0.555      0.619      0.366
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 15/30  Batch 1/2188 (0.0%)  | Super 103.748 (box 1.3375  cls 0.7551  dfl 1.1495)  | Base 105.383 (box 1.3723  cls 0.7676  dfl 1.1533)  | KD 8.309 (box 0.24670  cls 0.01162  dfl 0.00049  feat 0.00083)
+  Epoch 15/30  Batch 219/2188 (10.0%)  | Super 108.539 (box 1.4265  cls 0.7957  dfl 1.1696)  | Base 110.126 (box 1.4524  cls 0.8190  dfl 1.1700)  | KD 7.532 (box 0.22330  cls 0.01068  dfl 0.00049  feat 0.00091)
+  Epoch 15/30  Batch 437/2188 (20.0%)  | Super 112.818 (box 1.5543  cls 0.8031  dfl 1.1682)  | Base 114.055 (box 1.5686  cls 0.8253  dfl 1.1703)  | KD 8.182 (box 0.24946  cls 0.00489  dfl 0.00042  feat 0.00093)
+  Epoch 15/30  Batch 655/2188 (29.9%)  | Super 96.557 (box 1.2981  cls 0.6586  dfl 1.0608)  | Base 97.684 (box 1.3073  cls 0.6841  dfl 1.0613)  | KD 7.322 (box 0.22248  cls 0.00494  dfl 0.00053  feat 0.00088)
+  Epoch 15/30  Batch 873/2188 (39.9%)  | Super 107.273 (box 1.3799  cls 0.8144  dfl 1.1580)  | Base 108.068 (box 1.3981  cls 0.8333  dfl 1.1457)  | KD 9.091 (box 0.27449  cls 0.00800  dfl 0.00073  feat 0.00087)
+  Epoch 15/30  Batch 1091/2188 (49.9%)  | Super 97.586 (box 1.2847  cls 0.6832  dfl 1.0816)  | Base 98.818 (box 1.2937  cls 0.7107  dfl 1.0837)  | KD 6.979 (box 0.21031  cls 0.00655  dfl 0.00047  feat 0.00076)
+  Epoch 15/30  Batch 1309/2188 (59.8%)  | Super 95.460 (box 1.2506  cls 0.6899  dfl 1.0426)  | Base 96.757 (box 1.2718  cls 0.7027  dfl 1.0491)  | KD 8.495 (box 0.25744  cls 0.00666  dfl 0.00054  feat 0.00085)
+  Epoch 15/30  Batch 1527/2188 (69.8%)  | Super 103.671 (box 1.3902  cls 0.7405  dfl 1.1089)  | Base 104.534 (box 1.3897  cls 0.7754  dfl 1.1016)  | KD 7.366 (box 0.21869  cls 0.01019  dfl 0.00045  feat 0.00087)
+  Epoch 15/30  Batch 1745/2188 (79.8%)  | Super 95.308 (box 1.2449  cls 0.6804  dfl 1.0532)  | Base 96.059 (box 1.2621  cls 0.6973  dfl 1.0424)  | KD 7.819 (box 0.23723  cls 0.00578  dfl 0.00051  feat 0.00082)
+  Epoch 15/30  Batch 1963/2188 (89.7%)  | Super 95.954 (box 1.2399  cls 0.6713  dfl 1.0873)  | Base 97.976 (box 1.2694  cls 0.6992  dfl 1.0931)  | KD 7.697 (box 0.23395  cls 0.00518  dfl 0.00049  feat 0.00091)
+  Epoch 15/30  Batch 2181/2188 (99.7%)  | Super 100.065 (box 1.2980  cls 0.7106  dfl 1.1185)  | Base 101.426 (box 1.3228  cls 0.7294  dfl 1.1174)  | KD 7.043 (box 0.21344  cls 0.00516  dfl 0.00045  feat 0.00103)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 15/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.763      0.559      0.625      0.371
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 15/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.754      0.555      0.619      0.367
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 16/30  Batch 1/2188 (0.0%)  | Super 104.281 (box 1.3255  cls 0.7593  dfl 1.1740)  | Base 106.443 (box 1.3481  cls 0.8070  dfl 1.1712)  | KD 7.622 (box 0.22511  cls 0.01168  dfl 0.00049  feat 0.00091)
+  Epoch 16/30  Batch 219/2188 (10.0%)  | Super 106.918 (box 1.4100  cls 0.7808  dfl 1.1504)  | Base 107.143 (box 1.4138  cls 0.7940  dfl 1.1404)  | KD 7.360 (box 0.22072  cls 0.00776  dfl 0.00053  feat 0.00098)
+  Epoch 16/30  Batch 437/2188 (20.0%)  | Super 111.412 (box 1.5612  cls 0.7754  dfl 1.1449)  | Base 112.249 (box 1.5590  cls 0.8087  dfl 1.1401)  | KD 8.783 (box 0.26773  cls 0.00538  dfl 0.00043  feat 0.00093)
+  Epoch 16/30  Batch 655/2188 (29.9%)  | Super 96.998 (box 1.2785  cls 0.6698  dfl 1.0829)  | Base 98.204 (box 1.2922  cls 0.6968  dfl 1.0800)  | KD 6.504 (box 0.19710  cls 0.00491  dfl 0.00039  feat 0.00086)
+  Epoch 16/30  Batch 873/2188 (39.9%)  | Super 110.335 (box 1.3882  cls 0.8770  dfl 1.1828)  | Base 111.585 (box 1.4222  cls 0.8924  dfl 1.1725)  | KD 8.683 (box 0.25964  cls 0.01029  dfl 0.00057  feat 0.00084)
+  Epoch 16/30  Batch 1091/2188 (49.9%)  | Super 93.966 (box 1.2498  cls 0.6585  dfl 1.0281)  | Base 94.790 (box 1.2580  cls 0.6738  dfl 1.0305)  | KD 6.917 (box 0.21001  cls 0.00487  dfl 0.00043  feat 0.00084)
+  Epoch 16/30  Batch 1309/2188 (59.8%)  | Super 95.004 (box 1.2097  cls 0.6818  dfl 1.0774)  | Base 95.727 (box 1.2120  cls 0.7158  dfl 1.0637)  | KD 7.947 (box 0.23594  cls 0.01095  dfl 0.00059  feat 0.00087)
+  Epoch 16/30  Batch 1527/2188 (69.8%)  | Super 103.957 (box 1.3712  cls 0.7500  dfl 1.1275)  | Base 104.558 (box 1.3658  cls 0.7750  dfl 1.1266)  | KD 7.449 (box 0.22390  cls 0.00749  dfl 0.00050  feat 0.00087)
+  Epoch 16/30  Batch 1745/2188 (79.8%)  | Super 99.049 (box 1.3042  cls 0.6974  dfl 1.0937)  | Base 100.810 (box 1.3247  cls 0.7257  dfl 1.0999)  | KD 8.399 (box 0.25444  cls 0.00661  dfl 0.00059  feat 0.00083)
+  Epoch 16/30  Batch 1963/2188 (89.7%)  | Super 92.440 (box 1.2178  cls 0.6272  dfl 1.0438)  | Base 93.955 (box 1.2283  cls 0.6602  dfl 1.0476)  | KD 7.085 (box 0.21240  cls 0.00748  dfl 0.00051  feat 0.00103)
+  Epoch 16/30  Batch 2181/2188 (99.7%)  | Super 99.461 (box 1.3084  cls 0.6801  dfl 1.1196)  | Base 100.698 (box 1.3271  cls 0.7097  dfl 1.1100)  | KD 7.100 (box 0.21556  cls 0.00486  dfl 0.00046  feat 0.00098)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 16/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.768      0.561      0.625      0.372
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 16/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.754      0.557       0.62      0.366
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 17/30  Batch 1/2188 (0.0%)  | Super 108.295 (box 1.3738  cls 0.7964  dfl 1.2140)  | Base 109.297 (box 1.3936  cls 0.8223  dfl 1.1997)  | KD 8.335 (box 0.24973  cls 0.00916  dfl 0.00060  feat 0.00097)
+  Epoch 17/30  Batch 219/2188 (10.0%)  | Super 104.955 (box 1.4014  cls 0.7578  dfl 1.1207)  | Base 105.741 (box 1.4057  cls 0.7826  dfl 1.1160)  | KD 7.870 (box 0.23670  cls 0.00790  dfl 0.00048  feat 0.00086)
+  Epoch 17/30  Batch 437/2188 (20.0%)  | Super 109.297 (box 1.5235  cls 0.7532  dfl 1.1389)  | Base 110.957 (box 1.5440  cls 0.7847  dfl 1.1388)  | KD 8.651 (box 0.26126  cls 0.00766  dfl 0.00051  feat 0.00091)
+  Epoch 17/30  Batch 655/2188 (29.9%)  | Super 101.401 (box 1.3475  cls 0.7314  dfl 1.0899)  | Base 101.684 (box 1.3454  cls 0.7534  dfl 1.0788)  | KD 7.707 (box 0.23385  cls 0.00557  dfl 0.00051  feat 0.00092)
+  Epoch 17/30  Batch 873/2188 (39.9%)  | Super 108.343 (box 1.3828  cls 0.8331  dfl 1.1698)  | Base 109.383 (box 1.3858  cls 0.8789  dfl 1.1535)  | KD 9.569 (box 0.28868  cls 0.00891  dfl 0.00065  feat 0.00080)
+  Epoch 17/30  Batch 1091/2188 (49.9%)  | Super 97.239 (box 1.2774  cls 0.6866  dfl 1.0747)  | Base 97.537 (box 1.2848  cls 0.6946  dfl 1.0687)  | KD 7.252 (box 0.21951  cls 0.00582  dfl 0.00043  feat 0.00085)
+  Epoch 17/30  Batch 1309/2188 (59.8%)  | Super 95.772 (box 1.2272  cls 0.7045  dfl 1.0612)  | Base 96.626 (box 1.2469  cls 0.7135  dfl 1.0592)  | KD 7.812 (box 0.23385  cls 0.00888  dfl 0.00052  feat 0.00088)
+  Epoch 17/30  Batch 1527/2188 (69.8%)  | Super 102.529 (box 1.3571  cls 0.7492  dfl 1.0977)  | Base 104.485 (box 1.3759  cls 0.7956  dfl 1.0937)  | KD 8.430 (box 0.24799  cls 0.01383  dfl 0.00067  feat 0.00095)
+  Epoch 17/30  Batch 1745/2188 (79.8%)  | Super 98.285 (box 1.2919  cls 0.6985  dfl 1.0811)  | Base 99.418 (box 1.2941  cls 0.7277  dfl 1.0850)  | KD 8.166 (box 0.24796  cls 0.00565  dfl 0.00071  feat 0.00087)
+  Epoch 17/30  Batch 1963/2188 (89.7%)  | Super 101.970 (box 1.3003  cls 0.7423  dfl 1.1440)  | Base 103.816 (box 1.3210  cls 0.7760  dfl 1.1472)  | KD 8.343 (box 0.25183  cls 0.00721  dfl 0.00061  feat 0.00108)
+  Epoch 17/30  Batch 2181/2188 (99.7%)  | Super 103.616 (box 1.3497  cls 0.7096  dfl 1.1787)  | Base 105.634 (box 1.3791  cls 0.7289  dfl 1.1930)  | KD 6.768 (box 0.20241  cls 0.00759  dfl 0.00045  feat 0.00105)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 17/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.762      0.562      0.631      0.376
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 17/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.756       0.56      0.622      0.368
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 18/30  Batch 1/2188 (0.0%)  | Super 100.146 (box 1.2774  cls 0.7347  dfl 1.1175)  | Base 101.767 (box 1.2941  cls 0.7612  dfl 1.1250)  | KD 7.741 (box 0.23279  cls 0.00769  dfl 0.00055  feat 0.00090)
+  Epoch 18/30  Batch 219/2188 (10.0%)  | Super 108.399 (box 1.4211  cls 0.7975  dfl 1.1689)  | Base 109.583 (box 1.4361  cls 0.8296  dfl 1.1589)  | KD 7.901 (box 0.23655  cls 0.00880  dfl 0.00064  feat 0.00091)
+  Epoch 18/30  Batch 437/2188 (20.0%)  | Super 109.947 (box 1.5132  cls 0.7642  dfl 1.1584)  | Base 110.935 (box 1.5257  cls 0.7931  dfl 1.1479)  | KD 8.435 (box 0.25693  cls 0.00530  dfl 0.00047  feat 0.00090)
+  Epoch 18/30  Batch 655/2188 (29.9%)  | Super 96.922 (box 1.2973  cls 0.6650  dfl 1.0665)  | Base 97.720 (box 1.3048  cls 0.6844  dfl 1.0646)  | KD 6.456 (box 0.19527  cls 0.00521  dfl 0.00042  feat 0.00084)
+  Epoch 18/30  Batch 873/2188 (39.9%)  | Super 109.624 (box 1.3807  cls 0.8763  dfl 1.1688)  | Base 109.492 (box 1.3829  cls 0.8901  dfl 1.1487)  | KD 8.755 (box 0.26159  cls 0.01047  dfl 0.00059  feat 0.00095)
+  Epoch 18/30  Batch 1091/2188 (49.9%)  | Super 94.582 (box 1.2525  cls 0.6546  dfl 1.0485)  | Base 96.011 (box 1.2682  cls 0.6832  dfl 1.0490)  | KD 7.546 (box 0.22909  cls 0.00543  dfl 0.00052  feat 0.00079)
+  Epoch 18/30  Batch 1309/2188 (59.8%)  | Super 95.051 (box 1.2105  cls 0.6675  dfl 1.0923)  | Base 96.660 (box 1.2359  cls 0.6878  dfl 1.0969)  | KD 7.785 (box 0.23548  cls 0.00641  dfl 0.00058  feat 0.00082)
+  Epoch 18/30  Batch 1527/2188 (69.8%)  | Super 105.017 (box 1.3968  cls 0.7537  dfl 1.1313)  | Base 106.087 (box 1.4039  cls 0.7836  dfl 1.1278)  | KD 7.793 (box 0.23295  cls 0.00915  dfl 0.00056  feat 0.00089)
+  Epoch 18/30  Batch 1745/2188 (79.8%)  | Super 102.183 (box 1.3034  cls 0.7508  dfl 1.1391)  | Base 103.681 (box 1.3144  cls 0.7826  dfl 1.1430)  | KD 8.827 (box 0.26632  cls 0.00780  dfl 0.00071  feat 0.00102)
+  Epoch 18/30  Batch 1963/2188 (89.7%)  | Super 97.331 (box 1.2549  cls 0.7059  dfl 1.0808)  | Base 97.449 (box 1.2366  cls 0.7458  dfl 1.0628)  | KD 8.173 (box 0.24224  cls 0.01158  dfl 0.00059  feat 0.00100)
+  Epoch 18/30  Batch 2181/2188 (99.7%)  | Super 101.553 (box 1.3127  cls 0.7155  dfl 1.1453)  | Base 102.960 (box 1.3337  cls 0.7476  dfl 1.1362)  | KD 7.897 (box 0.23730  cls 0.00786  dfl 0.00057  feat 0.00106)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 18/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.737      0.579      0.632      0.377
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 18/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.745      0.568      0.624      0.369
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 19/30  Batch 1/2188 (0.0%)  | Super 102.571 (box 1.3124  cls 0.7534  dfl 1.1396)  | Base 103.137 (box 1.3131  cls 0.7775  dfl 1.1325)  | KD 7.954 (box 0.23872  cls 0.00848  dfl 0.00053  feat 0.00082)
+  Epoch 19/30  Batch 219/2188 (10.0%)  | Super 105.438 (box 1.3862  cls 0.7874  dfl 1.1213)  | Base 107.251 (box 1.3959  cls 0.8341  dfl 1.1216)  | KD 7.271 (box 0.21888  cls 0.00700  dfl 0.00047  feat 0.00087)
+  Epoch 19/30  Batch 437/2188 (20.0%)  | Super 106.266 (box 1.4663  cls 0.7446  dfl 1.1100)  | Base 107.952 (box 1.4907  cls 0.7782  dfl 1.1045)  | KD 9.311 (box 0.28378  cls 0.00569  dfl 0.00054  feat 0.00098)
+  Epoch 19/30  Batch 655/2188 (29.9%)  | Super 96.894 (box 1.2759  cls 0.6887  dfl 1.0634)  | Base 97.477 (box 1.2763  cls 0.7110  dfl 1.0588)  | KD 7.203 (box 0.21586  cls 0.00790  dfl 0.00049  feat 0.00084)
+  Epoch 19/30  Batch 873/2188 (39.9%)  | Super 111.616 (box 1.4301  cls 0.8737  dfl 1.1842)  | Base 112.135 (box 1.4287  cls 0.9045  dfl 1.1710)  | KD 8.479 (box 0.25519  cls 0.00829  dfl 0.00055  feat 0.00094)
+  Epoch 19/30  Batch 1091/2188 (49.9%)  | Super 98.469 (box 1.3047  cls 0.6744  dfl 1.0981)  | Base 99.762 (box 1.3222  cls 0.7016  dfl 1.0938)  | KD 7.167 (box 0.21275  cls 0.00994  dfl 0.00047  feat 0.00080)
+  Epoch 19/30  Batch 1309/2188 (59.8%)  | Super 99.898 (box 1.2884  cls 0.7288  dfl 1.1046)  | Base 100.391 (box 1.2950  cls 0.7387  dfl 1.1035)  | KD 7.965 (box 0.23907  cls 0.00847  dfl 0.00055  feat 0.00081)
+  Epoch 19/30  Batch 1527/2188 (69.8%)  | Super 101.943 (box 1.3498  cls 0.7386  dfl 1.0973)  | Base 102.819 (box 1.3639  cls 0.7503  dfl 1.0989)  | KD 7.879 (box 0.23173  cls 0.01307  dfl 0.00055  feat 0.00087)
+  Epoch 19/30  Batch 1745/2188 (79.8%)  | Super 100.019 (box 1.3221  cls 0.7000  dfl 1.1035)  | Base 100.967 (box 1.3306  cls 0.7185  dfl 1.1061)  | KD 8.192 (box 0.24325  cls 0.01132  dfl 0.00055  feat 0.00089)
+  Epoch 19/30  Batch 1963/2188 (89.7%)  | Super 93.000 (box 1.1972  cls 0.6923  dfl 1.0168)  | Base 95.582 (box 1.2230  cls 0.7469  dfl 1.0170)  | KD 7.700 (box 0.23056  cls 0.00867  dfl 0.00052  feat 0.00086)
+  Epoch 19/30  Batch 2181/2188 (99.7%)  | Super 101.664 (box 1.3365  cls 0.6768  dfl 1.1637)  | Base 102.536 (box 1.3480  cls 0.6978  dfl 1.1585)  | KD 6.807 (box 0.20561  cls 0.00574  dfl 0.00046  feat 0.00091)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 19/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.663      0.584      0.627      0.373
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 19/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.634      0.574      0.621      0.367
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 20/30  Batch 1/2188 (0.0%)  | Super 103.005 (box 1.3412  cls 0.7317  dfl 1.1460)  | Base 104.462 (box 1.3554  cls 0.7622  dfl 1.1469)  | KD 8.381 (box 0.24738  cls 0.01308  dfl 0.00060  feat 0.00087)
+  Epoch 20/30  Batch 219/2188 (10.0%)  | Super 112.188 (box 1.4709  cls 0.8039  dfl 1.2311)  | Base 112.884 (box 1.4825  cls 0.8259  dfl 1.2192)  | KD 7.945 (box 0.23722  cls 0.00957  dfl 0.00057  feat 0.00093)
+  Epoch 20/30  Batch 437/2188 (20.0%)  | Super 107.019 (box 1.4672  cls 0.7505  dfl 1.1267)  | Base 108.318 (box 1.4889  cls 0.7699  dfl 1.1262)  | KD 8.632 (box 0.26273  cls 0.00564  dfl 0.00053  feat 0.00087)
+  Epoch 20/30  Batch 655/2188 (29.9%)  | Super 95.941 (box 1.2481  cls 0.6758  dfl 1.0742)  | Base 95.899 (box 1.2421  cls 0.6948  dfl 1.0599)  | KD 6.397 (box 0.19135  cls 0.00726  dfl 0.00043  feat 0.00087)
+  Epoch 20/30  Batch 873/2188 (39.9%)  | Super 110.018 (box 1.4186  cls 0.8016  dfl 1.2178)  | Base 110.387 (box 1.4309  cls 0.8342  dfl 1.1845)  | KD 8.726 (box 0.26197  cls 0.00926  dfl 0.00057  feat 0.00088)
+  Epoch 20/30  Batch 1091/2188 (49.9%)  | Super 97.359 (box 1.2612  cls 0.7018  dfl 1.0795)  | Base 98.347 (box 1.2784  cls 0.7267  dfl 1.0682)  | KD 7.365 (box 0.22084  cls 0.00796  dfl 0.00052  feat 0.00082)
+  Epoch 20/30  Batch 1309/2188 (59.8%)  | Super 94.216 (box 1.2044  cls 0.6717  dfl 1.0682)  | Base 95.785 (box 1.2175  cls 0.7104  dfl 1.0654)  | KD 7.648 (box 0.23076  cls 0.00683  dfl 0.00055  feat 0.00086)
+  Epoch 20/30  Batch 1527/2188 (69.8%)  | Super 103.091 (box 1.3757  cls 0.7466  dfl 1.0993)  | Base 104.461 (box 1.3790  cls 0.7897  dfl 1.0956)  | KD 7.819 (box 0.22938  cls 0.01359  dfl 0.00052  feat 0.00086)
+  Epoch 20/30  Batch 1745/2188 (79.8%)  | Super 95.641 (box 1.2616  cls 0.6587  dfl 1.0685)  | Base 96.676 (box 1.2666  cls 0.6913  dfl 1.0633)  | KD 7.780 (box 0.23435  cls 0.00747  dfl 0.00051  feat 0.00080)
+  Epoch 20/30  Batch 1963/2188 (89.7%)  | Super 94.932 (box 1.2172  cls 0.6933  dfl 1.0562)  | Base 96.973 (box 1.2417  cls 0.7285  dfl 1.0602)  | KD 7.061 (box 0.21138  cls 0.00784  dfl 0.00046  feat 0.00097)
+  Epoch 20/30  Batch 2181/2188 (99.7%)  | Super 100.553 (box 1.3245  cls 0.6981  dfl 1.1197)  | Base 101.249 (box 1.3327  cls 0.7190  dfl 1.1123)  | KD 7.651 (box 0.22890  cls 0.00870  dfl 0.00055  feat 0.00095)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 20/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.704      0.574      0.629      0.375
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 20/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.648      0.574      0.625       0.37
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 21/30  Batch 1/2188 (0.0%)  | Super 100.544 (box 1.3159  cls 0.7207  dfl 1.1054)  | Base 102.892 (box 1.3395  cls 0.7598  dfl 1.1161)  | KD 7.857 (box 0.23498  cls 0.00920  dfl 0.00049  feat 0.00088)
+  Epoch 21/30  Batch 219/2188 (10.0%)  | Super 107.497 (box 1.4079  cls 0.7857  dfl 1.1657)  | Base 108.010 (box 1.4195  cls 0.7889  dfl 1.1669)  | KD 7.526 (box 0.22299  cls 0.01079  dfl 0.00052  feat 0.00089)
+  Epoch 21/30  Batch 437/2188 (20.0%)  | Super 109.839 (box 1.5217  cls 0.7875  dfl 1.1233)  | Base 110.534 (box 1.5252  cls 0.8069  dfl 1.1221)  | KD 8.457 (box 0.25678  cls 0.00612  dfl 0.00047  feat 0.00092)
+  Epoch 21/30  Batch 655/2188 (29.9%)  | Super 94.994 (box 1.2531  cls 0.6583  dfl 1.0571)  | Base 95.855 (box 1.2633  cls 0.6797  dfl 1.0525)  | KD 6.530 (box 0.19800  cls 0.00486  dfl 0.00043  feat 0.00078)
+  Epoch 21/30  Batch 873/2188 (39.9%)  | Super 107.107 (box 1.3638  cls 0.8305  dfl 1.1528)  | Base 107.455 (box 1.3616  cls 0.8540  dfl 1.1424)  | KD 7.975 (box 0.23876  cls 0.00908  dfl 0.00052  feat 0.00086)
+  Epoch 21/30  Batch 1091/2188 (49.9%)  | Super 94.878 (box 1.2680  cls 0.6504  dfl 1.0465)  | Base 95.376 (box 1.2740  cls 0.6682  dfl 1.0384)  | KD 7.315 (box 0.22058  cls 0.00677  dfl 0.00043  feat 0.00081)
+  Epoch 21/30  Batch 1309/2188 (59.8%)  | Super 96.357 (box 1.2347  cls 0.6985  dfl 1.0779)  | Base 96.968 (box 1.2453  cls 0.7081  dfl 1.0769)  | KD 8.666 (box 0.25054  cls 0.01862  dfl 0.00070  feat 0.00094)
+  Epoch 21/30  Batch 1527/2188 (69.8%)  | Super 101.418 (box 1.3224  cls 0.7429  dfl 1.1039)  | Base 101.393 (box 1.3301  cls 0.7484  dfl 1.0901)  | KD 7.667 (box 0.22535  cls 0.01278  dfl 0.00056  feat 0.00091)
+  Epoch 21/30  Batch 1745/2188 (79.8%)  | Super 94.366 (box 1.2317  cls 0.6486  dfl 1.0687)  | Base 95.747 (box 1.2360  cls 0.6914  dfl 1.0647)  | KD 7.488 (box 0.22510  cls 0.00750  dfl 0.00057  feat 0.00083)
+  Epoch 21/30  Batch 1963/2188 (89.7%)  | Super 91.989 (box 1.2251  cls 0.6272  dfl 1.0224)  | Base 93.139 (box 1.2347  cls 0.6668  dfl 1.0091)  | KD 6.973 (box 0.21140  cls 0.00501  dfl 0.00044  feat 0.00107)
+  Epoch 21/30  Batch 2181/2188 (99.7%)  | Super 101.479 (box 1.3305  cls 0.6829  dfl 1.1579)  | Base 101.475 (box 1.3197  cls 0.7039  dfl 1.1474)  | KD 7.992 (box 0.23745  cls 0.01074  dfl 0.00063  feat 0.00092)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 21/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.692      0.573       0.63      0.376
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 21/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.686      0.588      0.627      0.373
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 22/30  Batch 1/2188 (0.0%)  | Super 105.113 (box 1.3653  cls 0.7437  dfl 1.1757)  | Base 106.874 (box 1.3812  cls 0.7796  dfl 1.1790)  | KD 7.674 (box 0.22912  cls 0.00920  dfl 0.00058  feat 0.00091)
+  Epoch 22/30  Batch 219/2188 (10.0%)  | Super 103.684 (box 1.3976  cls 0.7350  dfl 1.1075)  | Base 104.851 (box 1.4049  cls 0.7673  dfl 1.1045)  | KD 6.577 (box 0.19669  cls 0.00760  dfl 0.00041  feat 0.00083)
+  Epoch 22/30  Batch 437/2188 (20.0%)  | Super 106.977 (box 1.4712  cls 0.7591  dfl 1.1127)  | Base 108.624 (box 1.4920  cls 0.7894  dfl 1.1132)  | KD 8.353 (box 0.25433  cls 0.00539  dfl 0.00042  feat 0.00091)
+  Epoch 22/30  Batch 655/2188 (29.9%)  | Super 98.700 (box 1.3126  cls 0.6891  dfl 1.0827)  | Base 99.714 (box 1.3294  cls 0.7051  dfl 1.0816)  | KD 7.338 (box 0.21818  cls 0.00968  dfl 0.00049  feat 0.00095)
+  Epoch 22/30  Batch 873/2188 (39.9%)  | Super 108.310 (box 1.4120  cls 0.8179  dfl 1.1549)  | Base 109.900 (box 1.4327  cls 0.8409  dfl 1.1608)  | KD 8.601 (box 0.26017  cls 0.00721  dfl 0.00055  feat 0.00085)
+  Epoch 22/30  Batch 1091/2188 (49.9%)  | Super 98.029 (box 1.2966  cls 0.6982  dfl 1.0686)  | Base 98.550 (box 1.3105  cls 0.7018  dfl 1.0675)  | KD 7.266 (box 0.21827  cls 0.00753  dfl 0.00044  feat 0.00081)
+  Epoch 22/30  Batch 1309/2188 (59.8%)  | Super 95.872 (box 1.2037  cls 0.6963  dfl 1.0960)  | Base 96.652 (box 1.2155  cls 0.7156  dfl 1.0893)  | KD 7.904 (box 0.23654  cls 0.00886  dfl 0.00057  feat 0.00104)
+  Epoch 22/30  Batch 1527/2188 (69.8%)  | Super 106.020 (box 1.4026  cls 0.7567  dfl 1.1538)  | Base 108.061 (box 1.4239  cls 0.8053  dfl 1.1478)  | KD 8.330 (box 0.24891  cls 0.00984  dfl 0.00063  feat 0.00093)
+  Epoch 22/30  Batch 1745/2188 (79.8%)  | Super 96.665 (box 1.2726  cls 0.6367  dfl 1.1115)  | Base 97.593 (box 1.2808  cls 0.6619  dfl 1.1071)  | KD 7.421 (box 0.22522  cls 0.00534  dfl 0.00048  feat 0.00088)
+  Epoch 22/30  Batch 1963/2188 (89.7%)  | Super 97.461 (box 1.2371  cls 0.7112  dfl 1.0974)  | Base 98.188 (box 1.2319  cls 0.7489  dfl 1.0876)  | KD 8.305 (box 0.25183  cls 0.00597  dfl 0.00064  feat 0.00109)
+  Epoch 22/30  Batch 2181/2188 (99.7%)  | Super 98.734 (box 1.3004  cls 0.6555  dfl 1.1296)  | Base 99.371 (box 1.3194  cls 0.6706  dfl 1.1153)  | KD 7.220 (box 0.21259  cls 0.01168  dfl 0.00049  feat 0.00088)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 22/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.655      0.588      0.628      0.373
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 22/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.685      0.578      0.625      0.371
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 23/30  Batch 1/2188 (0.0%)  | Super 100.614 (box 1.3032  cls 0.7204  dfl 1.1205)  | Base 101.871 (box 1.3076  cls 0.7646  dfl 1.1113)  | KD 8.090 (box 0.24386  cls 0.00752  dfl 0.00054  feat 0.00089)
+  Epoch 23/30  Batch 219/2188 (10.0%)  | Super 106.263 (box 1.4030  cls 0.7464  dfl 1.1714)  | Base 108.083 (box 1.4353  cls 0.7635  dfl 1.1788)  | KD 7.282 (box 0.22058  cls 0.00549  dfl 0.00052  feat 0.00097)
+  Epoch 23/30  Batch 437/2188 (20.0%)  | Super 111.312 (box 1.5220  cls 0.7988  dfl 1.1577)  | Base 112.517 (box 1.5469  cls 0.8092  dfl 1.1601)  | KD 8.997 (box 0.27161  cls 0.00802  dfl 0.00058  feat 0.00095)
+  Epoch 23/30  Batch 655/2188 (29.9%)  | Super 96.117 (box 1.2756  cls 0.6531  dfl 1.0749)  | Base 97.923 (box 1.2969  cls 0.6837  dfl 1.0795)  | KD 7.051 (box 0.20937  cls 0.00973  dfl 0.00047  feat 0.00078)
+  Epoch 23/30  Batch 873/2188 (39.9%)  | Super 107.127 (box 1.3829  cls 0.8365  dfl 1.1283)  | Base 107.978 (box 1.3945  cls 0.8510  dfl 1.1287)  | KD 8.366 (box 0.25180  cls 0.00826  dfl 0.00057  feat 0.00080)
+  Epoch 23/30  Batch 1091/2188 (49.9%)  | Super 98.787 (box 1.2979  cls 0.6927  dfl 1.0964)  | Base 98.307 (box 1.2864  cls 0.7026  dfl 1.0831)  | KD 7.465 (box 0.22400  cls 0.00793  dfl 0.00054  feat 0.00080)
+  Epoch 23/30  Batch 1309/2188 (59.8%)  | Super 99.615 (box 1.2774  cls 0.7255  dfl 1.1100)  | Base 99.856 (box 1.2783  cls 0.7430  dfl 1.0992)  | KD 8.340 (box 0.24935  cls 0.00980  dfl 0.00054  feat 0.00091)
+  Epoch 23/30  Batch 1527/2188 (69.8%)  | Super 100.538 (box 1.3473  cls 0.7098  dfl 1.0847)  | Base 101.818 (box 1.3715  cls 0.7236  dfl 1.0867)  | KD 7.889 (box 0.23628  cls 0.00881  dfl 0.00060  feat 0.00085)
+  Epoch 23/30  Batch 1745/2188 (79.8%)  | Super 97.757 (box 1.2932  cls 0.6619  dfl 1.0997)  | Base 98.470 (box 1.3023  cls 0.6841  dfl 1.0907)  | KD 7.157 (box 0.21551  cls 0.00682  dfl 0.00047  feat 0.00085)
+  Epoch 23/30  Batch 1963/2188 (89.7%)  | Super 95.632 (box 1.2093  cls 0.6975  dfl 1.0818)  | Base 96.415 (box 1.2228  cls 0.7174  dfl 1.0727)  | KD 7.270 (box 0.21689  cls 0.00881  dfl 0.00052  feat 0.00098)
+  Epoch 23/30  Batch 2181/2188 (99.7%)  | Super 99.997 (box 1.3286  cls 0.6705  dfl 1.1258)  | Base 99.816 (box 1.3165  cls 0.6888  dfl 1.1140)  | KD 7.010 (box 0.21061  cls 0.00704  dfl 0.00048  feat 0.00095)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 23/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.678      0.587      0.634      0.379
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 23/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.661      0.604      0.625      0.371
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 24/30  Batch 1/2188 (0.0%)  | Super 100.745 (box 1.3246  cls 0.7068  dfl 1.1168)  | Base 101.546 (box 1.3272  cls 0.7373  dfl 1.1088)  | KD 8.136 (box 0.24169  cls 0.01109  dfl 0.00058  feat 0.00087)
+  Epoch 24/30  Batch 219/2188 (10.0%)  | Super 103.371 (box 1.3676  cls 0.7284  dfl 1.1343)  | Base 104.426 (box 1.3817  cls 0.7414  dfl 1.1403)  | KD 6.817 (box 0.20526  cls 0.00643  dfl 0.00045  feat 0.00089)
+  Epoch 24/30  Batch 437/2188 (20.0%)  | Super 107.246 (box 1.4720  cls 0.7614  dfl 1.1180)  | Base 108.341 (box 1.4810  cls 0.7892  dfl 1.1155)  | KD 8.485 (box 0.25777  cls 0.00602  dfl 0.00048  feat 0.00088)
+  Epoch 24/30  Batch 655/2188 (29.9%)  | Super 94.270 (box 1.2480  cls 0.6671  dfl 1.0309)  | Base 95.139 (box 1.2583  cls 0.6895  dfl 1.0252)  | KD 7.084 (box 0.21462  cls 0.00548  dfl 0.00044  feat 0.00082)
+  Epoch 24/30  Batch 873/2188 (39.9%)  | Super 107.850 (box 1.3486  cls 0.8699  dfl 1.1518)  | Base 108.882 (box 1.3730  cls 0.8860  dfl 1.1436)  | KD 9.356 (box 0.28063  cls 0.01029  dfl 0.00053  feat 0.00093)
+  Epoch 24/30  Batch 1091/2188 (49.9%)  | Super 98.175 (box 1.2936  cls 0.6754  dfl 1.0990)  | Base 99.299 (box 1.2965  cls 0.7142  dfl 1.0924)  | KD 7.267 (box 0.21654  cls 0.00920  dfl 0.00048  feat 0.00089)
+  Epoch 24/30  Batch 1309/2188 (59.8%)  | Super 97.662 (box 1.2412  cls 0.6814  dfl 1.1293)  | Base 97.372 (box 1.2319  cls 0.6945  dfl 1.1165)  | KD 7.438 (box 0.22447  cls 0.00654  dfl 0.00055  feat 0.00088)
+  Epoch 24/30  Batch 1527/2188 (69.8%)  | Super 105.595 (box 1.3952  cls 0.7690  dfl 1.1357)  | Base 107.021 (box 1.4083  cls 0.7979  dfl 1.1382)  | KD 7.935 (box 0.23490  cls 0.01161  dfl 0.00055  feat 0.00090)
+  Epoch 24/30  Batch 1745/2188 (79.8%)  | Super 96.757 (box 1.2673  cls 0.6581  dfl 1.0982)  | Base 98.151 (box 1.2853  cls 0.6896  dfl 1.0923)  | KD 7.588 (box 0.22663  cls 0.00911  dfl 0.00050  feat 0.00088)
+  Epoch 24/30  Batch 1963/2188 (89.7%)  | Super 103.934 (box 1.3239  cls 0.7712  dfl 1.1529)  | Base 105.496 (box 1.3319  cls 0.8210  dfl 1.1438)  | KD 8.324 (box 0.24425  cls 0.01427  dfl 0.00057  feat 0.00103)
+  Epoch 24/30  Batch 2181/2188 (99.7%)  | Super 99.615 (box 1.3201  cls 0.6575  dfl 1.1354)  | Base 101.614 (box 1.3437  cls 0.6924  dfl 1.1393)  | KD 8.184 (box 0.24603  cls 0.00816  dfl 0.00058  feat 0.00100)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 24/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.682       0.59      0.634       0.38
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 24/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.668      0.601      0.626      0.372
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 25/30  Batch 1/2188 (0.0%)  | Super 98.370 (box 1.2904  cls 0.6832  dfl 1.1004)  | Base 99.814 (box 1.3054  cls 0.7145  dfl 1.0993)  | KD 7.422 (box 0.22347  cls 0.00714  dfl 0.00045  feat 0.00086)
+  Epoch 25/30  Batch 219/2188 (10.0%)  | Super 105.799 (box 1.3959  cls 0.7442  dfl 1.1661)  | Base 106.702 (box 1.4177  cls 0.7502  dfl 1.1666)  | KD 7.689 (box 0.23297  cls 0.00591  dfl 0.00053  feat 0.00089)
+  Epoch 25/30  Batch 437/2188 (20.0%)  | Super 111.056 (box 1.5192  cls 0.7875  dfl 1.1638)  | Base 112.497 (box 1.5396  cls 0.8114  dfl 1.1645)  | KD 9.547 (box 0.29000  cls 0.00671  dfl 0.00064  feat 0.00099)
+  Epoch 25/30  Batch 655/2188 (29.9%)  | Super 96.831 (box 1.2832  cls 0.6749  dfl 1.0679)  | Base 97.597 (box 1.2969  cls 0.6911  dfl 1.0620)  | KD 7.048 (box 0.21303  cls 0.00589  dfl 0.00045  feat 0.00089)
+  Epoch 25/30  Batch 873/2188 (39.9%)  | Super 105.935 (box 1.3720  cls 0.7913  dfl 1.1472)  | Base 107.077 (box 1.3724  cls 0.8337  dfl 1.1401)  | KD 8.562 (box 0.25657  cls 0.00959  dfl 0.00055  feat 0.00085)
+  Epoch 25/30  Batch 1091/2188 (49.9%)  | Super 96.026 (box 1.2734  cls 0.6667  dfl 1.0607)  | Base 95.579 (box 1.2692  cls 0.6727  dfl 1.0449)  | KD 7.154 (box 0.21681  cls 0.00549  dfl 0.00047  feat 0.00078)
+  Epoch 25/30  Batch 1309/2188 (59.8%)  | Super 98.400 (box 1.2456  cls 0.7121  dfl 1.1173)  | Base 99.696 (box 1.2706  cls 0.7215  dfl 1.1234)  | KD 8.339 (box 0.25300  cls 0.00614  dfl 0.00061  feat 0.00086)
+  Epoch 25/30  Batch 1527/2188 (69.8%)  | Super 103.213 (box 1.3772  cls 0.7318  dfl 1.1164)  | Base 104.555 (box 1.3872  cls 0.7706  dfl 1.1095)  | KD 8.127 (box 0.24041  cls 0.01203  dfl 0.00053  feat 0.00100)
+  Epoch 25/30  Batch 1745/2188 (79.8%)  | Super 98.451 (box 1.2677  cls 0.7027  dfl 1.1061)  | Base 99.733 (box 1.2771  cls 0.7427  dfl 1.0968)  | KD 7.561 (box 0.22831  cls 0.00671  dfl 0.00051  feat 0.00076)
+  Epoch 25/30  Batch 1963/2188 (89.7%)  | Super 98.918 (box 1.2933  cls 0.7126  dfl 1.0853)  | Base 100.715 (box 1.3122  cls 0.7458  dfl 1.0893)  | KD 8.357 (box 0.25089  cls 0.00871  dfl 0.00062  feat 0.00094)
+  Epoch 25/30  Batch 2181/2188 (99.7%)  | Super 104.529 (box 1.3673  cls 0.6948  dfl 1.2045)  | Base 106.590 (box 1.3951  cls 0.7290  dfl 1.2068)  | KD 6.969 (box 0.21008  cls 0.00639  dfl 0.00049  feat 0.00084)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 25/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.693      0.574      0.631      0.377
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 25/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.673      0.584      0.626      0.372
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 26/30  Batch 1/2188 (0.0%)  | Super 102.392 (box 1.3268  cls 0.7176  dfl 1.1554)  | Base 104.957 (box 1.3475  cls 0.7654  dfl 1.1670)  | KD 7.852 (box 0.23581  cls 0.00804  dfl 0.00056  feat 0.00097)
+  Epoch 26/30  Batch 219/2188 (10.0%)  | Super 106.774 (box 1.4246  cls 0.7746  dfl 1.1376)  | Base 108.290 (box 1.4341  cls 0.8240  dfl 1.1260)  | KD 7.931 (box 0.23626  cls 0.01016  dfl 0.00055  feat 0.00088)
+  Epoch 26/30  Batch 437/2188 (20.0%)  | Super 108.235 (box 1.4960  cls 0.7799  dfl 1.1064)  | Base 109.151 (box 1.5110  cls 0.8037  dfl 1.0962)  | KD 8.492 (box 0.25831  cls 0.00568  dfl 0.00046  feat 0.00093)
+  Epoch 26/30  Batch 655/2188 (29.9%)  | Super 97.190 (box 1.2788  cls 0.6710  dfl 1.0873)  | Base 98.201 (box 1.2971  cls 0.6903  dfl 1.0814)  | KD 6.965 (box 0.21029  cls 0.00599  dfl 0.00043  feat 0.00094)
+  Epoch 26/30  Batch 873/2188 (39.9%)  | Super 105.044 (box 1.3443  cls 0.7930  dfl 1.1453)  | Base 106.101 (box 1.3705  cls 0.8035  dfl 1.1417)  | KD 8.807 (box 0.26213  cls 0.01165  dfl 0.00057  feat 0.00084)
+  Epoch 26/30  Batch 1091/2188 (49.9%)  | Super 101.289 (box 1.3091  cls 0.7266  dfl 1.1296)  | Base 102.327 (box 1.3222  cls 0.7487  dfl 1.1268)  | KD 7.727 (box 0.23392  cls 0.00621  dfl 0.00048  feat 0.00084)
+  Epoch 26/30  Batch 1309/2188 (59.8%)  | Super 93.453 (box 1.2117  cls 0.6747  dfl 1.0341)  | Base 93.758 (box 1.2173  cls 0.6806  dfl 1.0321)  | KD 8.362 (box 0.25170  cls 0.00810  dfl 0.00058  feat 0.00092)
+  Epoch 26/30  Batch 1527/2188 (69.8%)  | Super 103.309 (box 1.3595  cls 0.7467  dfl 1.1223)  | Base 104.625 (box 1.3739  cls 0.7717  dfl 1.1240)  | KD 7.962 (box 0.23694  cls 0.01044  dfl 0.00059  feat 0.00086)
+  Epoch 26/30  Batch 1745/2188 (79.8%)  | Super 98.961 (box 1.2962  cls 0.6873  dfl 1.1091)  | Base 100.158 (box 1.3132  cls 0.7075  dfl 1.1093)  | KD 8.057 (box 0.24345  cls 0.00681  dfl 0.00064  feat 0.00089)
+  Epoch 26/30  Batch 1963/2188 (89.7%)  | Super 97.268 (box 1.2651  cls 0.7049  dfl 1.0696)  | Base 97.834 (box 1.2769  cls 0.7260  dfl 1.0544)  | KD 7.771 (box 0.23350  cls 0.00785  dfl 0.00053  feat 0.00096)
+  Epoch 26/30  Batch 2181/2188 (99.7%)  | Super 99.782 (box 1.2935  cls 0.7034  dfl 1.1213)  | Base 101.390 (box 1.3154  cls 0.7219  dfl 1.1312)  | KD 7.190 (box 0.21471  cls 0.00860  dfl 0.00046  feat 0.00090)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 26/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.707      0.568      0.633      0.377
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 26/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.699       0.59       0.63      0.375
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 27/30  Batch 1/2188 (0.0%)  | Super 101.499 (box 1.2940  cls 0.7486  dfl 1.1293)  | Base 102.718 (box 1.2955  cls 0.7883  dfl 1.1261)  | KD 8.315 (box 0.24508  cls 0.01341  dfl 0.00057  feat 0.00079)
+  Epoch 27/30  Batch 219/2188 (10.0%)  | Super 102.302 (box 1.3621  cls 0.7555  dfl 1.0793)  | Base 103.535 (box 1.3773  cls 0.7813  dfl 1.0769)  | KD 7.114 (box 0.21521  cls 0.00570  dfl 0.00046  feat 0.00095)
+  Epoch 27/30  Batch 437/2188 (20.0%)  | Super 110.683 (box 1.5208  cls 0.7705  dfl 1.1676)  | Base 111.535 (box 1.5281  cls 0.8018  dfl 1.1555)  | KD 9.049 (box 0.27337  cls 0.00797  dfl 0.00050  feat 0.00093)
+  Epoch 27/30  Batch 655/2188 (29.9%)  | Super 97.773 (box 1.2955  cls 0.6722  dfl 1.0877)  | Base 97.856 (box 1.3000  cls 0.6925  dfl 1.0655)  | KD 7.029 (box 0.21199  cls 0.00624  dfl 0.00042  feat 0.00101)
+  Epoch 27/30  Batch 873/2188 (39.9%)  | Super 110.517 (box 1.4180  cls 0.8208  dfl 1.2149)  | Base 111.261 (box 1.4268  cls 0.8609  dfl 1.1893)  | KD 8.650 (box 0.26192  cls 0.00685  dfl 0.00059  feat 0.00097)
+  Epoch 27/30  Batch 1091/2188 (49.9%)  | Super 97.731 (box 1.2789  cls 0.6837  dfl 1.0915)  | Base 99.398 (box 1.3071  cls 0.7037  dfl 1.0954)  | KD 7.240 (box 0.21141  cls 0.01356  dfl 0.00045  feat 0.00084)
+  Epoch 27/30  Batch 1309/2188 (59.8%)  | Super 97.307 (box 1.2299  cls 0.7138  dfl 1.0971)  | Base 98.146 (box 1.2408  cls 0.7301  dfl 1.0961)  | KD 7.420 (box 0.22435  cls 0.00610  dfl 0.00055  feat 0.00086)
+  Epoch 27/30  Batch 1527/2188 (69.8%)  | Super 100.209 (box 1.3489  cls 0.6957  dfl 1.0869)  | Base 100.590 (box 1.3478  cls 0.7175  dfl 1.0782)  | KD 7.565 (box 0.22379  cls 0.01129  dfl 0.00051  feat 0.00081)
+  Epoch 27/30  Batch 1745/2188 (79.8%)  | Super 99.972 (box 1.2875  cls 0.7055  dfl 1.1311)  | Base 102.066 (box 1.3116  cls 0.7455  dfl 1.1324)  | KD 8.626 (box 0.25870  cls 0.00939  dfl 0.00063  feat 0.00085)
+  Epoch 27/30  Batch 1963/2188 (89.7%)  | Super 99.836 (box 1.2755  cls 0.7383  dfl 1.1061)  | Base 100.620 (box 1.2973  cls 0.7507  dfl 1.0964)  | KD 8.568 (box 0.25762  cls 0.00843  dfl 0.00062  feat 0.00107)
+  Epoch 27/30  Batch 2181/2188 (99.7%)  | Super 105.365 (box 1.3610  cls 0.7139  dfl 1.2178)  | Base 106.062 (box 1.3700  cls 0.7302  dfl 1.2143)  | KD 7.373 (box 0.22192  cls 0.00702  dfl 0.00047  feat 0.00101)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 27/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.691      0.568      0.631      0.376
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 27/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578        0.7      0.567      0.627      0.372
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 28/30  Batch 1/2188 (0.0%)  | Super 101.221 (box 1.3179  cls 0.6894  dfl 1.1559)  | Base 101.780 (box 1.3249  cls 0.7097  dfl 1.1460)  | KD 7.792 (box 0.23222  cls 0.00986  dfl 0.00055  feat 0.00088)
+  Epoch 28/30  Batch 219/2188 (10.0%)  | Super 102.416 (box 1.3485  cls 0.7436  dfl 1.1084)  | Base 102.898 (box 1.3532  cls 0.7624  dfl 1.1000)  | KD 7.517 (box 0.22533  cls 0.00802  dfl 0.00062  feat 0.00094)
+  Epoch 28/30  Batch 437/2188 (20.0%)  | Super 106.958 (box 1.4773  cls 0.7480  dfl 1.1172)  | Base 108.168 (box 1.4927  cls 0.7751  dfl 1.1125)  | KD 9.426 (box 0.28678  cls 0.00636  dfl 0.00056  feat 0.00087)
+  Epoch 28/30  Batch 655/2188 (29.9%)  | Super 96.699 (box 1.2941  cls 0.6522  dfl 1.0756)  | Base 98.575 (box 1.3168  cls 0.6859  dfl 1.0778)  | KD 6.948 (box 0.20930  cls 0.00652  dfl 0.00047  feat 0.00082)
+  Epoch 28/30  Batch 873/2188 (39.9%)  | Super 106.978 (box 1.3697  cls 0.8072  dfl 1.1662)  | Base 108.253 (box 1.3798  cls 0.8420  dfl 1.1611)  | KD 8.582 (box 0.25774  cls 0.00898  dfl 0.00056  feat 0.00091)
+  Epoch 28/30  Batch 1091/2188 (49.9%)  | Super 98.056 (box 1.2886  cls 0.6728  dfl 1.1028)  | Base 98.444 (box 1.2921  cls 0.6925  dfl 1.0919)  | KD 7.357 (box 0.22409  cls 0.00450  dfl 0.00051  feat 0.00080)
+  Epoch 28/30  Batch 1309/2188 (59.8%)  | Super 90.369 (box 1.1601  cls 0.6439  dfl 1.0201)  | Base 89.999 (box 1.1571  cls 0.6479  dfl 1.0075)  | KD 7.372 (box 0.22023  cls 0.00869  dfl 0.00054  feat 0.00090)
+  Epoch 28/30  Batch 1527/2188 (69.8%)  | Super 103.844 (box 1.3616  cls 0.7590  dfl 1.1245)  | Base 106.395 (box 1.3944  cls 0.8031  dfl 1.1273)  | KD 9.090 (box 0.26130  cls 0.02115  dfl 0.00070  feat 0.00091)
+  Epoch 28/30  Batch 1745/2188 (79.8%)  | Super 95.158 (box 1.2425  cls 0.6819  dfl 1.0492)  | Base 96.567 (box 1.2648  cls 0.6970  dfl 1.0560)  | KD 8.216 (box 0.24637  cls 0.00886  dfl 0.00067  feat 0.00085)
+  Epoch 28/30  Batch 1963/2188 (89.7%)  | Super 96.526 (box 1.1994  cls 0.7532  dfl 1.0638)  | Base 96.651 (box 1.2095  cls 0.7595  dfl 1.0514)  | KD 7.531 (box 0.22657  cls 0.00716  dfl 0.00056  feat 0.00106)
+  Epoch 28/30  Batch 2181/2188 (99.7%)  | Super 103.536 (box 1.3485  cls 0.7024  dfl 1.1846)  | Base 104.004 (box 1.3506  cls 0.7287  dfl 1.1708)  | KD 7.644 (box 0.22558  cls 0.01167  dfl 0.00051  feat 0.00111)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 28/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.673       0.58      0.631      0.377
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 28/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.678      0.588      0.628      0.373
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 29/30  Batch 1/2188 (0.0%)  | Super 100.568 (box 1.2928  cls 0.7232  dfl 1.1268)  | Base 102.526 (box 1.3133  cls 0.7609  dfl 1.1297)  | KD 7.947 (box 0.23898  cls 0.00796  dfl 0.00058  feat 0.00083)
+  Epoch 29/30  Batch 219/2188 (10.0%)  | Super 103.187 (box 1.3609  cls 0.7344  dfl 1.1293)  | Base 103.526 (box 1.3781  cls 0.7386  dfl 1.1185)  | KD 6.613 (box 0.19962  cls 0.00562  dfl 0.00048  feat 0.00093)
+  Epoch 29/30  Batch 437/2188 (20.0%)  | Super 110.075 (box 1.5186  cls 0.7802  dfl 1.1411)  | Base 112.459 (box 1.5519  cls 0.8050  dfl 1.1575)  | KD 9.356 (box 0.28460  cls 0.00625  dfl 0.00056  feat 0.00095)
+  Epoch 29/30  Batch 655/2188 (29.9%)  | Super 96.250 (box 1.2600  cls 0.6813  dfl 1.0665)  | Base 97.576 (box 1.2807  cls 0.7092  dfl 1.0594)  | KD 6.900 (box 0.20443  cls 0.00992  dfl 0.00045  feat 0.00082)
+  Epoch 29/30  Batch 873/2188 (39.9%)  | Super 104.539 (box 1.3446  cls 0.8070  dfl 1.1151)  | Base 106.053 (box 1.3659  cls 0.8413  dfl 1.1070)  | KD 8.174 (box 0.24721  cls 0.00688  dfl 0.00052  feat 0.00082)
+  Epoch 29/30  Batch 1091/2188 (49.9%)  | Super 98.181 (box 1.2785  cls 0.6771  dfl 1.1126)  | Base 98.949 (box 1.2854  cls 0.7028  dfl 1.1039)  | KD 7.333 (box 0.22027  cls 0.00760  dfl 0.00046  feat 0.00083)
+  Epoch 29/30  Batch 1309/2188 (59.8%)  | Super 96.453 (box 1.2576  cls 0.6792  dfl 1.0773)  | Base 97.104 (box 1.2593  cls 0.6950  dfl 1.0801)  | KD 8.135 (box 0.24347  cls 0.00928  dfl 0.00060  feat 0.00086)
+  Epoch 29/30  Batch 1527/2188 (69.8%)  | Super 106.028 (box 1.4088  cls 0.7472  dfl 1.1574)  | Base 107.450 (box 1.4271  cls 0.7724  dfl 1.1582)  | KD 8.033 (box 0.23776  cls 0.01167  dfl 0.00063  feat 0.00096)
+  Epoch 29/30  Batch 1745/2188 (79.8%)  | Super 99.554 (box 1.2867  cls 0.6924  dfl 1.1320)  | Base 100.310 (box 1.2917  cls 0.7262  dfl 1.1168)  | KD 8.306 (box 0.25008  cls 0.00792  dfl 0.00069  feat 0.00088)
+  Epoch 29/30  Batch 1963/2188 (89.7%)  | Super 102.286 (box 1.2881  cls 0.7711  dfl 1.1372)  | Base 103.363 (box 1.3071  cls 0.7863  dfl 1.1366)  | KD 8.251 (box 0.24706  cls 0.00924  dfl 0.00055  feat 0.00100)
+  Epoch 29/30  Batch 2181/2188 (99.7%)  | Super 102.348 (box 1.3522  cls 0.6803  dfl 1.1660)  | Base 102.680 (box 1.3495  cls 0.7036  dfl 1.1556)  | KD 7.603 (box 0.22958  cls 0.00648  dfl 0.00056  feat 0.00097)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 29/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.665      0.585      0.632      0.377
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 29/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.699      0.571       0.63      0.375
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 30/30  Batch 1/2188 (0.0%)  | Super 102.211 (box 1.3105  cls 0.7390  dfl 1.1445)  | Base 104.086 (box 1.3343  cls 0.7685  dfl 1.1499)  | KD 8.447 (box 0.25233  cls 0.01013  dfl 0.00063  feat 0.00089)
+  Epoch 30/30  Batch 219/2188 (10.0%)  | Super 106.152 (box 1.3943  cls 0.7684  dfl 1.1545)  | Base 107.607 (box 1.4102  cls 0.7960  dfl 1.1565)  | KD 8.185 (box 0.24618  cls 0.00784  dfl 0.00062  feat 0.00113)
+  Epoch 30/30  Batch 437/2188 (20.0%)  | Super 108.828 (box 1.4741  cls 0.7667  dfl 1.1600)  | Base 110.061 (box 1.4993  cls 0.7968  dfl 1.1433)  | KD 9.118 (box 0.27819  cls 0.00533  dfl 0.00055  feat 0.00086)
+  Epoch 30/30  Batch 655/2188 (29.9%)  | Super 97.326 (box 1.2838  cls 0.6768  dfl 1.0808)  | Base 98.176 (box 1.2893  cls 0.7017  dfl 1.0770)  | KD 6.540 (box 0.19543  cls 0.00765  dfl 0.00044  feat 0.00086)
+  Epoch 30/30  Batch 873/2188 (39.9%)  | Super 112.080 (box 1.3997  cls 0.8721  dfl 1.2307)  | Base 113.543 (box 1.4247  cls 0.9035  dfl 1.2200)  | KD 9.853 (box 0.29819  cls 0.00818  dfl 0.00066  feat 0.00089)
+  Epoch 30/30  Batch 1091/2188 (49.9%)  | Super 96.875 (box 1.2670  cls 0.6689  dfl 1.0914)  | Base 97.980 (box 1.2816  cls 0.6897  dfl 1.0906)  | KD 7.087 (box 0.21380  cls 0.00631  dfl 0.00046  feat 0.00090)
+  Epoch 30/30  Batch 1309/2188 (59.8%)  | Super 93.841 (box 1.2179  cls 0.6623  dfl 1.0522)  | Base 94.001 (box 1.2276  cls 0.6553  dfl 1.0547)  | KD 7.725 (box 0.23260  cls 0.00738  dfl 0.00047  feat 0.00097)
+  Epoch 30/30  Batch 1527/2188 (69.8%)  | Super 101.239 (box 1.3422  cls 0.7137  dfl 1.1078)  | Base 102.513 (box 1.3488  cls 0.7558  dfl 1.0989)  | KD 7.798 (box 0.23221  cls 0.00998  dfl 0.00058  feat 0.00091)
+  Epoch 30/30  Batch 1745/2188 (79.8%)  | Super 97.045 (box 1.2660  cls 0.6752  dfl 1.0914)  | Base 98.002 (box 1.2748  cls 0.7016  dfl 1.0861)  | KD 8.055 (box 0.24379  cls 0.00649  dfl 0.00065  feat 0.00080)
+  Epoch 30/30  Batch 1963/2188 (89.7%)  | Super 97.754 (box 1.2469  cls 0.6900  dfl 1.1179)  | Base 98.550 (box 1.2552  cls 0.7159  dfl 1.1085)  | KD 7.904 (box 0.23586  cls 0.00968  dfl 0.00051  feat 0.00094)
+  Epoch 30/30  Batch 2181/2188 (99.7%)  | Super 101.986 (box 1.3353  cls 0.6961  dfl 1.1557)  | Base 102.327 (box 1.3491  cls 0.7084  dfl 1.1402)  | KD 7.031 (box 0.21081  cls 0.00738  dfl 0.00045  feat 0.00109)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 30/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.699       0.57      0.637      0.381
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 30/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.703      0.569      0.631      0.376
+
+30 epochs completed in 15.189 hours.
+Optimizer stripped from runs/bdd100k/detect/anydepth-yolov12l/train/weights/last.pt, 55.7MB
+Optimizer stripped from runs/bdd100k/detect/anydepth-yolov12l/train/weights/best.pt, 55.7MB
+
+Validating runs/bdd100k/detect/anydepth-yolov12l/train/weights/best.pt...
+Ultralytics 8.3.63 🚀 Python-3.11.13 torch-2.2.2+cu121 CUDA:0 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
+                                                       CUDA:1 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
+YOLO-ad-v12l summary: 917 layers, 27,272,558 parameters, 0 gradients, 82.6 GFLOPs
+
+[*] FLOPs calculated at resolution: 736x1312
+| module                 | #parameters or shape   | #flops   |
+|:-----------------------|:-----------------------|:---------|
+| base_model.model.model | 27.273M                | 97.068G  |
+| 0.conv                 | 1.792K                 | 0.417G   |
+| 0.conv.weight          | (64, 3, 3, 3)          |          |
+| 0.conv.bias            | (64,)                  |          |
+| 1.conv                 | 36.992K                | 2.225G   |
+| 1.conv.weight          | (128, 32, 3, 3)        |          |
+| 1.conv.bias            | (128,)                 |          |
+| 2                      | 0.175M                 | 10.475G  |
+| 2.cv1                  | 16.896K                | 1.004G   |
+| 2.cv1.conv             | 16.384K                | 0.989G   |
+| 2.cv1.bn               | 0.256K                 | 15.45M   |
+| 2.cv1.bn_skip          | 0.256K                 |          |
+| 2.cv2                  | 66.56K                 | 3.986G   |
+| 2.cv2.conv             | 65.536K                | 3.955G   |
+| 2.cv2.bn               | 0.512K                 | 30.9M    |
+| 2.cv2.bn_skip          | 0.512K                 |          |
+| 2.m                    | 91.776K                | 5.485G   |
+| 2.m.0                  | 45.888K                | 2.742G   |
+| 2.m.1                  | 45.888K                | 2.742G   |
+| 3                      | 0.148M                 | 2.233G   |
+| 3.conv                 | 0.147M                 | 2.225G   |
+| 3.conv.weight          | (256, 64, 3, 3)        |          |
+| 3.bn                   | 0.512K                 | 7.725M   |
+| 3.bn.weight            | (256,)                 |          |
+| 3.bn.bias              | (256,)                 |          |
+| 3.bn_skip              | 0.512K                 |          |
+| 3.bn_skip.weight       | (256,)                 |          |
+| 3.bn_skip.bias         | (256,)                 |          |
+| 4                      | 0.695M                 | 10.429G  |
+| 4.cv1                  | 66.56K                 | 0.997G   |
+| 4.cv1.conv             | 65.536K                | 0.989G   |
+| 4.cv1.bn               | 0.512K                 | 7.725M   |
+| 4.cv1.bn_skip          | 0.512K                 |          |
+| 4.cv2                  | 0.264M                 | 3.971G   |
+| 4.cv2.conv             | 0.262M                 | 3.955G   |
+| 4.cv2.bn               | 1.024K                 | 15.45M   |
+| 4.cv2.bn_skip          | 1.024K                 |          |
+| 4.m                    | 0.364M                 | 5.462G   |
+| 4.m.0                  | 0.182M                 | 2.731G   |
+| 4.m.1                  | 0.182M                 | 2.731G   |
+| 5                      | 2.361M                 | 8.903G   |
+| 5.conv                 | 2.359M                 | 8.899G   |
+| 5.conv.weight          | (512, 512, 3, 3)       |          |
+| 5.bn                   | 1.024K                 | 3.863M   |
+| 5.bn.weight            | (512,)                 |          |
+| 5.bn.bias              | (512,)                 |          |
+| 5.bn_skip              | 1.024K                 |          |
+| 5.bn_skip.weight       | (512,)                 |          |
+| 5.bn_skip.bias         | (512,)                 |          |
+| 6                      | 4.943M                 | 17.067G  |
+| 6.gamma                | (512,)                 |          |
+| 6.cv1                  | 0.132M                 | 0.496G   |
+| 6.cv1.conv             | 0.131M                 | 0.494G   |
+| 6.cv1.bn               | 0.512K                 | 1.931M   |
+| 6.cv1.bn_skip          | 0.512K                 |          |
+| 6.cv2                  | 1.051M                 | 2.476G   |
+| 6.cv2.conv             | 0.655M                 | 2.472G   |
+| 6.cv2.bn               | 1.024K                 | 3.863M   |
+| 6.cv2.bn_skip          | 1.024K                 |          |
+| 6.cv2.conv_skip        | 0.393M                 |          |
+| 6.m                    | 3.76M                  | 14.094G  |
+| 6.m.0                  | 0.946M                 | 3.538G   |
+| 6.m.1                  | 0.946M                 | 3.538G   |
+| 6.m.2                  | 0.934M                 | 3.509G   |
+| 6.m.3                  | 0.934M                 | 3.509G   |
+| 7                      | 2.361M                 | 2.226G   |
+| 7.conv                 | 2.359M                 | 2.225G   |
+| 7.conv.weight          | (512, 512, 3, 3)       |          |
+| 7.bn                   | 1.024K                 | 0.966M   |
+| 7.bn.weight            | (512,)                 |          |
+| 7.bn.bias              | (512,)                 |          |
+| 7.bn_skip              | 1.024K                 |          |
+| 7.bn_skip.weight       | (512,)                 |          |
+| 7.bn_skip.bias         | (512,)                 |          |
+| 8                      | 4.943M                 | 4.267G   |
+| 8.gamma                | (512,)                 |          |
+| 8.cv1                  | 0.132M                 | 0.124G   |
+| 8.cv1.conv             | 0.131M                 | 0.124G   |
+| 8.cv1.bn               | 0.512K                 | 0.483M   |
+| 8.cv1.bn_skip          | 0.512K                 |          |
+| 8.cv2                  | 1.051M                 | 0.619G   |
+| 8.cv2.conv             | 0.655M                 | 0.618G   |
+| 8.cv2.bn               | 1.024K                 | 0.966M   |
+| 8.cv2.bn_skip          | 1.024K                 |          |
+| 8.cv2.conv_skip        | 0.393M                 |          |
+| 8.m                    | 3.76M                  | 3.524G   |
+| 8.m.0                  | 0.946M                 | 0.885G   |
+| 8.m.1                  | 0.946M                 | 0.885G   |
+| 8.m.2                  | 0.934M                 | 0.877G   |
+| 8.m.3                  | 0.934M                 | 0.877G   |
+| 11                     | 2.105M                 | 7.924G   |
+| 11.cv1                 | 0.263M                 | 0.991G   |
+| 11.cv1.conv            | 0.262M                 | 0.989G   |
+| 11.cv1.bn              | 0.512K                 | 1.931M   |
+| 11.cv1.bn_skip         | 0.512K                 |          |
+| 11.cv2                 | 0.395M                 | 1.487G   |
+| 11.cv2.conv            | 0.393M                 | 1.483G   |
+| 11.cv2.bn              | 1.024K                 | 3.863M   |
+| 11.cv2.bn_skip         | 1.024K                 |          |
+| 11.m                   | 1.447M                 | 5.446G   |
+| 11.m.0                 | 0.725M                 | 2.727G   |
+| 11.m.1                 | 0.722M                 | 2.719G   |
+| 14                     | 0.594M                 | 8.926G   |
+| 14.cv1                 | 0.132M                 | 1.981G   |
+| 14.cv1.conv            | 0.131M                 | 1.978G   |
+| 14.cv1.bn              | 0.256K                 | 3.863M   |
+| 14.cv1.bn_skip         | 0.256K                 |          |
+| 14.cv2                 | 99.328K                | 1.491G   |
+| 14.cv2.conv            | 98.304K                | 1.483G   |
+| 14.cv2.bn              | 0.512K                 | 7.725M   |
+| 14.cv2.bn_skip         | 0.512K                 |          |
+| 14.m                   | 0.363M                 | 5.454G   |
+| 14.m.0                 | 0.182M                 | 2.735G   |
+| 14.m.1                 | 0.181M                 | 2.719G   |
+| 15                     | 0.591M                 | 2.227G   |
+| 15.conv                | 0.59M                  | 2.225G   |
+| 15.conv.weight         | (256, 256, 3, 3)       |          |
+| 15.bn                  | 0.512K                 | 1.931M   |
+| 15.bn.weight           | (256,)                 |          |
+| 15.bn.bias             | (256,)                 |          |
+| 15.bn_skip             | 0.512K                 |          |
+| 15.bn_skip.weight      | (256,)                 |          |
+| 15.bn_skip.bias        | (256,)                 |          |
+| 17                     | 2.04M                  | 7.677G   |
+| 17.cv1                 | 0.198M                 | 0.744G   |
+| 17.cv1.conv            | 0.197M                 | 0.742G   |
+| 17.cv1.bn              | 0.512K                 | 1.931M   |
+| 17.cv1.bn_skip         | 0.512K                 |          |
+| 17.cv2                 | 0.395M                 | 1.487G   |
+| 17.cv2.conv            | 0.393M                 | 1.483G   |
+| 17.cv2.bn              | 1.024K                 | 3.863M   |
+| 17.cv2.bn_skip         | 1.024K                 |          |
+| 17.m                   | 1.447M                 | 5.446G   |
+| 17.m.0                 | 0.725M                 | 2.727G   |
+| 17.m.1                 | 0.722M                 | 2.719G   |
+| 18                     | 2.361M                 | 2.226G   |
+| 18.conv                | 2.359M                 | 2.225G   |
+| 18.conv.weight         | (512, 512, 3, 3)       |          |
+| 18.bn                  | 1.024K                 | 0.966M   |
+| 18.bn.weight           | (512,)                 |          |
+| 18.bn.bias             | (512,)                 |          |
+| 18.bn_skip             | 1.024K                 |          |
+| 18.bn_skip.weight      | (512,)                 |          |
+| 18.bn_skip.bias        | (512,)                 |          |
+| 20                     | 2.501M                 | 2.353G   |
+| 20.cv1                 | 0.526M                 | 0.495G   |
+| 20.cv1.conv            | 0.524M                 | 0.494G   |
+| 20.cv1.bn              | 1.024K                 | 0.966M   |
+| 20.cv1.bn_skip         | 1.024K                 |          |
+| 20.cv2                 | 0.526M                 | 0.495G   |
+| 20.cv2.conv            | 0.524M                 | 0.494G   |
+| 20.cv2.bn              | 1.024K                 | 0.966M   |
+| 20.cv2.bn_skip         | 1.024K                 |          |
+| 20.m                   | 1.448M                 | 1.363G   |
+| 20.m.0                 | 0.724M                 | 0.681G   |
+| 20.m.1                 | 0.724M                 | 0.681G   |
+| 21                     | 1.415M                 | 7.485G   |
+| 21.cv2                 | 0.861M                 | 4.426G   |
+| 21.cv2.0               | 0.189M                 | 2.843G   |
+| 21.cv2.1               | 0.336M                 | 1.267G   |
+| 21.cv2.2               | 0.336M                 | 0.317G   |
+| 21.cv3                 | 0.554M                 | 3.057G   |
+| 21.cv3.0               | 0.139M                 | 2.086G   |
+| 21.cv3.1               | 0.207M                 | 0.777G   |
+| 21.cv3.2               | 0.207M                 | 0.194G   |
+| 21.dfl.conv            | 16                     | 1.267M   |
+| 21.dfl.conv.weight     | (1, 16, 1, 1)          |          |
+| 9                      |                        | 1.931M   |
+| 12                     |                        | 7.725M   |
+  MACs  : 97.07 GMACs
+  FLOPs : 194.14 GFLOPs
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.699       0.57      0.637      0.381
+                person       3220      13265      0.814      0.651      0.758      0.419
+                 rider        515        649      0.741      0.507       0.58      0.316
+                   car       9879     102540      0.853      0.751      0.851      0.542
+                   bus       1242       1597      0.712      0.628      0.701      0.554
+                 truck       2689       4247      0.666      0.652      0.701      0.525
+                  bike        578       1007      0.673      0.552      0.606      0.328
+                 motor        334        452      0.727      0.524      0.585      0.318
+         traffic light       5653      26891      0.754      0.655       0.72      0.296
+          traffic sign       8221      34915      0.752      0.708       0.77      0.427
+                 train         14         15      0.296     0.0667     0.0957     0.0854
+Speed: 0.1ms preprocess, 7.0ms inference, 0.0ms loss, 0.4ms postprocess per image
+Results saved to [1mruns/bdd100k/detect/anydepth-yolov12l/train[0m
+WARNING: Plotting error for runs/bdd100k/detect/anydepth-yolov12l/train/results.csv: could not convert string to float: 'super'
+/home/hslee/context-anydepth-det/anydepth-yolov12/ultralytics/utils/plotting.py:1231: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  ax[1].legend()

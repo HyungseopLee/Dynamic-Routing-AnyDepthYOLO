@@ -105,11 +105,11 @@ python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
   --task detect \
   --config ./ultralytics/cfg/models/v12/yolo-ad-v12l.yaml \
   --data bdd100k.yaml \
-  --epoch 100 \
-  --imgsz 640 \
+  --epoch 30 \
+  --imgsz 1280 \
   --weight ./pretrained/yolo-ad-exp8_105_epoch539_0.539_0.520.pt \
   --project ./runs/bdd100k/detect/anydepth-yolov12l \
-  2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12l/100e_SGD0900_bs32_nbs256_1e-3_1e-5_640-360_singleScale_augNothing.log
+  2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12l/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing.log
 
 
 '''
