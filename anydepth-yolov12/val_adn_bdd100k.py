@@ -69,10 +69,10 @@ else:
 ## val on 1-gpu
 mkdir -p ./runs/bdd100k/detect/baseline-yolov12l
 python val_adn_bdd100k.py \
-    --imgsz 640 \
-    --weight /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/baseline-yolov12l/50e_SGD0937_bs32_nbs256_1e-3_1e-5_640-320_singleScale_augNothing/weights/best.pt \
-    --project /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/baseline-yolov12l/50e_SGD0937_bs32_nbs256_1e-3_1e-5_640-320_singleScale_augNothing \
-    2>&1 | tee /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/baseline-yolov12l/50e_SGD0937_bs32_nbs256_1e-3_1e-5_640-320_singleScale_augNothing/val.log
+    --imgsz 1280 \
+    --weight /home2/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/baseline-yolov12l/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing/weights/best.pt \
+    --project /home2/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/baseline-yolov12l/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing \
+    2>&1 | tee /home2/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/baseline-yolov12l/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing/val.log
 
 
 # any-depth

@@ -8,19 +8,19 @@ test: test/images
 nc: 10
 
 names:
-  0: person # @HyungseopLee: pedestrian X (outdated)
+  0: person # pedestrian X (outdated)
   1: rider
   2: car
   3: bus
   4: truck
-  5: bike # @HyungseopLee: bicycle X (outdated)
-  6: motor # @HyungseopLee: motorcycle X
+  5: bike # bicycle X (outdated)
+  6: motor # motorcycle X
   7: traffic light
   8: traffic sign
   9: train
 
 # ------------------------------------------------------------------------------------------------
-# @HyungseopLee: For multi-task learning
+# For multi-task learning
 
 attr_path:
   train: train/attributes.json
