@@ -2,3 +2,5 @@
 per_frame_predictions*/
 *.mp4
 summary*.json
+*latency*
+*energy*

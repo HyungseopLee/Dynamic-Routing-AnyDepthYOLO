@@ -276,13 +276,8 @@ def run_sequence(model, seq_id, kitti_root, args, energy_monitor):
     n_frames = len(frame_files)
     print(f"\n[*] Sequence {seq_id}: {n_frames} frames, {len(gt_by_frame)} frames with GT")
 
-    # Determine skip config
-    num_skip = getattr(model.model, 'num_skippable_layers', 0)
-    is_anydepth = num_skip > 0
-    if is_anydepth:
-        skip = [False] * num_skip  # Full model (TODO: adaptive logic)
-    else:
-        skip = None
+    # Use skip config from args
+    skip = args.skip_list
 
     # Prepare output video
     sample_img = cv2.imread(str(frame_files[0]))
@@ -415,10 +410,10 @@ def run_sequence(model, seq_id, kitti_root, args, energy_monitor):
         'mean_latency_ms': round(float(mean_latency), 2),
         'mean_energy_mJ': round(float(mean_energy), 2),
         'model_config': {
-            'is_anydepth': is_anydepth,
-            'num_skippable_layers': num_skip,
-            'skip': skip if skip else 'N/A',
-            'imgsz': args.imgsz,
+            'is_anydepth': getattr(model.model, 'num_skippable_layers', 0) > 0,
+            'num_skippable_layers': getattr(model.model, 'num_skippable_layers', 0),
+            'skip': ''.join('T' if s else 'F' for s in skip) if skip else 'N/A',
+            'imgsz': args.imgsz if isinstance(args.imgsz, int) else list(args.imgsz),
             'conf_threshold': args.conf,
         }
     }
@@ -463,13 +458,20 @@ def main():
     parser.add_argument('--weight', type=str, required=True, help='Path to model weights')
     parser.add_argument('--kitti_root', type=str, default='/media/data/kitti-tracking',
                         help='KITTI tracking dataset root')
-    parser.add_argument('--sequences', type=str, nargs='+', default=['0000'],
-                        help='Sequence IDs to evaluate (e.g., 0000 0001 0002)')
+    parser.add_argument('--sequences', type=str, nargs='+', default=None,
+                        help='Sequence IDs to evaluate (e.g., 0000 0001 0002). '
+                             'If not specified, all sequences in kitti_root are used.')
     parser.add_argument('--imgsz', type=int, nargs='+', default=[640],
                         help='Input image size. Single value for square (640), '
                              'or two values for rect (h w), e.g., --imgsz 192 640 for KITTI, '
                              '--imgsz 384 640 for BDD100K. Values should be multiples of 32.')
     parser.add_argument('--conf', type=float, default=0.25, help='Confidence threshold')
+    parser.add_argument('--skip', type=str, default=None,
+                        help='Skip config for each skippable layer. '
+                             'e.g., --skip FFTTFFTT (F=False/use layer, T=True/skip layer). '
+                             'Length must match num_skippable_layers. '
+                             'If not specified: Full mode (all F). '
+                             'Ignored for baseline models.')
     parser.add_argument('--task', type=str, default='detect', help='Task type')
     parser.add_argument('--project', type=str, default='./runs/kitti-tracking/video_eval',
                         help='Output project directory')
@@ -483,6 +485,12 @@ def main():
     else:
         raise ValueError(f'--imgsz expects 1 or 2 values, got {len(args.imgsz)}')
 
+    # Auto-detect all sequences if not specified
+    if args.sequences is None:
+        label_dir = Path(args.kitti_root) / 'training' / 'label_02'
+        args.sequences = sorted([f.stem for f in label_dir.glob('*.txt')])
+        print(f'[*] Auto-detected {len(args.sequences)} sequences: {args.sequences}')
+
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     args.project = os.path.join(args.project, timestamp)
     os.makedirs(args.project, exist_ok=True)
@@ -492,7 +500,23 @@ def main():
     model = YOLO(args.weight, task=args.task)
     num_skip = getattr(model.model, 'num_skippable_layers', 0)
     is_anydepth = num_skip > 0
+
+    # Parse skip config
+    if is_anydepth:
+        if args.skip is None:
+            args.skip_list = [False] * num_skip  # Default: Full mode
+        else:
+            if len(args.skip) != num_skip:
+                raise ValueError(f'--skip length ({len(args.skip)}) != num_skippable_layers ({num_skip}). '
+                                 f'Expected {num_skip} characters of T/F, e.g., {"F"*num_skip}')
+            args.skip_list = [c == 'T' for c in args.skip.upper()]
+        skip_str = ''.join('T' if s else 'F' for s in args.skip_list)
+    else:
+        args.skip_list = None
+        skip_str = 'N/A (baseline)'
+
     print(f'[*] AnyDepth: {is_anydepth}, num_skippable_layers: {num_skip}')
+    print(f'[*] Skip config: {skip_str}')
     print(f'[*] Image size: {args.imgsz}, Conf threshold: {args.conf}')
     print(f'[*] Sequences: {args.sequences}')
     print(f'[*] Output: {args.project}')
@@ -551,33 +575,42 @@ if __name__ == '__main__':
 
 
 '''
+--sequences 0000 0001 \
+
 
 # Baseline (KITTI: 1242 x 375 → imgsz 192 640)
 mkdir -p ./runs/kitti/tracking/baseline-yolov12l
 python eval_video_kitti.py \
         --weight /home/hslee/Desktop/Embedded_AI/context-anydepth-det/anydepth-yolov12/bdd_finetuned/baseline_best.pt \
         --kitti_root /media/data/kitti-tracking \
-        --sequences 0000 0001 \
         --imgsz 192 640 \
         --conf 0.5 \
         --project ./runs/kitti/tracking/baseline-yolov12l \
         2>&1 | tee ./runs/kitti/tracking/baseline-yolov12l/eval.log
 
 
-# AnyDepth (KITTI: 1242x375 → imgsz 192 640)
+# AnyDepth Full (all layers used, skip=FFFFFFFF)
+mkdir -p ./runs/kitti/tracking/anydepth-yolov12l-full
 python eval_video_kitti.py \
-        --weight ./runs/bdd100k/detect/anydepth-yolov12l/.../weights/best.pt \
+        --weight /home/hslee/Desktop/Embedded_AI/context-anydepth-det/anydepth-yolov12/bdd_finetuned/anydepth_best.pt \
         --kitti_root /media/data/kitti-tracking \
-        --sequences 0000 0001 \
         --imgsz 192 640 \
         --conf 0.5 \
-        --project ./runs/kitti/tracking/anydepth-yolov12l
+        --skip FFFFFFFF \
+        --project ./runs/kitti/tracking/anydepth-yolov12l-full \
+        2>&1 | tee ./runs/kitti/tracking/anydepth-yolov12l-full/eval.log
 
 
-# BDD100K video (if available: 1280x720 → imgsz 384 640)
-# python eval_video_kitti.py \
-#         --weight ./runs/bdd100k/detect/anydepth-yolov12l/.../weights/best.pt \
-#         --imgsz 384 640 \
-#         ...
+# AnyDepth Base (all layers skipped, skip=TTTTTTTT)
+mkdir -p ./runs/kitti/tracking/anydepth-yolov12l-base
+python eval_video_kitti.py \
+        --weight /home/hslee/Desktop/Embedded_AI/context-anydepth-det/anydepth-yolov12/bdd_finetuned/anydepth_best.pt \
+        --kitti_root /media/data/kitti-tracking \
+        --imgsz 192 640 \
+        --conf 0.5 \
+        --skip TTTTTTTT \
+        --project ./runs/kitti/tracking/anydepth-yolov12l-base \
+        2>&1 | tee ./runs/kitti/tracking/anydepth-yolov12l-base/eval.log
+
 
 '''

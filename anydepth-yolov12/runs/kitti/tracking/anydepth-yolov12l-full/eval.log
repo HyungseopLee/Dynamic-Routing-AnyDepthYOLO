@@ -1,0 +1,274 @@
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:54: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+FlashAttention is not available on this device. Using scaled_dot_product_attention instead.
+[*] Auto-detected 21 sequences: ['0000', '0001', '0002', '0003', '0004', '0005', '0006', '0007', '0008', '0009', '0010', '0011', '0012', '0013', '0014', '0015', '0016', '0017', '0018', '0019', '0020']
+[*] Loading model: /home/hslee/Desktop/Embedded_AI/context-anydepth-det/anydepth-yolov12/bdd_finetuned/anydepth_best.pt
+task: detect
+Detected YOLOv12AnyDepth model from weights, switching to AnyDepth task_map
+[*] AnyDepth: True, num_skippable_layers: 8
+[*] Skip config: FFFFFFFF
+[*] Image size: (192, 640), Conf threshold: 0.5
+[*] Sequences: ['0000', '0001', '0002', '0003', '0004', '0005', '0006', '0007', '0008', '0009', '0010', '0011', '0012', '0013', '0014', '0015', '0016', '0017', '0018', '0019', '0020']
+[*] Output: ./runs/kitti/tracking/anydepth-yolov12l-full/20260415_151246
+
+[*] Sequence 0000: 154 frames, 154 frames with GT
+  [50/154] latency=19.9ms  fps=50.3  det=7  gt=3
+  [100/154] latency=19.6ms  fps=51.0  det=6  gt=3
+  [150/154] latency=20.0ms  fps=49.9  det=13  gt=11
+  [154/154] latency=19.9ms  fps=50.2  det=12  gt=9
+
+  >> Seq 0000: mAP@50=0.3859  FPS=49.4  Latency=20.2ms  Energy=2764.5mJ
+
+[*] Sequence 0001: 447 frames, 426 frames with GT
+  [50/447] latency=20.2ms  fps=49.6  det=11  gt=8
+  [100/447] latency=19.9ms  fps=50.3  det=15  gt=10
+  [150/447] latency=20.0ms  fps=50.1  det=8  gt=6
+  [200/447] latency=19.6ms  fps=50.9  det=5  gt=3
+  [250/447] latency=19.6ms  fps=51.0  det=8  gt=9
+  [300/447] latency=19.7ms  fps=50.7  det=12  gt=9
+  [350/447] latency=19.6ms  fps=51.0  det=8  gt=7
+  [400/447] latency=20.0ms  fps=49.9  det=10  gt=2
+  [447/447] latency=20.3ms  fps=49.2  det=7  gt=0
+
+  >> Seq 0001: mAP@50=0.4198  FPS=50.0  Latency=20.0ms  Energy=2790.8mJ
+
+[*] Sequence 0002: 233 frames, 219 frames with GT
+  [50/233] latency=19.9ms  fps=50.3  det=3  gt=2
+  [100/233] latency=20.0ms  fps=50.0  det=6  gt=11
+  [150/233] latency=20.0ms  fps=50.0  det=5  gt=8
+  [200/233] latency=20.1ms  fps=49.8  det=8  gt=7
+  [233/233] latency=19.5ms  fps=51.2  det=6  gt=6
+
+  >> Seq 0002: mAP@50=0.3090  FPS=50.2  Latency=19.9ms  Energy=2812.4mJ
+
+[*] Sequence 0003: 144 frames, 144 frames with GT
+  [50/144] latency=20.1ms  fps=49.8  det=3  gt=2
+  [100/144] latency=19.9ms  fps=50.2  det=3  gt=3
+  [144/144] latency=19.7ms  fps=50.8  det=1  gt=1
+
+  >> Seq 0003: mAP@50=0.8051  FPS=50.3  Latency=19.9ms  Energy=2802.4mJ
+
+[*] Sequence 0004: 314 frames, 314 frames with GT
+  [50/314] latency=20.0ms  fps=49.9  det=7  gt=5
+  [100/314] latency=19.9ms  fps=50.3  det=3  gt=2
+  [150/314] latency=19.9ms  fps=50.3  det=6  gt=3
+  [200/314] latency=20.6ms  fps=48.6  det=6  gt=7
+  [250/314] latency=20.0ms  fps=49.9  det=3  gt=2
+  [300/314] latency=20.0ms  fps=49.9  det=1  gt=3
+  [314/314] latency=19.9ms  fps=50.2  det=5  gt=2
+
+  >> Seq 0004: mAP@50=0.2726  FPS=49.6  Latency=20.2ms  Energy=2854.4mJ
+
+[*] Sequence 0005: 297 frames, 297 frames with GT
+  [50/297] latency=20.1ms  fps=49.7  det=4  gt=4
+  [100/297] latency=19.9ms  fps=50.1  det=4  gt=5
+  [150/297] latency=20.2ms  fps=49.4  det=2  gt=5
+  [200/297] latency=20.1ms  fps=49.8  det=4  gt=6
+  [250/297] latency=20.0ms  fps=50.1  det=6  gt=4
+  [297/297] latency=19.8ms  fps=50.4  det=1  gt=1
+
+  >> Seq 0005: mAP@50=0.4566  FPS=49.8  Latency=20.1ms  Energy=2870.8mJ
+
+[*] Sequence 0006: 270 frames, 269 frames with GT
+  [50/270] latency=19.6ms  fps=51.0  det=10  gt=2
+  [100/270] latency=19.6ms  fps=51.1  det=12  gt=6
+  [150/270] latency=20.6ms  fps=48.4  det=10  gt=3
+  [200/270] latency=19.8ms  fps=50.5  det=10  gt=2
+  [250/270] latency=20.2ms  fps=49.6  det=6  gt=1
+  [270/270] latency=19.9ms  fps=50.3  det=3  gt=1
+
+  >> Seq 0006: mAP@50=0.6051  FPS=50.6  Latency=19.8ms  Energy=2839.9mJ
+
+[*] Sequence 0007: 800 frames, 679 frames with GT
+  [50/800] latency=19.9ms  fps=50.2  det=8  gt=8
+  [100/800] latency=19.7ms  fps=50.9  det=3  gt=3
+  [150/800] latency=19.7ms  fps=50.7  det=7  gt=7
+  [200/800] latency=20.0ms  fps=49.9  det=5  gt=5
+  [250/800] latency=19.7ms  fps=50.7  det=1  gt=1
+  [300/800] latency=19.9ms  fps=50.3  det=1  gt=1
+  [350/800] latency=19.8ms  fps=50.4  det=3  gt=2
+  [400/800] latency=20.3ms  fps=49.3  det=9  gt=6
+  [450/800] latency=19.7ms  fps=50.7  det=5  gt=4
+  [500/800] latency=20.0ms  fps=49.9  det=7  gt=6
+  [550/800] latency=20.0ms  fps=49.9  det=4  gt=2
+  [600/800] latency=19.9ms  fps=50.2  det=1  gt=0
+  [650/800] latency=19.7ms  fps=50.8  det=1  gt=2
+  [700/800] latency=19.8ms  fps=50.4  det=1  gt=0
+  [750/800] latency=20.5ms  fps=48.9  det=2  gt=1
+  [800/800] latency=20.6ms  fps=48.5  det=3  gt=2
+
+  >> Seq 0007: mAP@50=0.6316  FPS=50.0  Latency=20.0ms  Energy=2838.9mJ
+
+[*] Sequence 0008: 390 frames, 390 frames with GT
+  [50/390] latency=19.9ms  fps=50.4  det=2  gt=2
+  [100/390] latency=19.9ms  fps=50.2  det=5  gt=2
+  [150/390] latency=20.0ms  fps=50.0  det=6  gt=2
+  [200/390] latency=19.9ms  fps=50.2  det=5  gt=4
+  [250/390] latency=20.0ms  fps=50.1  det=9  gt=5
+  [300/390] latency=19.9ms  fps=50.2  det=6  gt=4
+  [350/390] latency=19.9ms  fps=50.3  det=5  gt=7
+  [390/390] latency=20.1ms  fps=49.9  det=5  gt=6
+
+  >> Seq 0008: mAP@50=0.6952  FPS=49.6  Latency=20.2ms  Energy=2855.1mJ
+
+[*] Sequence 0009: 803 frames, 784 frames with GT
+  [50/803] latency=20.8ms  fps=48.1  det=9  gt=13
+  [100/803] latency=20.6ms  fps=48.6  det=11  gt=13
+  [150/803] latency=20.6ms  fps=48.6  det=10  gt=9
+  [200/803] latency=20.0ms  fps=50.1  det=10  gt=12
+  [250/803] latency=20.0ms  fps=50.1  det=9  gt=11
+  [300/803] latency=20.0ms  fps=50.0  det=0  gt=1
+  [350/803] latency=20.1ms  fps=49.7  det=1  gt=1
+  [400/803] latency=20.6ms  fps=48.6  det=3  gt=3
+  [450/803] latency=20.0ms  fps=50.0  det=1  gt=1
+  [500/803] latency=20.0ms  fps=50.1  det=1  gt=1
+  [550/803] latency=20.7ms  fps=48.3  det=1  gt=1
+  [600/803] latency=19.9ms  fps=50.2  det=1  gt=1
+  [650/803] latency=19.9ms  fps=50.2  det=8  gt=7
+  [700/803] latency=20.0ms  fps=50.0  det=5  gt=4
+  [750/803] latency=20.2ms  fps=49.5  det=4  gt=2
+  [800/803] latency=20.5ms  fps=48.8  det=2  gt=1
+  [803/803] latency=20.0ms  fps=50.1  det=3  gt=1
+
+  >> Seq 0009: mAP@50=0.5279  FPS=49.5  Latency=20.2ms  Energy=2850.8mJ
+
+[*] Sequence 0010: 294 frames, 294 frames with GT
+  [50/294] latency=19.9ms  fps=50.3  det=1  gt=1
+  [100/294] latency=20.2ms  fps=49.5  det=1  gt=5
+  [150/294] latency=20.1ms  fps=49.9  det=4  gt=4
+  [200/294] latency=20.7ms  fps=48.4  det=2  gt=2
+  [250/294] latency=20.0ms  fps=50.0  det=1  gt=1
+  [294/294] latency=20.1ms  fps=49.8  det=1  gt=1
+
+  >> Seq 0010: mAP@50=0.2568  FPS=49.6  Latency=20.2ms  Energy=2842.6mJ
+
+[*] Sequence 0011: 373 frames, 373 frames with GT
+  [50/373] latency=20.0ms  fps=50.1  det=8  gt=8
+  [100/373] latency=20.0ms  fps=50.1  det=6  gt=7
+  [150/373] latency=20.4ms  fps=49.1  det=6  gt=14
+  [200/373] latency=20.0ms  fps=49.9  det=8  gt=13
+  [250/373] latency=19.8ms  fps=50.5  det=10  gt=15
+  [300/373] latency=20.6ms  fps=48.5  det=9  gt=12
+  [350/373] latency=20.0ms  fps=50.1  det=7  gt=2
+  [373/373] latency=23.5ms  fps=42.5  det=4  gt=1
+
+  >> Seq 0011: mAP@50=0.4761  FPS=49.7  Latency=20.1ms  Energy=2833.8mJ
+
+[*] Sequence 0012: 78 frames, 78 frames with GT
+  [50/78] latency=19.7ms  fps=50.7  det=5  gt=3
+  [78/78] latency=19.6ms  fps=50.9  det=4  gt=1
+
+  >> Seq 0012: mAP@50=0.3057  FPS=50.4  Latency=19.9ms  Energy=2811.6mJ
+
+[*] Sequence 0013: 340 frames, 308 frames with GT
+  [50/340] latency=20.2ms  fps=49.6  det=2  gt=3
+  [100/340] latency=19.7ms  fps=50.8  det=9  gt=6
+  [150/340] latency=19.8ms  fps=50.6  det=2  gt=1
+  [200/340] latency=19.7ms  fps=50.7  det=3  gt=0
+  [250/340] latency=20.5ms  fps=48.9  det=5  gt=5
+  [300/340] latency=19.9ms  fps=50.3  det=6  gt=5
+  [340/340] latency=19.8ms  fps=50.5  det=7  gt=6
+
+  >> Seq 0013: mAP@50=0.3819  FPS=50.0  Latency=20.0ms  Energy=2818.7mJ
+
+[*] Sequence 0014: 106 frames, 106 frames with GT
+  [50/106] latency=19.9ms  fps=50.2  det=3  gt=6
+  [100/106] latency=19.9ms  fps=50.1  det=6  gt=6
+  [106/106] latency=19.8ms  fps=50.6  det=7  gt=7
+
+  >> Seq 0014: mAP@50=0.5087  FPS=50.3  Latency=19.9ms  Energy=2798.1mJ
+
+[*] Sequence 0015: 376 frames, 376 frames with GT
+  [50/376] latency=19.7ms  fps=50.7  det=10  gt=10
+  [100/376] latency=19.8ms  fps=50.5  det=15  gt=10
+  [150/376] latency=20.3ms  fps=49.2  det=9  gt=6
+  [200/376] latency=19.8ms  fps=50.5  det=8  gt=5
+  [250/376] latency=19.8ms  fps=50.6  det=7  gt=3
+  [300/376] latency=19.7ms  fps=50.6  det=7  gt=4
+  [350/376] latency=19.9ms  fps=50.3  det=7  gt=3
+  [376/376] latency=20.0ms  fps=49.9  det=7  gt=3
+
+  >> Seq 0015: mAP@50=0.4720  FPS=50.0  Latency=20.0ms  Energy=2834.9mJ
+
+[*] Sequence 0016: 209 frames, 209 frames with GT
+  [50/209] latency=19.9ms  fps=50.1  det=11  gt=14
+  [100/209] latency=20.2ms  fps=49.5  det=13  gt=17
+  [150/209] latency=21.6ms  fps=46.4  det=13  gt=15
+  [200/209] latency=20.0ms  fps=50.0  det=7  gt=9
+  [209/209] latency=19.8ms  fps=50.6  det=7  gt=10
+
+  >> Seq 0016: mAP@50=0.3449  FPS=49.6  Latency=20.2ms  Energy=2843.8mJ
+
+[*] Sequence 0017: 145 frames, 145 frames with GT
+  [50/145] latency=20.1ms  fps=49.6  det=9  gt=8
+  [100/145] latency=20.0ms  fps=50.0  det=8  gt=4
+  [145/145] latency=19.7ms  fps=50.8  det=3  gt=2
+
+  >> Seq 0017: mAP@50=0.3840  FPS=49.6  Latency=20.1ms  Energy=2846.6mJ
+
+[*] Sequence 0018: 339 frames, 301 frames with GT
+  [50/339] latency=20.0ms  fps=49.9  det=3  gt=0
+  [100/339] latency=20.1ms  fps=49.8  det=4  gt=4
+  [150/339] latency=20.2ms  fps=49.4  det=4  gt=5
+  [200/339] latency=19.7ms  fps=50.7  det=5  gt=5
+  [250/339] latency=19.8ms  fps=50.4  det=7  gt=4
+  [300/339] latency=19.9ms  fps=50.3  det=6  gt=7
+  [339/339] latency=19.8ms  fps=50.6  det=4  gt=4
+
+  >> Seq 0018: mAP@50=0.8760  FPS=50.3  Latency=19.9ms  Energy=2797.9mJ
+
+[*] Sequence 0019: 1059 frames, 1059 frames with GT
+  [50/1059] latency=19.8ms  fps=50.5  det=2  gt=4
+  [100/1059] latency=19.7ms  fps=50.7  det=5  gt=6
+  [150/1059] latency=19.8ms  fps=50.6  det=7  gt=9
+  [200/1059] latency=19.7ms  fps=50.8  det=10  gt=12
+  [250/1059] latency=19.9ms  fps=50.3  det=12  gt=11
+  [300/1059] latency=20.0ms  fps=50.0  det=11  gt=10
+  [350/1059] latency=20.0ms  fps=49.9  det=9  gt=10
+  [400/1059] latency=20.2ms  fps=49.5  det=7  gt=6
+  [450/1059] latency=19.8ms  fps=50.4  det=6  gt=4
+  [500/1059] latency=20.0ms  fps=50.1  det=8  gt=9
+  [550/1059] latency=19.9ms  fps=50.3  det=10  gt=12
+  [600/1059] latency=19.9ms  fps=50.3  det=11  gt=13
+  [650/1059] latency=19.8ms  fps=50.4  det=12  gt=12
+  [700/1059] latency=20.2ms  fps=49.5  det=5  gt=12
+  [750/1059] latency=19.9ms  fps=50.2  det=5  gt=7
+  [800/1059] latency=20.0ms  fps=50.0  det=4  gt=3
+  [850/1059] latency=20.0ms  fps=50.1  det=6  gt=4
+  [900/1059] latency=19.9ms  fps=50.4  det=4  gt=7
+  [950/1059] latency=20.1ms  fps=49.7  det=3  gt=5
+  [1000/1059] latency=20.1ms  fps=49.9  det=2  gt=3
+  [1050/1059] latency=19.9ms  fps=50.2  det=2  gt=2
+  [1059/1059] latency=20.0ms  fps=50.0  det=1  gt=1
+
+  >> Seq 0019: mAP@50=0.3275  FPS=50.0  Latency=20.0ms  Energy=2816.8mJ
+
+[*] Sequence 0020: 837 frames, 837 frames with GT
+  [50/837] latency=20.2ms  fps=49.5  det=10  gt=13
+  [100/837] latency=20.3ms  fps=49.3  det=12  gt=12
+  [150/837] latency=20.1ms  fps=49.8  det=10  gt=12
+  [200/837] latency=20.1ms  fps=49.8  det=9  gt=11
+  [250/837] latency=20.3ms  fps=49.3  det=6  gt=4
+  [300/837] latency=20.3ms  fps=49.4  det=9  gt=6
+  [350/837] latency=20.0ms  fps=49.9  det=12  gt=8
+  [400/837] latency=20.0ms  fps=50.1  det=9  gt=12
+  [450/837] latency=20.2ms  fps=49.4  det=11  gt=7
+  [500/837] latency=20.3ms  fps=49.3  det=8  gt=6
+  [550/837] latency=20.2ms  fps=49.5  det=8  gt=10
+  [600/837] latency=20.1ms  fps=49.7  det=7  gt=5
+  [650/837] latency=20.0ms  fps=50.1  det=2  gt=3
+  [700/837] latency=20.4ms  fps=49.1  det=4  gt=3
+  [750/837] latency=20.0ms  fps=50.0  det=3  gt=4
+  [800/837] latency=20.1ms  fps=49.8  det=5  gt=2
+  [837/837] latency=19.9ms  fps=50.3  det=6  gt=2
+
+  >> Seq 0020: mAP@50=0.5092  FPS=49.7  Latency=20.1ms  Energy=2843.2mJ
+
+============================================================
+Overall Results (21 sequences, 8008 frames):
+  mean AP@50:     0.4739
+  mean FPS:       49.9
+  mean Latency:   20.0 ms
+  mean Energy:    2827.0 mJ
+============================================================
+Results saved to: ./runs/kitti/tracking/anydepth-yolov12l-full/20260415_151246
