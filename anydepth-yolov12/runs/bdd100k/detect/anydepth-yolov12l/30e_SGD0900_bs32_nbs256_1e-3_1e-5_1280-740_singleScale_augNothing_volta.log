@@ -2124,3 +2124,4 @@ bucket_view.sizes() = [256, 256, 1, 1], strides() = [256, 1, 1, 1] (Triggered in
   Epoch 26/30  Batch 437/2188 (20.0%)  | Super 111.432 (box 1.5592  cls 0.7968  dfl 1.1262)  | Base 113.903 (box 1.6013  cls 0.8170  dfl 1.1412)  | KD 9.555 (box 0.29063  cls 0.00659  dfl 0.00059  feat 0.00078)
   Epoch 26/30  Batch 655/2188 (29.9%)  | Super 97.245 (box 1.3067  cls 0.6778  dfl 1.0544)  | Base 97.718 (box 1.3179  cls 0.6925  dfl 1.0433)  | KD 6.467 (box 0.19725  cls 0.00375  dfl 0.00043  feat 0.00065)
   Epoch 26/30  Batch 873/2188 (39.9%)  | Super 110.314 (box 1.4192  cls 0.8780  dfl 1.1501)  | Base 109.612 (box 1.4086  cls 0.8763  dfl 1.1405)  | KD 9.145 (box 0.27277  cls 0.01161  dfl 0.00060  feat 0.00081)
+  Epoch 26/30  Batch 1091/2188 (49.9%)  | Super 97.271 (box 1.2630  cls 0.7293  dfl 1.0474)  | Base 98.081 (box 1.2784  cls 0.7320  dfl 1.0547)  | KD 7.709 (box 0.23424  cls 0.00540  dfl 0.00048  feat 0.00078)
