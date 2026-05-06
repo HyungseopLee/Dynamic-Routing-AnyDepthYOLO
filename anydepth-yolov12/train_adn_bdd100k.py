@@ -14,24 +14,33 @@ parser.add_argument('--resume', action='store_true', help='Resume training from 
 
 args = parser.parse_args()
 IMG_SIZE = args.imgsz
+weight_path = args.weight.strip()
 
 if RANK in {-1, 0}:
   print(f"[*] Image size: {IMG_SIZE}")
 
 
 if args.resume:
-  
+  if not weight_path:
+    raise ValueError("--resume requires --weight to point to a checkpoint file")
   if RANK in {-1, 0}:
-      print(f"[*] Resuming training from {args.weight}")
-  model = YOLO(args.weight, task=args.task)
+      print(f"[*] Resuming training from {weight_path}")
+  model = YOLO(weight_path, task=args.task)
   results = model.train(resume=True, rect=True)
     
 else:
+    if not args.config:
+      raise ValueError("--config is required when starting a new training run")
+
     if RANK in {-1, 0}:
-      print(f"[*] Starting new training using weight: {args.weight}")
+      if weight_path:
+        print(f"[*] Starting new training using pretrained weight: {weight_path}")
+      else:
+        print("[*] Starting new scratch training from config")
     
     model = YOLO(args.config, task=args.task)
-    model.load(args.weight)
+    if weight_path:
+      model.load(weight_path)
 
     # Train the model
     results = model.train(
@@ -41,11 +50,11 @@ else:
       
       # epoch, optimizer, batch size, lr
       epochs=args.epoch,
-      optimizer='SGD', 
+      optimizer='SGD',
       momentum=0.900,  # default 0.937
       batch=32, #s:128, l:64, orig:256,
       nbs=256, # default 256,
-      lr0=1e-3, # initial lr: fromscratch=1e-2, finetuning:1e-3 or 1e-4
+      lr0=1e-2, # initial lr: fromscratch=1e-2, finetuning:1e-3 or 1e-4
       lrf=1e-2, # lr0 ~ (lr0 * lrf)
       
       # image
@@ -63,7 +72,8 @@ else:
       flipud=0.0, # (float) image flip up-down (probability)rect=
       
       
-      device="0,1,2,3",
+      device="0,1",
+      # device="0,1,2,3",
     )
 
 '''
@@ -79,6 +89,12 @@ else:
     ./pretrained/yolov12l.pt
   any-depth:
     ./pretrained/yolo-ad-exp8_105_epoch539_0.539_0.520.pt
+
+# scratch
+  baseline:
+    (leave empty)
+  any-depth:
+    (leave empty)
 
 
 
@@ -99,18 +115,28 @@ python -m torch.distributed.run --nproc_per_node 4 train_adn_bdd100k.py \
 
 # Any-depth
 ## 2 GPU
-mkdir -p ./runs/bdd100k/detect/anydepth-yolov12l
+mkdir -p ./runs/scratch_bdd100k/detect/anydepth-yolov12s
 export CUDA_VISIBLE_DEVICES=0,1
+python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
+  --task detect \
+  --config ./ultralytics/cfg/models/v12/yolo-ad-v12s.yaml \
+  --data bdd100k.yaml \
+  --epoch 50 \
+  --imgsz 1280 \
+  --project ./runs/scratch_bdd100k/detect/anydepth-yolov12s \
+  2>&1 | tee ./runs/scratch_bdd100k/detect/anydepth-yolov12s/50e_SGD0900_bs32_nbs256_1e-2_1e-4_1280-720_singleScale_augNothing.log
+
+## Scratch training
 python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
   --task detect \
   --config ./ultralytics/cfg/models/v12/yolo-ad-v12l.yaml \
   --data bdd100k.yaml \
-  --epoch 30 \
+  --epoch 50 \
   --imgsz 1280 \
-  --weight ./pretrained/yolo-ad-exp8_105_epoch539_0.539_0.520.pt \
-  --project ./runs/bdd100k/detect/anydepth-yolov12l \
-  2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12l/100e_SGD0900_bs32_nbs256_1e-3_1e-5_640-360_singleScale_augNothing_volta.log
+  --project ./runs/scratch_bdd100k/detect/anydepth-yolov12l \
+  2>&1 | tee ./runs/scratch_bdd100k/detect/anydepth-yolov12l/50e_SGD0900_bs32_nbs256_1e-2_1e-4_1280-720_singleScale_augNothing.log
 
+  --weight ./pretrained/yolo-ad-exp8_105_epoch539_0.539_0.520.pt \
 
 '''
 

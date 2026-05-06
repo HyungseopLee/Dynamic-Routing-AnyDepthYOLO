@@ -8,7 +8,7 @@ parser.add_argument('--weight', type=str, default='')
 args = parser.parse_args()
 IMG_SIZE = args.imgsz
 
-model = YOLO(args.weight, task='detect_wst')
+model = YOLO(args.weight, task='detect')
 num_skip = getattr(model.model, 'num_skippable_layers', 0)
 is_anydepth = num_skip > 0
 print(f"model: {model}")
@@ -20,7 +20,7 @@ if is_anydepth:
     # Full
     skip = [False,] * model.num_skippable_layers
     model.val(
-        task='detect_wst',
+        task='detect',
         data='bdd100k.yaml', 
         save_json=True, 
         skip=skip,
@@ -33,7 +33,7 @@ if is_anydepth:
     # Base
     skip = [True,] * model.num_skippable_layers
     model.val(
-        task='detect_wst',
+        task='detect',
         data='bdd100k.yaml', 
         save_json=True, 
         skip=skip,
@@ -80,9 +80,9 @@ python val_adn_bdd100k.py \
 mkdir -p ./runs/bdd100k/detect_wst/anydepth-yolov12l
 python val_adn_bdd100k.py \
     --imgsz 1280 \
-    --weight /home2/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/anydepth-yolov12l/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing_volta/weights/best.pt \
-    --project /home2/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/anydepth-yolov12l/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing_volta \
-    2>&1 | tee /home2/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/anydepth-yolov12l/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing_volta/val.log
+    --weight /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/anydepth-yolov12l/_30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing/weights/best.pt \
+    --project /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/anydepth-yolov12l/_30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing \
+    2>&1 | tee /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/anydepth-yolov12l/_30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing/val_1280.log
 
 
 

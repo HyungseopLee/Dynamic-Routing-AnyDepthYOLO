@@ -523,3 +523,263 @@ class DetectionTrainerAnyDepth(DetectionTrainer):
         self.run_callbacks("teardown")
 
 
+class DetectionTrainerStep2(DetectionTrainerAnyDepth):
+    """
+    AnyDepth Step 2 — train the AdaptiveRouter on top of a frozen SUPER/BASE cascaded detector.
+
+    Protocol mirrors DynamicDet/train_step2.py:
+      * detector params all frozen, only `router` is trainable
+      * per batch (bs=1): forward SUPER and BASE, compute detection losses (detached),
+        track running median of (loss_super - loss_base) as `tracked_diff`
+      * adaptive_loss = score * (loss_super - Δ/2) + (1-score) * (loss_base + Δ/2)
+    """
+
+    def _setup_train(self, world_size):
+        super()._setup_train(world_size)
+
+        # Attach router if not already present
+        from ultralytics.nn.modules import AdaptiveRouter
+        from ultralytics.utils.torch_utils import unwrap_model as _unwrap, ModelEMA
+        inner = _unwrap(self.model)
+        if not hasattr(inner, "router") or inner.router is None:
+            tap_layer = inner.model[inner.ROUTER_TAP_LAYER]
+            in_ch = getattr(tap_layer, "conv", tap_layer).out_channels if hasattr(tap_layer, "conv") else None
+            if in_ch is None:
+                # fall back: probe a dummy forward
+                with torch.no_grad():
+                    dummy = torch.zeros(1, 3, 64, 64, device=self.device)
+                    feat = inner._forward_shared_tap(dummy)
+                    in_ch = feat.shape[1]
+            inner.attach_router(AdaptiveRouter(in_channels=in_ch).to(self.device))
+            LOGGER.info(f"[Step2] Attached AdaptiveRouter(in_channels={in_ch})")
+
+            # Re-build EMA AFTER attaching router so ema.state_dict() includes router weights.
+            # Otherwise save_model() stores EMA without router, losing the trained params.
+            if RANK in {-1, 0} and getattr(self, "ema", None) is not None:
+                self.ema = ModelEMA(self.model)
+                LOGGER.info("[Step2] Rebuilt ModelEMA to include router parameters")
+
+        # Freeze everything except router params
+        router_prefix = "router."
+        n_trainable = 0
+        for k, v in self.model.named_parameters():
+            if router_prefix in k:
+                v.requires_grad = True
+                n_trainable += v.numel()
+            else:
+                v.requires_grad = False
+        LOGGER.info(f"[Step2] Router trainable params: {n_trainable}")
+
+        # Rebuild optimizer with router-only params
+        router_params = [p for n, p in self.model.named_parameters() if router_prefix in n and p.requires_grad]
+        if not router_params:
+            raise RuntimeError("[Step2] No router params found — is the router attached?")
+        self.optimizer = self.build_optimizer(
+            model=self.model,
+            name=self.args.optimizer,
+            lr=self.args.lr0,
+            momentum=self.args.momentum,
+            decay=self.args.weight_decay * self.batch_size * self.accumulate / self.args.nbs,
+            iterations=math.ceil(len(self.train_loader.dataset) / max(self.batch_size, self.args.nbs)) * self.epochs,
+        )
+        # The ultralytics build_optimizer scans all params. Replace groups with router-only.
+        # Use the user-configured weight_decay (DynamicDet default 0.005), not 0.
+        router_wd = self.args.weight_decay * self.batch_size * self.accumulate / self.args.nbs
+        self.optimizer.param_groups.clear()
+        self.optimizer.add_param_group({
+            "params": router_params,
+            "lr": self.args.lr0,
+            "weight_decay": router_wd,
+            "name": "router",
+        })
+        # re-init initial_lr attributes expected by the LR scheduler
+        for g in self.optimizer.param_groups:
+            g.setdefault("initial_lr", g["lr"])
+        LOGGER.info(f"[Step2] Optimizer rebuilt — {sum(p.numel() for p in router_params)} router params")
+
+        # tracked_diff buffer
+        self._diff_list = []
+        self._tracked_diff = 0.0
+        self._iter_count = 0
+
+        # DDP: router params added after wrap → keep find_unused_parameters=True (already set)
+        if world_size > 1 and not isinstance(self.model, nn.parallel.DistributedDataParallel):
+            self.model = nn.parallel.DistributedDataParallel(self.model, device_ids=[RANK], find_unused_parameters=True)
+
+    def _update_tracked_diff(self, loss_super_detached, loss_base_detached):
+        current_diff = float(loss_base_detached - loss_super_detached)
+        self._diff_list.append(current_diff)
+        self._iter_count += 1
+        if self._iter_count < 10000:
+            self._tracked_diff = float(np.median(self._diff_list))
+        elif self._iter_count % 1000 == 0:
+            self._tracked_diff = float(np.median(self._diff_list))
+        return current_diff
+
+    def _do_train(self, world_size=1):
+        """Router-only training loop."""
+        if world_size > 1:
+            self._setup_ddp(world_size)
+        self._setup_train(world_size)
+
+        assert self.batch_size == 1 or self.args.batch == 1, \
+            f"[Step2] DynamicDet protocol requires batch=1, got batch={self.args.batch}"
+
+        nb = len(self.train_loader)
+        nw = max(round(self.args.warmup_epochs * nb), 100) if self.args.warmup_epochs > 0 else -1
+        last_opt_step = -1
+        self.epoch_time = None
+        self.epoch_time_start = time.time()
+        self.train_time_start = time.time()
+        self.run_callbacks("on_train_start")
+        LOGGER.info(
+            f"[Step2] Image sizes {self.args.imgsz} train, {self.args.imgsz} val\n"
+            f"Using {self.train_loader.num_workers * (world_size or 1)} dataloader workers\n"
+            f"Logging results to {colorstr('bold', self.save_dir)}\n"
+            f"Training router for {self.epochs} epochs..."
+        )
+        epoch = self.start_epoch
+        self.optimizer.zero_grad()
+        
+        self._total_score = 0.0
+        self._total_delta = 0.0
+        self._total_l_super = 0.0
+        self._total_l_base = 0.0
+        self._total_adaptive = 0.0
+        self._log_iter_count = 0
+        while True:
+            self.epoch = epoch
+            self.run_callbacks("on_train_epoch_start")
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                self.scheduler.step()
+
+            self.model.train()
+            if RANK != -1:
+                self.train_loader.sampler.set_epoch(epoch)
+
+            if RANK in {-1, 0}:
+                LOGGER.info(self.progress_string())
+
+            from ultralytics.utils.torch_utils import unwrap_model as _unwrap
+            num_skip = _unwrap(self.model).num_skippable_layers
+            skip_super = [False] * num_skip
+            skip_base = [True] * num_skip
+
+            for i, batch in enumerate(self.train_loader):
+                self.run_callbacks("on_train_batch_start")
+                ni = i + nb * epoch
+                if ni <= nw:
+                    xi = [0, nw]
+                    self.accumulate = max(1, int(np.interp(ni, xi, [1, self.args.nbs / self.batch_size]).round()))
+                    for j, x in enumerate(self.optimizer.param_groups):
+                        x["lr"] = np.interp(ni, xi, [self.args.warmup_bias_lr if j == 0 else 0.0, x["initial_lr"] * self.lf(epoch)])
+                        if "momentum" in x:
+                            x["momentum"] = np.interp(ni, xi, [self.args.warmup_momentum, self.args.momentum])
+
+                with autocast(self.amp):
+                    batch = self.preprocess_batch(batch)
+                    img = batch["img"]
+
+                    # ── Detector forward twice WITHOUT autograd (frozen) ─────
+                    with torch.no_grad():
+                        preds_super = self.model(img, skip=skip_super)
+                        preds_base = self.model(img, skip=skip_base)
+                        l_super, _ = _unwrap(self.model).loss(batch, preds_super)
+                        l_base, _ = _unwrap(self.model).loss(batch, preds_base)
+                        l_super_d = l_super.sum().detach()
+                        l_base_d = l_base.sum().detach()
+
+                    self._update_tracked_diff(
+                        loss_super_detached=l_super_d.item(), 
+                        loss_base_detached=l_base_d.item()
+                    )
+                    delta = self._tracked_diff
+
+                    # ── Router forward (requires grad) ────────────────────────
+                    score = _unwrap(self.model)._predict_score(img)  # [B, 1]
+                    s = score[:, 0]
+
+                    l_s = l_super_d + (0.5 * delta)
+                    l_b = l_base_d - (0.5 * delta)
+                    adaptive_loss = ((1.0 - s) * l_b + s * l_s).mean()
+
+                    self.loss = adaptive_loss
+
+                with torch.amp.autocast('cuda', enabled=False):
+                    self.scaler.scale(self.loss).backward()
+
+                if ni - last_opt_step >= self.accumulate:
+                    self.optimizer_step()
+                    last_opt_step = ni
+                    if self.args.time:
+                        self.stop = (time.time() - self.train_time_start) > (self.args.time * 3600)
+                        if RANK != -1:
+                            broadcast_list = [self.stop if RANK == 0 else None]
+                            dist.broadcast_object_list(broadcast_list, 0)
+                            self.stop = broadcast_list[0]
+                        if self.stop:
+                            break
+
+                if RANK in {-1, 0} and i % max(1, nb // 20) == 0:
+                    cur_s = float(s.mean())
+                    cur_l_super = float(l_super_d)
+                    cur_l_base = float(l_base_d)
+                    cur_adaptive = float(adaptive_loss)
+                    
+                    self._log_iter_count += 1
+                    self._total_score += cur_s
+                    self._total_delta += delta
+                    self._total_l_super += cur_l_super
+                    self._total_l_base += cur_l_base
+                    self._total_adaptive += cur_adaptive
+
+                    avg_s = self._total_score / self._log_iter_count
+                    avg_delta = self._total_delta / self._log_iter_count
+                    avg_l_super = self._total_l_super / self._log_iter_count
+                    avg_l_base = self._total_l_base / self._log_iter_count
+                    avg_adaptive = self._total_adaptive / self._log_iter_count
+
+                    LOGGER.info(
+                        f"[Ep {epoch+1}/{self.epochs} | Img {i+1}/{nb}] "
+                        f"Score (cur:{cur_s:.3f} | avg:{avg_s:.3f})  "
+                        f"Δ (cur:{delta:.3f} | avg:{avg_delta:.3f})  "
+                        f"L_sup (cur:{cur_l_super:.3f} | avg:{avg_l_super:.3f})  "
+                        f"L_base (cur:{cur_l_base:.3f} | avg:{avg_l_base:.3f})  "
+                        f"Adapt (cur:{cur_adaptive:.3f} | avg:{avg_adaptive:.3f})"
+                    )
+
+                self.run_callbacks("on_train_batch_end")
+
+            self.lr = {f"lr/pg{ir}": x["lr"] for ir, x in enumerate(self.optimizer.param_groups)}
+            self.run_callbacks("on_train_epoch_end")
+
+            if RANK in {-1, 0}:
+                final_epoch = epoch + 1 >= self.epochs
+                self.ema.update_attr(self.model, include=["yaml", "nc", "args", "names", "stride", "class_weights"])
+
+                # Save checkpoint (includes attached router)
+                if self.args.save or final_epoch:
+                    self.save_model()
+                    self.run_callbacks("on_model_save")
+
+            t = time.time()
+            self.epoch_time = t - self.epoch_time_start
+            self.epoch_time_start = t
+            self.run_callbacks("on_fit_epoch_end")
+            self._clear_memory()
+
+            if RANK != -1:
+                broadcast_list = [self.stop if RANK == 0 else None]
+                dist.broadcast_object_list(broadcast_list, 0)
+                self.stop = broadcast_list[0]
+            if self.stop or epoch + 1 >= self.epochs:
+                break
+            epoch += 1
+
+        if RANK in {-1, 0}:
+            seconds = time.time() - self.train_time_start
+            LOGGER.info(f"\n[Step2] {epoch - self.start_epoch + 1} epochs completed in {seconds / 3600:.3f} hours.")
+            self.run_callbacks("on_train_end")
+        self._clear_memory()
+        self.run_callbacks("teardown")

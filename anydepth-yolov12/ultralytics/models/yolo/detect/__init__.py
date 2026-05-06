@@ -5,6 +5,7 @@ from .train import DetectionTrainer
 from .val import DetectionValidator
 
 from .train import DetectionTrainerAnyDepth  # woochul: YOLOv12 AnyDepth
+from .train import DetectionTrainerStep2  # AnyDepth step2 (router training)
 from .val import DetectionValidatorAnyDepth  # woochul: YOLOv12 AnyDepth
 
-__all__ = "DetectionPredictor", "DetectionTrainer", "DetectionValidator", "DetectionTrainerAnyDepth", "DetectionValidatorAnyDepth"
+__all__ = "DetectionPredictor", "DetectionTrainer", "DetectionValidator", "DetectionTrainerAnyDepth", "DetectionTrainerStep2", "DetectionValidatorAnyDepth"

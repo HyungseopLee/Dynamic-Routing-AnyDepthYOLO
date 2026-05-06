@@ -429,28 +429,78 @@ class DetectionModel(BaseModel):
 
 
 class DetectionModelAnyDepth(DetectionModel):
-    
+
+    # AnyDepth step2: router taps layer 1 output (last shared plain-Conv layer
+    # in cfg/models/v12/yolo-ad-v12.yaml; layers 0–1 are SUPER/BASE-invariant).
+    ROUTER_TAP_LAYER = 1
+
     def forward(self, x, *args, **kwargs):
         return self.predict(x, *args, **kwargs)
-    
-    def predict(self, x, profile=False, visualize=False, augment=False, embed=None, skip=None, return_features=False):
+
+    def attach_router(self, router):
+        """Attach an AdaptiveRouter as a submodule named 'router'."""
+        self.router = router
+        if self.ROUTER_TAP_LAYER not in self.save:
+            self.save = sorted(set(list(self.save) + [self.ROUTER_TAP_LAYER]))
+
+    def predict(self, x, profile=False, visualize=False, augment=False, embed=None,
+                skip=None, return_features=False, get_score=False, dy_thres=None,
+                return_score=False):
         if not hasattr(self, "num_skippable_layers"):
             self.num_skippable_layers = sum(
                 isinstance(m, (SkippableC3k2, SwitchableC3k2, SwitchableC2f, SwitchableA2C2f, SkippableA2C2f)) for m in self.model
             )
-        if skip is None:
-            skip = [False] * self.num_skippable_layers  # default skip list
-        
-        # exp:
-        # skip = [True,] * len(skip)  
-        # skip = [False,] * len(skip)  
-        # skip = [True, True, False, False, False, False, False, False]  # for testing
 
-        # print(f"Using skip={skip} for YOLOv10AnyDepthDetectionModel")
+        # Score-only mode (Step 3 threshold collection)
+        if get_score and hasattr(self, "router"):
+            return self._predict_score(x)
+
+        # Dynamic per-sample routing (Step 4/5 inference)
+        if dy_thres is not None and hasattr(self, "router"):
+            return self._predict_dynamic(x, dy_thres, return_score=return_score)
+
+        if skip is None:
+            skip = [False] * self.num_skippable_layers
+
         if augment:
             return self._predict_augment(x)
-        
+
         return self._predict_once(x, profile, visualize, embed, skip=skip, return_features=return_features)
+
+    def _forward_shared_tap(self, x):
+        """Run layers 0..ROUTER_TAP_LAYER and return the tap feature."""
+        tap = self.ROUTER_TAP_LAYER
+        y = []
+        feat = x
+        for m in self.model[:tap + 1]:
+            if m.f != -1:
+                feat = y[m.f] if isinstance(m.f, int) else [feat if j == -1 else y[j] for j in m.f]
+            feat = m(feat)
+            y.append(feat)
+        return feat
+
+    def _predict_score(self, x):
+        """Return router score(s) only, no detection forward."""
+        tap_feat = self._forward_shared_tap(x)
+        return self.router(tap_feat)
+
+    def _predict_dynamic(self, x, dy_thres, return_score=False):
+        """Per-sample routing: score >= thres -> SUPER, else BASE."""
+        tap_feat = self._forward_shared_tap(x)
+        score = self.router(tap_feat)  # [B, 1] sigmoided in eval
+        B = x.shape[0]
+
+        # Intended inference usage: batch_size=1 (matches DynamicDet test.py protocol).
+        if B == 1:
+            use_super = score.view(-1)[0].item() >= dy_thres
+            skip = [False] * self.num_skippable_layers if use_super else [True] * self.num_skippable_layers
+            out = self._predict_once(x, False, False, None, skip=skip, return_features=False)
+            return (out, score) if return_score else out
+
+        # Matches DynamicDet protocol: dynamic routing uses batch_size=1.
+        raise RuntimeError(
+            f"Dynamic routing (dy_thres set) requires batch_size=1, got B={B}."
+        )
     
     def _predict_once(self, x, profile=False, visualize=False, embed=None, skip=None, return_features=False):
         y, dt, embeddings = [], [], []  # outputs

@@ -108,6 +108,12 @@ class YOLO(Model):
                 "validator": yolo.detect.DetectionValidatorAnyDepth,
                 "predictor": yolo.detect.DetectionPredictor,
             }
+            _map['detect_step2'] = {  # AnyDepth step2 (router training)
+                "model": DetectionModelAnyDepth,
+                "trainer": yolo.detect.DetectionTrainerStep2,
+                "validator": yolo.detect.DetectionValidatorAnyDepth,
+                "predictor": yolo.detect.DetectionPredictor,
+            }
             _map['detect_wst'] = { # @HyungseopLee: Anydepth mode + task:'detect_wst'
                 "model": DetectionWSTModelAnyDepth,
                 "trainer": yolo.detect_wst.DetectionWSTTrainerAnyDepth,
@@ -129,6 +135,12 @@ class YOLOv12AnyDepth(Model):
             "detect": {
                 "model": DetectionModelAnyDepth,
                 "trainer": yolo.detect.DetectionTrainerAnyDepth,
+                "validator": yolo.detect.DetectionValidatorAnyDepth,
+                "predictor": yolo.detect.DetectionPredictor,
+            },
+            "detect_step2": {  # AnyDepth step2 (router training)
+                "model": DetectionModelAnyDepth,
+                "trainer": yolo.detect.DetectionTrainerStep2,
                 "validator": yolo.detect.DetectionValidatorAnyDepth,
                 "predictor": yolo.detect.DetectionPredictor,
             },

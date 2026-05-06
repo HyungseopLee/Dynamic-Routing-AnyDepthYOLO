@@ -89,6 +89,7 @@ from .conv import (
     SwitchableConv, # AnyDepth
 )
 from .head import OBB, Classify, Detect, Pose, RTDETRDecoder, Segment, WorldDetect, v10Detect, DetectWST
+from .router import AdaptiveRouter  # AnyDepth step2
 from .transformer import (
     AIFI,
     MLP,
@@ -184,4 +185,5 @@ __all__ = (
     "SwitchableABlock",
     "SwitchableA2C2f",
     "SkippableA2C2f",
+    "AdaptiveRouter",  # AnyDepth step2
 )
