@@ -54,7 +54,7 @@ else:
       momentum=0.900,  # default 0.937
       batch=32, #s:128, l:64, orig:256,
       nbs=256, # default 256,
-      lr0=1e-2, # initial lr: fromscratch=1e-2, finetuning:1e-3 or 1e-4
+      lr0=1e-3, # initial lr: fromscratch=1e-2, finetuning:1e-3 or 1e-4
       lrf=1e-2, # lr0 ~ (lr0 * lrf)
       
       # image
@@ -84,18 +84,15 @@ else:
   any-depth:
     ./ultralytics/cfg/models/v12/yolo-ad-v12l.yaml
 
-# weight
+# (--weight) pretrained weight for finetuning
   baseline: 
     ./pretrained/yolov12l.pt
-  any-depth:
+  any-depth (L):
     ./pretrained/yolo-ad-exp8_105_epoch539_0.539_0.520.pt
-
-# scratch
-  baseline:
-    (leave empty)
-  any-depth:
-    (leave empty)
-
+  any-depth (S):
+    ./pretrained/yolo-ad-small_0.481_0.453.pt
+  
+# (--weight) leave empty for scratch training
 
 
 # Baseline
@@ -115,26 +112,19 @@ python -m torch.distributed.run --nproc_per_node 4 train_adn_bdd100k.py \
 
 # Any-depth
 ## 2 GPU
-mkdir -p ./runs/scratch_bdd100k/detect/anydepth-yolov12s
+mkdir -p ./runs/bdd100k/detect/anydepth-yolov12s
 export CUDA_VISIBLE_DEVICES=0,1
 python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
   --task detect \
   --config ./ultralytics/cfg/models/v12/yolo-ad-v12s.yaml \
   --data bdd100k.yaml \
-  --epoch 50 \
+  --epoch 30 \
   --imgsz 1280 \
-  --project ./runs/scratch_bdd100k/detect/anydepth-yolov12s \
-  2>&1 | tee ./runs/scratch_bdd100k/detect/anydepth-yolov12s/50e_SGD0900_bs32_nbs256_1e-2_1e-4_1280-720_singleScale_augNothing.log
+  --weight ./pretrained/yolo-ad-small_0.481_0.453.pt \
+  --project ./runs/bdd100k/detect/anydepth-yolov12s \
+  2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing.log
 
-## Scratch training
-python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
-  --task detect \
-  --config ./ultralytics/cfg/models/v12/yolo-ad-v12l.yaml \
-  --data bdd100k.yaml \
-  --epoch 50 \
-  --imgsz 1280 \
-  --project ./runs/scratch_bdd100k/detect/anydepth-yolov12l \
-  2>&1 | tee ./runs/scratch_bdd100k/detect/anydepth-yolov12l/50e_SGD0900_bs32_nbs256_1e-2_1e-4_1280-720_singleScale_augNothing.log
+  
 
   --weight ./pretrained/yolo-ad-exp8_105_epoch539_0.539_0.520.pt \
 

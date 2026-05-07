@@ -1,8 +1,8 @@
 task: detect
 mode: train
-model: ultralytics/cfg/models/v12/yolo-ad-v12l.yaml
+model: ultralytics/cfg/models/v12/yolo-ad-v12s.yaml
 data: bdd100k.yaml
-epochs: 50
+epochs: 30
 time: null
 patience: 100
 batch: 32
@@ -12,10 +12,10 @@ save_period: -1
 cache: false
 device: 0,1
 workers: 8
-project: ./runs/scratch_bdd100k/detect/anydepth-yolov12l
+project: ./runs/bdd100k/detect/anydepth-yolov12s
 name: train
 exist_ok: false
-pretrained: true
+pretrained: ./pretrained/yolo-ad-small_0.481_0.453.pt
 optimizer: SGD
 verbose: true
 seed: 0
@@ -70,7 +70,7 @@ simplify: true
 opset: null
 workspace: null
 nms: false
-lr0: 0.01
+lr0: 0.001
 lrf: 0.01
 momentum: 0.9
 weight_decay: 0.0005
@@ -114,4 +114,4 @@ kd_feat: 0.1
 skip: null
 alpha_base: 0.3
 kd_warmup_epochs: 0
-save_dir: runs/scratch_bdd100k/detect/anydepth-yolov12l/train
+save_dir: runs/bdd100k/detect/anydepth-yolov12s/train

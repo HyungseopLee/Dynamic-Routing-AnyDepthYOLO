@@ -2,16 +2,25 @@ WARNING:__main__:
 *****************************************
 Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
 *****************************************
-Loading YOLOv12 Any-Depth model from ultralytics/cfg/models/v12/yolo-ad-v12s.yaml
 [*] Image size: 1280
-[*] Starting new scratch training from config
+[*] Starting new training using pretrained weight: ./pretrained/yolo-ad-small_0.481_0.453.pt
 task: detect
 Loading YOLOv12 Any-Depth model from ultralytics/cfg/models/v12/yolo-ad-v12s.yaml
+Loading YOLOv12 Any-Depth model from ultralytics/cfg/models/v12/yolo-ad-v12s.yaml
 Found YOLOv12 Any-Depth model scale: s
 Found YOLOv12 Any-Depth model scale: s
+Transferred 1763/1763 items from pretrained weights
 Ultralytics 8.3.63 🚀 Python-3.11.13 torch-2.2.2+cu121 CUDA:0 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
                                                        CUDA:1 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
 Overriding model.yaml nc=80 with nc=10
+Transferred 1757/1763 items from pretrained weights
+Not transferred items (6):
+  - [Shape Mismatch] model.21.cv3.0.2.bias: model [10] != pretrained [80]
+  - [Shape Mismatch] model.21.cv3.0.2.weight: model [10, 128, 1, 1] != pretrained [80, 128, 1, 1]
+  - [Shape Mismatch] model.21.cv3.1.2.bias: model [10] != pretrained [80]
+  - [Shape Mismatch] model.21.cv3.1.2.weight: model [10, 128, 1, 1] != pretrained [80, 128, 1, 1]
+  - [Shape Mismatch] model.21.cv3.2.2.bias: model [10] != pretrained [80]
+  - [Shape Mismatch] model.21.cv3.2.2.weight: model [10, 128, 1, 1] != pretrained [80, 128, 1, 1]
 Freezing layer 'model.21.dfl.conv.weight'
 [34m[1mAMP: [0mrunning Automatic Mixed Precision (AMP) checks...
 task: None
@@ -25,8 +34,8 @@ WARNING ⚠️ 'rect=True' is incompatible with DataLoader shuffle, setting shuf
 [34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s][34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
 /home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/albumentations/__init__.py:28: UserWarning: A new version of Albumentations is available: '2.0.8' (you have '2.0.4'). Upgrade using: pip install -U albumentations. To disable automatic update checks, set the environment variable NO_ALBUMENTATIONS_UPDATE to 1.
   check_for_updates()
-Plotting labels to runs/scratch_bdd100k/detect/anydepth-yolov12s/train/labels.jpg... 
-[34m[1moptimizer:[0m SGD(lr=0.01, momentum=0.9) with parameter groups 309 weight(decay=0.0), 212 weight(decay=0.0005), 315 bias(decay=0.0)
+Plotting labels to runs/bdd100k/detect/anydepth-yolov12s/train/labels.jpg... 
+[34m[1moptimizer:[0m SGD(lr=0.001, momentum=0.9) with parameter groups 309 weight(decay=0.0), 212 weight(decay=0.0005), 315 bias(decay=0.0)
 DistributedDataParallel(
   (module): DetectionModelAnyDepth(
     (model): Sequential(
@@ -975,8 +984,8 @@ DistributedDataParallel(
 )
 Image sizes 1280 train, 1280 val
 Using 16 dataloader workers
-Logging results to [1mruns/scratch_bdd100k/detect/anydepth-yolov12s/train[0m
-Starting training for 50 epochs...
+Logging results to [1mruns/bdd100k/detect/anydepth-yolov12s/train[0m
+Starting training for 30 epochs...
 
 [FLOPs] Super model (skip=False) @ 736x1280:
 | module             | #parameters or shape   | #flops   |
@@ -1349,7 +1358,4 @@ bucket_view.sizes() = [128, 128, 1, 1], strides() = [128, 1, 1, 1] (Triggered in
 grad.sizes() = [128, 128, 1, 1], strides() = [128, 1, 128, 128]
 bucket_view.sizes() = [128, 128, 1, 1], strides() = [128, 1, 1, 1] (Triggered internally at ../torch/csrc/distributed/c10d/reducer.cpp:322.)
   Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
-  Epoch 1/50  Batch 1/2188 (0.0%)  | Super 442.753 (box 3.9499  cls 5.5250  dfl 4.3611)  | Base 442.291 (box 3.9168  cls 5.5265  dfl 4.3783)  | KD 16.272 (box 0.43805  cls 0.06050  dfl 0.00112  feat 0.00885)
-  Epoch 1/50  Batch 219/2188 (10.0%)  | Super 431.657 (box 3.7556  cls 5.4320  dfl 4.3017)  | Base 430.942 (box 3.7691  cls 5.4101  dfl 4.2877)  | KD 15.271 (box 0.40222  cls 0.06796  dfl 0.00093  feat 0.00610)
-  Epoch 1/50  Batch 437/2188 (20.0%)  | Super 393.892 (box 3.6744  cls 4.7013  dfl 3.9335)  | Base 397.024 (box 3.6886  cls 4.7817  dfl 3.9368)  | KD 27.835 (box 0.73568  cls 0.12681  dfl 0.00063  feat 0.00673)
-  Epoch 1/50  Batch 655/2188 (29.9%)  | Super 354.781 (box 3.4069  cls 4.2815  dfl 3.3985)  | Base 355.227 (box 3.4242  cls 4.2822  dfl 3.3944)  | KD 19.255 (box 0.50087  cls 0.09443  dfl 0.00026  feat 0.00615)
+  Epoch 1/30  Batch 1/2188 (0.0%)  | Super 218.622 (box 1.6779  cls 3.8031  dfl 1.3509)  | Base 222.056 (box 1.7520  cls 3.8077  dfl 1.3796)  | KD 24.700 (box 0.66924  cls 0.09817  dfl 0.00221  feat 0.00225)
