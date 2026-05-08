@@ -80,9 +80,9 @@ python val_adn_bdd100k.py \
 mkdir -p ./runs/bdd100k/detect_wst/anydepth-yolov12l
 python val_adn_bdd100k.py \
     --imgsz 1280 \
-    --weight /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/anydepth-yolov12l/_30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing/weights/best.pt \
-    --project /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/anydepth-yolov12l/_30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing \
-    2>&1 | tee /home/hslee/context-anydepth-det/anydepth-yolov12/runs/bdd100k/detect/anydepth-yolov12l/_30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing/val_1280.log
+    --weight ./runs/bdd100k/detect/anydepth-yolov12s/50e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing/weights/best.pt \
+    --project ./runs/bdd100k/detect/anydepth-yolov12s \
+    2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s/50e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing/val_1280.log
 
 
 

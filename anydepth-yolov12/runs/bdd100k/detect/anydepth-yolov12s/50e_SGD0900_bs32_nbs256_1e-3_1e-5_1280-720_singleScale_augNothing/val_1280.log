@@ -1,43 +1,7 @@
-WARNING:__main__:
-*****************************************
-Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
-*****************************************
-[*] Image size: 1280
-[*] Starting new training using pretrained weight: ./pretrained/yolo-ad-small_0.481_0.453.pt
 task: detect
-Loading YOLOv12 Any-Depth model from ultralytics/cfg/models/v12/yolo-ad-v12s.yaml
-Loading YOLOv12 Any-Depth model from ultralytics/cfg/models/v12/yolo-ad-v12s.yaml
-Found YOLOv12 Any-Depth model scale: s
-Found YOLOv12 Any-Depth model scale: s
-Transferred 1763/1763 items from pretrained weights
-Ultralytics 8.3.63 🚀 Python-3.11.13 torch-2.2.2+cu121 CUDA:0 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
-                                                       CUDA:1 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
-Overriding model.yaml nc=80 with nc=10
-Transferred 1757/1763 items from pretrained weights
-Not transferred items (6):
-  - [Shape Mismatch] model.21.cv3.0.2.bias: model [10] != pretrained [80]
-  - [Shape Mismatch] model.21.cv3.0.2.weight: model [10, 128, 1, 1] != pretrained [80, 128, 1, 1]
-  - [Shape Mismatch] model.21.cv3.1.2.bias: model [10] != pretrained [80]
-  - [Shape Mismatch] model.21.cv3.1.2.weight: model [10, 128, 1, 1] != pretrained [80, 128, 1, 1]
-  - [Shape Mismatch] model.21.cv3.2.2.bias: model [10] != pretrained [80]
-  - [Shape Mismatch] model.21.cv3.2.2.weight: model [10, 128, 1, 1] != pretrained [80, 128, 1, 1]
-Freezing layer 'model.21.dfl.conv.weight'
-[34m[1mAMP: [0mrunning Automatic Mixed Precision (AMP) checks...
-task: None
-[34m[1mAMP: [0mchecks passed ✅
-[34m[1mtrain: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s][34m[1mtrain: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s]
-[34m[1mtrain: [0mWARNING ⚠️ /media/data/bdd100k_yolo/train/images/75055858-7d04a650.jpg: 1 duplicate labels removed
-/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/albumentations/__init__.py:28: UserWarning: A new version of Albumentations is available: '2.0.8' (you have '2.0.4'). Upgrade using: pip install -U albumentations. To disable automatic update checks, set the environment variable NO_ALBUMENTATIONS_UPDATE to 1.
-  check_for_updates()
-[34m[1malbumentations: [0mBlur(p=0.01, blur_limit=(3, 7)), MedianBlur(p=0.01, blur_limit=(3, 7)), ToGray(p=0.01, num_output_channels=3, method='weighted_average'), CLAHE(p=0.01, clip_limit=(1.0, 4.0), tile_grid_size=(8, 8))
-WARNING ⚠️ 'rect=True' is incompatible with DataLoader shuffle, setting shuffle=False
-[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s][34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
-/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/albumentations/__init__.py:28: UserWarning: A new version of Albumentations is available: '2.0.8' (you have '2.0.4'). Upgrade using: pip install -U albumentations. To disable automatic update checks, set the environment variable NO_ALBUMENTATIONS_UPDATE to 1.
-  check_for_updates()
-Plotting labels to runs/bdd100k/detect/anydepth-yolov12s/train/labels.jpg... 
-[34m[1moptimizer:[0m SGD(lr=0.001, momentum=0.9) with parameter groups 309 weight(decay=0.0), 212 weight(decay=0.0005), 315 bias(decay=0.0)
-DistributedDataParallel(
-  (module): DetectionModelAnyDepth(
+Detected YOLOv12AnyDepth model from weights, switching to AnyDepth task_map
+model: YOLO(
+  (model): DetectionModelAnyDepth(
     (model): Sequential(
       (0): Conv(
         (conv): Conv2d(3, 32, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
@@ -982,380 +946,443 @@ DistributedDataParallel(
     )
   )
 )
-Image sizes 1280 train, 1280 val
-Using 16 dataloader workers
-Logging results to [1mruns/bdd100k/detect/anydepth-yolov12s/train[0m
-Starting training for 30 epochs...
+[*] AnyDepth model: True, num_skippable_layers: 8
+[*] Running validation with Image Size: 1280
+Ultralytics 8.3.63 🚀 Python-3.11.13 torch-2.2.2+cu121 CUDA:0 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
+YOLO-ad-v12s summary: 841 layers, 7,404,718 parameters, 0 gradients, 22.3 GFLOPs
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s][34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
 
-[FLOPs] Super model (skip=False) @ 736x1280:
-| module             | #parameters or shape   | #flops   |
-|:-------------------|:-----------------------|:---------|
-| base_model.model   | 7.417M                 | 25.631G  |
-| 0                  | 0.928K                 | 0.219G   |
-| 0.conv             | 0.864K                 | 0.203G   |
-| 0.conv.weight      | (32, 3, 3, 3)          |          |
-| 0.bn               | 64                     | 15.073M  |
-| 0.bn.weight        | (32,)                  |          |
-| 0.bn.bias          | (32,)                  |          |
-| 1                  | 9.344K                 | 0.55G    |
-| 1.conv             | 9.216K                 | 0.543G   |
-| 1.conv.weight      | (64, 16, 3, 3)         |          |
-| 1.bn               | 0.128K                 | 7.537M   |
-| 1.bn.weight        | (64,)                  |          |
-| 1.bn.bias          | (64,)                  |          |
-| 2                  | 40.064K                | 2.325G   |
-| 2.cv1              | 4.352K                 | 0.249G   |
-| 2.cv1.conv         | 4.096K                 | 0.241G   |
-| 2.cv1.bn           | 0.128K                 | 7.537M   |
-| 2.cv1.bn_skip      | 0.128K                 |          |
-| 2.cv2              | 16.896K                | 0.98G    |
-| 2.cv2.conv         | 16.384K                | 0.965G   |
-| 2.cv2.bn           | 0.256K                 | 15.073M  |
-| 2.cv2.bn_skip      | 0.256K                 |          |
-| 2.m                | 18.816K                | 1.097G   |
-| 2.m.0              | 9.408K                 | 0.548G   |
-| 2.m.1              | 9.408K                 | 0.548G   |
-| 3                  | 37.376K                | 0.546G   |
-| 3.conv             | 36.864K                | 0.543G   |
-| 3.conv.weight      | (128, 32, 3, 3)        |          |
-| 3.bn               | 0.256K                 | 3.768M   |
-| 3.bn.weight        | (128,)                 |          |
-| 3.bn.bias          | (128,)                 |          |
-| 3.bn_skip          | 0.256K                 |          |
-| 3.bn_skip.weight   | (128,)                 |          |
-| 3.bn_skip.bias     | (128,)                 |          |
-| 4                  | 0.158M                 | 2.308G   |
-| 4.cv1              | 16.896K                | 0.245G   |
-| 4.cv1.conv         | 16.384K                | 0.241G   |
-| 4.cv1.bn           | 0.256K                 | 3.768M   |
-| 4.cv1.bn_skip      | 0.256K                 |          |
-| 4.cv2              | 66.56K                 | 0.972G   |
-| 4.cv2.conv         | 65.536K                | 0.965G   |
-| 4.cv2.bn           | 0.512K                 | 7.537M   |
-| 4.cv2.bn_skip      | 0.512K                 |          |
-| 4.m                | 74.496K                | 1.091G   |
-| 4.m.0              | 37.248K                | 0.545G   |
-| 4.m.1              | 37.248K                | 0.545G   |
-| 5                  | 0.591M                 | 2.172G   |
-| 5.conv             | 0.59M                  | 2.171G   |
-| 5.conv.weight      | (256, 256, 3, 3)       |          |
-| 5.bn               | 0.512K                 | 1.884M   |
-| 5.bn.weight        | (256,)                 |          |
-| 5.bn.bias          | (256,)                 |          |
-| 5.bn_skip          | 0.512K                 |          |
-| 5.bn_skip.weight   | (256,)                 |          |
-| 5.bn_skip.bias     | (256,)                 |          |
-| 6                  | 1.395M                 | 4.74G    |
-| 6.gamma            | (256,)                 |          |
-| 6.cv1              | 33.28K                 | 0.122G   |
-| 6.cv1.conv         | 32.768K                | 0.121G   |
-| 6.cv1.bn           | 0.256K                 | 0.942M   |
-| 6.cv1.bn_skip      | 0.256K                 |          |
-| 6.cv2              | 0.263M                 | 0.605G   |
-| 6.cv2.conv         | 0.164M                 | 0.603G   |
-| 6.cv2.bn           | 0.512K                 | 1.884M   |
-| 6.cv2.bn_skip      | 0.512K                 |          |
-| 6.cv2.conv_skip    | 98.304K                |          |
-| 6.m                | 1.099M                 | 4.013G   |
-| 6.m.0              | 0.277M                 | 1.003G   |
-| 6.m.1              | 0.277M                 | 1.003G   |
-| 6.m.2              | 0.273M                 | 1.003G   |
-| 6.m.3              | 0.273M                 | 1.003G   |
-| 7                  | 0.591M                 | 0.543G   |
-| 7.conv             | 0.59M                  | 0.543G   |
-| 7.conv.weight      | (256, 256, 3, 3)       |          |
-| 7.bn               | 0.512K                 | 0.471M   |
-| 7.bn.weight        | (256,)                 |          |
-| 7.bn.bias          | (256,)                 |          |
-| 7.bn_skip          | 0.512K                 |          |
-| 7.bn_skip.weight   | (256,)                 |          |
-| 7.bn_skip.bias     | (256,)                 |          |
-| 8                  | 1.395M                 | 1.185G   |
-| 8.gamma            | (256,)                 |          |
-| 8.cv1              | 33.28K                 | 30.382M  |
-| 8.cv1.conv         | 32.768K                | 30.147M  |
-| 8.cv1.bn           | 0.256K                 | 0.236M   |
-| 8.cv1.bn_skip      | 0.256K                 |          |
-| 8.cv2              | 0.263M                 | 0.151G   |
-| 8.cv2.conv         | 0.164M                 | 0.151G   |
-| 8.cv2.bn           | 0.512K                 | 0.471M   |
-| 8.cv2.bn_skip      | 0.512K                 |          |
-| 8.cv2.conv_skip    | 98.304K                |          |
-| 8.m                | 1.099M                 | 1.003G   |
-| 8.m.0              | 0.277M                 | 0.251G   |
-| 8.m.1              | 0.277M                 | 0.251G   |
-| 8.m.2              | 0.273M                 | 0.251G   |
-| 8.m.3              | 0.273M                 | 0.251G   |
-| 11                 | 0.529M                 | 1.94G    |
-| 11.cv1             | 66.048K                | 0.242G   |
-| 11.cv1.conv        | 65.536K                | 0.241G   |
-| 11.cv1.bn          | 0.256K                 | 0.942M   |
-| 11.cv1.bn_skip     | 0.256K                 |          |
-| 11.cv2             | 99.328K                | 0.364G   |
-| 11.cv2.conv        | 98.304K                | 0.362G   |
-| 11.cv2.bn          | 0.512K                 | 1.884M   |
-| 11.cv2.bn_skip     | 0.512K                 |          |
-| 11.m               | 0.364M                 | 1.334G   |
-| 11.m.0             | 0.182M                 | 0.667G   |
-| 11.m.1             | 0.181M                 | 0.667G   |
-| 14                 | 0.15M                  | 2.191G   |
-| 14.cv1             | 33.024K                | 0.484G   |
-| 14.cv1.conv        | 32.768K                | 0.482G   |
-| 14.cv1.bn          | 0.128K                 | 1.884M   |
-| 14.cv1.bn_skip     | 0.128K                 |          |
-| 14.cv2             | 25.088K                | 0.366G   |
-| 14.cv2.conv        | 24.576K                | 0.362G   |
-| 14.cv2.bn          | 0.256K                 | 3.768M   |
-| 14.cv2.bn_skip     | 0.256K                 |          |
-| 14.m               | 91.648K                | 1.342G   |
-| 14.m.0             | 46.08K                 | 0.671G   |
-| 14.m.1             | 45.568K                | 0.671G   |
-| 15                 | 0.148M                 | 0.544G   |
-| 15.conv            | 0.147M                 | 0.543G   |
-| 15.conv.weight     | (128, 128, 3, 3)       |          |
-| 15.bn              | 0.256K                 | 0.942M   |
-| 15.bn.weight       | (128,)                 |          |
-| 15.bn.bias         | (128,)                 |          |
-| 15.bn_skip         | 0.256K                 |          |
-| 15.bn_skip.weight  | (128,)                 |          |
-| 15.bn_skip.bias    | (128,)                 |          |
-| 17                 | 0.513M                 | 1.879G   |
-| 17.cv1             | 49.664K                | 0.182G   |
-| 17.cv1.conv        | 49.152K                | 0.181G   |
-| 17.cv1.bn          | 0.256K                 | 0.942M   |
-| 17.cv1.bn_skip     | 0.256K                 |          |
-| 17.cv2             | 99.328K                | 0.364G   |
-| 17.cv2.conv        | 98.304K                | 0.362G   |
-| 17.cv2.bn          | 0.512K                 | 1.884M   |
-| 17.cv2.bn_skip     | 0.512K                 |          |
-| 17.m               | 0.364M                 | 1.334G   |
-| 17.m.0             | 0.182M                 | 0.667G   |
-| 17.m.1             | 0.181M                 | 0.667G   |
-| 18                 | 0.591M                 | 0.543G   |
-| 18.conv            | 0.59M                  | 0.543G   |
-| 18.conv.weight     | (256, 256, 3, 3)       |          |
-| 18.bn              | 0.512K                 | 0.471M   |
-| 18.bn.weight       | (256,)                 |          |
-| 18.bn.bias         | (256,)                 |          |
-| 18.bn_skip         | 0.512K                 |          |
-| 18.bn_skip.weight  | (256,)                 |          |
-| 18.bn_skip.bias    | (256,)                 |          |
-| 20                 | 0.628M                 | 0.576G   |
-| 20.cv1             | 0.132M                 | 0.121G   |
-| 20.cv1.conv        | 0.131M                 | 0.121G   |
-| 20.cv1.bn          | 0.512K                 | 0.471M   |
-| 20.cv1.bn_skip     | 0.512K                 |          |
-| 20.cv2             | 0.132M                 | 0.121G   |
-| 20.cv2.conv        | 0.131M                 | 0.121G   |
-| 20.cv2.bn          | 0.512K                 | 0.471M   |
-| 20.cv2.bn_skip     | 0.512K                 |          |
-| 20.m               | 0.364M                 | 0.333G   |
-| 20.m.0             | 0.182M                 | 0.167G   |
-| 20.m.1             | 0.182M                 | 0.167G   |
-| 21                 | 0.64M                  | 3.365G   |
-| 21.cv2             | 0.492M                 | 2.56G    |
-| 21.cv2.0           | 0.115M                 | 1.692G   |
-| 21.cv2.1           | 0.189M                 | 0.694G   |
-| 21.cv2.2           | 0.189M                 | 0.174G   |
-| 21.cv3             | 0.148M                 | 0.804G   |
-| 21.cv3.0           | 37.386K                | 0.55G    |
-| 21.cv3.1           | 55.178K                | 0.203G   |
-| 21.cv3.2           | 55.178K                | 50.755M  |
-| 21.dfl.conv        | 16                     | 1.236M   |
-| 21.dfl.conv.weight | (1, 16, 1, 1)          |          |
-| 9                  |                        | 0.942M   |
-| 12                 |                        | 3.768M   |
-  MACs  (super): 25.63 GMACs
-  FLOPs (super): 51.26 GFLOPs
+[*] FLOPs calculated at resolution: 736x1312
+| module                 | #parameters or shape   | #flops   |
+|:-----------------------|:-----------------------|:---------|
+| base_model.model.model | 7.405M                 | 26.167G  |
+| 0.conv                 | 0.896K                 | 0.209G   |
+| 0.conv.weight          | (32, 3, 3, 3)          |          |
+| 0.conv.bias            | (32,)                  |          |
+| 1.conv                 | 9.28K                  | 0.556G   |
+| 1.conv.weight          | (64, 16, 3, 3)         |          |
+| 1.conv.bias            | (64,)                  |          |
+| 2                      | 40.064K                | 2.383G   |
+| 2.cv1                  | 4.352K                 | 0.255G   |
+| 2.cv1.conv             | 4.096K                 | 0.247G   |
+| 2.cv1.bn               | 0.128K                 | 7.725M   |
+| 2.cv1.bn_skip          | 0.128K                 |          |
+| 2.cv2                  | 16.896K                | 1.004G   |
+| 2.cv2.conv             | 16.384K                | 0.989G   |
+| 2.cv2.bn               | 0.256K                 | 15.45M   |
+| 2.cv2.bn_skip          | 0.256K                 |          |
+| 2.m                    | 18.816K                | 1.124G   |
+| 2.m.0                  | 9.408K                 | 0.562G   |
+| 2.m.1                  | 9.408K                 | 0.562G   |
+| 3                      | 37.376K                | 0.56G    |
+| 3.conv                 | 36.864K                | 0.556G   |
+| 3.conv.weight          | (128, 32, 3, 3)        |          |
+| 3.bn                   | 0.256K                 | 3.863M   |
+| 3.bn.weight            | (128,)                 |          |
+| 3.bn.bias              | (128,)                 |          |
+| 3.bn_skip              | 0.256K                 |          |
+| 3.bn_skip.weight       | (128,)                 |          |
+| 3.bn_skip.bias         | (128,)                 |          |
+| 4                      | 0.158M                 | 2.366G   |
+| 4.cv1                  | 16.896K                | 0.251G   |
+| 4.cv1.conv             | 16.384K                | 0.247G   |
+| 4.cv1.bn               | 0.256K                 | 3.863M   |
+| 4.cv1.bn_skip          | 0.256K                 |          |
+| 4.cv2                  | 66.56K                 | 0.997G   |
+| 4.cv2.conv             | 65.536K                | 0.989G   |
+| 4.cv2.bn               | 0.512K                 | 7.725M   |
+| 4.cv2.bn_skip          | 0.512K                 |          |
+| 4.m                    | 74.496K                | 1.118G   |
+| 4.m.0                  | 37.248K                | 0.559G   |
+| 4.m.1                  | 37.248K                | 0.559G   |
+| 5                      | 0.591M                 | 2.227G   |
+| 5.conv                 | 0.59M                  | 2.225G   |
+| 5.conv.weight          | (256, 256, 3, 3)       |          |
+| 5.bn                   | 0.512K                 | 1.931M   |
+| 5.bn.weight            | (256,)                 |          |
+| 5.bn.bias              | (256,)                 |          |
+| 5.bn_skip              | 0.512K                 |          |
+| 5.bn_skip.weight       | (256,)                 |          |
+| 5.bn_skip.bias         | (256,)                 |          |
+| 6                      | 1.391M                 | 4.827G   |
+| 6.gamma                | (256,)                 |          |
+| 6.cv1                  | 33.28K                 | 0.125G   |
+| 6.cv1.conv             | 32.768K                | 0.124G   |
+| 6.cv1.bn               | 0.256K                 | 0.966M   |
+| 6.cv1.bn_skip          | 0.256K                 |          |
+| 6.cv2                  | 0.263M                 | 0.62G    |
+| 6.cv2.conv             | 0.164M                 | 0.618G   |
+| 6.cv2.bn               | 0.512K                 | 1.931M   |
+| 6.cv2.bn_skip          | 0.512K                 |          |
+| 6.cv2.conv_skip        | 98.304K                |          |
+| 6.m                    | 1.095M                 | 4.083G   |
+| 6.m.0                  | 0.277M                 | 1.028G   |
+| 6.m.1                  | 0.277M                 | 1.028G   |
+| 6.m.2                  | 0.271M                 | 1.013G   |
+| 6.m.3                  | 0.271M                 | 1.013G   |
+| 7                      | 0.591M                 | 0.557G   |
+| 7.conv                 | 0.59M                  | 0.556G   |
+| 7.conv.weight          | (256, 256, 3, 3)       |          |
+| 7.bn                   | 0.512K                 | 0.483M   |
+| 7.bn.weight            | (256,)                 |          |
+| 7.bn.bias              | (256,)                 |          |
+| 7.bn_skip              | 0.512K                 |          |
+| 7.bn_skip.weight       | (256,)                 |          |
+| 7.bn_skip.bias         | (256,)                 |          |
+| 8                      | 1.391M                 | 1.207G   |
+| 8.gamma                | (256,)                 |          |
+| 8.cv1                  | 33.28K                 | 31.142M  |
+| 8.cv1.conv             | 32.768K                | 30.9M    |
+| 8.cv1.bn               | 0.256K                 | 0.241M   |
+| 8.cv1.bn_skip          | 0.256K                 |          |
+| 8.cv2                  | 0.263M                 | 0.155G   |
+| 8.cv2.conv             | 0.164M                 | 0.155G   |
+| 8.cv2.bn               | 0.512K                 | 0.483M   |
+| 8.cv2.bn_skip          | 0.512K                 |          |
+| 8.cv2.conv_skip        | 98.304K                |          |
+| 8.m                    | 1.095M                 | 1.021G   |
+| 8.m.0                  | 0.277M                 | 0.257G   |
+| 8.m.1                  | 0.277M                 | 0.257G   |
+| 8.m.2                  | 0.271M                 | 0.253G   |
+| 8.m.3                  | 0.271M                 | 0.253G   |
+| 11                     | 0.528M                 | 1.984G   |
+| 11.cv1                 | 66.048K                | 0.248G   |
+| 11.cv1.conv            | 65.536K                | 0.247G   |
+| 11.cv1.bn              | 0.256K                 | 0.966M   |
+| 11.cv1.bn_skip         | 0.256K                 |          |
+| 11.cv2                 | 99.328K                | 0.373G   |
+| 11.cv2.conv            | 98.304K                | 0.371G   |
+| 11.cv2.bn              | 0.512K                 | 1.931M   |
+| 11.cv2.bn_skip         | 0.512K                 |          |
+| 11.m                   | 0.363M                 | 1.363G   |
+| 11.m.0                 | 0.182M                 | 0.684G   |
+| 11.m.1                 | 0.181M                 | 0.68G    |
+| 14                     | 0.15M                  | 2.238G   |
+| 14.cv1                 | 33.024K                | 0.496G   |
+| 14.cv1.conv            | 32.768K                | 0.494G   |
+| 14.cv1.bn              | 0.128K                 | 1.931M   |
+| 14.cv1.bn_skip         | 0.128K                 |          |
+| 14.cv2                 | 25.088K                | 0.375G   |
+| 14.cv2.conv            | 24.576K                | 0.371G   |
+| 14.cv2.bn              | 0.256K                 | 3.863M   |
+| 14.cv2.bn_skip         | 0.256K                 |          |
+| 14.m                   | 91.392K                | 1.367G   |
+| 14.m.0                 | 46.08K                 | 0.688G   |
+| 14.m.1                 | 45.312K                | 0.68G    |
+| 15                     | 0.148M                 | 0.557G   |
+| 15.conv                | 0.147M                 | 0.556G   |
+| 15.conv.weight         | (128, 128, 3, 3)       |          |
+| 15.bn                  | 0.256K                 | 0.966M   |
+| 15.bn.weight           | (128,)                 |          |
+| 15.bn.bias             | (128,)                 |          |
+| 15.bn_skip             | 0.256K                 |          |
+| 15.bn_skip.weight      | (128,)                 |          |
+| 15.bn_skip.bias        | (128,)                 |          |
+| 17                     | 0.512M                 | 1.923G   |
+| 17.cv1                 | 49.664K                | 0.186G   |
+| 17.cv1.conv            | 49.152K                | 0.185G   |
+| 17.cv1.bn              | 0.256K                 | 0.966M   |
+| 17.cv1.bn_skip         | 0.256K                 |          |
+| 17.cv2                 | 99.328K                | 0.373G   |
+| 17.cv2.conv            | 98.304K                | 0.371G   |
+| 17.cv2.bn              | 0.512K                 | 1.931M   |
+| 17.cv2.bn_skip         | 0.512K                 |          |
+| 17.m                   | 0.363M                 | 1.363G   |
+| 17.m.0                 | 0.182M                 | 0.684G   |
+| 17.m.1                 | 0.181M                 | 0.68G    |
+| 18                     | 0.591M                 | 0.557G   |
+| 18.conv                | 0.59M                  | 0.556G   |
+| 18.conv.weight         | (256, 256, 3, 3)       |          |
+| 18.bn                  | 0.512K                 | 0.483M   |
+| 18.bn.weight           | (256,)                 |          |
+| 18.bn.bias             | (256,)                 |          |
+| 18.bn_skip             | 0.512K                 |          |
+| 18.bn_skip.weight      | (256,)                 |          |
+| 18.bn_skip.bias        | (256,)                 |          |
+| 20                     | 0.628M                 | 0.59G    |
+| 20.cv1                 | 0.132M                 | 0.124G   |
+| 20.cv1.conv            | 0.131M                 | 0.124G   |
+| 20.cv1.bn              | 0.512K                 | 0.483M   |
+| 20.cv1.bn_skip         | 0.512K                 |          |
+| 20.cv2                 | 0.132M                 | 0.124G   |
+| 20.cv2.conv            | 0.131M                 | 0.124G   |
+| 20.cv2.bn              | 0.512K                 | 0.483M   |
+| 20.cv2.bn_skip         | 0.512K                 |          |
+| 20.m                   | 0.364M                 | 0.341G   |
+| 20.m.0                 | 0.182M                 | 0.171G   |
+| 20.m.1                 | 0.182M                 | 0.171G   |
+| 21                     | 0.638M                 | 3.423G   |
+| 21.cv2                 | 0.492M                 | 2.619G   |
+| 21.cv2.0               | 0.115M                 | 1.73G    |
+| 21.cv2.1               | 0.189M                 | 0.711G   |
+| 21.cv2.2               | 0.189M                 | 0.178G   |
+| 21.cv3                 | 0.146M                 | 0.803G   |
+| 21.cv3.0               | 36.874K                | 0.548G   |
+| 21.cv3.1               | 54.538K                | 0.203G   |
+| 21.cv3.2               | 54.538K                | 50.816M  |
+| 21.dfl.conv            | 16                     | 1.267M   |
+| 21.dfl.conv.weight     | (1, 16, 1, 1)          |          |
+| 9                      |                        | 0.966M   |
+| 12                     |                        | 3.863M   |
+  MACs  : 26.17 GMACs
+  FLOPs : 52.33 GFLOPs
+[*] Validation input tensor shape: torch.Size([16, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.652      0.536      0.598       0.35
+                person       3220      13265      0.803      0.614      0.725      0.392
+                 rider        515        649      0.702      0.498       0.55        0.3
+                   car       9879     102540      0.846      0.736      0.836       0.53
+                   bus       1242       1597      0.677      0.598      0.663      0.517
+                 truck       2689       4247      0.643      0.633      0.674      0.501
+                  bike        578       1007      0.662      0.484      0.557      0.293
+                 motor        334        452      0.701      0.467      0.517      0.271
+         traffic light       5653      26891      0.741      0.646      0.702      0.284
+          traffic sign       8221      34915      0.743      0.681      0.745       0.41
+                 train         14         15          0          0    0.00804    0.00632
+Speed: 0.3ms preprocess, 6.8ms inference, 0.0ms loss, 1.2ms postprocess per image
+Saving runs/bdd100k/detect/anydepth-yolov12s/Full_12802/predictions.json...
 
-[FLOPs] Base model (skip=True) @ 736x1280:
-| module             | #parameters or shape   | #flops   |
-|:-------------------|:-----------------------|:---------|
-| base_model.model   | 7.417M                 | 20.318G  |
-| 0                  | 0.928K                 | 0.219G   |
-| 0.conv             | 0.864K                 | 0.203G   |
-| 0.conv.weight      | (32, 3, 3, 3)          |          |
-| 0.bn               | 64                     | 15.073M  |
-| 0.bn.weight        | (32,)                  |          |
-| 0.bn.bias          | (32,)                  |          |
-| 1                  | 9.344K                 | 0.55G    |
-| 1.conv             | 9.216K                 | 0.543G   |
-| 1.conv.weight      | (64, 16, 3, 3)         |          |
-| 1.bn               | 0.128K                 | 7.537M   |
-| 1.bn.weight        | (64,)                  |          |
-| 1.bn.bias          | (64,)                  |          |
-| 2                  | 40.064K                | 2.325G   |
-| 2.cv1              | 4.352K                 | 0.249G   |
-| 2.cv1.conv         | 4.096K                 | 0.241G   |
-| 2.cv1.bn           | 0.128K                 |          |
-| 2.cv1.bn_skip      | 0.128K                 | 7.537M   |
-| 2.cv2              | 16.896K                | 0.98G    |
-| 2.cv2.conv         | 16.384K                | 0.965G   |
-| 2.cv2.bn           | 0.256K                 |          |
-| 2.cv2.bn_skip      | 0.256K                 | 15.073M  |
-| 2.m                | 18.816K                | 1.097G   |
-| 2.m.0              | 9.408K                 | 0.548G   |
-| 2.m.1              | 9.408K                 | 0.548G   |
-| 3                  | 37.376K                | 0.546G   |
-| 3.conv             | 36.864K                | 0.543G   |
-| 3.conv.weight      | (128, 32, 3, 3)        |          |
-| 3.bn               | 0.256K                 |          |
-| 3.bn.weight        | (128,)                 |          |
-| 3.bn.bias          | (128,)                 |          |
-| 3.bn_skip          | 0.256K                 | 3.768M   |
-| 3.bn_skip.weight   | (128,)                 |          |
-| 3.bn_skip.bias     | (128,)                 |          |
-| 4                  | 0.158M                 | 2.308G   |
-| 4.cv1              | 16.896K                | 0.245G   |
-| 4.cv1.conv         | 16.384K                | 0.241G   |
-| 4.cv1.bn           | 0.256K                 |          |
-| 4.cv1.bn_skip      | 0.256K                 | 3.768M   |
-| 4.cv2              | 66.56K                 | 0.972G   |
-| 4.cv2.conv         | 65.536K                | 0.965G   |
-| 4.cv2.bn           | 0.512K                 |          |
-| 4.cv2.bn_skip      | 0.512K                 | 7.537M   |
-| 4.m                | 74.496K                | 1.091G   |
-| 4.m.0              | 37.248K                | 0.545G   |
-| 4.m.1              | 37.248K                | 0.545G   |
-| 5                  | 0.591M                 | 2.172G   |
-| 5.conv             | 0.59M                  | 2.171G   |
-| 5.conv.weight      | (256, 256, 3, 3)       |          |
-| 5.bn               | 0.512K                 |          |
-| 5.bn.weight        | (256,)                 |          |
-| 5.bn.bias          | (256,)                 |          |
-| 5.bn_skip          | 0.512K                 | 1.884M   |
-| 5.bn_skip.weight   | (256,)                 |          |
-| 5.bn_skip.bias     | (256,)                 |          |
-| 6                  | 1.395M                 | 2.492G   |
-| 6.gamma            | (256,)                 |          |
-| 6.cv1              | 33.28K                 | 0.122G   |
-| 6.cv1.conv         | 32.768K                | 0.121G   |
-| 6.cv1.bn           | 0.256K                 |          |
-| 6.cv1.bn_skip      | 0.256K                 | 0.942M   |
-| 6.cv2              | 0.263M                 | 0.364G   |
-| 6.cv2.conv         | 0.164M                 |          |
-| 6.cv2.bn           | 0.512K                 |          |
-| 6.cv2.bn_skip      | 0.512K                 | 1.884M   |
-| 6.cv2.conv_skip    | 98.304K                | 0.362G   |
-| 6.m                | 1.099M                 | 2.007G   |
-| 6.m.0              | 0.277M                 | 1.003G   |
-| 6.m.1              | 0.277M                 | 1.003G   |
-| 6.m.2              | 0.273M                 |          |
-| 6.m.3              | 0.273M                 |          |
-| 7                  | 0.591M                 | 0.543G   |
-| 7.conv             | 0.59M                  | 0.543G   |
-| 7.conv.weight      | (256, 256, 3, 3)       |          |
-| 7.bn               | 0.512K                 |          |
-| 7.bn.weight        | (256,)                 |          |
-| 7.bn.bias          | (256,)                 |          |
-| 7.bn_skip          | 0.512K                 | 0.471M   |
-| 7.bn_skip.weight   | (256,)                 |          |
-| 7.bn_skip.bias     | (256,)                 |          |
-| 8                  | 1.395M                 | 0.623G   |
-| 8.gamma            | (256,)                 |          |
-| 8.cv1              | 33.28K                 | 30.382M  |
-| 8.cv1.conv         | 32.768K                | 30.147M  |
-| 8.cv1.bn           | 0.256K                 |          |
-| 8.cv1.bn_skip      | 0.256K                 | 0.236M   |
-| 8.cv2              | 0.263M                 | 90.911M  |
-| 8.cv2.conv         | 0.164M                 |          |
-| 8.cv2.bn           | 0.512K                 |          |
-| 8.cv2.bn_skip      | 0.512K                 | 0.471M   |
-| 8.cv2.conv_skip    | 98.304K                | 90.44M   |
-| 8.m                | 1.099M                 | 0.502G   |
-| 8.m.0              | 0.277M                 | 0.251G   |
-| 8.m.1              | 0.277M                 | 0.251G   |
-| 8.m.2              | 0.273M                 |          |
-| 8.m.3              | 0.273M                 |          |
-| 11                 | 0.529M                 | 1.152G   |
-| 11.cv1             | 66.048K                | 0.242G   |
-| 11.cv1.conv        | 65.536K                | 0.241G   |
-| 11.cv1.bn          | 0.256K                 |          |
-| 11.cv1.bn_skip     | 0.256K                 | 0.942M   |
-| 11.cv2             | 99.328K                | 0.243G   |
-| 11.cv2.conv        | 98.304K                |          |
-| 11.cv2.bn          | 0.512K                 |          |
-| 11.cv2.bn_skip     | 0.512K                 | 1.884M   |
-| 11.m               | 0.364M                 | 0.667G   |
-| 11.m.0             | 0.182M                 | 0.667G   |
-| 11.m.1             | 0.181M                 |          |
-| 14                 | 0.15M                  | 1.4G     |
-| 14.cv1             | 33.024K                | 0.484G   |
-| 14.cv1.conv        | 32.768K                | 0.482G   |
-| 14.cv1.bn          | 0.128K                 |          |
-| 14.cv1.bn_skip     | 0.128K                 | 1.884M   |
-| 14.cv2             | 25.088K                | 0.245G   |
-| 14.cv2.conv        | 24.576K                |          |
-| 14.cv2.bn          | 0.256K                 |          |
-| 14.cv2.bn_skip     | 0.256K                 | 3.768M   |
-| 14.m               | 91.648K                | 0.671G   |
-| 14.m.0             | 46.08K                 | 0.671G   |
-| 14.m.1             | 45.568K                |          |
-| 15                 | 0.148M                 | 0.544G   |
-| 15.conv            | 0.147M                 | 0.543G   |
-| 15.conv.weight     | (128, 128, 3, 3)       |          |
-| 15.bn              | 0.256K                 |          |
-| 15.bn.weight       | (128,)                 |          |
-| 15.bn.bias         | (128,)                 |          |
-| 15.bn_skip         | 0.256K                 | 0.942M   |
-| 15.bn_skip.weight  | (128,)                 |          |
-| 15.bn_skip.bias    | (128,)                 |          |
-| 17                 | 0.513M                 | 1.092G   |
-| 17.cv1             | 49.664K                | 0.182G   |
-| 17.cv1.conv        | 49.152K                | 0.181G   |
-| 17.cv1.bn          | 0.256K                 |          |
-| 17.cv1.bn_skip     | 0.256K                 | 0.942M   |
-| 17.cv2             | 99.328K                | 0.243G   |
-| 17.cv2.conv        | 98.304K                |          |
-| 17.cv2.bn          | 0.512K                 |          |
-| 17.cv2.bn_skip     | 0.512K                 | 1.884M   |
-| 17.m               | 0.364M                 | 0.667G   |
-| 17.m.0             | 0.182M                 | 0.667G   |
-| 17.m.1             | 0.181M                 |          |
-| 18                 | 0.591M                 | 0.543G   |
-| 18.conv            | 0.59M                  | 0.543G   |
-| 18.conv.weight     | (256, 256, 3, 3)       |          |
-| 18.bn              | 0.512K                 |          |
-| 18.bn.weight       | (256,)                 |          |
-| 18.bn.bias         | (256,)                 |          |
-| 18.bn_skip         | 0.512K                 | 0.471M   |
-| 18.bn_skip.weight  | (256,)                 |          |
-| 18.bn_skip.bias    | (256,)                 |          |
-| 20                 | 0.628M                 | 0.439G   |
-| 20.cv1             | 0.132M                 | 0.121G   |
-| 20.cv1.conv        | 0.131M                 | 0.121G   |
-| 20.cv1.bn          | 0.512K                 |          |
-| 20.cv1.bn_skip     | 0.512K                 | 0.471M   |
-| 20.cv2             | 0.132M                 | 0.121G   |
-| 20.cv2.conv        | 0.131M                 | 0.121G   |
-| 20.cv2.bn          | 0.512K                 |          |
-| 20.cv2.bn_skip     | 0.512K                 | 0.471M   |
-| 20.m               | 0.364M                 | 0.197G   |
-| 20.m.0             | 0.182M                 | 98.683M  |
-| 20.m.1             | 0.182M                 | 98.683M  |
-| 21                 | 0.64M                  | 3.365G   |
-| 21.cv2             | 0.492M                 | 2.56G    |
-| 21.cv2.0           | 0.115M                 | 1.692G   |
-| 21.cv2.1           | 0.189M                 | 0.694G   |
-| 21.cv2.2           | 0.189M                 | 0.174G   |
-| 21.cv3             | 0.148M                 | 0.804G   |
-| 21.cv3.0           | 37.386K                | 0.55G    |
-| 21.cv3.1           | 55.178K                | 0.203G   |
-| 21.cv3.2           | 55.178K                | 50.755M  |
-| 21.dfl.conv        | 16                     | 1.236M   |
-| 21.dfl.conv.weight | (1, 16, 1, 1)          |          |
-| 9                  |                        | 0.942M   |
-| 12                 |                        | 3.768M   |
-  MACs  (base): 20.32 GMACs
-  FLOPs (base): 40.64 GFLOPs
+Evaluating COCO-style mAP using runs/bdd100k/detect/anydepth-yolov12s/Full_12802/predictions.json and dataset labels...
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=7.26s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=91.80s).
+Accumulating evaluation results...
+DONE (t=11.40s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.347
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.594
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.339
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.157
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.404
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.592
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.242
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.463
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.511
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.339
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.575
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.702
+Results saved to [1mruns/bdd100k/detect/anydepth-yolov12s/Full_12802[0m
+Ultralytics 8.3.63 🚀 Python-3.11.13 torch-2.2.2+cu121 CUDA:0 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
+YOLO-ad-v12s summary: 841 layers, 7,404,718 parameters, 0 gradients, 22.3 GFLOPs
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s][34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
 
-           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/autograd/__init__.py:266: UserWarning: Grad strides do not match bucket view strides. This may indicate grad was not created according to the gradient layout contract, or that the param's strides changed since DDP was constructed.  This is not an error, but may impair performance.
-grad.sizes() = [128, 128, 1, 1], strides() = [128, 1, 128, 128]
-bucket_view.sizes() = [128, 128, 1, 1], strides() = [128, 1, 1, 1] (Triggered internally at ../torch/csrc/distributed/c10d/reducer.cpp:322.)
-  Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
-/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/autograd/__init__.py:266: UserWarning: Grad strides do not match bucket view strides. This may indicate grad was not created according to the gradient layout contract, or that the param's strides changed since DDP was constructed.  This is not an error, but may impair performance.
-grad.sizes() = [128, 128, 1, 1], strides() = [128, 1, 128, 128]
-bucket_view.sizes() = [128, 128, 1, 1], strides() = [128, 1, 1, 1] (Triggered internally at ../torch/csrc/distributed/c10d/reducer.cpp:322.)
-  Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
-  Epoch 1/30  Batch 1/2188 (0.0%)  | Super 218.622 (box 1.6779  cls 3.8031  dfl 1.3509)  | Base 222.056 (box 1.7520  cls 3.8077  dfl 1.3796)  | KD 24.700 (box 0.66924  cls 0.09817  dfl 0.00221  feat 0.00225)
+[*] FLOPs calculated at resolution: 736x1312
+| module                 | #parameters or shape   | #flops   |
+|:-----------------------|:-----------------------|:---------|
+| base_model.model.model | 7.405M                 | 20.777G  |
+| 0.conv                 | 0.896K                 | 0.209G   |
+| 0.conv.weight          | (32, 3, 3, 3)          |          |
+| 0.conv.bias            | (32,)                  |          |
+| 1.conv                 | 9.28K                  | 0.556G   |
+| 1.conv.weight          | (64, 16, 3, 3)         |          |
+| 1.conv.bias            | (64,)                  |          |
+| 2                      | 40.064K                | 2.383G   |
+| 2.cv1                  | 4.352K                 | 0.255G   |
+| 2.cv1.conv             | 4.096K                 | 0.247G   |
+| 2.cv1.bn               | 0.128K                 |          |
+| 2.cv1.bn_skip          | 0.128K                 | 7.725M   |
+| 2.cv2                  | 16.896K                | 1.004G   |
+| 2.cv2.conv             | 16.384K                | 0.989G   |
+| 2.cv2.bn               | 0.256K                 |          |
+| 2.cv2.bn_skip          | 0.256K                 | 15.45M   |
+| 2.m                    | 18.816K                | 1.124G   |
+| 2.m.0                  | 9.408K                 | 0.562G   |
+| 2.m.1                  | 9.408K                 | 0.562G   |
+| 3                      | 37.376K                | 0.56G    |
+| 3.conv                 | 36.864K                | 0.556G   |
+| 3.conv.weight          | (128, 32, 3, 3)        |          |
+| 3.bn                   | 0.256K                 |          |
+| 3.bn.weight            | (128,)                 |          |
+| 3.bn.bias              | (128,)                 |          |
+| 3.bn_skip              | 0.256K                 | 3.863M   |
+| 3.bn_skip.weight       | (128,)                 |          |
+| 3.bn_skip.bias         | (128,)                 |          |
+| 4                      | 0.158M                 | 2.366G   |
+| 4.cv1                  | 16.896K                | 0.251G   |
+| 4.cv1.conv             | 16.384K                | 0.247G   |
+| 4.cv1.bn               | 0.256K                 |          |
+| 4.cv1.bn_skip          | 0.256K                 | 3.863M   |
+| 4.cv2                  | 66.56K                 | 0.997G   |
+| 4.cv2.conv             | 65.536K                | 0.989G   |
+| 4.cv2.bn               | 0.512K                 |          |
+| 4.cv2.bn_skip          | 0.512K                 | 7.725M   |
+| 4.m                    | 74.496K                | 1.118G   |
+| 4.m.0                  | 37.248K                | 0.559G   |
+| 4.m.1                  | 37.248K                | 0.559G   |
+| 5                      | 0.591M                 | 2.227G   |
+| 5.conv                 | 0.59M                  | 2.225G   |
+| 5.conv.weight          | (256, 256, 3, 3)       |          |
+| 5.bn                   | 0.512K                 |          |
+| 5.bn.weight            | (256,)                 |          |
+| 5.bn.bias              | (256,)                 |          |
+| 5.bn_skip              | 0.512K                 | 1.931M   |
+| 5.bn_skip.weight       | (256,)                 |          |
+| 5.bn_skip.bias         | (256,)                 |          |
+| 6                      | 1.391M                 | 2.554G   |
+| 6.gamma                | (256,)                 |          |
+| 6.cv1                  | 33.28K                 | 0.125G   |
+| 6.cv1.conv             | 32.768K                | 0.124G   |
+| 6.cv1.bn               | 0.256K                 |          |
+| 6.cv1.bn_skip          | 0.256K                 | 0.966M   |
+| 6.cv2                  | 0.263M                 | 0.373G   |
+| 6.cv2.conv             | 0.164M                 |          |
+| 6.cv2.bn               | 0.512K                 |          |
+| 6.cv2.bn_skip          | 0.512K                 | 1.931M   |
+| 6.cv2.conv_skip        | 98.304K                | 0.371G   |
+| 6.m                    | 1.095M                 | 2.057G   |
+| 6.m.0                  | 0.277M                 | 1.028G   |
+| 6.m.1                  | 0.277M                 | 1.028G   |
+| 6.m.2                  | 0.271M                 |          |
+| 6.m.3                  | 0.271M                 |          |
+| 7                      | 0.591M                 | 0.557G   |
+| 7.conv                 | 0.59M                  | 0.556G   |
+| 7.conv.weight          | (256, 256, 3, 3)       |          |
+| 7.bn                   | 0.512K                 |          |
+| 7.bn.weight            | (256,)                 |          |
+| 7.bn.bias              | (256,)                 |          |
+| 7.bn_skip              | 0.512K                 | 0.483M   |
+| 7.bn_skip.weight       | (256,)                 |          |
+| 7.bn_skip.bias         | (256,)                 |          |
+| 8                      | 1.391M                 | 0.639G   |
+| 8.gamma                | (256,)                 |          |
+| 8.cv1                  | 33.28K                 | 31.142M  |
+| 8.cv1.conv             | 32.768K                | 30.9M    |
+| 8.cv1.bn               | 0.256K                 |          |
+| 8.cv1.bn_skip          | 0.256K                 | 0.241M   |
+| 8.cv2                  | 0.263M                 | 93.183M  |
+| 8.cv2.conv             | 0.164M                 |          |
+| 8.cv2.bn               | 0.512K                 |          |
+| 8.cv2.bn_skip          | 0.512K                 | 0.483M   |
+| 8.cv2.conv_skip        | 98.304K                | 92.701M  |
+| 8.m                    | 1.095M                 | 0.514G   |
+| 8.m.0                  | 0.277M                 | 0.257G   |
+| 8.m.1                  | 0.277M                 | 0.257G   |
+| 8.m.2                  | 0.271M                 |          |
+| 8.m.3                  | 0.271M                 |          |
+| 11                     | 0.528M                 | 1.181G   |
+| 11.cv1                 | 66.048K                | 0.248G   |
+| 11.cv1.conv            | 65.536K                | 0.247G   |
+| 11.cv1.bn              | 0.256K                 |          |
+| 11.cv1.bn_skip         | 0.256K                 | 0.966M   |
+| 11.cv2                 | 99.328K                | 0.249G   |
+| 11.cv2.conv            | 98.304K                |          |
+| 11.cv2.bn              | 0.512K                 |          |
+| 11.cv2.bn_skip         | 0.512K                 | 1.931M   |
+| 11.m                   | 0.363M                 | 0.684G   |
+| 11.m.0                 | 0.182M                 | 0.684G   |
+| 11.m.1                 | 0.181M                 |          |
+| 14                     | 0.15M                  | 1.435G   |
+| 14.cv1                 | 33.024K                | 0.496G   |
+| 14.cv1.conv            | 32.768K                | 0.494G   |
+| 14.cv1.bn              | 0.128K                 |          |
+| 14.cv1.bn_skip         | 0.128K                 | 1.931M   |
+| 14.cv2                 | 25.088K                | 0.251G   |
+| 14.cv2.conv            | 24.576K                |          |
+| 14.cv2.bn              | 0.256K                 |          |
+| 14.cv2.bn_skip         | 0.256K                 | 3.863M   |
+| 14.m                   | 91.392K                | 0.688G   |
+| 14.m.0                 | 46.08K                 | 0.688G   |
+| 14.m.1                 | 45.312K                |          |
+| 15                     | 0.148M                 | 0.557G   |
+| 15.conv                | 0.147M                 | 0.556G   |
+| 15.conv.weight         | (128, 128, 3, 3)       |          |
+| 15.bn                  | 0.256K                 |          |
+| 15.bn.weight           | (128,)                 |          |
+| 15.bn.bias             | (128,)                 |          |
+| 15.bn_skip             | 0.256K                 | 0.966M   |
+| 15.bn_skip.weight      | (128,)                 |          |
+| 15.bn_skip.bias        | (128,)                 |          |
+| 17                     | 0.512M                 | 1.119G   |
+| 17.cv1                 | 49.664K                | 0.186G   |
+| 17.cv1.conv            | 49.152K                | 0.185G   |
+| 17.cv1.bn              | 0.256K                 |          |
+| 17.cv1.bn_skip         | 0.256K                 | 0.966M   |
+| 17.cv2                 | 99.328K                | 0.249G   |
+| 17.cv2.conv            | 98.304K                |          |
+| 17.cv2.bn              | 0.512K                 |          |
+| 17.cv2.bn_skip         | 0.512K                 | 1.931M   |
+| 17.m                   | 0.363M                 | 0.684G   |
+| 17.m.0                 | 0.182M                 | 0.684G   |
+| 17.m.1                 | 0.181M                 |          |
+| 18                     | 0.591M                 | 0.557G   |
+| 18.conv                | 0.59M                  | 0.556G   |
+| 18.conv.weight         | (256, 256, 3, 3)       |          |
+| 18.bn                  | 0.512K                 |          |
+| 18.bn.weight           | (256,)                 |          |
+| 18.bn.bias             | (256,)                 |          |
+| 18.bn_skip             | 0.512K                 | 0.483M   |
+| 18.bn_skip.weight      | (256,)                 |          |
+| 18.bn_skip.bias        | (256,)                 |          |
+| 20                     | 0.628M                 | 0.45G    |
+| 20.cv1                 | 0.132M                 | 0.124G   |
+| 20.cv1.conv            | 0.131M                 | 0.124G   |
+| 20.cv1.bn              | 0.512K                 |          |
+| 20.cv1.bn_skip         | 0.512K                 | 0.483M   |
+| 20.cv2                 | 0.132M                 | 0.124G   |
+| 20.cv2.conv            | 0.131M                 | 0.124G   |
+| 20.cv2.bn              | 0.512K                 |          |
+| 20.cv2.bn_skip         | 0.512K                 | 0.483M   |
+| 20.m                   | 0.364M                 | 0.202G   |
+| 20.m.0                 | 0.182M                 | 0.101G   |
+| 20.m.1                 | 0.182M                 | 0.101G   |
+| 21                     | 0.638M                 | 3.423G   |
+| 21.cv2                 | 0.492M                 | 2.619G   |
+| 21.cv2.0               | 0.115M                 | 1.73G    |
+| 21.cv2.1               | 0.189M                 | 0.711G   |
+| 21.cv2.2               | 0.189M                 | 0.178G   |
+| 21.cv3                 | 0.146M                 | 0.803G   |
+| 21.cv3.0               | 36.874K                | 0.548G   |
+| 21.cv3.1               | 54.538K                | 0.203G   |
+| 21.cv3.2               | 54.538K                | 50.816M  |
+| 21.dfl.conv            | 16                     | 1.267M   |
+| 21.dfl.conv.weight     | (1, 16, 1, 1)          |          |
+| 9                      |                        | 0.966M   |
+| 12                     |                        | 3.863M   |
+  MACs  : 20.78 GMACs
+  FLOPs : 41.55 GFLOPs
+[*] Validation input tensor shape: torch.Size([16, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.647      0.528      0.588      0.343
+                person       3220      13265      0.784      0.619      0.716      0.385
+                 rider        515        649      0.701      0.478      0.535      0.288
+                   car       9879     102540       0.83      0.739      0.832      0.527
+                   bus       1242       1597      0.685      0.579      0.655       0.51
+                 truck       2689       4247      0.642      0.621      0.662       0.49
+                  bike        578       1007      0.645        0.5      0.546      0.285
+                 motor        334        452      0.702      0.426      0.493      0.253
+         traffic light       5653      26891      0.734      0.643      0.694      0.281
+          traffic sign       8221      34915      0.745      0.668      0.738      0.405
+                 train         14         15          0          0    0.00516    0.00389
+Speed: 0.3ms preprocess, 5.3ms inference, 0.0ms loss, 1.4ms postprocess per image
+Saving runs/bdd100k/detect/anydepth-yolov12s/Base_1280/predictions.json...
+
+Evaluating COCO-style mAP using runs/bdd100k/detect/anydepth-yolov12s/Base_1280/predictions.json and dataset labels...
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=8.84s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=90.42s).
+Accumulating evaluation results...
+DONE (t=11.23s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.340
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.585
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.328
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.152
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.393
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.581
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.239
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.459
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.510
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.335
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.576
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.693
+Results saved to [1mruns/bdd100k/detect/anydepth-yolov12s/Base_1280[0m
