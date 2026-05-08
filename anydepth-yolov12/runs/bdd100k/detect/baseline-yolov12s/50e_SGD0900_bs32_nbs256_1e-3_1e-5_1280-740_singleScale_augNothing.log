@@ -888,3 +888,897 @@ Epoch 4/50, Batch 1091/2188 (49.9%) - Loss: 99.960, box,cls,dfl: 1.312,0.780,1.0
 Epoch 4/50, Batch 1309/2188 (59.8%) - Loss: 100.153, box,cls,dfl: 1.304,0.766,1.059
 Epoch 4/50, Batch 1527/2188 (69.8%) - Loss: 109.090, box,cls,dfl: 1.434,0.895,1.081
 Epoch 4/50, Batch 1745/2188 (79.8%) - Loss: 103.621, box,cls,dfl: 1.359,0.813,1.066
+Epoch 4/50, Batch 1963/2188 (89.7%) - Loss: 104.110, box,cls,dfl: 1.333,0.860,1.061
+Epoch 4/50, Batch 2181/2188 (99.7%) - Loss: 107.071, box,cls,dfl: 1.418,0.778,1.149
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.627      0.491      0.548      0.316
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 5/50, Batch 1/2188 (0.0%) - Loss: 107.439, box,cls,dfl: 1.392,0.856,1.110
+Epoch 5/50, Batch 219/2188 (10.0%) - Loss: 108.378, box,cls,dfl: 1.457,0.889,1.040
+Epoch 5/50, Batch 437/2188 (20.0%) - Loss: 116.733, box,cls,dfl: 1.611,0.910,1.127
+Epoch 5/50, Batch 655/2188 (29.9%) - Loss: 102.656, box,cls,dfl: 1.350,0.813,1.045
+Epoch 5/50, Batch 873/2188 (39.9%) - Loss: 114.081, box,cls,dfl: 1.438,1.022,1.105
+Epoch 5/50, Batch 1091/2188 (49.9%) - Loss: 101.592, box,cls,dfl: 1.317,0.792,1.066
+Epoch 5/50, Batch 1309/2188 (59.8%) - Loss: 98.825, box,cls,dfl: 1.269,0.774,1.046
+Epoch 5/50, Batch 1527/2188 (69.8%) - Loss: 114.968, box,cls,dfl: 1.485,0.958,1.150
+Epoch 5/50, Batch 1745/2188 (79.8%) - Loss: 102.903, box,cls,dfl: 1.346,0.801,1.069
+Epoch 5/50, Batch 1963/2188 (89.7%) - Loss: 102.557, box,cls,dfl: 1.308,0.827,1.070
+Epoch 5/50, Batch 2181/2188 (99.7%) - Loss: 106.813, box,cls,dfl: 1.404,0.811,1.123
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.723      0.498      0.557       0.32
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 6/50, Batch 1/2188 (0.0%) - Loss: 104.060, box,cls,dfl: 1.337,0.837,1.078
+Epoch 6/50, Batch 219/2188 (10.0%) - Loss: 104.253, box,cls,dfl: 1.377,0.822,1.059
+Epoch 6/50, Batch 437/2188 (20.0%) - Loss: 116.281, box,cls,dfl: 1.602,0.926,1.105
+Epoch 6/50, Batch 655/2188 (29.9%) - Loss: 101.819, box,cls,dfl: 1.339,0.775,1.067
+Epoch 6/50, Batch 873/2188 (39.9%) - Loss: 114.132, box,cls,dfl: 1.460,0.950,1.157
+Epoch 6/50, Batch 1091/2188 (49.9%) - Loss: 98.505, box,cls,dfl: 1.296,0.767,1.015
+Epoch 6/50, Batch 1309/2188 (59.8%) - Loss: 101.054, box,cls,dfl: 1.295,0.795,1.068
+Epoch 6/50, Batch 1527/2188 (69.8%) - Loss: 108.202, box,cls,dfl: 1.416,0.867,1.099
+Epoch 6/50, Batch 1745/2188 (79.8%) - Loss: 98.755, box,cls,dfl: 1.297,0.769,1.019
+Epoch 6/50, Batch 1963/2188 (89.7%) - Loss: 103.430, box,cls,dfl: 1.303,0.827,1.102
+Epoch 6/50, Batch 2181/2188 (99.7%) - Loss: 103.871, box,cls,dfl: 1.384,0.766,1.096
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.728      0.508      0.566      0.326
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 7/50, Batch 1/2188 (0.0%) - Loss: 104.300, box,cls,dfl: 1.374,0.797,1.089
+Epoch 7/50, Batch 219/2188 (10.0%) - Loss: 106.146, box,cls,dfl: 1.414,0.842,1.061
+Epoch 7/50, Batch 437/2188 (20.0%) - Loss: 113.118, box,cls,dfl: 1.579,0.870,1.086
+Epoch 7/50, Batch 655/2188 (29.9%) - Loss: 98.519, box,cls,dfl: 1.296,0.745,1.038
+Epoch 7/50, Batch 873/2188 (39.9%) - Loss: 110.408, box,cls,dfl: 1.439,0.909,1.103
+Epoch 7/50, Batch 1091/2188 (49.9%) - Loss: 97.196, box,cls,dfl: 1.278,0.745,1.014
+Epoch 7/50, Batch 1309/2188 (59.8%) - Loss: 98.820, box,cls,dfl: 1.258,0.771,1.059
+Epoch 7/50, Batch 1527/2188 (69.8%) - Loss: 108.321, box,cls,dfl: 1.417,0.866,1.102
+Epoch 7/50, Batch 1745/2188 (79.8%) - Loss: 101.512, box,cls,dfl: 1.335,0.786,1.051
+Epoch 7/50, Batch 1963/2188 (89.7%) - Loss: 102.129, box,cls,dfl: 1.311,0.819,1.061
+Epoch 7/50, Batch 2181/2188 (99.7%) - Loss: 107.425, box,cls,dfl: 1.436,0.771,1.150
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.734      0.508      0.572      0.331
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 8/50, Batch 1/2188 (0.0%) - Loss: 105.348, box,cls,dfl: 1.355,0.840,1.097
+Epoch 8/50, Batch 219/2188 (10.0%) - Loss: 101.772, box,cls,dfl: 1.361,0.780,1.039
+Epoch 8/50, Batch 437/2188 (20.0%) - Loss: 114.875, box,cls,dfl: 1.589,0.896,1.105
+Epoch 8/50, Batch 655/2188 (29.9%) - Loss: 96.788, box,cls,dfl: 1.258,0.750,1.017
+Epoch 8/50, Batch 873/2188 (39.9%) - Loss: 116.681, box,cls,dfl: 1.518,0.980,1.149
+Epoch 8/50, Batch 1091/2188 (49.9%) - Loss: 96.723, box,cls,dfl: 1.277,0.721,1.025
+Epoch 8/50, Batch 1309/2188 (59.8%) - Loss: 98.818, box,cls,dfl: 1.278,0.760,1.050
+Epoch 8/50, Batch 1527/2188 (69.8%) - Loss: 110.085, box,cls,dfl: 1.447,0.889,1.104
+Epoch 8/50, Batch 1745/2188 (79.8%) - Loss: 102.907, box,cls,dfl: 1.353,0.786,1.077
+Epoch 8/50, Batch 1963/2188 (89.7%) - Loss: 100.830, box,cls,dfl: 1.297,0.800,1.054
+Epoch 8/50, Batch 2181/2188 (99.7%) - Loss: 105.257, box,cls,dfl: 1.397,0.787,1.105
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.736       0.51      0.576      0.333
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 9/50, Batch 1/2188 (0.0%) - Loss: 101.843, box,cls,dfl: 1.339,0.808,1.035
+Epoch 9/50, Batch 219/2188 (10.0%) - Loss: 108.413, box,cls,dfl: 1.438,0.850,1.100
+Epoch 9/50, Batch 437/2188 (20.0%) - Loss: 113.679, box,cls,dfl: 1.584,0.870,1.099
+Epoch 9/50, Batch 655/2188 (29.9%) - Loss: 97.456, box,cls,dfl: 1.296,0.734,1.015
+Epoch 9/50, Batch 873/2188 (39.9%) - Loss: 110.271, box,cls,dfl: 1.425,0.907,1.114
+Epoch 9/50, Batch 1091/2188 (49.9%) - Loss: 98.471, box,cls,dfl: 1.287,0.754,1.036
+Epoch 9/50, Batch 1309/2188 (59.8%) - Loss: 100.743, box,cls,dfl: 1.312,0.757,1.079
+Epoch 9/50, Batch 1527/2188 (69.8%) - Loss: 105.567, box,cls,dfl: 1.389,0.826,1.084
+Epoch 9/50, Batch 1745/2188 (79.8%) - Loss: 101.160, box,cls,dfl: 1.315,0.791,1.054
+Epoch 9/50, Batch 1963/2188 (89.7%) - Loss: 97.092, box,cls,dfl: 1.240,0.764,1.031
+Epoch 9/50, Batch 2181/2188 (99.7%) - Loss: 105.400, box,cls,dfl: 1.396,0.801,1.097
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.743       0.51      0.575      0.332
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 10/50, Batch 1/2188 (0.0%) - Loss: 105.758, box,cls,dfl: 1.390,0.827,1.088
+Epoch 10/50, Batch 219/2188 (10.0%) - Loss: 107.616, box,cls,dfl: 1.423,0.830,1.109
+Epoch 10/50, Batch 437/2188 (20.0%) - Loss: 115.291, box,cls,dfl: 1.594,0.885,1.124
+Epoch 10/50, Batch 655/2188 (29.9%) - Loss: 102.177, box,cls,dfl: 1.344,0.794,1.055
+Epoch 10/50, Batch 873/2188 (39.9%) - Loss: 112.600, box,cls,dfl: 1.430,0.960,1.129
+Epoch 10/50, Batch 1091/2188 (49.9%) - Loss: 100.476, box,cls,dfl: 1.322,0.765,1.053
+Epoch 10/50, Batch 1309/2188 (59.8%) - Loss: 99.000, box,cls,dfl: 1.266,0.757,1.071
+Epoch 10/50, Batch 1527/2188 (69.8%) - Loss: 106.765, box,cls,dfl: 1.401,0.853,1.083
+Epoch 10/50, Batch 1745/2188 (79.8%) - Loss: 101.166, box,cls,dfl: 1.338,0.766,1.058
+Epoch 10/50, Batch 1963/2188 (89.7%) - Loss: 99.237, box,cls,dfl: 1.260,0.780,1.061
+Epoch 10/50, Batch 2181/2188 (99.7%) - Loss: 103.376, box,cls,dfl: 1.371,0.752,1.107
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578       0.74      0.516       0.58      0.337
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 11/50, Batch 1/2188 (0.0%) - Loss: 103.441, box,cls,dfl: 1.346,0.795,1.091
+Epoch 11/50, Batch 219/2188 (10.0%) - Loss: 112.744, box,cls,dfl: 1.524,0.846,1.153
+Epoch 11/50, Batch 437/2188 (20.0%) - Loss: 111.980, box,cls,dfl: 1.573,0.864,1.063
+Epoch 11/50, Batch 655/2188 (29.9%) - Loss: 97.768, box,cls,dfl: 1.286,0.743,1.026
+Epoch 11/50, Batch 873/2188 (39.9%) - Loss: 112.783, box,cls,dfl: 1.460,0.933,1.132
+Epoch 11/50, Batch 1091/2188 (49.9%) - Loss: 99.314, box,cls,dfl: 1.321,0.747,1.036
+Epoch 11/50, Batch 1309/2188 (59.8%) - Loss: 92.794, box,cls,dfl: 1.201,0.710,0.988
+Epoch 11/50, Batch 1527/2188 (69.8%) - Loss: 107.728, box,cls,dfl: 1.429,0.849,1.088
+Epoch 11/50, Batch 1745/2188 (79.8%) - Loss: 101.290, box,cls,dfl: 1.344,0.757,1.064
+Epoch 11/50, Batch 1963/2188 (89.7%) - Loss: 99.196, box,cls,dfl: 1.279,0.770,1.051
+Epoch 11/50, Batch 2181/2188 (99.7%) - Loss: 104.345, box,cls,dfl: 1.372,0.759,1.131
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.737      0.521      0.584      0.338
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 12/50, Batch 1/2188 (0.0%) - Loss: 103.656, box,cls,dfl: 1.340,0.808,1.091
+Epoch 12/50, Batch 219/2188 (10.0%) - Loss: 108.198, box,cls,dfl: 1.446,0.834,1.101
+Epoch 12/50, Batch 437/2188 (20.0%) - Loss: 110.982, box,cls,dfl: 1.538,0.847,1.083
+Epoch 12/50, Batch 655/2188 (29.9%) - Loss: 98.764, box,cls,dfl: 1.293,0.747,1.046
+Epoch 12/50, Batch 873/2188 (39.9%) - Loss: 116.430, box,cls,dfl: 1.460,1.022,1.156
+Epoch 12/50, Batch 1091/2188 (49.9%) - Loss: 96.230, box,cls,dfl: 1.272,0.728,1.007
+Epoch 12/50, Batch 1309/2188 (59.8%) - Loss: 97.249, box,cls,dfl: 1.256,0.752,1.030
+Epoch 12/50, Batch 1527/2188 (69.8%) - Loss: 107.349, box,cls,dfl: 1.412,0.861,1.082
+Epoch 12/50, Batch 1745/2188 (79.8%) - Loss: 99.741, box,cls,dfl: 1.320,0.739,1.058
+Epoch 12/50, Batch 1963/2188 (89.7%) - Loss: 97.909, box,cls,dfl: 1.270,0.787,1.002
+Epoch 12/50, Batch 2181/2188 (99.7%) - Loss: 105.984, box,cls,dfl: 1.422,0.789,1.100
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.742      0.524      0.587      0.341
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 13/50, Batch 1/2188 (0.0%) - Loss: 106.157, box,cls,dfl: 1.379,0.833,1.105
+Epoch 13/50, Batch 219/2188 (10.0%) - Loss: 105.869, box,cls,dfl: 1.416,0.808,1.084
+Epoch 13/50, Batch 437/2188 (20.0%) - Loss: 110.620, box,cls,dfl: 1.535,0.842,1.080
+Epoch 13/50, Batch 655/2188 (29.9%) - Loss: 97.379, box,cls,dfl: 1.308,0.712,1.023
+Epoch 13/50, Batch 873/2188 (39.9%) - Loss: 108.994, box,cls,dfl: 1.415,0.897,1.094
+Epoch 13/50, Batch 1091/2188 (49.9%) - Loss: 98.324, box,cls,dfl: 1.299,0.732,1.041
+Epoch 13/50, Batch 1309/2188 (59.8%) - Loss: 95.757, box,cls,dfl: 1.228,0.713,1.052
+Epoch 13/50, Batch 1527/2188 (69.8%) - Loss: 106.293, box,cls,dfl: 1.395,0.836,1.090
+Epoch 13/50, Batch 1745/2188 (79.8%) - Loss: 102.200, box,cls,dfl: 1.361,0.756,1.077
+Epoch 13/50, Batch 1963/2188 (89.7%) - Loss: 100.308, box,cls,dfl: 1.283,0.797,1.054
+Epoch 13/50, Batch 2181/2188 (99.7%) - Loss: 103.568, box,cls,dfl: 1.360,0.774,1.103
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578       0.75      0.523      0.589      0.343
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 14/50, Batch 1/2188 (0.0%) - Loss: 102.593, box,cls,dfl: 1.316,0.813,1.078
+Epoch 14/50, Batch 219/2188 (10.0%) - Loss: 107.577, box,cls,dfl: 1.428,0.835,1.099
+Epoch 14/50, Batch 437/2188 (20.0%) - Loss: 110.669, box,cls,dfl: 1.534,0.852,1.072
+Epoch 14/50, Batch 655/2188 (29.9%) - Loss: 97.234, box,cls,dfl: 1.272,0.729,1.038
+Epoch 14/50, Batch 873/2188 (39.9%) - Loss: 112.432, box,cls,dfl: 1.445,0.949,1.119
+Epoch 14/50, Batch 1091/2188 (49.9%) - Loss: 98.008, box,cls,dfl: 1.286,0.741,1.035
+Epoch 14/50, Batch 1309/2188 (59.8%) - Loss: 100.533, box,cls,dfl: 1.307,0.753,1.082
+Epoch 14/50, Batch 1527/2188 (69.8%) - Loss: 104.054, box,cls,dfl: 1.399,0.790,1.063
+Epoch 14/50, Batch 1745/2188 (79.8%) - Loss: 95.841, box,cls,dfl: 1.286,0.700,1.009
+Epoch 14/50, Batch 1963/2188 (89.7%) - Loss: 102.540, box,cls,dfl: 1.318,0.792,1.094
+Epoch 14/50, Batch 2181/2188 (99.7%) - Loss: 102.107, box,cls,dfl: 1.349,0.767,1.075
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.746      0.524      0.588      0.343
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 15/50, Batch 1/2188 (0.0%) - Loss: 104.555, box,cls,dfl: 1.369,0.814,1.084
+Epoch 15/50, Batch 219/2188 (10.0%) - Loss: 108.471, box,cls,dfl: 1.450,0.804,1.136
+Epoch 15/50, Batch 437/2188 (20.0%) - Loss: 112.993, box,cls,dfl: 1.556,0.866,1.108
+Epoch 15/50, Batch 655/2188 (29.9%) - Loss: 97.844, box,cls,dfl: 1.320,0.723,1.015
+Epoch 15/50, Batch 873/2188 (39.9%) - Loss: 109.603, box,cls,dfl: 1.422,0.901,1.102
+Epoch 15/50, Batch 1091/2188 (49.9%) - Loss: 97.126, box,cls,dfl: 1.272,0.728,1.035
+Epoch 15/50, Batch 1309/2188 (59.8%) - Loss: 97.871, box,cls,dfl: 1.301,0.738,1.019
+Epoch 15/50, Batch 1527/2188 (69.8%) - Loss: 103.452, box,cls,dfl: 1.398,0.767,1.068
+Epoch 15/50, Batch 1745/2188 (79.8%) - Loss: 99.365, box,cls,dfl: 1.344,0.732,1.029
+Epoch 15/50, Batch 1963/2188 (89.7%) - Loss: 98.175, box,cls,dfl: 1.287,0.744,1.037
+Epoch 15/50, Batch 2181/2188 (99.7%) - Loss: 102.099, box,cls,dfl: 1.339,0.786,1.066
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.746      0.527       0.59      0.344
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 16/50, Batch 1/2188 (0.0%) - Loss: 103.322, box,cls,dfl: 1.329,0.802,1.098
+Epoch 16/50, Batch 219/2188 (10.0%) - Loss: 105.062, box,cls,dfl: 1.389,0.796,1.099
+Epoch 16/50, Batch 437/2188 (20.0%) - Loss: 110.747, box,cls,dfl: 1.549,0.819,1.093
+Epoch 16/50, Batch 655/2188 (29.9%) - Loss: 97.632, box,cls,dfl: 1.286,0.730,1.035
+Epoch 16/50, Batch 873/2188 (39.9%) - Loss: 109.953, box,cls,dfl: 1.403,0.929,1.104
+Epoch 16/50, Batch 1091/2188 (49.9%) - Loss: 94.858, box,cls,dfl: 1.272,0.692,1.000
+Epoch 16/50, Batch 1309/2188 (59.8%) - Loss: 96.029, box,cls,dfl: 1.230,0.734,1.037
+Epoch 16/50, Batch 1527/2188 (69.8%) - Loss: 104.682, box,cls,dfl: 1.377,0.797,1.097
+Epoch 16/50, Batch 1745/2188 (79.8%) - Loss: 101.703, box,cls,dfl: 1.342,0.776,1.061
+Epoch 16/50, Batch 1963/2188 (89.7%) - Loss: 94.625, box,cls,dfl: 1.240,0.683,1.034
+Epoch 16/50, Batch 2181/2188 (99.7%) - Loss: 101.413, box,cls,dfl: 1.343,0.769,1.057
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.744      0.529       0.59      0.344
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 17/50, Batch 1/2188 (0.0%) - Loss: 109.399, box,cls,dfl: 1.415,0.852,1.153
+Epoch 17/50, Batch 219/2188 (10.0%) - Loss: 104.772, box,cls,dfl: 1.405,0.791,1.077
+Epoch 17/50, Batch 437/2188 (20.0%) - Loss: 110.835, box,cls,dfl: 1.558,0.818,1.088
+Epoch 17/50, Batch 655/2188 (29.9%) - Loss: 101.761, box,cls,dfl: 1.348,0.791,1.042
+Epoch 17/50, Batch 873/2188 (39.9%) - Loss: 106.201, box,cls,dfl: 1.367,0.861,1.091
+Epoch 17/50, Batch 1091/2188 (49.9%) - Loss: 95.924, box,cls,dfl: 1.272,0.715,1.011
+Epoch 17/50, Batch 1309/2188 (59.8%) - Loss: 94.710, box,cls,dfl: 1.239,0.714,1.007
+Epoch 17/50, Batch 1527/2188 (69.8%) - Loss: 104.226, box,cls,dfl: 1.379,0.823,1.055
+Epoch 17/50, Batch 1745/2188 (79.8%) - Loss: 99.830, box,cls,dfl: 1.310,0.780,1.030
+Epoch 17/50, Batch 1963/2188 (89.7%) - Loss: 102.179, box,cls,dfl: 1.304,0.806,1.083
+Epoch 17/50, Batch 2181/2188 (99.7%) - Loss: 103.309, box,cls,dfl: 1.379,0.763,1.086
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.745       0.53      0.592      0.345
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 18/50, Batch 1/2188 (0.0%) - Loss: 102.512, box,cls,dfl: 1.325,0.797,1.081
+Epoch 18/50, Batch 219/2188 (10.0%) - Loss: 104.771, box,cls,dfl: 1.404,0.781,1.089
+Epoch 18/50, Batch 437/2188 (20.0%) - Loss: 109.731, box,cls,dfl: 1.537,0.797,1.094
+Epoch 18/50, Batch 655/2188 (29.9%) - Loss: 97.016, box,cls,dfl: 1.304,0.704,1.024
+Epoch 18/50, Batch 873/2188 (39.9%) - Loss: 110.634, box,cls,dfl: 1.394,0.942,1.121
+Epoch 18/50, Batch 1091/2188 (49.9%) - Loss: 94.265, box,cls,dfl: 1.256,0.693,0.997
+Epoch 18/50, Batch 1309/2188 (59.8%) - Loss: 97.016, box,cls,dfl: 1.239,0.737,1.056
+Epoch 18/50, Batch 1527/2188 (69.8%) - Loss: 106.920, box,cls,dfl: 1.415,0.830,1.096
+Epoch 18/50, Batch 1745/2188 (79.8%) - Loss: 104.684, box,cls,dfl: 1.360,0.806,1.106
+Epoch 18/50, Batch 1963/2188 (89.7%) - Loss: 96.538, box,cls,dfl: 1.230,0.749,1.038
+Epoch 18/50, Batch 2181/2188 (99.7%) - Loss: 100.918, box,cls,dfl: 1.317,0.795,1.042
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.739      0.536      0.592      0.344
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 19/50, Batch 1/2188 (0.0%) - Loss: 103.018, box,cls,dfl: 1.333,0.798,1.088
+Epoch 19/50, Batch 219/2188 (10.0%) - Loss: 105.137, box,cls,dfl: 1.423,0.802,1.061
+Epoch 19/50, Batch 437/2188 (20.0%) - Loss: 108.416, box,cls,dfl: 1.516,0.816,1.057
+Epoch 19/50, Batch 655/2188 (29.9%) - Loss: 96.976, box,cls,dfl: 1.289,0.714,1.027
+Epoch 19/50, Batch 873/2188 (39.9%) - Loss: 111.949, box,cls,dfl: 1.466,0.888,1.144
+Epoch 19/50, Batch 1091/2188 (49.9%) - Loss: 99.329, box,cls,dfl: 1.325,0.740,1.039
+Epoch 19/50, Batch 1309/2188 (59.8%) - Loss: 98.645, box,cls,dfl: 1.273,0.775,1.035
+Epoch 19/50, Batch 1527/2188 (69.8%) - Loss: 102.929, box,cls,dfl: 1.361,0.804,1.052
+Epoch 19/50, Batch 1745/2188 (79.8%) - Loss: 100.946, box,cls,dfl: 1.362,0.723,1.069
+Epoch 19/50, Batch 1963/2188 (89.7%) - Loss: 96.099, box,cls,dfl: 1.245,0.763,0.995
+Epoch 19/50, Batch 2181/2188 (99.7%) - Loss: 101.700, box,cls,dfl: 1.344,0.756,1.079
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.745      0.534        0.6      0.353
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 20/50, Batch 1/2188 (0.0%) - Loss: 102.759, box,cls,dfl: 1.345,0.802,1.064
+Epoch 20/50, Batch 219/2188 (10.0%) - Loss: 111.828, box,cls,dfl: 1.506,0.825,1.164
+Epoch 20/50, Batch 437/2188 (20.0%) - Loss: 108.030, box,cls,dfl: 1.520,0.776,1.080
+Epoch 20/50, Batch 655/2188 (29.9%) - Loss: 94.483, box,cls,dfl: 1.242,0.698,1.012
+Epoch 20/50, Batch 873/2188 (39.9%) - Loss: 108.452, box,cls,dfl: 1.424,0.834,1.130
+Epoch 20/50, Batch 1091/2188 (49.9%) - Loss: 97.883, box,cls,dfl: 1.292,0.743,1.024
+Epoch 20/50, Batch 1309/2188 (59.8%) - Loss: 94.763, box,cls,dfl: 1.209,0.709,1.044
+Epoch 20/50, Batch 1527/2188 (69.8%) - Loss: 101.671, box,cls,dfl: 1.361,0.778,1.038
+Epoch 20/50, Batch 1745/2188 (79.8%) - Loss: 97.649, box,cls,dfl: 1.297,0.726,1.029
+Epoch 20/50, Batch 1963/2188 (89.7%) - Loss: 99.482, box,cls,dfl: 1.287,0.774,1.047
+Epoch 20/50, Batch 2181/2188 (99.7%) - Loss: 100.054, box,cls,dfl: 1.315,0.775,1.037
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.755      0.526      0.594      0.348
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 21/50, Batch 1/2188 (0.0%) - Loss: 102.622, box,cls,dfl: 1.342,0.789,1.075
+Epoch 21/50, Batch 219/2188 (10.0%) - Loss: 106.107, box,cls,dfl: 1.393,0.819,1.104
+Epoch 21/50, Batch 437/2188 (20.0%) - Loss: 111.697, box,cls,dfl: 1.552,0.843,1.096
+Epoch 21/50, Batch 655/2188 (29.9%) - Loss: 95.419, box,cls,dfl: 1.260,0.724,0.998
+Epoch 21/50, Batch 873/2188 (39.9%) - Loss: 107.347, box,cls,dfl: 1.359,0.921,1.075
+Epoch 21/50, Batch 1091/2188 (49.9%) - Loss: 95.140, box,cls,dfl: 1.288,0.683,1.002
+Epoch 21/50, Batch 1309/2188 (59.8%) - Loss: 95.998, box,cls,dfl: 1.259,0.708,1.033
+Epoch 21/50, Batch 1527/2188 (69.8%) - Loss: 102.115, box,cls,dfl: 1.335,0.800,1.056
+Epoch 21/50, Batch 1745/2188 (79.8%) - Loss: 98.885, box,cls,dfl: 1.311,0.728,1.051
+Epoch 21/50, Batch 1963/2188 (89.7%) - Loss: 94.272, box,cls,dfl: 1.256,0.694,0.996
+Epoch 21/50, Batch 2181/2188 (99.7%) - Loss: 101.083, box,cls,dfl: 1.351,0.728,1.079
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.646      0.552      0.591      0.345
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 22/50, Batch 1/2188 (0.0%) - Loss: 103.417, box,cls,dfl: 1.352,0.774,1.106
+Epoch 22/50, Batch 219/2188 (10.0%) - Loss: 104.297, box,cls,dfl: 1.421,0.768,1.071
+Epoch 22/50, Batch 437/2188 (20.0%) - Loss: 109.074, box,cls,dfl: 1.525,0.809,1.074
+Epoch 22/50, Batch 655/2188 (29.9%) - Loss: 97.928, box,cls,dfl: 1.300,0.727,1.033
+Epoch 22/50, Batch 873/2188 (39.9%) - Loss: 108.331, box,cls,dfl: 1.425,0.851,1.110
+Epoch 22/50, Batch 1091/2188 (49.9%) - Loss: 97.908, box,cls,dfl: 1.315,0.724,1.021
+Epoch 22/50, Batch 1309/2188 (59.8%) - Loss: 97.547, box,cls,dfl: 1.244,0.755,1.049
+Epoch 22/50, Batch 1527/2188 (69.8%) - Loss: 106.107, box,cls,dfl: 1.422,0.792,1.101
+Epoch 22/50, Batch 1745/2188 (79.8%) - Loss: 97.440, box,cls,dfl: 1.285,0.709,1.051
+Epoch 22/50, Batch 1963/2188 (89.7%) - Loss: 97.805, box,cls,dfl: 1.266,0.742,1.049
+Epoch 22/50, Batch 2181/2188 (99.7%) - Loss: 98.513, box,cls,dfl: 1.314,0.711,1.054
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.652      0.534      0.595      0.347
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 23/50, Batch 1/2188 (0.0%) - Loss: 99.614, box,cls,dfl: 1.297,0.764,1.052
+Epoch 23/50, Batch 219/2188 (10.0%) - Loss: 105.348, box,cls,dfl: 1.428,0.766,1.098
+Epoch 23/50, Batch 437/2188 (20.0%) - Loss: 113.731, box,cls,dfl: 1.593,0.825,1.136
+Epoch 23/50, Batch 655/2188 (29.9%) - Loss: 96.408, box,cls,dfl: 1.277,0.726,1.010
+Epoch 23/50, Batch 873/2188 (39.9%) - Loss: 106.712, box,cls,dfl: 1.403,0.859,1.073
+Epoch 23/50, Batch 1091/2188 (49.9%) - Loss: 96.256, box,cls,dfl: 1.284,0.702,1.022
+Epoch 23/50, Batch 1309/2188 (59.8%) - Loss: 97.784, box,cls,dfl: 1.272,0.734,1.050
+Epoch 23/50, Batch 1527/2188 (69.8%) - Loss: 100.152, box,cls,dfl: 1.343,0.753,1.034
+Epoch 23/50, Batch 1745/2188 (79.8%) - Loss: 98.124, box,cls,dfl: 1.319,0.700,1.047
+Epoch 23/50, Batch 1963/2188 (89.7%) - Loss: 97.030, box,cls,dfl: 1.256,0.737,1.040
+Epoch 23/50, Batch 2181/2188 (99.7%) - Loss: 98.498, box,cls,dfl: 1.312,0.724,1.041
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.651      0.533      0.594      0.345
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 24/50, Batch 1/2188 (0.0%) - Loss: 98.748, box,cls,dfl: 1.296,0.745,1.045
+Epoch 24/50, Batch 219/2188 (10.0%) - Loss: 103.391, box,cls,dfl: 1.384,0.735,1.112
+Epoch 24/50, Batch 437/2188 (20.0%) - Loss: 108.760, box,cls,dfl: 1.516,0.805,1.077
+Epoch 24/50, Batch 655/2188 (29.9%) - Loss: 94.598, box,cls,dfl: 1.243,0.716,0.997
+Epoch 24/50, Batch 873/2188 (39.9%) - Loss: 106.841, box,cls,dfl: 1.344,0.902,1.093
+Epoch 24/50, Batch 1091/2188 (49.9%) - Loss: 97.049, box,cls,dfl: 1.288,0.703,1.042
+Epoch 24/50, Batch 1309/2188 (59.8%) - Loss: 99.039, box,cls,dfl: 1.282,0.711,1.101
+Epoch 24/50, Batch 1527/2188 (69.8%) - Loss: 105.886, box,cls,dfl: 1.412,0.802,1.096
+Epoch 24/50, Batch 1745/2188 (79.8%) - Loss: 98.121, box,cls,dfl: 1.308,0.695,1.063
+Epoch 24/50, Batch 1963/2188 (89.7%) - Loss: 102.366, box,cls,dfl: 1.322,0.796,1.081
+Epoch 24/50, Batch 2181/2188 (99.7%) - Loss: 99.777, box,cls,dfl: 1.335,0.727,1.056
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.627       0.55      0.596      0.347
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 25/50, Batch 1/2188 (0.0%) - Loss: 98.240, box,cls,dfl: 1.290,0.734,1.046
+Epoch 25/50, Batch 219/2188 (10.0%) - Loss: 104.124, box,cls,dfl: 1.407,0.748,1.099
+Epoch 25/50, Batch 437/2188 (20.0%) - Loss: 113.423, box,cls,dfl: 1.585,0.833,1.127
+Epoch 25/50, Batch 655/2188 (29.9%) - Loss: 97.653, box,cls,dfl: 1.300,0.721,1.031
+Epoch 25/50, Batch 873/2188 (39.9%) - Loss: 105.585, box,cls,dfl: 1.388,0.826,1.086
+Epoch 25/50, Batch 1091/2188 (49.9%) - Loss: 96.787, box,cls,dfl: 1.298,0.720,1.007
+Epoch 25/50, Batch 1309/2188 (59.8%) - Loss: 97.751, box,cls,dfl: 1.274,0.720,1.060
+Epoch 25/50, Batch 1527/2188 (69.8%) - Loss: 104.157, box,cls,dfl: 1.389,0.805,1.060
+Epoch 25/50, Batch 1745/2188 (79.8%) - Loss: 100.328, box,cls,dfl: 1.318,0.754,1.063
+Epoch 25/50, Batch 1963/2188 (89.7%) - Loss: 99.408, box,cls,dfl: 1.310,0.757,1.039
+Epoch 25/50, Batch 2181/2188 (99.7%) - Loss: 104.056, box,cls,dfl: 1.376,0.754,1.121
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.645      0.539      0.595      0.347
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 26/50, Batch 1/2188 (0.0%) - Loss: 102.558, box,cls,dfl: 1.353,0.762,1.090
+Epoch 26/50, Batch 219/2188 (10.0%) - Loss: 105.673, box,cls,dfl: 1.414,0.818,1.070
+Epoch 26/50, Batch 437/2188 (20.0%) - Loss: 108.396, box,cls,dfl: 1.508,0.823,1.056
+Epoch 26/50, Batch 655/2188 (29.9%) - Loss: 97.965, box,cls,dfl: 1.309,0.712,1.041
+Epoch 26/50, Batch 873/2188 (39.9%) - Loss: 103.394, box,cls,dfl: 1.353,0.822,1.056
+Epoch 26/50, Batch 1091/2188 (49.9%) - Loss: 98.488, box,cls,dfl: 1.308,0.710,1.059
+Epoch 26/50, Batch 1309/2188 (59.8%) - Loss: 93.114, box,cls,dfl: 1.226,0.679,1.005
+Epoch 26/50, Batch 1527/2188 (69.8%) - Loss: 103.741, box,cls,dfl: 1.372,0.798,1.071
+Epoch 26/50, Batch 1745/2188 (79.8%) - Loss: 100.512, box,cls,dfl: 1.336,0.729,1.076
+Epoch 26/50, Batch 1963/2188 (89.7%) - Loss: 97.695, box,cls,dfl: 1.277,0.743,1.034
+Epoch 26/50, Batch 2181/2188 (99.7%) - Loss: 98.306, box,cls,dfl: 1.288,0.744,1.040
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.679      0.541      0.598      0.349
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 27/50, Batch 1/2188 (0.0%) - Loss: 101.825, box,cls,dfl: 1.325,0.770,1.088
+Epoch 27/50, Batch 219/2188 (10.0%) - Loss: 100.582, box,cls,dfl: 1.355,0.773,1.015
+Epoch 27/50, Batch 437/2188 (20.0%) - Loss: 109.973, box,cls,dfl: 1.544,0.805,1.088
+Epoch 27/50, Batch 655/2188 (29.9%) - Loss: 97.420, box,cls,dfl: 1.314,0.696,1.035
+Epoch 27/50, Batch 873/2188 (39.9%) - Loss: 107.415, box,cls,dfl: 1.398,0.864,1.094
+Epoch 27/50, Batch 1091/2188 (49.9%) - Loss: 96.733, box,cls,dfl: 1.289,0.706,1.028
+Epoch 27/50, Batch 1309/2188 (59.8%) - Loss: 96.166, box,cls,dfl: 1.250,0.701,1.055
+Epoch 27/50, Batch 1527/2188 (69.8%) - Loss: 99.649, box,cls,dfl: 1.344,0.733,1.038
+Epoch 27/50, Batch 1745/2188 (79.8%) - Loss: 100.733, box,cls,dfl: 1.348,0.730,1.069
+Epoch 27/50, Batch 1963/2188 (89.7%) - Loss: 99.679, box,cls,dfl: 1.297,0.769,1.049
+Epoch 27/50, Batch 2181/2188 (99.7%) - Loss: 105.632, box,cls,dfl: 1.402,0.752,1.147
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.672      0.542      0.597      0.348
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 28/50, Batch 1/2188 (0.0%) - Loss: 98.190, box,cls,dfl: 1.282,0.718,1.068
+Epoch 28/50, Batch 219/2188 (10.0%) - Loss: 100.605, box,cls,dfl: 1.361,0.750,1.033
+Epoch 28/50, Batch 437/2188 (20.0%) - Loss: 107.685, box,cls,dfl: 1.511,0.793,1.061
+Epoch 28/50, Batch 655/2188 (29.9%) - Loss: 96.081, box,cls,dfl: 1.296,0.695,1.011
+Epoch 28/50, Batch 873/2188 (39.9%) - Loss: 104.746, box,cls,dfl: 1.364,0.823,1.087
+Epoch 28/50, Batch 1091/2188 (49.9%) - Loss: 96.242, box,cls,dfl: 1.268,0.700,1.040
+Epoch 28/50, Batch 1309/2188 (59.8%) - Loss: 91.886, box,cls,dfl: 1.195,0.674,1.003
+Epoch 28/50, Batch 1527/2188 (69.8%) - Loss: 103.091, box,cls,dfl: 1.363,0.797,1.061
+Epoch 28/50, Batch 1745/2188 (79.8%) - Loss: 96.426, box,cls,dfl: 1.294,0.698,1.022
+Epoch 28/50, Batch 1963/2188 (89.7%) - Loss: 100.723, box,cls,dfl: 1.275,0.826,1.046
+Epoch 28/50, Batch 2181/2188 (99.7%) - Loss: 101.577, box,cls,dfl: 1.350,0.756,1.069
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.689      0.542        0.6       0.35
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 29/50, Batch 1/2188 (0.0%) - Loss: 101.620, box,cls,dfl: 1.331,0.762,1.082
+Epoch 29/50, Batch 219/2188 (10.0%) - Loss: 100.405, box,cls,dfl: 1.357,0.753,1.028
+Epoch 29/50, Batch 437/2188 (20.0%) - Loss: 110.582, box,cls,dfl: 1.530,0.841,1.085
+Epoch 29/50, Batch 655/2188 (29.9%) - Loss: 95.256, box,cls,dfl: 1.276,0.698,1.002
+Epoch 29/50, Batch 873/2188 (39.9%) - Loss: 104.458, box,cls,dfl: 1.352,0.846,1.067
+Epoch 29/50, Batch 1091/2188 (49.9%) - Loss: 97.330, box,cls,dfl: 1.273,0.709,1.059
+Epoch 29/50, Batch 1309/2188 (59.8%) - Loss: 93.441, box,cls,dfl: 1.217,0.681,1.022
+Epoch 29/50, Batch 1527/2188 (69.8%) - Loss: 105.688, box,cls,dfl: 1.418,0.794,1.091
+Epoch 29/50, Batch 1745/2188 (79.8%) - Loss: 98.294, box,cls,dfl: 1.306,0.717,1.048
+Epoch 29/50, Batch 1963/2188 (89.7%) - Loss: 101.972, box,cls,dfl: 1.298,0.807,1.081
+Epoch 29/50, Batch 2181/2188 (99.7%) - Loss: 101.568, box,cls,dfl: 1.362,0.734,1.078
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.697      0.545      0.599      0.349
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 30/50, Batch 1/2188 (0.0%) - Loss: 99.753, box,cls,dfl: 1.286,0.772,1.060
+Epoch 30/50, Batch 219/2188 (10.0%) - Loss: 102.565, box,cls,dfl: 1.372,0.765,1.068
+Epoch 30/50, Batch 437/2188 (20.0%) - Loss: 108.692, box,cls,dfl: 1.521,0.801,1.075
+Epoch 30/50, Batch 655/2188 (29.9%) - Loss: 98.885, box,cls,dfl: 1.330,0.713,1.047
+Epoch 30/50, Batch 873/2188 (39.9%) - Loss: 109.331, box,cls,dfl: 1.414,0.868,1.135
+Epoch 30/50, Batch 1091/2188 (49.9%) - Loss: 95.120, box,cls,dfl: 1.265,0.683,1.025
+Epoch 30/50, Batch 1309/2188 (59.8%) - Loss: 92.543, box,cls,dfl: 1.215,0.664,1.014
+Epoch 30/50, Batch 1527/2188 (69.8%) - Loss: 101.500, box,cls,dfl: 1.348,0.770,1.054
+Epoch 30/50, Batch 1745/2188 (79.8%) - Loss: 97.073, box,cls,dfl: 1.293,0.712,1.028
+Epoch 30/50, Batch 1963/2188 (89.7%) - Loss: 97.953, box,cls,dfl: 1.241,0.770,1.050
+Epoch 30/50, Batch 2181/2188 (99.7%) - Loss: 99.338, box,cls,dfl: 1.312,0.737,1.055
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.693      0.544      0.598      0.348
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 31/50, Batch 1/2188 (0.0%) - Loss: 101.583, box,cls,dfl: 1.323,0.770,1.082
+Epoch 31/50, Batch 219/2188 (10.0%) - Loss: 102.230, box,cls,dfl: 1.365,0.776,1.054
+Epoch 31/50, Batch 437/2188 (20.0%) - Loss: 110.453, box,cls,dfl: 1.550,0.791,1.110
+Epoch 31/50, Batch 655/2188 (29.9%) - Loss: 92.686, box,cls,dfl: 1.251,0.648,0.997
+Epoch 31/50, Batch 873/2188 (39.9%) - Loss: 108.825, box,cls,dfl: 1.442,0.865,1.093
+Epoch 31/50, Batch 1091/2188 (49.9%) - Loss: 94.508, box,cls,dfl: 1.260,0.670,1.023
+Epoch 31/50, Batch 1309/2188 (59.8%) - Loss: 98.720, box,cls,dfl: 1.289,0.719,1.077
+Epoch 31/50, Batch 1527/2188 (69.8%) - Loss: 104.488, box,cls,dfl: 1.406,0.781,1.078
+Epoch 31/50, Batch 1745/2188 (79.8%) - Loss: 99.824, box,cls,dfl: 1.352,0.712,1.055
+Epoch 31/50, Batch 1963/2188 (89.7%) - Loss: 93.827, box,cls,dfl: 1.242,0.681,1.010
+Epoch 31/50, Batch 2181/2188 (99.7%) - Loss: 99.107, box,cls,dfl: 1.314,0.735,1.048
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.685      0.541      0.598      0.349
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 32/50, Batch 1/2188 (0.0%) - Loss: 96.731, box,cls,dfl: 1.292,0.718,1.013
+Epoch 32/50, Batch 219/2188 (10.0%) - Loss: 98.494, box,cls,dfl: 1.340,0.701,1.037
+Epoch 32/50, Batch 437/2188 (20.0%) - Loss: 109.136, box,cls,dfl: 1.548,0.773,1.089
+Epoch 32/50, Batch 655/2188 (29.9%) - Loss: 95.002, box,cls,dfl: 1.270,0.672,1.026
+Epoch 32/50, Batch 873/2188 (39.9%) - Loss: 105.373, box,cls,dfl: 1.403,0.806,1.084
+Epoch 32/50, Batch 1091/2188 (49.9%) - Loss: 96.151, box,cls,dfl: 1.299,0.677,1.029
+Epoch 32/50, Batch 1309/2188 (59.8%) - Loss: 99.347, box,cls,dfl: 1.309,0.734,1.062
+Epoch 32/50, Batch 1527/2188 (69.8%) - Loss: 97.151, box,cls,dfl: 1.309,0.721,1.006
+Epoch 32/50, Batch 1745/2188 (79.8%) - Loss: 95.365, box,cls,dfl: 1.262,0.697,1.021
+Epoch 32/50, Batch 1963/2188 (89.7%) - Loss: 96.647, box,cls,dfl: 1.262,0.731,1.028
+Epoch 32/50, Batch 2181/2188 (99.7%) - Loss: 100.699, box,cls,dfl: 1.356,0.721,1.069
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.679      0.541      0.598       0.35
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 33/50, Batch 1/2188 (0.0%) - Loss: 97.571, box,cls,dfl: 1.291,0.707,1.051
+Epoch 33/50, Batch 219/2188 (10.0%) - Loss: 105.084, box,cls,dfl: 1.430,0.778,1.076
+Epoch 33/50, Batch 437/2188 (20.0%) - Loss: 107.865, box,cls,dfl: 1.519,0.780,1.072
+Epoch 33/50, Batch 655/2188 (29.9%) - Loss: 96.489, box,cls,dfl: 1.294,0.721,1.000
+Epoch 33/50, Batch 873/2188 (39.9%) - Loss: 109.580, box,cls,dfl: 1.459,0.854,1.111
+Epoch 33/50, Batch 1091/2188 (49.9%) - Loss: 96.227, box,cls,dfl: 1.290,0.688,1.029
+Epoch 33/50, Batch 1309/2188 (59.8%) - Loss: 93.545, box,cls,dfl: 1.223,0.696,1.004
+Epoch 33/50, Batch 1527/2188 (69.8%) - Loss: 101.606, box,cls,dfl: 1.367,0.750,1.058
+Epoch 33/50, Batch 1745/2188 (79.8%) - Loss: 98.721, box,cls,dfl: 1.325,0.707,1.053
+Epoch 33/50, Batch 1963/2188 (89.7%) - Loss: 98.119, box,cls,dfl: 1.271,0.761,1.034
+Epoch 33/50, Batch 2181/2188 (99.7%) - Loss: 98.452, box,cls,dfl: 1.312,0.715,1.049
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578       0.68       0.54      0.596      0.348
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 34/50, Batch 1/2188 (0.0%) - Loss: 100.031, box,cls,dfl: 1.317,0.738,1.071
+Epoch 34/50, Batch 219/2188 (10.0%) - Loss: 101.909, box,cls,dfl: 1.380,0.742,1.063
+Epoch 34/50, Batch 437/2188 (20.0%) - Loss: 106.417, box,cls,dfl: 1.509,0.783,1.033
+Epoch 34/50, Batch 655/2188 (29.9%) - Loss: 94.262, box,cls,dfl: 1.253,0.680,1.013
+Epoch 34/50, Batch 873/2188 (39.9%) - Loss: 103.917, box,cls,dfl: 1.360,0.826,1.062
+Epoch 34/50, Batch 1091/2188 (49.9%) - Loss: 97.578, box,cls,dfl: 1.288,0.721,1.040
+Epoch 34/50, Batch 1309/2188 (59.8%) - Loss: 93.651, box,cls,dfl: 1.228,0.675,1.024
+Epoch 34/50, Batch 1527/2188 (69.8%) - Loss: 97.607, box,cls,dfl: 1.308,0.716,1.026
+Epoch 34/50, Batch 1745/2188 (79.8%) - Loss: 100.146, box,cls,dfl: 1.335,0.733,1.062
+Epoch 34/50, Batch 1963/2188 (89.7%) - Loss: 98.024, box,cls,dfl: 1.278,0.741,1.044
+Epoch 34/50, Batch 2181/2188 (99.7%) - Loss: 94.543, box,cls,dfl: 1.250,0.685,1.020
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.679      0.541      0.596      0.348
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 35/50, Batch 1/2188 (0.0%) - Loss: 98.970, box,cls,dfl: 1.293,0.735,1.064
+Epoch 35/50, Batch 219/2188 (10.0%) - Loss: 100.560, box,cls,dfl: 1.357,0.732,1.054
+Epoch 35/50, Batch 437/2188 (20.0%) - Loss: 107.923, box,cls,dfl: 1.501,0.790,1.082
+Epoch 35/50, Batch 655/2188 (29.9%) - Loss: 94.897, box,cls,dfl: 1.277,0.674,1.015
+Epoch 35/50, Batch 873/2188 (39.9%) - Loss: 107.472, box,cls,dfl: 1.407,0.859,1.092
+Epoch 35/50, Batch 1091/2188 (49.9%) - Loss: 96.901, box,cls,dfl: 1.280,0.687,1.061
+Epoch 35/50, Batch 1309/2188 (59.8%) - Loss: 94.673, box,cls,dfl: 1.259,0.671,1.028
+Epoch 35/50, Batch 1527/2188 (69.8%) - Loss: 105.785, box,cls,dfl: 1.393,0.822,1.091
+Epoch 35/50, Batch 1745/2188 (79.8%) - Loss: 98.600, box,cls,dfl: 1.337,0.701,1.042
+Epoch 35/50, Batch 1963/2188 (89.7%) - Loss: 96.211, box,cls,dfl: 1.276,0.705,1.025
+Epoch 35/50, Batch 2181/2188 (99.7%) - Loss: 102.216, box,cls,dfl: 1.366,0.758,1.070
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.677      0.547      0.596      0.347
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 36/50, Batch 1/2188 (0.0%) - Loss: 102.031, box,cls,dfl: 1.330,0.767,1.091
+Epoch 36/50, Batch 219/2188 (10.0%) - Loss: 98.398, box,cls,dfl: 1.303,0.742,1.030
+Epoch 36/50, Batch 437/2188 (20.0%) - Loss: 110.115, box,cls,dfl: 1.563,0.777,1.101
+Epoch 36/50, Batch 655/2188 (29.9%) - Loss: 92.789, box,cls,dfl: 1.241,0.664,0.994
+Epoch 36/50, Batch 873/2188 (39.9%) - Loss: 106.595, box,cls,dfl: 1.405,0.849,1.077
+Epoch 36/50, Batch 1091/2188 (49.9%) - Loss: 93.952, box,cls,dfl: 1.265,0.659,1.012
+Epoch 36/50, Batch 1309/2188 (59.8%) - Loss: 94.026, box,cls,dfl: 1.206,0.695,1.037
+Epoch 36/50, Batch 1527/2188 (69.8%) - Loss: 102.247, box,cls,dfl: 1.379,0.736,1.080
+Epoch 36/50, Batch 1745/2188 (79.8%) - Loss: 96.225, box,cls,dfl: 1.300,0.656,1.051
+Epoch 36/50, Batch 1963/2188 (89.7%) - Loss: 95.577, box,cls,dfl: 1.236,0.723,1.028
+Epoch 36/50, Batch 2181/2188 (99.7%) - Loss: 101.308, box,cls,dfl: 1.356,0.737,1.072
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.678      0.546      0.596      0.347
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 37/50, Batch 1/2188 (0.0%) - Loss: 99.475, box,cls,dfl: 1.306,0.737,1.066
+Epoch 37/50, Batch 219/2188 (10.0%) - Loss: 106.254, box,cls,dfl: 1.430,0.781,1.110
+Epoch 37/50, Batch 437/2188 (20.0%) - Loss: 111.688, box,cls,dfl: 1.576,0.819,1.096
+Epoch 37/50, Batch 655/2188 (29.9%) - Loss: 97.186, box,cls,dfl: 1.308,0.699,1.030
+Epoch 37/50, Batch 873/2188 (39.9%) - Loss: 108.529, box,cls,dfl: 1.405,0.878,1.109
+Epoch 37/50, Batch 1091/2188 (49.9%) - Loss: 95.000, box,cls,dfl: 1.275,0.670,1.023
+Epoch 37/50, Batch 1309/2188 (59.8%) - Loss: 93.763, box,cls,dfl: 1.226,0.696,1.008
+Epoch 37/50, Batch 1527/2188 (69.8%) - Loss: 100.511, box,cls,dfl: 1.343,0.764,1.034
+Epoch 37/50, Batch 1745/2188 (79.8%) - Loss: 98.242, box,cls,dfl: 1.319,0.708,1.043
+Epoch 37/50, Batch 1963/2188 (89.7%) - Loss: 93.210, box,cls,dfl: 1.220,0.731,0.962
+Epoch 37/50, Batch 2181/2188 (99.7%) - Loss: 98.818, box,cls,dfl: 1.328,0.719,1.041
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.679      0.544      0.596      0.347
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 38/50, Batch 1/2188 (0.0%) - Loss: 96.701, box,cls,dfl: 1.262,0.723,1.038
+Epoch 38/50, Batch 219/2188 (10.0%) - Loss: 102.511, box,cls,dfl: 1.393,0.764,1.046
+Epoch 38/50, Batch 437/2188 (20.0%) - Loss: 111.100, box,cls,dfl: 1.557,0.801,1.114
+Epoch 38/50, Batch 655/2188 (29.9%) - Loss: 92.368, box,cls,dfl: 1.227,0.657,1.002
+Epoch 38/50, Batch 873/2188 (39.9%) - Loss: 104.044, box,cls,dfl: 1.354,0.845,1.053
+Epoch 38/50, Batch 1091/2188 (49.9%) - Loss: 95.937, box,cls,dfl: 1.268,0.694,1.036
+Epoch 38/50, Batch 1309/2188 (59.8%) - Loss: 93.984, box,cls,dfl: 1.234,0.669,1.034
+Epoch 38/50, Batch 1527/2188 (69.8%) - Loss: 101.862, box,cls,dfl: 1.383,0.730,1.070
+Epoch 38/50, Batch 1745/2188 (79.8%) - Loss: 96.496, box,cls,dfl: 1.291,0.676,1.049
+Epoch 38/50, Batch 1963/2188 (89.7%) - Loss: 94.102, box,cls,dfl: 1.222,0.715,1.003
+Epoch 38/50, Batch 2181/2188 (99.7%) - Loss: 96.656, box,cls,dfl: 1.297,0.698,1.026
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.676      0.542      0.596      0.346
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 39/50, Batch 1/2188 (0.0%) - Loss: 101.731, box,cls,dfl: 1.363,0.742,1.074
+Epoch 39/50, Batch 219/2188 (10.0%) - Loss: 100.327, box,cls,dfl: 1.371,0.720,1.044
+Epoch 39/50, Batch 437/2188 (20.0%) - Loss: 108.801, box,cls,dfl: 1.515,0.817,1.068
+Epoch 39/50, Batch 655/2188 (29.9%) - Loss: 94.578, box,cls,dfl: 1.263,0.692,1.001
+Epoch 39/50, Batch 873/2188 (39.9%) - Loss: 103.756, box,cls,dfl: 1.341,0.813,1.088
+Epoch 39/50, Batch 1091/2188 (49.9%) - Loss: 91.088, box,cls,dfl: 1.228,0.647,0.972
+Epoch 39/50, Batch 1309/2188 (59.8%) - Loss: 95.816, box,cls,dfl: 1.264,0.697,1.032
+Epoch 39/50, Batch 1527/2188 (69.8%) - Loss: 100.039, box,cls,dfl: 1.340,0.737,1.049
+Epoch 39/50, Batch 1745/2188 (79.8%) - Loss: 92.912, box,cls,dfl: 1.244,0.660,1.000
+Epoch 39/50, Batch 1963/2188 (89.7%) - Loss: 91.822, box,cls,dfl: 1.229,0.647,0.994
+Epoch 39/50, Batch 2181/2188 (99.7%) - Loss: 95.144, box,cls,dfl: 1.263,0.690,1.020
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.686      0.543      0.595      0.346
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 40/50, Batch 1/2188 (0.0%) - Loss: 98.046, box,cls,dfl: 1.309,0.727,1.028
+Epoch 40/50, Batch 219/2188 (10.0%) - Loss: 102.251, box,cls,dfl: 1.375,0.748,1.073
+Epoch 40/50, Batch 437/2188 (20.0%) - Loss: 108.290, box,cls,dfl: 1.517,0.785,1.082
+Epoch 40/50, Batch 655/2188 (29.9%) - Loss: 94.391, box,cls,dfl: 1.252,0.686,1.012
+Epoch 40/50, Batch 873/2188 (39.9%) - Loss: 104.810, box,cls,dfl: 1.376,0.833,1.066
+Epoch 40/50, Batch 1091/2188 (49.9%) - Loss: 95.996, box,cls,dfl: 1.278,0.678,1.044
+Epoch 40/50, Batch 1309/2188 (59.8%) - Loss: 95.156, box,cls,dfl: 1.256,0.676,1.042
+Epoch 40/50, Batch 1527/2188 (69.8%) - Loss: 101.911, box,cls,dfl: 1.389,0.731,1.065
+Epoch 40/50, Batch 1745/2188 (79.8%) - Loss: 98.330, box,cls,dfl: 1.310,0.705,1.057
+Epoch 40/50, Batch 1963/2188 (89.7%) - Loss: 93.292, box,cls,dfl: 1.195,0.703,1.017
+Epoch 40/50, Batch 2181/2188 (99.7%) - Loss: 98.281, box,cls,dfl: 1.311,0.706,1.054
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.688      0.542      0.594      0.345
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 41/50, Batch 1/2188 (0.0%) - Loss: 96.295, box,cls,dfl: 1.282,0.682,1.046
+Epoch 41/50, Batch 219/2188 (10.0%) - Loss: 102.757, box,cls,dfl: 1.395,0.743,1.074
+Epoch 41/50, Batch 437/2188 (20.0%) - Loss: 107.941, box,cls,dfl: 1.517,0.782,1.074
+Epoch 41/50, Batch 655/2188 (29.9%) - Loss: 94.940, box,cls,dfl: 1.273,0.678,1.016
+Epoch 41/50, Batch 873/2188 (39.9%) - Loss: 107.462, box,cls,dfl: 1.412,0.844,1.103
+Epoch 41/50, Batch 1091/2188 (49.9%) - Loss: 96.462, box,cls,dfl: 1.292,0.694,1.028
+Epoch 41/50, Batch 1309/2188 (59.8%) - Loss: 96.649, box,cls,dfl: 1.265,0.699,1.056
+Epoch 41/50, Batch 1527/2188 (69.8%) - Loss: 100.067, box,cls,dfl: 1.347,0.723,1.057
+Epoch 41/50, Batch 1745/2188 (79.8%) - Loss: 97.906, box,cls,dfl: 1.323,0.682,1.054
+Epoch 41/50, Batch 1963/2188 (89.7%) - Loss: 95.317, box,cls,dfl: 1.215,0.737,1.027
+Epoch 41/50, Batch 2181/2188 (99.7%) - Loss: 96.358, box,cls,dfl: 1.290,0.688,1.033
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.688       0.54      0.594      0.345
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 42/50, Batch 1/2188 (0.0%) - Loss: 101.168, box,cls,dfl: 1.323,0.730,1.108
+Epoch 42/50, Batch 219/2188 (10.0%) - Loss: 101.102, box,cls,dfl: 1.381,0.738,1.040
+Epoch 42/50, Batch 437/2188 (20.0%) - Loss: 112.483, box,cls,dfl: 1.573,0.824,1.117
+Epoch 42/50, Batch 655/2188 (29.9%) - Loss: 93.354, box,cls,dfl: 1.247,0.655,1.015
+Epoch 42/50, Batch 873/2188 (39.9%) - Loss: 101.492, box,cls,dfl: 1.356,0.751,1.064
+Epoch 42/50, Batch 1091/2188 (49.9%) - Loss: 95.604, box,cls,dfl: 1.272,0.687,1.029
+Epoch 42/50, Batch 1309/2188 (59.8%) - Loss: 97.375, box,cls,dfl: 1.283,0.681,1.079
+Epoch 42/50, Batch 1527/2188 (69.8%) - Loss: 101.097, box,cls,dfl: 1.365,0.734,1.060
+Epoch 42/50, Batch 1745/2188 (79.8%) - Loss: 99.721, box,cls,dfl: 1.321,0.747,1.048
+Epoch 42/50, Batch 1963/2188 (89.7%) - Loss: 95.447, box,cls,dfl: 1.242,0.701,1.040
+Epoch 42/50, Batch 2181/2188 (99.7%) - Loss: 95.857, box,cls,dfl: 1.286,0.664,1.045
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578       0.69      0.539      0.594      0.345
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 43/50, Batch 1/2188 (0.0%) - Loss: 98.371, box,cls,dfl: 1.299,0.707,1.068
+Epoch 43/50, Batch 219/2188 (10.0%) - Loss: 102.695, box,cls,dfl: 1.369,0.784,1.056
+Epoch 43/50, Batch 437/2188 (20.0%) - Loss: 106.280, box,cls,dfl: 1.505,0.741,1.076
+Epoch 43/50, Batch 655/2188 (29.9%) - Loss: 95.133, box,cls,dfl: 1.266,0.686,1.021
+Epoch 43/50, Batch 873/2188 (39.9%) - Loss: 103.541, box,cls,dfl: 1.385,0.759,1.091
+Epoch 43/50, Batch 1091/2188 (49.9%) - Loss: 94.147, box,cls,dfl: 1.257,0.681,1.005
+Epoch 43/50, Batch 1309/2188 (59.8%) - Loss: 95.173, box,cls,dfl: 1.246,0.689,1.040
+Epoch 43/50, Batch 1527/2188 (69.8%) - Loss: 101.632, box,cls,dfl: 1.345,0.754,1.077
+Epoch 43/50, Batch 1745/2188 (79.8%) - Loss: 97.911, box,cls,dfl: 1.313,0.716,1.031
+Epoch 43/50, Batch 1963/2188 (89.7%) - Loss: 93.889, box,cls,dfl: 1.228,0.676,1.030
+Epoch 43/50, Batch 2181/2188 (99.7%) - Loss: 96.989, box,cls,dfl: 1.267,0.729,1.034
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.675      0.542      0.593      0.345
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 44/50, Batch 1/2188 (0.0%) - Loss: 98.683, box,cls,dfl: 1.323,0.704,1.056
+Epoch 44/50, Batch 219/2188 (10.0%) - Loss: 98.400, box,cls,dfl: 1.312,0.721,1.042
+Epoch 44/50, Batch 437/2188 (20.0%) - Loss: 108.111, box,cls,dfl: 1.519,0.785,1.075
+Epoch 44/50, Batch 655/2188 (29.9%) - Loss: 93.836, box,cls,dfl: 1.260,0.675,0.997
+Epoch 44/50, Batch 873/2188 (39.9%) - Loss: 102.551, box,cls,dfl: 1.337,0.782,1.085
+Epoch 44/50, Batch 1091/2188 (49.9%) - Loss: 91.843, box,cls,dfl: 1.248,0.644,0.978
+Epoch 44/50, Batch 1309/2188 (59.8%) - Loss: 96.678, box,cls,dfl: 1.265,0.715,1.040
+Epoch 44/50, Batch 1527/2188 (69.8%) - Loss: 95.996, box,cls,dfl: 1.304,0.699,0.997
+Epoch 44/50, Batch 1745/2188 (79.8%) - Loss: 96.898, box,cls,dfl: 1.304,0.675,1.049
+Epoch 44/50, Batch 1963/2188 (89.7%) - Loss: 92.673, box,cls,dfl: 1.211,0.687,0.997
+Epoch 44/50, Batch 2181/2188 (99.7%) - Loss: 96.409, box,cls,dfl: 1.284,0.701,1.028
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.672      0.543      0.593      0.344
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 45/50, Batch 1/2188 (0.0%) - Loss: 100.248, box,cls,dfl: 1.320,0.735,1.078
+Epoch 45/50, Batch 219/2188 (10.0%) - Loss: 101.189, box,cls,dfl: 1.375,0.712,1.075
+Epoch 45/50, Batch 437/2188 (20.0%) - Loss: 109.424, box,cls,dfl: 1.554,0.763,1.102
+Epoch 45/50, Batch 655/2188 (29.9%) - Loss: 97.867, box,cls,dfl: 1.288,0.714,1.056
+Epoch 45/50, Batch 873/2188 (39.9%) - Loss: 104.687, box,cls,dfl: 1.385,0.788,1.098
+Epoch 45/50, Batch 1091/2188 (49.9%) - Loss: 94.842, box,cls,dfl: 1.279,0.669,1.016
+Epoch 45/50, Batch 1309/2188 (59.8%) - Loss: 91.485, box,cls,dfl: 1.201,0.641,1.017
+Epoch 45/50, Batch 1527/2188 (69.8%) - Loss: 101.146, box,cls,dfl: 1.367,0.715,1.079
+Epoch 45/50, Batch 1745/2188 (79.8%) - Loss: 98.902, box,cls,dfl: 1.290,0.734,1.067
+Epoch 45/50, Batch 1963/2188 (89.7%) - Loss: 95.502, box,cls,dfl: 1.247,0.704,1.034
+Epoch 45/50, Batch 2181/2188 (99.7%) - Loss: 94.394, box,cls,dfl: 1.251,0.676,1.023
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.684      0.541      0.592      0.344
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 46/50, Batch 1/2188 (0.0%) - Loss: 95.357, box,cls,dfl: 1.258,0.678,1.044
+Epoch 46/50, Batch 219/2188 (10.0%) - Loss: 101.709, box,cls,dfl: 1.369,0.749,1.061
+Epoch 46/50, Batch 437/2188 (20.0%) - Loss: 105.940, box,cls,dfl: 1.494,0.748,1.069
+Epoch 46/50, Batch 655/2188 (29.9%) - Loss: 93.117, box,cls,dfl: 1.246,0.666,0.998
+Epoch 46/50, Batch 873/2188 (39.9%) - Loss: 103.365, box,cls,dfl: 1.375,0.770,1.085
+Epoch 46/50, Batch 1091/2188 (49.9%) - Loss: 94.671, box,cls,dfl: 1.274,0.664,1.020
+Epoch 46/50, Batch 1309/2188 (59.8%) - Loss: 95.049, box,cls,dfl: 1.246,0.678,1.046
+Epoch 46/50, Batch 1527/2188 (69.8%) - Loss: 101.742, box,cls,dfl: 1.384,0.726,1.070
+Epoch 46/50, Batch 1745/2188 (79.8%) - Loss: 94.942, box,cls,dfl: 1.262,0.657,1.048
+Epoch 46/50, Batch 1963/2188 (89.7%) - Loss: 96.192, box,cls,dfl: 1.243,0.725,1.038
+Epoch 46/50, Batch 2181/2188 (99.7%) - Loss: 95.527, box,cls,dfl: 1.260,0.666,1.060
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.684      0.541      0.592      0.343
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 47/50, Batch 1/2188 (0.0%) - Loss: 97.746, box,cls,dfl: 1.295,0.713,1.047
+Epoch 47/50, Batch 219/2188 (10.0%) - Loss: 101.836, box,cls,dfl: 1.357,0.761,1.065
+Epoch 47/50, Batch 437/2188 (20.0%) - Loss: 110.160, box,cls,dfl: 1.554,0.812,1.076
+Epoch 47/50, Batch 655/2188 (29.9%) - Loss: 92.676, box,cls,dfl: 1.235,0.652,1.010
+Epoch 47/50, Batch 873/2188 (39.9%) - Loss: 103.466, box,cls,dfl: 1.385,0.786,1.063
+Epoch 47/50, Batch 1091/2188 (49.9%) - Loss: 95.034, box,cls,dfl: 1.285,0.677,1.007
+Epoch 47/50, Batch 1309/2188 (59.8%) - Loss: 94.832, box,cls,dfl: 1.243,0.684,1.036
+Epoch 47/50, Batch 1527/2188 (69.8%) - Loss: 100.952, box,cls,dfl: 1.369,0.737,1.048
+Epoch 47/50, Batch 1745/2188 (79.8%) - Loss: 100.230, box,cls,dfl: 1.345,0.727,1.060
+Epoch 47/50, Batch 1963/2188 (89.7%) - Loss: 90.695, box,cls,dfl: 1.186,0.649,0.999
+Epoch 47/50, Batch 2181/2188 (99.7%) - Loss: 99.364, box,cls,dfl: 1.303,0.720,1.082
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.685       0.54      0.592      0.343
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 48/50, Batch 1/2188 (0.0%) - Loss: 95.950, box,cls,dfl: 1.285,0.685,1.028
+Epoch 48/50, Batch 219/2188 (10.0%) - Loss: 102.086, box,cls,dfl: 1.370,0.750,1.070
+Epoch 48/50, Batch 437/2188 (20.0%) - Loss: 105.349, box,cls,dfl: 1.490,0.718,1.084
+Epoch 48/50, Batch 655/2188 (29.9%) - Loss: 91.744, box,cls,dfl: 1.246,0.629,0.992
+Epoch 48/50, Batch 873/2188 (39.9%) - Loss: 103.518, box,cls,dfl: 1.364,0.792,1.079
+Epoch 48/50, Batch 1091/2188 (49.9%) - Loss: 94.338, box,cls,dfl: 1.260,0.672,1.016
+Epoch 48/50, Batch 1309/2188 (59.8%) - Loss: 95.541, box,cls,dfl: 1.265,0.678,1.043
+Epoch 48/50, Batch 1527/2188 (69.8%) - Loss: 100.421, box,cls,dfl: 1.363,0.729,1.046
+Epoch 48/50, Batch 1745/2188 (79.8%) - Loss: 96.952, box,cls,dfl: 1.279,0.709,1.042
+Epoch 48/50, Batch 1963/2188 (89.7%) - Loss: 94.734, box,cls,dfl: 1.218,0.699,1.044
+Epoch 48/50, Batch 2181/2188 (99.7%) - Loss: 99.768, box,cls,dfl: 1.312,0.707,1.099
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.683      0.541      0.591      0.343
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 49/50, Batch 1/2188 (0.0%) - Loss: 98.035, box,cls,dfl: 1.294,0.709,1.060
+Epoch 49/50, Batch 219/2188 (10.0%) - Loss: 100.307, box,cls,dfl: 1.358,0.732,1.045
+Epoch 49/50, Batch 437/2188 (20.0%) - Loss: 105.833, box,cls,dfl: 1.504,0.729,1.074
+Epoch 49/50, Batch 655/2188 (29.9%) - Loss: 93.360, box,cls,dfl: 1.278,0.645,0.995
+Epoch 49/50, Batch 873/2188 (39.9%) - Loss: 104.762, box,cls,dfl: 1.383,0.802,1.089
+Epoch 49/50, Batch 1091/2188 (49.9%) - Loss: 91.975, box,cls,dfl: 1.228,0.663,0.983
+Epoch 49/50, Batch 1309/2188 (59.8%) - Loss: 92.668, box,cls,dfl: 1.207,0.687,1.002
+Epoch 49/50, Batch 1527/2188 (69.8%) - Loss: 103.656, box,cls,dfl: 1.400,0.739,1.100
+Epoch 49/50, Batch 1745/2188 (79.8%) - Loss: 93.157, box,cls,dfl: 1.250,0.665,0.996
+Epoch 49/50, Batch 1963/2188 (89.7%) - Loss: 96.499, box,cls,dfl: 1.243,0.740,1.033
+Epoch 49/50, Batch 2181/2188 (99.7%) - Loss: 95.375, box,cls,dfl: 1.259,0.669,1.053
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.683      0.542      0.591      0.342
+
+           Epoch         GPU_mem        box_loss        cls_loss        dfl_loss       Instances            Size
+Epoch 50/50, Batch 1/2188 (0.0%) - Loss: 97.152, box,cls,dfl: 1.282,0.693,1.061
+Epoch 50/50, Batch 219/2188 (10.0%) - Loss: 97.095, box,cls,dfl: 1.313,0.692,1.029
+Epoch 50/50, Batch 437/2188 (20.0%) - Loss: 112.422, box,cls,dfl: 1.591,0.787,1.135
+Epoch 50/50, Batch 655/2188 (29.9%) - Loss: 93.509, box,cls,dfl: 1.261,0.656,1.005
+Epoch 50/50, Batch 873/2188 (39.9%) - Loss: 102.711, box,cls,dfl: 1.355,0.788,1.067
+Epoch 50/50, Batch 1091/2188 (49.9%) - Loss: 94.339, box,cls,dfl: 1.266,0.679,1.003
+Epoch 50/50, Batch 1309/2188 (59.8%) - Loss: 92.951, box,cls,dfl: 1.229,0.661,1.014
+Epoch 50/50, Batch 1527/2188 (69.8%) - Loss: 98.493, box,cls,dfl: 1.327,0.711,1.041
+Epoch 50/50, Batch 1745/2188 (79.8%) - Loss: 95.310, box,cls,dfl: 1.276,0.675,1.028
+Epoch 50/50, Batch 1963/2188 (89.7%) - Loss: 95.535, box,cls,dfl: 1.247,0.709,1.030
+Epoch 50/50, Batch 2181/2188 (99.7%) - Loss: 97.601, box,cls,dfl: 1.279,0.744,1.027
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.682      0.543      0.591      0.342
+
+50 epochs completed in 5.318 hours.
+Optimizer stripped from runs/bdd100k/detect/baseline-yolov12s/train/weights/last.pt, 18.7MB
+Optimizer stripped from runs/bdd100k/detect/baseline-yolov12s/train/weights/best.pt, 18.7MB
+
+Validating runs/bdd100k/detect/baseline-yolov12s/train/weights/best.pt...
+Ultralytics 8.3.63 🚀 Python-3.11.13 torch-2.2.2+cu121 CUDA:0 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
+                                                       CUDA:1 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
+YOLOv12s summary (fused): 376 layers, 9,078,078 parameters, 0 gradients, 19.3 GFLOPs
+
+[*] FLOPs calculated at resolution: 736x1312
+| module                 | #parameters or shape   | #flops   |
+|:-----------------------|:-----------------------|:---------|
+| base_model.model.model | 9.078M                 | 22.731G  |
+| 0.conv                 | 0.896K                 | 0.209G   |
+| 0.conv.weight          | (32, 3, 3, 3)          |          |
+| 0.conv.bias            | (32,)                  |          |
+| 1.conv                 | 9.28K                  | 0.556G   |
+| 1.conv.weight          | (64, 16, 3, 3)         |          |
+| 1.conv.bias            | (64,)                  |          |
+| 2                      | 25.84K                 | 1.545G   |
+| 2.cv1.conv             | 4.16K                  | 0.247G   |
+| 2.cv1.conv.weight      | (64, 64, 1, 1)         |          |
+| 2.cv1.conv.bias        | (64,)                  |          |
+| 2.cv2.conv             | 12.416K                | 0.742G   |
+| 2.cv2.conv.weight      | (128, 96, 1, 1)        |          |
+| 2.cv2.conv.bias        | (128,)                 |          |
+| 2.m.0                  | 9.264K                 | 0.556G   |
+| 2.m.0.cv1.conv         | 4.624K                 | 0.278G   |
+| 2.m.0.cv2.conv         | 4.64K                  | 0.278G   |
+| 3.conv                 | 36.992K                | 0.556G   |
+| 3.conv.weight          | (128, 32, 3, 3)        |          |
+| 3.conv.bias            | (128,)                 |          |
+| 4                      | 0.103M                 | 1.545G   |
+| 4.cv1.conv             | 16.512K                | 0.247G   |
+| 4.cv1.conv.weight      | (128, 128, 1, 1)       |          |
+| 4.cv1.conv.bias        | (128,)                 |          |
+| 4.cv2.conv             | 49.408K                | 0.742G   |
+| 4.cv2.conv.weight      | (256, 192, 1, 1)       |          |
+| 4.cv2.conv.bias        | (256,)                 |          |
+| 4.m.0                  | 36.96K                 | 0.556G   |
+| 4.m.0.cv1.conv         | 18.464K                | 0.278G   |
+| 4.m.0.cv2.conv         | 18.496K                | 0.278G   |
+| 5.conv                 | 0.59M                  | 2.225G   |
+| 5.conv.weight          | (256, 256, 3, 3)       |          |
+| 5.conv.bias            | (256,)                 |          |
+| 6                      | 0.673M                 | 2.52G    |
+| 6.cv1.conv             | 32.896K                | 0.124G   |
+| 6.cv1.conv.weight      | (128, 256, 1, 1)       |          |
+| 6.cv1.conv.bias        | (128,)                 |          |
+| 6.cv2.conv             | 98.56K                 | 0.371G   |
+| 6.cv2.conv.weight      | (256, 384, 1, 1)       |          |
+| 6.cv2.conv.bias        | (256,)                 |          |
+| 6.m                    | 0.541M                 | 2.026G   |
+| 6.m.0                  | 0.271M                 | 1.013G   |
+| 6.m.1                  | 0.271M                 | 1.013G   |
+| 7.conv                 | 1.18M                  | 1.112G   |
+| 7.conv.weight          | (512, 256, 3, 3)       |          |
+| 7.conv.bias            | (512,)                 |          |
+| 8                      | 2.656M                 | 2.496G   |
+| 8.cv1.conv             | 0.131M                 | 0.124G   |
+| 8.cv1.conv.weight      | (256, 512, 1, 1)       |          |
+| 8.cv1.conv.bias        | (256,)                 |          |
+| 8.cv2.conv             | 0.394M                 | 0.371G   |
+| 8.cv2.conv.weight      | (512, 768, 1, 1)       |          |
+| 8.cv2.conv.bias        | (512,)                 |          |
+| 8.m                    | 2.131M                 | 2.002G   |
+| 8.m.0                  | 1.065M                 | 1.001G   |
+| 8.m.1                  | 1.065M                 | 1.001G   |
+| 11                     | 0.345M                 | 1.298G   |
+| 11.cv1.conv            | 98.432K                | 0.371G   |
+| 11.cv1.conv.weight     | (128, 768, 1, 1)       |          |
+| 11.cv1.conv.bias       | (128,)                 |          |
+| 11.cv2.conv            | 65.792K                | 0.247G   |
+| 11.cv2.conv.weight     | (256, 256, 1, 1)       |          |
+| 11.cv2.conv.bias       | (256,)                 |          |
+| 11.m.0                 | 0.181M                 | 0.68G    |
+| 11.m.0.cv1.conv        | 8.256K                 | 30.9M    |
+| 11.m.0.cv2.conv        | 8.256K                 | 30.9M    |
+| 11.m.0.cv3.conv        | 16.512K                | 61.8M    |
+| 11.m.0.m               | 0.148M                 | 0.556G   |
+| 14                     | 94.656K                | 1.421G   |
+| 14.cv1.conv            | 32.832K                | 0.494G   |
+| 14.cv1.conv.weight     | (64, 512, 1, 1)        |          |
+| 14.cv1.conv.bias       | (64,)                  |          |
+| 14.cv2.conv            | 16.512K                | 0.247G   |
+| 14.cv2.conv.weight     | (128, 128, 1, 1)       |          |
+| 14.cv2.conv.bias       | (128,)                 |          |
+| 14.m.0                 | 45.312K                | 0.68G    |
+| 14.m.0.cv1.conv        | 2.08K                  | 30.9M    |
+| 14.m.0.cv2.conv        | 2.08K                  | 30.9M    |
+| 14.m.0.cv3.conv        | 4.16K                  | 61.8M    |
+| 14.m.0.m               | 36.992K                | 0.556G   |
+| 15.conv                | 0.148M                 | 0.556G   |
+| 15.conv.weight         | (128, 128, 3, 3)       |          |
+| 15.conv.bias           | (128,)                 |          |
+| 17                     | 0.296M                 | 1.112G   |
+| 17.cv1.conv            | 49.28K                 | 0.185G   |
+| 17.cv1.conv.weight     | (128, 384, 1, 1)       |          |
+| 17.cv1.conv.bias       | (128,)                 |          |
+| 17.cv2.conv            | 65.792K                | 0.247G   |
+| 17.cv2.conv.weight     | (256, 256, 1, 1)       |          |
+| 17.cv2.conv.bias       | (256,)                 |          |
+| 17.m.0                 | 0.181M                 | 0.68G    |
+| 17.m.0.cv1.conv        | 8.256K                 | 30.9M    |
+| 17.m.0.cv2.conv        | 8.256K                 | 30.9M    |
+| 17.m.0.cv3.conv        | 16.512K                | 61.8M    |
+| 17.m.0.m               | 0.148M                 | 0.556G   |
+| 18.conv                | 0.59M                  | 0.556G   |
+| 18.conv.weight         | (256, 256, 3, 3)       |          |
+| 18.conv.bias           | (256,)                 |          |
+| 20                     | 1.509M                 | 1.421G   |
+| 20.cv1.conv            | 0.394M                 | 0.371G   |
+| 20.cv1.conv.weight     | (512, 768, 1, 1)       |          |
+| 20.cv1.conv.bias       | (512,)                 |          |
+| 20.cv2.conv            | 0.394M                 | 0.371G   |
+| 20.cv2.conv.weight     | (512, 768, 1, 1)       |          |
+| 20.cv2.conv.bias       | (512,)                 |          |
+| 20.m.0                 | 0.722M                 | 0.68G    |
+| 20.m.0.cv1.conv        | 32.896K                | 30.9M    |
+| 20.m.0.cv2.conv        | 32.896K                | 30.9M    |
+| 20.m.0.cv3.conv        | 65.792K                | 61.8M    |
+| 20.m.0.m               | 0.59M                  | 0.556G   |
+| 21                     | 0.821M                 | 3.595G   |
+| 21.cv2                 | 0.64M                  | 2.758G   |
+| 21.cv2.0               | 0.115M                 | 1.73G    |
+| 21.cv2.1               | 0.189M                 | 0.711G   |
+| 21.cv2.2               | 0.336M                 | 0.317G   |
+| 21.cv3                 | 0.181M                 | 0.836G   |
+| 21.cv3.0               | 36.874K                | 0.548G   |
+| 21.cv3.1               | 54.538K                | 0.203G   |
+| 21.cv3.2               | 89.866K                | 83.889M  |
+| 21.dfl.conv            | 16                     | 1.267M   |
+| 21.dfl.conv.weight     | (1, 16, 1, 1)          |          |
+| 9                      |                        | 1.931M   |
+| 12                     |                        | 3.863M   |
+  MACs  : 22.73 GMACs
+  FLOPs : 45.46 GFLOPs
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.744      0.535        0.6      0.352
+                person       3220      13265      0.782      0.627      0.719      0.386
+                 rider        515        649      0.693       0.49      0.532      0.286
+                   car       9879     102540      0.835       0.74      0.834      0.528
+                   bus       1242       1597      0.662      0.596      0.657      0.511
+                 truck       2689       4247       0.64      0.624      0.666      0.492
+                  bike        578       1007      0.669      0.486      0.548      0.291
+                 motor        334        452       0.69      0.458      0.499      0.253
+         traffic light       5653      26891      0.729      0.647      0.697      0.282
+          traffic sign       8221      34915      0.742       0.68      0.743      0.408
+                 train         14         15          1          0      0.101     0.0883
+Speed: 0.1ms preprocess, 1.9ms inference, 0.0ms loss, 0.5ms postprocess per image
+Results saved to [1mruns/bdd100k/detect/baseline-yolov12s/train[0m
