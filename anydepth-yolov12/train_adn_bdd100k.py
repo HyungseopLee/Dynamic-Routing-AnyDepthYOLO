@@ -54,7 +54,7 @@ else:
       momentum=0.900,  # default 0.937
       batch=32, #s:128, l:64, orig:256,
       nbs=256, # default 256,
-      lr0=1e-3, # initial lr: fromscratch=1e-2, finetuning:1e-3 or 1e-4
+      lr0=1e-2, # initial lr: fromscratch=1e-2, finetuning:1e-3 or 1e-4
       lrf=1e-2, # lr0 ~ (lr0 * lrf)
       
       # image
@@ -107,7 +107,7 @@ python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
   --imgsz 1280 \
   --weight ./pretrained/yolov12s.pt \
   --project ./runs/bdd100k/detect/baseline-yolov12s \
-  2>&1 | tee ./runs/bdd100k/detect/baseline-yolov12s/50e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing.log
+  2>&1 | tee ./runs/bdd100k/detect/baseline-yolov12s/50e_SGD0900_bs32_nbs256_1e-2_1e-4_1280-740_singleScale_augNothing.log
 
 
 # Any-depth
