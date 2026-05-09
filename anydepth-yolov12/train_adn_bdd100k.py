@@ -54,7 +54,7 @@ else:
       momentum=0.900,  # default 0.937
       batch=32, #s:128, l:64, orig:256,
       nbs=256, # default 256,
-      lr0=1e-2, # initial lr: fromscratch=1e-2, finetuning:1e-3 or 1e-4
+      lr0=1e-3, # initial lr: fromscratch=1e-2, finetuning:1e-3 or 1e-4
       lrf=1e-2, # lr0 ~ (lr0 * lrf)
       
       # image
@@ -103,11 +103,11 @@ python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
   --task detect \
   --config ./ultralytics/cfg/models/v12/yolov12s.yaml \
   --data bdd100k.yaml \
-  --epoch 50 \
+  --epoch 30 \
   --imgsz 1280 \
   --weight ./pretrained/yolov12s.pt \
   --project ./runs/bdd100k/detect/baseline-yolov12s \
-  2>&1 | tee ./runs/bdd100k/detect/baseline-yolov12s/50e_SGD0900_bs32_nbs256_1e-2_1e-4_1280-740_singleScale_augNothing.log
+  2>&1 | tee ./runs/bdd100k/detect/baseline-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing.log
 
 
 # Any-depth
@@ -116,13 +116,13 @@ mkdir -p ./runs/bdd100k/detect/anydepth-yolov12s
 export CUDA_VISIBLE_DEVICES=0,1
 python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
   --task detect \
-  --config ./ultralytics/cfg/models/v12/yolo-ad-v12s.yaml \
+  --config ./ultralytics/cfg/models/v12/yolo-ad-v12s-orig.yaml \
   --data bdd100k.yaml \
   --epoch 50 \
   --imgsz 1280 \
-  --weight ./pretrained/yolo-ad-small_0.481_0.453.pt \
+  --weight ./pretrained/yolo-ad-small_0.479_0.451.pt \
   --project ./runs/bdd100k/detect/anydepth-yolov12s \
-  2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s/50e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing.log
+  2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s/50e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_orig.log
 
   
 
