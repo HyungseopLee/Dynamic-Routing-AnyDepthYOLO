@@ -70,9 +70,9 @@ else:
 mkdir -p ./runs/bdd100k/detect/baseline-yolov12s
 python val_adn_bdd100k.py \
     --imgsz 1280 \
-    --weight ./runs/bdd100k/detect/anydepth-yolov12s/train2/weights/best.pt \
-    --project ./runs/bdd100k/detect/anydepth-yolov12s/train2 \
-    2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s/train2/val.log
+    --weight ./runs/bdd100k/detect/baseline-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing/weights/best.pt \
+    --project ./runs/bdd100k/detect/baseline-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing \
+    2>&1 | tee ./runs/bdd100k/detect/baseline-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing/val.log
 
 
 # any-depth

@@ -1,0 +1,1548 @@
+WARNING:__main__:
+*****************************************
+Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+*****************************************
+[*] Image size: 1280
+[*] Starting new training using pretrained weight: ./pretrained/yolo-ad-small_0.479_0.451.pt
+task: detect
+Loading YOLOv12 Any-Depth model from ultralytics/cfg/models/v12/yolo-ad-v12s-orig.yaml
+Loading YOLOv12 Any-Depth model from ultralytics/cfg/models/v12/yolo-ad-v12s-orig.yaml
+Found YOLOv12 Any-Depth model scale: s
+Found YOLOv12 Any-Depth model scale: s
+Transferred 1728/1728 items from pretrained weights
+Ultralytics 8.3.63 🚀 Python-3.11.13 torch-2.2.2+cu121 CUDA:0 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
+                                                       CUDA:1 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
+Overriding model.yaml nc=80 with nc=10
+Transferred 1722/1728 items from pretrained weights
+Not transferred items (6):
+  - [Shape Mismatch] model.21.cv3.0.2.bias: model [10] != pretrained [80]
+  - [Shape Mismatch] model.21.cv3.0.2.weight: model [10, 128, 1, 1] != pretrained [80, 128, 1, 1]
+  - [Shape Mismatch] model.21.cv3.1.2.bias: model [10] != pretrained [80]
+  - [Shape Mismatch] model.21.cv3.1.2.weight: model [10, 128, 1, 1] != pretrained [80, 128, 1, 1]
+  - [Shape Mismatch] model.21.cv3.2.2.bias: model [10] != pretrained [80]
+  - [Shape Mismatch] model.21.cv3.2.2.weight: model [10, 128, 1, 1] != pretrained [80, 128, 1, 1]
+Freezing layer 'model.21.dfl.conv.weight'
+[34m[1mAMP: [0mrunning Automatic Mixed Precision (AMP) checks...
+task: None
+[34m[1mAMP: [0mchecks passed ✅
+[34m[1mtrain: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s][34m[1mtrain: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s]
+[34m[1mtrain: [0mWARNING ⚠️ /media/data/bdd100k_yolo/train/images/75055858-7d04a650.jpg: 1 duplicate labels removed
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/albumentations/__init__.py:28: UserWarning: A new version of Albumentations is available: '2.0.8' (you have '2.0.4'). Upgrade using: pip install -U albumentations. To disable automatic update checks, set the environment variable NO_ALBUMENTATIONS_UPDATE to 1.
+  check_for_updates()
+[34m[1malbumentations: [0mBlur(p=0.01, blur_limit=(3, 7)), MedianBlur(p=0.01, blur_limit=(3, 7)), ToGray(p=0.01, num_output_channels=3, method='weighted_average'), CLAHE(p=0.01, clip_limit=(1.0, 4.0), tile_grid_size=(8, 8))
+WARNING ⚠️ 'rect=True' is incompatible with DataLoader shuffle, setting shuffle=False
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s][34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/albumentations/__init__.py:28: UserWarning: A new version of Albumentations is available: '2.0.8' (you have '2.0.4'). Upgrade using: pip install -U albumentations. To disable automatic update checks, set the environment variable NO_ALBUMENTATIONS_UPDATE to 1.
+  check_for_updates()
+Plotting labels to runs/bdd100k/detect/anydepth-yolov12s/train/labels.jpg... 
+[34m[1moptimizer:[0m SGD(lr=0.001, momentum=0.9) with parameter groups 302 weight(decay=0.0), 212 weight(decay=0.0005), 308 bias(decay=0.0)
+DistributedDataParallel(
+  (module): DetectionModelAnyDepth(
+    (model): Sequential(
+      (0): Conv(
+        (conv): Conv2d(3, 32, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+      (1): Conv(
+        (conv): Conv2d(32, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=2, bias=False)
+        (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+      (2): SkippableC3k2(
+        (cv1): SwitchableConv(
+          (conv): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): SwitchableConv(
+          (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0): Bottleneck(
+            (cv1): SwitchableConv(
+              (conv): Conv2d(32, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(16, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(16, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): SwitchableConv(
+              (conv): Conv2d(16, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+          )
+          (1): Bottleneck(
+            (cv1): Conv(
+              (conv): Conv2d(32, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(16, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): Conv(
+              (conv): Conv2d(16, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+          )
+        )
+      )
+      (3): SwitchableConv(
+        (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=4, bias=False)
+        (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+      (4): SkippableC3k2(
+        (cv1): SwitchableConv(
+          (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): SwitchableConv(
+          (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0): Bottleneck(
+            (cv1): SwitchableConv(
+              (conv): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): SwitchableConv(
+              (conv): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+          )
+          (1): Bottleneck(
+            (cv1): Conv(
+              (conv): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): Conv(
+              (conv): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+          )
+        )
+      )
+      (5): SwitchableConv(
+        (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+      (6): SkippableA2C2f(
+        (cv1): SwitchableConv(
+          (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): SwitchableConv(
+          (conv): Conv2d(640, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (conv_skip): Conv2d(384, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0-1): 2 x SwitchableSequential(
+            (0): ABlock(
+              (attn): SwitchableAAttn(
+                (qk): SwitchableConv(
+                  (conv): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (v): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (proj): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (pe): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=128, bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+              (mlp): SwitchableSequential(
+                (0): SwitchableConv(
+                  (conv): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (1): SwitchableConv(
+                  (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+            )
+            (1): ABlock(
+              (attn): SwitchableAAttn(
+                (qk): SwitchableConv(
+                  (conv): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (v): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (proj): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (pe): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=128, bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+              (mlp): SwitchableSequential(
+                (0): SwitchableConv(
+                  (conv): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (1): SwitchableConv(
+                  (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+            )
+          )
+          (2-3): 2 x Sequential(
+            (0): ABlock(
+              (attn): AAttn(
+                (qk): Conv(
+                  (conv): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (v): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (proj): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (pe): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=128, bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+              (mlp): Sequential(
+                (0): Conv(
+                  (conv): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (1): Conv(
+                  (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+            )
+            (1): ABlock(
+              (attn): AAttn(
+                (qk): Conv(
+                  (conv): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (v): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (proj): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (pe): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=128, bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+              (mlp): Sequential(
+                (0): Conv(
+                  (conv): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (1): Conv(
+                  (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+            )
+          )
+        )
+      )
+      (7): SwitchableConv(
+        (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+      (8): SkippableA2C2f(
+        (cv1): SwitchableConv(
+          (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): SwitchableConv(
+          (conv): Conv2d(640, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (conv_skip): Conv2d(384, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0-1): 2 x SwitchableSequential(
+            (0): ABlock(
+              (attn): SwitchableAAttn(
+                (qk): SwitchableConv(
+                  (conv): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (v): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (proj): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (pe): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=128, bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+              (mlp): SwitchableSequential(
+                (0): SwitchableConv(
+                  (conv): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (1): SwitchableConv(
+                  (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+            )
+            (1): ABlock(
+              (attn): SwitchableAAttn(
+                (qk): SwitchableConv(
+                  (conv): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (v): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (proj): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (pe): SwitchableConv(
+                  (conv): Conv2d(128, 128, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=128, bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+              (mlp): SwitchableSequential(
+                (0): SwitchableConv(
+                  (conv): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (1): SwitchableConv(
+                  (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+            )
+          )
+          (2-3): 2 x Sequential(
+            (0): ABlock(
+              (attn): AAttn(
+                (qk): Conv(
+                  (conv): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (v): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (proj): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (pe): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=128, bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+              (mlp): Sequential(
+                (0): Conv(
+                  (conv): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (1): Conv(
+                  (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+            )
+            (1): ABlock(
+              (attn): AAttn(
+                (qk): Conv(
+                  (conv): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (v): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (proj): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+                (pe): Conv(
+                  (conv): Conv2d(128, 128, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=128, bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+              (mlp): Sequential(
+                (0): Conv(
+                  (conv): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (1): Conv(
+                  (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): Identity()
+                )
+              )
+            )
+          )
+        )
+      )
+      (9): Upsample(scale_factor=2.0, mode='nearest')
+      (10): Concat()
+      (11): SkippableA2C2f(
+        (cv1): SwitchableConv(
+          (conv): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): SwitchableConv(
+          (conv): Conv2d(384, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0): C3k(
+            (cv1): SwitchableConv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): SwitchableConv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): SwitchableConv(
+              (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): SwitchableSequential(
+              (0): Bottleneck(
+                (cv1): SwitchableConv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): SwitchableConv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): SwitchableConv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): SwitchableConv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+          (1): C3k(
+            (cv1): Conv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): Conv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): Conv(
+              (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): Sequential(
+              (0): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+        )
+      )
+      (12): Upsample(scale_factor=2.0, mode='nearest')
+      (13): Concat()
+      (14): SkippableA2C2f(
+        (cv1): SwitchableConv(
+          (conv): Conv2d(512, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): SwitchableConv(
+          (conv): Conv2d(192, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0): C3k(
+            (cv1): SwitchableConv(
+              (conv): Conv2d(64, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): SwitchableConv(
+              (conv): Conv2d(64, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): SwitchableConv(
+              (conv): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): SwitchableSequential(
+              (0): Bottleneck(
+                (cv1): SwitchableConv(
+                  (conv): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): SwitchableConv(
+                  (conv): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): SwitchableConv(
+                  (conv): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): SwitchableConv(
+                  (conv): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+          (1): C3k(
+            (cv1): Conv(
+              (conv): Conv2d(64, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): Conv(
+              (conv): Conv2d(64, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): Conv(
+              (conv): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): Sequential(
+              (0): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(32, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+        )
+      )
+      (15): SwitchableConv(
+        (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+      (16): Concat()
+      (17): SkippableA2C2f(
+        (cv1): SwitchableConv(
+          (conv): Conv2d(384, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): SwitchableConv(
+          (conv): Conv2d(384, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0): C3k(
+            (cv1): SwitchableConv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): SwitchableConv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): SwitchableConv(
+              (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): SwitchableSequential(
+              (0): Bottleneck(
+                (cv1): SwitchableConv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): SwitchableConv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): SwitchableConv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): SwitchableConv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+          (1): C3k(
+            (cv1): Conv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): Conv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): Conv(
+              (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): Sequential(
+              (0): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+        )
+      )
+      (18): SwitchableConv(
+        (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+        (act): SiLU(inplace=True)
+      )
+      (19): Concat()
+      (20): SkippableC3k2(
+        (cv1): SwitchableConv(
+          (conv): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (cv2): SwitchableConv(
+          (conv): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (bn_skip): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+        (m): ModuleList(
+          (0): C3k(
+            (cv1): SwitchableConv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): SwitchableConv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): SwitchableConv(
+              (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (bn_skip): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): SwitchableSequential(
+              (0): Bottleneck(
+                (cv1): SwitchableConv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): SwitchableConv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): SwitchableConv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): SwitchableConv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (bn_skip): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+          (1): C3k(
+            (cv1): Conv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv2): Conv(
+              (conv): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (cv3): Conv(
+              (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+              (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (m): Sequential(
+              (0): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+              (1): Bottleneck(
+                (cv1): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+                (cv2): Conv(
+                  (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                  (act): SiLU(inplace=True)
+                )
+              )
+            )
+          )
+        )
+      )
+      (21): Detect(
+        (cv2): ModuleList(
+          (0): Sequential(
+            (0): Conv(
+              (conv): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (1): Conv(
+              (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (2): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (1-2): 2 x Sequential(
+            (0): Conv(
+              (conv): Conv2d(256, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (1): Conv(
+              (conv): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn): BatchNorm2d(64, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+              (act): SiLU(inplace=True)
+            )
+            (2): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1))
+          )
+        )
+        (cv3): ModuleList(
+          (0): Sequential(
+            (0): Sequential(
+              (0): DWConv(
+                (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=128, bias=False)
+                (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+              (1): Conv(
+                (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+            )
+            (1): Sequential(
+              (0): DWConv(
+                (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=128, bias=False)
+                (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+              (1): Conv(
+                (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+            )
+            (2): Conv2d(128, 10, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (1-2): 2 x Sequential(
+            (0): Sequential(
+              (0): DWConv(
+                (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256, bias=False)
+                (bn): BatchNorm2d(256, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+              (1): Conv(
+                (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+            )
+            (1): Sequential(
+              (0): DWConv(
+                (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=128, bias=False)
+                (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+              (1): Conv(
+                (conv): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (bn): BatchNorm2d(128, eps=0.001, momentum=0.03, affine=True, track_running_stats=True)
+                (act): SiLU(inplace=True)
+              )
+            )
+            (2): Conv2d(128, 10, kernel_size=(1, 1), stride=(1, 1))
+          )
+        )
+        (dfl): DFL(
+          (conv): Conv2d(16, 1, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        )
+      )
+    )
+  )
+)
+Image sizes 1280 train, 1280 val
+Using 16 dataloader workers
+Logging results to [1mruns/bdd100k/detect/anydepth-yolov12s/train[0m
+Starting training for 30 epochs...
+
+[FLOPs] Super model (skip=False) @ 736x1280:
+| module             | #parameters or shape   | #flops   |
+|:-------------------|:-----------------------|:---------|
+| base_model.model   | 7.416M                 | 25.631G  |
+| 0                  | 0.928K                 | 0.219G   |
+| 0.conv             | 0.864K                 | 0.203G   |
+| 0.conv.weight      | (32, 3, 3, 3)          |          |
+| 0.bn               | 64                     | 15.073M  |
+| 0.bn.weight        | (32,)                  |          |
+| 0.bn.bias          | (32,)                  |          |
+| 1                  | 9.344K                 | 0.55G    |
+| 1.conv             | 9.216K                 | 0.543G   |
+| 1.conv.weight      | (64, 16, 3, 3)         |          |
+| 1.bn               | 0.128K                 | 7.537M   |
+| 1.bn.weight        | (64,)                  |          |
+| 1.bn.bias          | (64,)                  |          |
+| 2                  | 39.968K                | 2.325G   |
+| 2.cv1              | 4.352K                 | 0.249G   |
+| 2.cv1.conv         | 4.096K                 | 0.241G   |
+| 2.cv1.bn           | 0.128K                 | 7.537M   |
+| 2.cv1.bn_skip      | 0.128K                 |          |
+| 2.cv2              | 16.896K                | 0.98G    |
+| 2.cv2.conv         | 16.384K                | 0.965G   |
+| 2.cv2.bn           | 0.256K                 | 15.073M  |
+| 2.cv2.bn_skip      | 0.256K                 |          |
+| 2.m                | 18.72K                 | 1.097G   |
+| 2.m.0              | 9.408K                 | 0.548G   |
+| 2.m.1              | 9.312K                 | 0.548G   |
+| 3                  | 37.376K                | 0.546G   |
+| 3.conv             | 36.864K                | 0.543G   |
+| 3.conv.weight      | (128, 32, 3, 3)        |          |
+| 3.bn               | 0.256K                 | 3.768M   |
+| 3.bn.weight        | (128,)                 |          |
+| 3.bn.bias          | (128,)                 |          |
+| 3.bn_skip          | 0.256K                 |          |
+| 3.bn_skip.weight   | (128,)                 |          |
+| 3.bn_skip.bias     | (128,)                 |          |
+| 4                  | 0.158M                 | 2.308G   |
+| 4.cv1              | 16.896K                | 0.245G   |
+| 4.cv1.conv         | 16.384K                | 0.241G   |
+| 4.cv1.bn           | 0.256K                 | 3.768M   |
+| 4.cv1.bn_skip      | 0.256K                 |          |
+| 4.cv2              | 66.56K                 | 0.972G   |
+| 4.cv2.conv         | 65.536K                | 0.965G   |
+| 4.cv2.bn           | 0.512K                 | 7.537M   |
+| 4.cv2.bn_skip      | 0.512K                 |          |
+| 4.m                | 74.304K                | 1.091G   |
+| 4.m.0              | 37.248K                | 0.545G   |
+| 4.m.1              | 37.056K                | 0.545G   |
+| 5                  | 0.591M                 | 2.172G   |
+| 5.conv             | 0.59M                  | 2.171G   |
+| 5.conv.weight      | (256, 256, 3, 3)       |          |
+| 5.bn               | 0.512K                 | 1.884M   |
+| 5.bn.weight        | (256,)                 |          |
+| 5.bn.bias          | (256,)                 |          |
+| 5.bn_skip          | 0.512K                 |          |
+| 5.bn_skip.weight   | (256,)                 |          |
+| 5.bn_skip.bias     | (256,)                 |          |
+| 6                  | 1.395M                 | 4.74G    |
+| 6.gamma            | (256,)                 |          |
+| 6.cv1              | 33.28K                 | 0.122G   |
+| 6.cv1.conv         | 32.768K                | 0.121G   |
+| 6.cv1.bn           | 0.256K                 | 0.942M   |
+| 6.cv1.bn_skip      | 0.256K                 |          |
+| 6.cv2              | 0.263M                 | 0.605G   |
+| 6.cv2.conv         | 0.164M                 | 0.603G   |
+| 6.cv2.bn           | 0.512K                 | 1.884M   |
+| 6.cv2.bn_skip      | 0.512K                 |          |
+| 6.cv2.conv_skip    | 98.304K                |          |
+| 6.m                | 1.099M                 | 4.013G   |
+| 6.m.0              | 0.277M                 | 1.003G   |
+| 6.m.1              | 0.277M                 | 1.003G   |
+| 6.m.2              | 0.273M                 | 1.003G   |
+| 6.m.3              | 0.273M                 | 1.003G   |
+| 7                  | 0.591M                 | 0.543G   |
+| 7.conv             | 0.59M                  | 0.543G   |
+| 7.conv.weight      | (256, 256, 3, 3)       |          |
+| 7.bn               | 0.512K                 | 0.471M   |
+| 7.bn.weight        | (256,)                 |          |
+| 7.bn.bias          | (256,)                 |          |
+| 7.bn_skip          | 0.512K                 |          |
+| 7.bn_skip.weight   | (256,)                 |          |
+| 7.bn_skip.bias     | (256,)                 |          |
+| 8                  | 1.395M                 | 1.185G   |
+| 8.gamma            | (256,)                 |          |
+| 8.cv1              | 33.28K                 | 30.382M  |
+| 8.cv1.conv         | 32.768K                | 30.147M  |
+| 8.cv1.bn           | 0.256K                 | 0.236M   |
+| 8.cv1.bn_skip      | 0.256K                 |          |
+| 8.cv2              | 0.263M                 | 0.151G   |
+| 8.cv2.conv         | 0.164M                 | 0.151G   |
+| 8.cv2.bn           | 0.512K                 | 0.471M   |
+| 8.cv2.bn_skip      | 0.512K                 |          |
+| 8.cv2.conv_skip    | 98.304K                |          |
+| 8.m                | 1.099M                 | 1.003G   |
+| 8.m.0              | 0.277M                 | 0.251G   |
+| 8.m.1              | 0.277M                 | 0.251G   |
+| 8.m.2              | 0.273M                 | 0.251G   |
+| 8.m.3              | 0.273M                 | 0.251G   |
+| 11                 | 0.529M                 | 1.94G    |
+| 11.cv1             | 66.048K                | 0.242G   |
+| 11.cv1.conv        | 65.536K                | 0.241G   |
+| 11.cv1.bn          | 0.256K                 | 0.942M   |
+| 11.cv1.bn_skip     | 0.256K                 |          |
+| 11.cv2             | 99.328K                | 0.364G   |
+| 11.cv2.conv        | 98.304K                | 0.362G   |
+| 11.cv2.bn          | 0.512K                 | 1.884M   |
+| 11.cv2.bn_skip     | 0.512K                 |          |
+| 11.m               | 0.364M                 | 1.334G   |
+| 11.m.0             | 0.182M                 | 0.667G   |
+| 11.m.1             | 0.181M                 | 0.667G   |
+| 14                 | 0.15M                  | 2.191G   |
+| 14.cv1             | 33.024K                | 0.484G   |
+| 14.cv1.conv        | 32.768K                | 0.482G   |
+| 14.cv1.bn          | 0.128K                 | 1.884M   |
+| 14.cv1.bn_skip     | 0.128K                 |          |
+| 14.cv2             | 25.088K                | 0.366G   |
+| 14.cv2.conv        | 24.576K                | 0.362G   |
+| 14.cv2.bn          | 0.256K                 | 3.768M   |
+| 14.cv2.bn_skip     | 0.256K                 |          |
+| 14.m               | 91.648K                | 1.342G   |
+| 14.m.0             | 46.08K                 | 0.671G   |
+| 14.m.1             | 45.568K                | 0.671G   |
+| 15                 | 0.148M                 | 0.544G   |
+| 15.conv            | 0.147M                 | 0.543G   |
+| 15.conv.weight     | (128, 128, 3, 3)       |          |
+| 15.bn              | 0.256K                 | 0.942M   |
+| 15.bn.weight       | (128,)                 |          |
+| 15.bn.bias         | (128,)                 |          |
+| 15.bn_skip         | 0.256K                 |          |
+| 15.bn_skip.weight  | (128,)                 |          |
+| 15.bn_skip.bias    | (128,)                 |          |
+| 17                 | 0.513M                 | 1.879G   |
+| 17.cv1             | 49.664K                | 0.182G   |
+| 17.cv1.conv        | 49.152K                | 0.181G   |
+| 17.cv1.bn          | 0.256K                 | 0.942M   |
+| 17.cv1.bn_skip     | 0.256K                 |          |
+| 17.cv2             | 99.328K                | 0.364G   |
+| 17.cv2.conv        | 98.304K                | 0.362G   |
+| 17.cv2.bn          | 0.512K                 | 1.884M   |
+| 17.cv2.bn_skip     | 0.512K                 |          |
+| 17.m               | 0.364M                 | 1.334G   |
+| 17.m.0             | 0.182M                 | 0.667G   |
+| 17.m.1             | 0.181M                 | 0.667G   |
+| 18                 | 0.591M                 | 0.543G   |
+| 18.conv            | 0.59M                  | 0.543G   |
+| 18.conv.weight     | (256, 256, 3, 3)       |          |
+| 18.bn              | 0.512K                 | 0.471M   |
+| 18.bn.weight       | (256,)                 |          |
+| 18.bn.bias         | (256,)                 |          |
+| 18.bn_skip         | 0.512K                 |          |
+| 18.bn_skip.weight  | (256,)                 |          |
+| 18.bn_skip.bias    | (256,)                 |          |
+| 20                 | 0.628M                 | 0.576G   |
+| 20.cv1             | 0.132M                 | 0.121G   |
+| 20.cv1.conv        | 0.131M                 | 0.121G   |
+| 20.cv1.bn          | 0.512K                 | 0.471M   |
+| 20.cv1.bn_skip     | 0.512K                 |          |
+| 20.cv2             | 0.132M                 | 0.121G   |
+| 20.cv2.conv        | 0.131M                 | 0.121G   |
+| 20.cv2.bn          | 0.512K                 | 0.471M   |
+| 20.cv2.bn_skip     | 0.512K                 |          |
+| 20.m               | 0.364M                 | 0.333G   |
+| 20.m.0             | 0.182M                 | 0.167G   |
+| 20.m.1             | 0.181M                 | 0.167G   |
+| 21                 | 0.64M                  | 3.365G   |
+| 21.cv2             | 0.492M                 | 2.56G    |
+| 21.cv2.0           | 0.115M                 | 1.692G   |
+| 21.cv2.1           | 0.189M                 | 0.694G   |
+| 21.cv2.2           | 0.189M                 | 0.174G   |
+| 21.cv3             | 0.148M                 | 0.804G   |
+| 21.cv3.0           | 37.386K                | 0.55G    |
+| 21.cv3.1           | 55.178K                | 0.203G   |
+| 21.cv3.2           | 55.178K                | 50.755M  |
+| 21.dfl.conv        | 16                     | 1.236M   |
+| 21.dfl.conv.weight | (1, 16, 1, 1)          |          |
+| 9                  |                        | 0.942M   |
+| 12                 |                        | 3.768M   |
+  MACs  (super): 25.63 GMACs
+  FLOPs (super): 51.26 GFLOPs
+
+[FLOPs] Base model (skip=True) @ 736x1280:
+| module             | #parameters or shape   | #flops   |
+|:-------------------|:-----------------------|:---------|
+| base_model.model   | 7.416M                 | 18.682G  |
+| 0                  | 0.928K                 | 0.219G   |
+| 0.conv             | 0.864K                 | 0.203G   |
+| 0.conv.weight      | (32, 3, 3, 3)          |          |
+| 0.bn               | 64                     | 15.073M  |
+| 0.bn.weight        | (32,)                  |          |
+| 0.bn.bias          | (32,)                  |          |
+| 1                  | 9.344K                 | 0.55G    |
+| 1.conv             | 9.216K                 | 0.543G   |
+| 1.conv.weight      | (64, 16, 3, 3)         |          |
+| 1.bn               | 0.128K                 | 7.537M   |
+| 1.bn.weight        | (64,)                  |          |
+| 1.bn.bias          | (64,)                  |          |
+| 2                  | 39.968K                | 1.536G   |
+| 2.cv1              | 4.352K                 | 0.249G   |
+| 2.cv1.conv         | 4.096K                 | 0.241G   |
+| 2.cv1.bn           | 0.128K                 |          |
+| 2.cv1.bn_skip      | 0.128K                 | 7.537M   |
+| 2.cv2              | 16.896K                | 0.739G   |
+| 2.cv2.conv         | 16.384K                |          |
+| 2.cv2.bn           | 0.256K                 |          |
+| 2.cv2.bn_skip      | 0.256K                 | 15.073M  |
+| 2.m                | 18.72K                 | 0.548G   |
+| 2.m.0              | 9.408K                 | 0.548G   |
+| 2.m.1              | 9.312K                 |          |
+| 3                  | 37.376K                | 0.546G   |
+| 3.conv             | 36.864K                | 0.543G   |
+| 3.conv.weight      | (128, 32, 3, 3)        |          |
+| 3.bn               | 0.256K                 |          |
+| 3.bn.weight        | (128,)                 |          |
+| 3.bn.bias          | (128,)                 |          |
+| 3.bn_skip          | 0.256K                 | 3.768M   |
+| 3.bn_skip.weight   | (128,)                 |          |
+| 3.bn_skip.bias     | (128,)                 |          |
+| 4                  | 0.158M                 | 1.521G   |
+| 4.cv1              | 16.896K                | 0.245G   |
+| 4.cv1.conv         | 16.384K                | 0.241G   |
+| 4.cv1.bn           | 0.256K                 |          |
+| 4.cv1.bn_skip      | 0.256K                 | 3.768M   |
+| 4.cv2              | 66.56K                 | 0.731G   |
+| 4.cv2.conv         | 65.536K                |          |
+| 4.cv2.bn           | 0.512K                 |          |
+| 4.cv2.bn_skip      | 0.512K                 | 7.537M   |
+| 4.m                | 74.304K                | 0.545G   |
+| 4.m.0              | 37.248K                | 0.545G   |
+| 4.m.1              | 37.056K                |          |
+| 5                  | 0.591M                 | 2.172G   |
+| 5.conv             | 0.59M                  | 2.171G   |
+| 5.conv.weight      | (256, 256, 3, 3)       |          |
+| 5.bn               | 0.512K                 |          |
+| 5.bn.weight        | (256,)                 |          |
+| 5.bn.bias          | (256,)                 |          |
+| 5.bn_skip          | 0.512K                 | 1.884M   |
+| 5.bn_skip.weight   | (256,)                 |          |
+| 5.bn_skip.bias     | (256,)                 |          |
+| 6                  | 1.395M                 | 2.492G   |
+| 6.gamma            | (256,)                 |          |
+| 6.cv1              | 33.28K                 | 0.122G   |
+| 6.cv1.conv         | 32.768K                | 0.121G   |
+| 6.cv1.bn           | 0.256K                 |          |
+| 6.cv1.bn_skip      | 0.256K                 | 0.942M   |
+| 6.cv2              | 0.263M                 | 0.364G   |
+| 6.cv2.conv         | 0.164M                 |          |
+| 6.cv2.bn           | 0.512K                 |          |
+| 6.cv2.bn_skip      | 0.512K                 | 1.884M   |
+| 6.cv2.conv_skip    | 98.304K                | 0.362G   |
+| 6.m                | 1.099M                 | 2.007G   |
+| 6.m.0              | 0.277M                 | 1.003G   |
+| 6.m.1              | 0.277M                 | 1.003G   |
+| 6.m.2              | 0.273M                 |          |
+| 6.m.3              | 0.273M                 |          |
+| 7                  | 0.591M                 | 0.543G   |
+| 7.conv             | 0.59M                  | 0.543G   |
+| 7.conv.weight      | (256, 256, 3, 3)       |          |
+| 7.bn               | 0.512K                 |          |
+| 7.bn.weight        | (256,)                 |          |
+| 7.bn.bias          | (256,)                 |          |
+| 7.bn_skip          | 0.512K                 | 0.471M   |
+| 7.bn_skip.weight   | (256,)                 |          |
+| 7.bn_skip.bias     | (256,)                 |          |
+| 8                  | 1.395M                 | 0.623G   |
+| 8.gamma            | (256,)                 |          |
+| 8.cv1              | 33.28K                 | 30.382M  |
+| 8.cv1.conv         | 32.768K                | 30.147M  |
+| 8.cv1.bn           | 0.256K                 |          |
+| 8.cv1.bn_skip      | 0.256K                 | 0.236M   |
+| 8.cv2              | 0.263M                 | 90.911M  |
+| 8.cv2.conv         | 0.164M                 |          |
+| 8.cv2.bn           | 0.512K                 |          |
+| 8.cv2.bn_skip      | 0.512K                 | 0.471M   |
+| 8.cv2.conv_skip    | 98.304K                | 90.44M   |
+| 8.m                | 1.099M                 | 0.502G   |
+| 8.m.0              | 0.277M                 | 0.251G   |
+| 8.m.1              | 0.277M                 | 0.251G   |
+| 8.m.2              | 0.273M                 |          |
+| 8.m.3              | 0.273M                 |          |
+| 11                 | 0.529M                 | 1.152G   |
+| 11.cv1             | 66.048K                | 0.242G   |
+| 11.cv1.conv        | 65.536K                | 0.241G   |
+| 11.cv1.bn          | 0.256K                 |          |
+| 11.cv1.bn_skip     | 0.256K                 | 0.942M   |
+| 11.cv2             | 99.328K                | 0.243G   |
+| 11.cv2.conv        | 98.304K                |          |
+| 11.cv2.bn          | 0.512K                 |          |
+| 11.cv2.bn_skip     | 0.512K                 | 1.884M   |
+| 11.m               | 0.364M                 | 0.667G   |
+| 11.m.0             | 0.182M                 | 0.667G   |
+| 11.m.1             | 0.181M                 |          |
+| 14                 | 0.15M                  | 1.4G     |
+| 14.cv1             | 33.024K                | 0.484G   |
+| 14.cv1.conv        | 32.768K                | 0.482G   |
+| 14.cv1.bn          | 0.128K                 |          |
+| 14.cv1.bn_skip     | 0.128K                 | 1.884M   |
+| 14.cv2             | 25.088K                | 0.245G   |
+| 14.cv2.conv        | 24.576K                |          |
+| 14.cv2.bn          | 0.256K                 |          |
+| 14.cv2.bn_skip     | 0.256K                 | 3.768M   |
+| 14.m               | 91.648K                | 0.671G   |
+| 14.m.0             | 46.08K                 | 0.671G   |
+| 14.m.1             | 45.568K                |          |
+| 15                 | 0.148M                 | 0.544G   |
+| 15.conv            | 0.147M                 | 0.543G   |
+| 15.conv.weight     | (128, 128, 3, 3)       |          |
+| 15.bn              | 0.256K                 |          |
+| 15.bn.weight       | (128,)                 |          |
+| 15.bn.bias         | (128,)                 |          |
+| 15.bn_skip         | 0.256K                 | 0.942M   |
+| 15.bn_skip.weight  | (128,)                 |          |
+| 15.bn_skip.bias    | (128,)                 |          |
+| 17                 | 0.513M                 | 1.092G   |
+| 17.cv1             | 49.664K                | 0.182G   |
+| 17.cv1.conv        | 49.152K                | 0.181G   |
+| 17.cv1.bn          | 0.256K                 |          |
+| 17.cv1.bn_skip     | 0.256K                 | 0.942M   |
+| 17.cv2             | 99.328K                | 0.243G   |
+| 17.cv2.conv        | 98.304K                |          |
+| 17.cv2.bn          | 0.512K                 |          |
+| 17.cv2.bn_skip     | 0.512K                 | 1.884M   |
+| 17.m               | 0.364M                 | 0.667G   |
+| 17.m.0             | 0.182M                 | 0.667G   |
+| 17.m.1             | 0.181M                 |          |
+| 18                 | 0.591M                 | 0.543G   |
+| 18.conv            | 0.59M                  | 0.543G   |
+| 18.conv.weight     | (256, 256, 3, 3)       |          |
+| 18.bn              | 0.512K                 |          |
+| 18.bn.weight       | (256,)                 |          |
+| 18.bn.bias         | (256,)                 |          |
+| 18.bn_skip         | 0.512K                 | 0.471M   |
+| 18.bn_skip.weight  | (256,)                 |          |
+| 18.bn_skip.bias    | (256,)                 |          |
+| 20                 | 0.628M                 | 0.379G   |
+| 20.cv1             | 0.132M                 | 0.121G   |
+| 20.cv1.conv        | 0.131M                 | 0.121G   |
+| 20.cv1.bn          | 0.512K                 |          |
+| 20.cv1.bn_skip     | 0.512K                 | 0.471M   |
+| 20.cv2             | 0.132M                 | 90.911M  |
+| 20.cv2.conv        | 0.131M                 |          |
+| 20.cv2.bn          | 0.512K                 |          |
+| 20.cv2.bn_skip     | 0.512K                 | 0.471M   |
+| 20.m               | 0.364M                 | 0.167G   |
+| 20.m.0             | 0.182M                 | 0.167G   |
+| 20.m.1             | 0.181M                 |          |
+| 21                 | 0.64M                  | 3.365G   |
+| 21.cv2             | 0.492M                 | 2.56G    |
+| 21.cv2.0           | 0.115M                 | 1.692G   |
+| 21.cv2.1           | 0.189M                 | 0.694G   |
+| 21.cv2.2           | 0.189M                 | 0.174G   |
+| 21.cv3             | 0.148M                 | 0.804G   |
+| 21.cv3.0           | 37.386K                | 0.55G    |
+| 21.cv3.1           | 55.178K                | 0.203G   |
+| 21.cv3.2           | 55.178K                | 50.755M  |
+| 21.dfl.conv        | 16                     | 1.236M   |
+| 21.dfl.conv.weight | (1, 16, 1, 1)          |          |
+| 9                  |                        | 0.942M   |
+| 12                 |                        | 3.768M   |
+  MACs  (base): 18.68 GMACs
+  FLOPs (base): 37.36 GFLOPs
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/autograd/__init__.py:266: UserWarning: Grad strides do not match bucket view strides. This may indicate grad was not created according to the gradient layout contract, or that the param's strides changed since DDP was constructed.  This is not an error, but may impair performance.
+grad.sizes() = [128, 128, 1, 1], strides() = [128, 1, 128, 128]
+bucket_view.sizes() = [128, 128, 1, 1], strides() = [128, 1, 1, 1] (Triggered internally at ../torch/csrc/distributed/c10d/reducer.cpp:322.)
+  Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/autograd/__init__.py:266: UserWarning: Grad strides do not match bucket view strides. This may indicate grad was not created according to the gradient layout contract, or that the param's strides changed since DDP was constructed.  This is not an error, but may impair performance.
+grad.sizes() = [128, 128, 1, 1], strides() = [128, 1, 128, 128]
+bucket_view.sizes() = [128, 128, 1, 1], strides() = [128, 1, 1, 1] (Triggered internally at ../torch/csrc/distributed/c10d/reducer.cpp:322.)
+  Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+  Epoch 1/30  Batch 1/2188 (0.0%)  | Super 205.561 (box 1.6296  cls 3.4781  dfl 1.3160)  | Base 222.416 (box 1.7446  cls 3.8339  dfl 1.3720)  | KD 29.095 (box 0.76010  cls 0.14419  dfl 0.00240  feat 0.00254)
+  Epoch 1/30  Batch 219/2188 (10.0%)  | Super 178.509 (box 1.6418  cls 2.6466  dfl 1.2900)  | Base 188.043 (box 1.7207  cls 2.8593  dfl 1.2964)  | KD 26.812 (box 0.75394  cls 0.07853  dfl 0.00287  feat 0.00253)
+  Epoch 1/30  Batch 437/2188 (20.0%)  | Super 160.330 (box 1.8131  cls 1.8601  dfl 1.3371)  | Base 166.274 (box 1.8301  cls 2.0258  dfl 1.3401)  | KD 28.004 (box 0.79975  cls 0.07037  dfl 0.00260  feat 0.00241)
+  Epoch 1/30  Batch 655/2188 (29.9%)  | Super 126.413 (box 1.4534  cls 1.3202  dfl 1.1768)  | Base 131.627 (box 1.4942  cls 1.4311  dfl 1.1881)  | KD 18.016 (box 0.51250  cls 0.04739  dfl 0.00139  feat 0.00173)
+  Epoch 1/30  Batch 873/2188 (39.9%)  | Super 139.460 (box 1.5903  cls 1.5190  dfl 1.2488)  | Base 142.425 (box 1.5820  cls 1.6376  dfl 1.2312)  | KD 20.387 (box 0.57716  cls 0.05651  dfl 0.00158  feat 0.00186)
+  Epoch 1/30  Batch 1091/2188 (49.9%)  | Super 116.657 (box 1.4052  cls 1.0803  dfl 1.1600)  | Base 122.353 (box 1.4218  cls 1.2419  dfl 1.1599)  | KD 17.260 (box 0.49662  cls 0.04012  dfl 0.00122  feat 0.00142)
+  Epoch 1/30  Batch 1309/2188 (59.8%)  | Super 114.244 (box 1.3745  cls 1.0717  dfl 1.1239)  | Base 117.935 (box 1.3860  cls 1.1691  dfl 1.1303)  | KD 14.582 (box 0.42546  cls 0.02769  dfl 0.00108  feat 0.00145)
+  Epoch 1/30  Batch 1527/2188 (69.8%)  | Super 124.611 (box 1.5117  cls 1.1533  dfl 1.2291)  | Base 129.547 (box 1.5475  cls 1.2622  dfl 1.2386)  | KD 14.458 (box 0.41649  cls 0.03274  dfl 0.00104  feat 0.00154)
+  Epoch 1/30  Batch 1745/2188 (79.8%)  | Super 115.197 (box 1.3833  cls 1.0723  dfl 1.1443)  | Base 119.112 (box 1.3981  cls 1.1808  dfl 1.1434)  | KD 15.301 (box 0.44152  cls 0.03403  dfl 0.00117  feat 0.00144)
+  Epoch 1/30  Batch 1963/2188 (89.7%)  | Super 118.307 (box 1.4111  cls 1.1032  dfl 1.1828)  | Base 124.149 (box 1.4459  cls 1.2225  dfl 1.2113)  | KD 15.575 (box 0.45415  cls 0.02965  dfl 0.00117  feat 0.00176)
+  Epoch 1/30  Batch 2181/2188 (99.7%)  | Super 114.700 (box 1.4214  cls 0.9875  dfl 1.1754)  | Base 117.629 (box 1.4383  cls 1.0756  dfl 1.1620)  | KD 15.330 (box 0.44363  cls 0.03249  dfl 0.00119  feat 0.00175)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 1/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.614      0.358      0.417      0.236
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 1/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.695       0.34      0.392      0.218
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 2/30  Batch 1/2188 (0.0%)  | Super 123.690 (box 1.4783  cls 1.0965  dfl 1.2905)  | Base 129.095 (box 1.5291  cls 1.1882  dfl 1.3169)  | KD 15.850 (box 0.46009  cls 0.03220  dfl 0.00124  feat 0.00178)
+  Epoch 2/30  Batch 219/2188 (10.0%)  | Super 113.671 (box 1.4381  cls 0.9682  dfl 1.1459)  | Base 116.915 (box 1.4609  cls 1.0517  dfl 1.1410)  | KD 13.898 (box 0.40375  cls 0.02799  dfl 0.00102  feat 0.00156)
+  Epoch 2/30  Batch 437/2188 (20.0%)  | Super 133.267 (box 1.7296  cls 1.1381  dfl 1.2969)  | Base 136.550 (box 1.7259  cls 1.2458  dfl 1.2955)  | KD 18.636 (box 0.55404  cls 0.02522  dfl 0.00144  feat 0.00167)
+  Epoch 2/30  Batch 655/2188 (29.9%)  | Super 110.443 (box 1.3643  cls 0.9545  dfl 1.1325)  | Base 113.520 (box 1.3738  cls 1.0438  dfl 1.1300)  | KD 14.146 (box 0.41265  cls 0.02700  dfl 0.00098  feat 0.00142)
+  Epoch 2/30  Batch 873/2188 (39.9%)  | Super 125.506 (box 1.5138  cls 1.1651  dfl 1.2431)  | Base 127.678 (box 1.5387  cls 1.2191  dfl 1.2322)  | KD 15.652 (box 0.45942  cls 0.02694  dfl 0.00123  feat 0.00154)
+  Epoch 2/30  Batch 1091/2188 (49.9%)  | Super 105.175 (box 1.3602  cls 0.8433  dfl 1.0832)  | Base 107.833 (box 1.3836  cls 0.9093  dfl 1.0768)  | KD 13.283 (box 0.39005  cls 0.02278  dfl 0.00103  feat 0.00123)
+  Epoch 2/30  Batch 1309/2188 (59.8%)  | Super 104.276 (box 1.3291  cls 0.8433  dfl 1.0862)  | Base 107.034 (box 1.3313  cls 0.9379  dfl 1.0756)  | KD 13.378 (box 0.38859  cls 0.02707  dfl 0.00108  feat 0.00134)
+  Epoch 2/30  Batch 1527/2188 (69.8%)  | Super 118.380 (box 1.4809  cls 0.9943  dfl 1.2242)  | Base 122.042 (box 1.5035  cls 1.0890  dfl 1.2214)  | KD 14.767 (box 0.43131  cls 0.02749  dfl 0.00125  feat 0.00141)
+  Epoch 2/30  Batch 1745/2188 (79.8%)  | Super 108.609 (box 1.3612  cls 0.8874  dfl 1.1454)  | Base 111.243 (box 1.3872  cls 0.9417  dfl 1.1474)  | KD 12.854 (box 0.38224  cls 0.01723  dfl 0.00096  feat 0.00126)
+  Epoch 2/30  Batch 1963/2188 (89.7%)  | Super 111.819 (box 1.3489  cls 1.0087  dfl 1.1367)  | Base 112.624 (box 1.3283  cls 1.0640  dfl 1.1272)  | KD 12.969 (box 0.37753  cls 0.02533  dfl 0.00100  feat 0.00143)
+  Epoch 2/30  Batch 2181/2188 (99.7%)  | Super 111.338 (box 1.4181  cls 0.8827  dfl 1.1785)  | Base 115.583 (box 1.4490  cls 0.9688  dfl 1.1942)  | KD 13.971 (box 0.40687  cls 0.02717  dfl 0.00113  feat 0.00143)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 2/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.679      0.457      0.496      0.283
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 2/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.657      0.435      0.469      0.263
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 3/30  Batch 1/2188 (0.0%)  | Super 113.707 (box 1.4049  cls 0.9570  dfl 1.1914)  | Base 115.494 (box 1.4175  cls 1.0071  dfl 1.1846)  | KD 13.253 (box 0.38525  cls 0.02655  dfl 0.00102  feat 0.00134)
+  Epoch 3/30  Batch 219/2188 (10.0%)  | Super 116.657 (box 1.4946  cls 0.9661  dfl 1.1849)  | Base 118.912 (box 1.5179  cls 1.0123  dfl 1.1859)  | KD 13.031 (box 0.38466  cls 0.01983  dfl 0.00114  feat 0.00158)
+  Epoch 3/30  Batch 437/2188 (20.0%)  | Super 123.707 (box 1.6595  cls 1.0252  dfl 1.1812)  | Base 127.541 (box 1.6967  cls 1.0973  dfl 1.1916)  | KD 15.182 (box 0.45407  cls 0.01798  dfl 0.00106  feat 0.00134)
+  Epoch 3/30  Batch 655/2188 (29.9%)  | Super 106.851 (box 1.3612  cls 0.8535  dfl 1.1244)  | Base 109.285 (box 1.3795  cls 0.9123  dfl 1.1233)  | KD 11.704 (box 0.34429  cls 0.01922  dfl 0.00084  feat 0.00142)
+  Epoch 3/30  Batch 873/2188 (39.9%)  | Super 114.763 (box 1.4377  cls 1.0176  dfl 1.1310)  | Base 115.413 (box 1.4460  cls 1.0429  dfl 1.1178)  | KD 14.001 (box 0.41385  cls 0.02134  dfl 0.00110  feat 0.00124)
+  Epoch 3/30  Batch 1091/2188 (49.9%)  | Super 104.457 (box 1.3504  cls 0.7967  dfl 1.1172)  | Base 106.312 (box 1.3586  cls 0.8557  dfl 1.1079)  | KD 10.868 (box 0.32325  cls 0.01453  dfl 0.00079  feat 0.00107)
+  Epoch 3/30  Batch 1309/2188 (59.8%)  | Super 107.105 (box 1.3389  cls 0.8387  dfl 1.1694)  | Base 108.376 (box 1.3487  cls 0.8866  dfl 1.1514)  | KD 13.108 (box 0.38598  cls 0.02141  dfl 0.00098  feat 0.00126)
+  Epoch 3/30  Batch 1527/2188 (69.8%)  | Super 115.444 (box 1.4756  cls 0.9528  dfl 1.1793)  | Base 119.429 (box 1.5030  cls 1.0455  dfl 1.1837)  | KD 12.616 (box 0.36932  cls 0.02269  dfl 0.00094  feat 0.00129)
+  Epoch 3/30  Batch 1745/2188 (79.8%)  | Super 108.217 (box 1.3688  cls 0.8799  dfl 1.1331)  | Base 111.454 (box 1.3944  cls 0.9489  dfl 1.1396)  | KD 12.469 (box 0.36991  cls 0.01774  dfl 0.00092  feat 0.00108)
+  Epoch 3/30  Batch 1963/2188 (89.7%)  | Super 115.474 (box 1.4080  cls 1.0041  dfl 1.1965)  | Base 116.903 (box 1.4152  cls 1.0392  dfl 1.1989)  | KD 12.276 (box 0.35718  cls 0.02408  dfl 0.00090  feat 0.00147)
+  Epoch 3/30  Batch 2181/2188 (99.7%)  | Super 112.232 (box 1.4406  cls 0.8308  dfl 1.2358)  | Base 114.766 (box 1.4598  cls 0.9119  dfl 1.2148)  | KD 11.163 (box 0.32672  cls 0.02016  dfl 0.00086  feat 0.00112)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 3/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.696      0.478      0.521      0.299
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 3/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.587      0.454      0.501      0.283
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 4/30  Batch 1/2188 (0.0%)  | Super 113.876 (box 1.4285  cls 0.9095  dfl 1.2206)  | Base 115.062 (box 1.4252  cls 0.9676  dfl 1.2029)  | KD 12.794 (box 0.37801  cls 0.01964  dfl 0.00104  feat 0.00111)
+  Epoch 4/30  Batch 219/2188 (10.0%)  | Super 116.867 (box 1.4788  cls 0.9629  dfl 1.2103)  | Base 117.501 (box 1.4826  cls 1.0036  dfl 1.1858)  | KD 11.385 (box 0.33518  cls 0.01845  dfl 0.00089  feat 0.00125)
+  Epoch 4/30  Batch 437/2188 (20.0%)  | Super 119.848 (box 1.6071  cls 0.9657  dfl 1.1725)  | Base 122.193 (box 1.6382  cls 1.0101  dfl 1.1702)  | KD 14.650 (box 0.43845  cls 0.01717  dfl 0.00095  feat 0.00124)
+  Epoch 4/30  Batch 655/2188 (29.9%)  | Super 103.855 (box 1.3224  cls 0.8180  dfl 1.1051)  | Base 105.790 (box 1.3352  cls 0.8727  dfl 1.0981)  | KD 10.088 (box 0.30099  cls 0.01246  dfl 0.00066  feat 0.00112)
+  Epoch 4/30  Batch 873/2188 (39.9%)  | Super 118.989 (box 1.5050  cls 0.9910  dfl 1.2224)  | Base 121.914 (box 1.5308  cls 1.0497  dfl 1.2294)  | KD 14.050 (box 0.41835  cls 0.01858  dfl 0.00104  feat 0.00110)
+  Epoch 4/30  Batch 1091/2188 (49.9%)  | Super 104.857 (box 1.3492  cls 0.8289  dfl 1.0987)  | Base 106.720 (box 1.3614  cls 0.8835  dfl 1.0901)  | KD 10.890 (box 0.32395  cls 0.01449  dfl 0.00081  feat 0.00108)
+  Epoch 4/30  Batch 1309/2188 (59.8%)  | Super 103.574 (box 1.3269  cls 0.7823  dfl 1.1274)  | Base 103.851 (box 1.3278  cls 0.8061  dfl 1.1115)  | KD 12.263 (box 0.36734  cls 0.01375  dfl 0.00095  feat 0.00117)
+  Epoch 4/30  Batch 1527/2188 (69.8%)  | Super 112.373 (box 1.4471  cls 0.8969  dfl 1.1676)  | Base 114.367 (box 1.4519  cls 0.9574  dfl 1.1646)  | KD 12.507 (box 0.37047  cls 0.01831  dfl 0.00096  feat 0.00109)
+  Epoch 4/30  Batch 1745/2188 (79.8%)  | Super 106.341 (box 1.3589  cls 0.8421  dfl 1.1222)  | Base 107.805 (box 1.3728  cls 0.8879  dfl 1.1081)  | KD 12.051 (box 0.36068  cls 0.01401  dfl 0.00083  feat 0.00108)
+  Epoch 4/30  Batch 1963/2188 (89.7%)  | Super 109.202 (box 1.3651  cls 0.8926  dfl 1.1549)  | Base 109.630 (box 1.3523  cls 0.9482  dfl 1.1254)  | KD 11.305 (box 0.33430  cls 0.01676  dfl 0.00084  feat 0.00137)
+  Epoch 4/30  Batch 2181/2188 (99.7%)  | Super 110.393 (box 1.4262  cls 0.8027  dfl 1.2210)  | Base 110.933 (box 1.4068  cls 0.8638  dfl 1.1961)  | KD 11.218 (box 0.33236  cls 0.01598  dfl 0.00080  feat 0.00141)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 4/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.715      0.491       0.54      0.309
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 4/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.602      0.474      0.522      0.294
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 5/30  Batch 1/2188 (0.0%)  | Super 110.311 (box 1.3996  cls 0.8812  dfl 1.1665)  | Base 112.859 (box 1.4131  cls 0.9448  dfl 1.1689)  | KD 11.488 (box 0.34393  cls 0.01324  dfl 0.00082  feat 0.00100)
+  Epoch 5/30  Batch 219/2188 (10.0%)  | Super 110.823 (box 1.4683  cls 0.8991  dfl 1.0958)  | Base 111.089 (box 1.4380  cls 0.9571  dfl 1.0764)  | KD 12.240 (box 0.36134  cls 0.01907  dfl 0.00101  feat 0.00109)
+  Epoch 5/30  Batch 437/2188 (20.0%)  | Super 118.188 (box 1.5850  cls 0.9200  dfl 1.1883)  | Base 120.091 (box 1.5998  cls 0.9653  dfl 1.1877)  | KD 13.848 (box 0.41850  cls 0.01180  dfl 0.00101  feat 0.00145)
+  Epoch 5/30  Batch 655/2188 (29.9%)  | Super 103.937 (box 1.3637  cls 0.7854  dfl 1.0989)  | Base 106.712 (box 1.3737  cls 0.8611  dfl 1.0999)  | KD 10.971 (box 0.32788  cls 0.01320  dfl 0.00072  feat 0.00104)
+  Epoch 5/30  Batch 873/2188 (39.9%)  | Super 116.213 (box 1.4265  cls 1.0276  dfl 1.1776)  | Base 118.456 (box 1.4680  cls 1.0562  dfl 1.1776)  | KD 12.576 (box 0.37158  cls 0.01937  dfl 0.00090  feat 0.00116)
+  Epoch 5/30  Batch 1091/2188 (49.9%)  | Super 106.412 (box 1.3476  cls 0.8284  dfl 1.1494)  | Base 108.501 (box 1.3740  cls 0.8696  dfl 1.1471)  | KD 10.718 (box 0.31991  cls 0.01313  dfl 0.00076  feat 0.00114)
+  Epoch 5/30  Batch 1309/2188 (59.8%)  | Super 100.760 (box 1.2558  cls 0.7920  dfl 1.1010)  | Base 103.669 (box 1.2899  cls 0.8430  dfl 1.1068)  | KD 11.777 (box 0.35373  cls 0.01250  dfl 0.00088  feat 0.00094)
+  Epoch 5/30  Batch 1527/2188 (69.8%)  | Super 116.344 (box 1.5007  cls 0.9368  dfl 1.1983)  | Base 118.570 (box 1.5096  cls 1.0004  dfl 1.1953)  | KD 11.327 (box 0.33624  cls 0.01592  dfl 0.00085  feat 0.00097)
+  Epoch 5/30  Batch 1745/2188 (79.8%)  | Super 104.936 (box 1.3552  cls 0.8208  dfl 1.1032)  | Base 107.505 (box 1.3812  cls 0.8628  dfl 1.1155)  | KD 11.376 (box 0.34114  cls 0.01248  dfl 0.00086  feat 0.00100)
+  Epoch 5/30  Batch 1963/2188 (89.7%)  | Super 106.434 (box 1.3397  cls 0.8546  dfl 1.1317)  | Base 108.667 (box 1.3587  cls 0.9038  dfl 1.1333)  | KD 11.211 (box 0.33197  cls 0.01635  dfl 0.00079  feat 0.00123)
+  Epoch 5/30  Batch 2181/2188 (99.7%)  | Super 109.561 (box 1.4279  cls 0.7804  dfl 1.2154)  | Base 109.816 (box 1.4216  cls 0.8297  dfl 1.1804)  | KD 10.253 (box 0.30238  cls 0.01608  dfl 0.00072  feat 0.00124)

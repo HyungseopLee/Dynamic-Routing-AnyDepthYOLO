@@ -90,7 +90,8 @@ else:
   any-depth (L):
     ./pretrained/yolo-ad-exp8_105_epoch539_0.539_0.520.pt
   any-depth (S):
-    ./pretrained/yolo-ad-small_0.481_0.453.pt
+    ./pretrained/yolo-ad-small_0.481_0.453.pt (yolo-ad-v12.yaml)
+    ./pretrained/yolo-ad-small_0.479_0.451.pt (yolo-ad-v12-orig.yaml)
   
 # (--weight) leave empty for scratch training
 
@@ -118,13 +119,13 @@ python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
   --task detect \
   --config ./ultralytics/cfg/models/v12/yolo-ad-v12s-orig.yaml \
   --data bdd100k.yaml \
-  --epoch 50 \
+  --epoch 30 \
   --imgsz 1280 \
   --weight ./pretrained/yolo-ad-small_0.479_0.451.pt \
   --project ./runs/bdd100k/detect/anydepth-yolov12s \
-  2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s/50e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_orig.log
+  2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_orig.log
 
-  
+./runs/bdd100k/detect/anydepth-yolov12s/50e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_orig/weights/best.pt  
 
   --weight ./pretrained/yolo-ad-exp8_105_epoch539_0.539_0.520.pt \
 
