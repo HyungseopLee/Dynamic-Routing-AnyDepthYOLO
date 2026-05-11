@@ -1546,3 +1546,894 @@ bucket_view.sizes() = [128, 128, 1, 1], strides() = [128, 1, 1, 1] (Triggered in
   Epoch 5/30  Batch 1745/2188 (79.8%)  | Super 104.936 (box 1.3552  cls 0.8208  dfl 1.1032)  | Base 107.505 (box 1.3812  cls 0.8628  dfl 1.1155)  | KD 11.376 (box 0.34114  cls 0.01248  dfl 0.00086  feat 0.00100)
   Epoch 5/30  Batch 1963/2188 (89.7%)  | Super 106.434 (box 1.3397  cls 0.8546  dfl 1.1317)  | Base 108.667 (box 1.3587  cls 0.9038  dfl 1.1333)  | KD 11.211 (box 0.33197  cls 0.01635  dfl 0.00079  feat 0.00123)
   Epoch 5/30  Batch 2181/2188 (99.7%)  | Super 109.561 (box 1.4279  cls 0.7804  dfl 1.2154)  | Base 109.816 (box 1.4216  cls 0.8297  dfl 1.1804)  | KD 10.253 (box 0.30238  cls 0.01608  dfl 0.00072  feat 0.00124)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 5/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.616        0.5       0.55      0.316
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 5/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.612       0.48      0.531      0.301
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 6/30  Batch 1/2188 (0.0%)  | Super 108.607 (box 1.3753  cls 0.8692  dfl 1.1495)  | Base 111.719 (box 1.4083  cls 0.9233  dfl 1.1597)  | KD 11.667 (box 0.34850  cls 0.01416  dfl 0.00087  feat 0.00107)
+  Epoch 6/30  Batch 219/2188 (10.0%)  | Super 107.239 (box 1.3945  cls 0.8291  dfl 1.1276)  | Base 109.129 (box 1.4091  cls 0.8887  dfl 1.1124)  | KD 11.533 (box 0.34456  cls 0.01394  dfl 0.00083  feat 0.00106)
+  Epoch 6/30  Batch 437/2188 (20.0%)  | Super 118.141 (box 1.5870  cls 0.9413  dfl 1.1636)  | Base 120.049 (box 1.6140  cls 0.9779  dfl 1.1596)  | KD 13.220 (box 0.39952  cls 0.01167  dfl 0.00089  feat 0.00106)
+  Epoch 6/30  Batch 655/2188 (29.9%)  | Super 104.796 (box 1.3596  cls 0.7739  dfl 1.1414)  | Base 107.121 (box 1.3704  cls 0.8391  dfl 1.1379)  | KD 10.207 (box 0.30286  cls 0.01442  dfl 0.00071  feat 0.00100)
+  Epoch 6/30  Batch 873/2188 (39.9%)  | Super 115.536 (box 1.4541  cls 0.9700  dfl 1.1864)  | Base 117.712 (box 1.4779  cls 1.0127  dfl 1.1878)  | KD 12.049 (box 0.36241  cls 0.01221  dfl 0.00089  feat 0.00101)
+  Epoch 6/30  Batch 1091/2188 (49.9%)  | Super 102.178 (box 1.3427  cls 0.7584  dfl 1.0920)  | Base 103.645 (box 1.3557  cls 0.7945  dfl 1.0887)  | KD 9.808 (box 0.29369  cls 0.01104  dfl 0.00068  feat 0.00109)
+  Epoch 6/30  Batch 1309/2188 (59.8%)  | Super 104.685 (box 1.3428  cls 0.7877  dfl 1.1409)  | Base 107.066 (box 1.3556  cls 0.8428  dfl 1.1474)  | KD 10.809 (box 0.31790  cls 0.01808  dfl 0.00082  feat 0.00096)
+  Epoch 6/30  Batch 1527/2188 (69.8%)  | Super 110.332 (box 1.4067  cls 0.8732  dfl 1.1680)  | Base 113.773 (box 1.4430  cls 0.9297  dfl 1.1827)  | KD 10.908 (box 0.32216  cls 0.01662  dfl 0.00091  feat 0.00119)
+  Epoch 6/30  Batch 1745/2188 (79.8%)  | Super 99.207 (box 1.2826  cls 0.7596  dfl 1.0581)  | Base 101.047 (box 1.2903  cls 0.8093  dfl 1.0581)  | KD 10.508 (box 0.31460  cls 0.01212  dfl 0.00078  feat 0.00088)
+  Epoch 6/30  Batch 1963/2188 (89.7%)  | Super 107.689 (box 1.3509  cls 0.8575  dfl 1.1569)  | Base 107.696 (box 1.3421  cls 0.8799  dfl 1.1435)  | KD 11.165 (box 0.33379  cls 0.01305  dfl 0.00083  feat 0.00123)
+  Epoch 6/30  Batch 2181/2188 (99.7%)  | Super 106.742 (box 1.4092  cls 0.7466  dfl 1.1798)  | Base 107.006 (box 1.3912  cls 0.7872  dfl 1.1655)  | KD 10.446 (box 0.31255  cls 0.01198  dfl 0.00084  feat 0.00105)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 6/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.618      0.506      0.557      0.321
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 6/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578       0.61      0.483      0.538      0.305
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 7/30  Batch 1/2188 (0.0%)  | Super 108.211 (box 1.4082  cls 0.8133  dfl 1.1601)  | Base 109.934 (box 1.4261  cls 0.8526  dfl 1.1568)  | KD 11.083 (box 0.32916  cls 0.01547  dfl 0.00071  feat 0.00099)
+  Epoch 7/30  Batch 219/2188 (10.0%)  | Super 113.420 (box 1.4919  cls 0.9061  dfl 1.1464)  | Base 115.789 (box 1.5119  cls 0.9594  dfl 1.1471)  | KD 11.766 (box 0.34429  cls 0.02137  dfl 0.00097  feat 0.00105)
+  Epoch 7/30  Batch 437/2188 (20.0%)  | Super 114.217 (box 1.5755  cls 0.8618  dfl 1.1320)  | Base 116.188 (box 1.5873  cls 0.9107  dfl 1.1329)  | KD 12.087 (box 0.36632  cls 0.00956  dfl 0.00076  feat 0.00109)
+  Epoch 7/30  Batch 655/2188 (29.9%)  | Super 100.987 (box 1.3216  cls 0.7569  dfl 1.0774)  | Base 101.620 (box 1.3156  cls 0.7858  dfl 1.0743)  | KD 9.689 (box 0.29241  cls 0.00883  dfl 0.00067  feat 0.00087)
+  Epoch 7/30  Batch 873/2188 (39.9%)  | Super 114.439 (box 1.4588  cls 0.9513  dfl 1.1661)  | Base 115.558 (box 1.4568  cls 0.9967  dfl 1.1577)  | KD 12.043 (box 0.36081  cls 0.01367  dfl 0.00092  feat 0.00095)
+  Epoch 7/30  Batch 1091/2188 (49.9%)  | Super 99.264 (box 1.3004  cls 0.7467  dfl 1.0549)  | Base 100.479 (box 1.3107  cls 0.7748  dfl 1.0545)  | KD 10.043 (box 0.30219  cls 0.01002  dfl 0.00072  feat 0.00090)
+  Epoch 7/30  Batch 1309/2188 (59.8%)  | Super 102.795 (box 1.3156  cls 0.7563  dfl 1.1405)  | Base 104.203 (box 1.3140  cls 0.8188  dfl 1.1235)  | KD 10.738 (box 0.32142  cls 0.01231  dfl 0.00084  feat 0.00099)
+  Epoch 7/30  Batch 1527/2188 (69.8%)  | Super 110.243 (box 1.4099  cls 0.8916  dfl 1.1436)  | Base 112.164 (box 1.4211  cls 0.9447  dfl 1.1394)  | KD 10.944 (box 0.32494  cls 0.01512  dfl 0.00087  feat 0.00109)
+  Epoch 7/30  Batch 1745/2188 (79.8%)  | Super 103.206 (box 1.3343  cls 0.7935  dfl 1.0974)  | Base 105.669 (box 1.3627  cls 0.8459  dfl 1.0936)  | KD 10.894 (box 0.32924  cls 0.00947  dfl 0.00078  feat 0.00095)
+  Epoch 7/30  Batch 1963/2188 (89.7%)  | Super 107.997 (box 1.3852  cls 0.8649  dfl 1.1248)  | Base 108.245 (box 1.3746  cls 0.8940  dfl 1.1141)  | KD 11.159 (box 0.33395  cls 0.01282  dfl 0.00090  feat 0.00105)
+  Epoch 7/30  Batch 2181/2188 (99.7%)  | Super 110.508 (box 1.4509  cls 0.7546  dfl 1.2478)  | Base 112.056 (box 1.4541  cls 0.8105  dfl 1.2372)  | KD 9.862 (box 0.28925  cls 0.01702  dfl 0.00070  feat 0.00123)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 7/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.624      0.503      0.559      0.323
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 7/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.612      0.487      0.541      0.308
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 8/30  Batch 1/2188 (0.0%)  | Super 108.893 (box 1.3708  cls 0.8681  dfl 1.1640)  | Base 111.416 (box 1.3904  cls 0.9211  dfl 1.1702)  | KD 10.992 (box 0.32729  cls 0.01451  dfl 0.00076  feat 0.00094)
+  Epoch 8/30  Batch 219/2188 (10.0%)  | Super 105.294 (box 1.4046  cls 0.7970  dfl 1.0888)  | Base 107.368 (box 1.4347  cls 0.8288  dfl 1.0918)  | KD 10.112 (box 0.30026  cls 0.01398  dfl 0.00070  feat 0.00107)
+  Epoch 8/30  Batch 437/2188 (20.0%)  | Super 115.853 (box 1.5816  cls 0.9052  dfl 1.1336)  | Base 118.398 (box 1.5994  cls 0.9549  dfl 1.1457)  | KD 12.990 (box 0.39254  cls 0.01148  dfl 0.00084  feat 0.00106)
+  Epoch 8/30  Batch 655/2188 (29.9%)  | Super 99.180 (box 1.2743  cls 0.7586  dfl 1.0665)  | Base 100.845 (box 1.2854  cls 0.7976  dfl 1.0684)  | KD 9.689 (box 0.28939  cls 0.01183  dfl 0.00065  feat 0.00093)
+  Epoch 8/30  Batch 873/2188 (39.9%)  | Super 120.590 (box 1.5410  cls 0.9868  dfl 1.2406)  | Base 122.549 (box 1.5507  cls 1.0436  dfl 1.2354)  | KD 11.959 (box 0.35889  cls 0.01298  dfl 0.00082  feat 0.00103)
+  Epoch 8/30  Batch 1091/2188 (49.9%)  | Super 99.764 (box 1.2930  cls 0.7333  dfl 1.0913)  | Base 101.756 (box 1.3147  cls 0.7710  dfl 1.0943)  | KD 9.950 (box 0.30147  cls 0.00783  dfl 0.00082  feat 0.00081)
+  Epoch 8/30  Batch 1309/2188 (59.8%)  | Super 100.921 (box 1.2859  cls 0.7555  dfl 1.1124)  | Base 101.354 (box 1.2809  cls 0.7895  dfl 1.0969)  | KD 10.385 (box 0.30991  cls 0.01295  dfl 0.00078  feat 0.00091)
+  Epoch 8/30  Batch 1527/2188 (69.8%)  | Super 113.604 (box 1.4494  cls 0.9419  dfl 1.1589)  | Base 114.631 (box 1.4551  cls 0.9753  dfl 1.1518)  | KD 10.688 (box 0.31843  cls 0.01372  dfl 0.00074  feat 0.00111)
+  Epoch 8/30  Batch 1745/2188 (79.8%)  | Super 104.141 (box 1.3392  cls 0.7988  dfl 1.1164)  | Base 107.035 (box 1.3785  cls 0.8469  dfl 1.1195)  | KD 10.357 (box 0.31404  cls 0.00785  dfl 0.00075  feat 0.00101)
+  Epoch 8/30  Batch 1963/2188 (89.7%)  | Super 104.858 (box 1.3373  cls 0.8210  dfl 1.1185)  | Base 107.223 (box 1.3535  cls 0.8764  dfl 1.1208)  | KD 9.865 (box 0.29531  cls 0.01103  dfl 0.00072  feat 0.00123)
+  Epoch 8/30  Batch 2181/2188 (99.7%)  | Super 106.696 (box 1.3798  cls 0.7681  dfl 1.1863)  | Base 108.232 (box 1.3936  cls 0.8045  dfl 1.1841)  | KD 9.710 (box 0.28794  cls 0.01367  dfl 0.00070  feat 0.00112)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 8/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.628       0.51      0.565      0.327
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 8/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.611      0.494      0.546      0.312
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 9/30  Batch 1/2188 (0.0%)  | Super 103.278 (box 1.3317  cls 0.8133  dfl 1.0824)  | Base 105.205 (box 1.3491  cls 0.8551  dfl 1.0835)  | KD 11.838 (box 0.35316  cls 0.01507  dfl 0.00082  feat 0.00089)
+  Epoch 9/30  Batch 219/2188 (10.0%)  | Super 112.522 (box 1.4800  cls 0.8761  dfl 1.1602)  | Base 115.433 (box 1.5097  cls 0.9293  dfl 1.1683)  | KD 10.252 (box 0.30707  cls 0.01174  dfl 0.00070  feat 0.00086)
+  Epoch 9/30  Batch 437/2188 (20.0%)  | Super 117.652 (box 1.6172  cls 0.8940  dfl 1.1653)  | Base 118.548 (box 1.6198  cls 0.9252  dfl 1.1595)  | KD 11.386 (box 0.34413  cls 0.00982  dfl 0.00072  feat 0.00115)
+  Epoch 9/30  Batch 655/2188 (29.9%)  | Super 98.898 (box 1.3087  cls 0.7178  dfl 1.0641)  | Base 100.167 (box 1.3185  cls 0.7525  dfl 1.0593)  | KD 8.933 (box 0.26869  cls 0.00898  dfl 0.00064  feat 0.00085)
+  Epoch 9/30  Batch 873/2188 (39.9%)  | Super 114.697 (box 1.4608  cls 0.9339  dfl 1.1896)  | Base 115.941 (box 1.4638  cls 0.9786  dfl 1.1808)  | KD 11.263 (box 0.33730  cls 0.01302  dfl 0.00079  feat 0.00085)
+  Epoch 9/30  Batch 1091/2188 (49.9%)  | Super 102.454 (box 1.3250  cls 0.7642  dfl 1.1124)  | Base 103.997 (box 1.3590  cls 0.7845  dfl 1.1063)  | KD 10.043 (box 0.30119  cls 0.01101  dfl 0.00071  feat 0.00093)
+  Epoch 9/30  Batch 1309/2188 (59.8%)  | Super 102.842 (box 1.3169  cls 0.7716  dfl 1.1254)  | Base 103.767 (box 1.3182  cls 0.8139  dfl 1.1106)  | KD 10.868 (box 0.32577  cls 0.01211  dfl 0.00082  feat 0.00093)
+  Epoch 9/30  Batch 1527/2188 (69.8%)  | Super 109.222 (box 1.4093  cls 0.8615  dfl 1.1424)  | Base 111.321 (box 1.4285  cls 0.9042  dfl 1.1460)  | KD 10.732 (box 0.31829  cls 0.01516  dfl 0.00084  feat 0.00107)
+  Epoch 9/30  Batch 1745/2188 (79.8%)  | Super 101.146 (box 1.2982  cls 0.7661  dfl 1.0965)  | Base 103.043 (box 1.3182  cls 0.8041  dfl 1.0978)  | KD 10.438 (box 0.31109  cls 0.01347  dfl 0.00073  feat 0.00088)
+  Epoch 9/30  Batch 1963/2188 (89.7%)  | Super 99.639 (box 1.2663  cls 0.7618  dfl 1.0857)  | Base 102.555 (box 1.3036  cls 0.8102  dfl 1.0910)  | KD 10.038 (box 0.29850  cls 0.01336  dfl 0.00076  feat 0.00107)
+  Epoch 9/30  Batch 2181/2188 (99.7%)  | Super 108.562 (box 1.4010  cls 0.7942  dfl 1.1975)  | Base 110.306 (box 1.4214  cls 0.8413  dfl 1.1844)  | KD 10.958 (box 0.32397  cls 0.01666  dfl 0.00083  feat 0.00099)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 9/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.625      0.514      0.569      0.331
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 9/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.616      0.496      0.549      0.315
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 10/30  Batch 1/2188 (0.0%)  | Super 108.587 (box 1.3751  cls 0.8486  dfl 1.1696)  | Base 111.641 (box 1.4025  cls 0.9301  dfl 1.1562)  | KD 10.943 (box 0.32184  cls 0.01832  dfl 0.00081  feat 0.00100)
+  Epoch 10/30  Batch 219/2188 (10.0%)  | Super 109.059 (box 1.4061  cls 0.8346  dfl 1.1674)  | Base 111.024 (box 1.4319  cls 0.8722  dfl 1.1654)  | KD 9.843 (box 0.29138  cls 0.01442  dfl 0.00072  feat 0.00107)
+  Epoch 10/30  Batch 437/2188 (20.0%)  | Super 116.044 (box 1.5674  cls 0.8845  dfl 1.1745)  | Base 118.764 (box 1.6032  cls 0.9176  dfl 1.1906)  | KD 12.583 (box 0.37847  cls 0.01281  dfl 0.00095  feat 0.00099)
+  Epoch 10/30  Batch 655/2188 (29.9%)  | Super 104.173 (box 1.3517  cls 0.7892  dfl 1.1145)  | Base 105.723 (box 1.3657  cls 0.8287  dfl 1.1094)  | KD 9.769 (box 0.29300  cls 0.01058  dfl 0.00074  feat 0.00097)
+  Epoch 10/30  Batch 873/2188 (39.9%)  | Super 115.507 (box 1.4656  cls 0.9480  dfl 1.1960)  | Base 117.407 (box 1.4816  cls 0.9902  dfl 1.1972)  | KD 11.464 (box 0.34618  cls 0.01017  dfl 0.00079  feat 0.00111)
+  Epoch 10/30  Batch 1091/2188 (49.9%)  | Super 101.315 (box 1.3283  cls 0.7550  dfl 1.0828)  | Base 102.598 (box 1.3344  cls 0.7840  dfl 1.0878)  | KD 10.198 (box 0.30723  cls 0.00986  dfl 0.00073  feat 0.00088)
+  Epoch 10/30  Batch 1309/2188 (59.8%)  | Super 101.927 (box 1.2883  cls 0.7764  dfl 1.1206)  | Base 103.464 (box 1.2962  cls 0.8084  dfl 1.1287)  | KD 10.658 (box 0.32220  cls 0.00912  dfl 0.00077  feat 0.00096)
+  Epoch 10/30  Batch 1527/2188 (69.8%)  | Super 110.455 (box 1.4144  cls 0.8871  dfl 1.1502)  | Base 112.306 (box 1.4218  cls 0.9396  dfl 1.1482)  | KD 11.900 (box 0.35160  cls 0.01815  dfl 0.00111  feat 0.00102)
+  Epoch 10/30  Batch 1745/2188 (79.8%)  | Super 101.993 (box 1.3267  cls 0.7661  dfl 1.0945)  | Base 105.147 (box 1.3569  cls 0.8345  dfl 1.0944)  | KD 10.514 (box 0.31720  cls 0.00961  dfl 0.00080  feat 0.00095)
+  Epoch 10/30  Batch 1963/2188 (89.7%)  | Super 102.858 (box 1.3020  cls 0.7761  dfl 1.1363)  | Base 105.413 (box 1.3325  cls 0.8171  dfl 1.1446)  | KD 9.317 (box 0.27765  cls 0.01162  dfl 0.00066  feat 0.00121)
+  Epoch 10/30  Batch 2181/2188 (99.7%)  | Super 107.593 (box 1.4132  cls 0.7745  dfl 1.1746)  | Base 109.435 (box 1.4103  cls 0.8393  dfl 1.1702)  | KD 9.517 (box 0.28362  cls 0.01214  dfl 0.00067  feat 0.00096)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 10/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.632      0.514       0.57      0.331
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 10/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578       0.62      0.498      0.552      0.317
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 11/30  Batch 1/2188 (0.0%)  | Super 103.541 (box 1.3301  cls 0.7861  dfl 1.1195)  | Base 107.756 (box 1.3759  cls 0.8538  dfl 1.1377)  | KD 11.099 (box 0.33121  cls 0.01389  dfl 0.00079  feat 0.00097)
+  Epoch 11/30  Batch 219/2188 (10.0%)  | Super 116.155 (box 1.5518  cls 0.8890  dfl 1.1891)  | Base 118.387 (box 1.5594  cls 0.9430  dfl 1.1971)  | KD 10.528 (box 0.31322  cls 0.01402  dfl 0.00074  feat 0.00101)
+  Epoch 11/30  Batch 437/2188 (20.0%)  | Super 114.022 (box 1.5584  cls 0.8827  dfl 1.1221)  | Base 116.505 (box 1.5859  cls 0.9390  dfl 1.1159)  | KD 12.212 (box 0.36647  cls 0.01337  dfl 0.00077  feat 0.00103)
+  Epoch 11/30  Batch 655/2188 (29.9%)  | Super 100.012 (box 1.3014  cls 0.7398  dfl 1.0842)  | Base 100.909 (box 1.3032  cls 0.7819  dfl 1.0683)  | KD 9.966 (box 0.29945  cls 0.01042  dfl 0.00069  feat 0.00088)
+  Epoch 11/30  Batch 873/2188 (39.9%)  | Super 118.611 (box 1.5118  cls 0.9705  dfl 1.2243)  | Base 120.841 (box 1.5390  cls 1.0082  dfl 1.2290)  | KD 12.313 (box 0.36938  cls 0.01350  dfl 0.00086  feat 0.00104)
+  Epoch 11/30  Batch 1091/2188 (49.9%)  | Super 100.826 (box 1.3316  cls 0.7386  dfl 1.0806)  | Base 101.711 (box 1.3358  cls 0.7628  dfl 1.0799)  | KD 9.639 (box 0.28979  cls 0.00986  dfl 0.00074  feat 0.00082)
+  Epoch 11/30  Batch 1309/2188 (59.8%)  | Super 95.530 (box 1.2231  cls 0.7212  dfl 1.0410)  | Base 96.140 (box 1.2238  cls 0.7419  dfl 1.0386)  | KD 9.845 (box 0.29620  cls 0.00986  dfl 0.00069  feat 0.00091)
+  Epoch 11/30  Batch 1527/2188 (69.8%)  | Super 110.475 (box 1.4338  cls 0.8794  dfl 1.1392)  | Base 112.796 (box 1.4585  cls 0.9251  dfl 1.1413)  | KD 10.268 (box 0.30641  cls 0.01271  dfl 0.00076  feat 0.00099)
+  Epoch 11/30  Batch 1745/2188 (79.8%)  | Super 102.542 (box 1.3284  cls 0.7820  dfl 1.0940)  | Base 104.569 (box 1.3392  cls 0.8265  dfl 1.1021)  | KD 10.338 (box 0.31306  cls 0.00830  dfl 0.00080  feat 0.00090)
+  Epoch 11/30  Batch 1963/2188 (89.7%)  | Super 101.367 (box 1.2993  cls 0.7856  dfl 1.0828)  | Base 103.308 (box 1.3229  cls 0.8224  dfl 1.0831)  | KD 9.802 (box 0.29606  cls 0.00847  dfl 0.00072  feat 0.00105)
+  Epoch 11/30  Batch 2181/2188 (99.7%)  | Super 108.146 (box 1.3949  cls 0.7669  dfl 1.2177)  | Base 111.426 (box 1.4296  cls 0.8320  dfl 1.2205)  | KD 10.368 (box 0.30338  cls 0.01888  dfl 0.00074  feat 0.00102)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 11/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.735      0.514      0.571      0.333
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 11/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.612      0.502      0.555      0.319
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 12/30  Batch 1/2188 (0.0%)  | Super 105.804 (box 1.3546  cls 0.7941  dfl 1.1577)  | Base 106.880 (box 1.3593  cls 0.8362  dfl 1.1445)  | KD 10.625 (box 0.31672  cls 0.01366  dfl 0.00083  feat 0.00081)
+  Epoch 12/30  Batch 219/2188 (10.0%)  | Super 111.652 (box 1.4683  cls 0.8545  dfl 1.1663)  | Base 112.155 (box 1.4694  cls 0.8863  dfl 1.1492)  | KD 10.047 (box 0.29661  cls 0.01563  dfl 0.00074  feat 0.00098)
+  Epoch 12/30  Batch 437/2188 (20.0%)  | Super 112.688 (box 1.5260  cls 0.8890  dfl 1.1065)  | Base 115.265 (box 1.5587  cls 0.9258  dfl 1.1176)  | KD 11.512 (box 0.34848  cls 0.00958  dfl 0.00068  feat 0.00100)
+  Epoch 12/30  Batch 655/2188 (29.9%)  | Super 100.309 (box 1.3073  cls 0.7381  dfl 1.0892)  | Base 101.186 (box 1.3098  cls 0.7688  dfl 1.0835)  | KD 8.775 (box 0.26428  cls 0.00842  dfl 0.00059  feat 0.00091)
+  Epoch 12/30  Batch 873/2188 (39.9%)  | Super 118.681 (box 1.4875  cls 0.9828  dfl 1.2385)  | Base 121.843 (box 1.5212  cls 1.0403  dfl 1.2461)  | KD 10.762 (box 0.32286  cls 0.01171  dfl 0.00075  feat 0.00098)
+  Epoch 12/30  Batch 1091/2188 (49.9%)  | Super 98.678 (box 1.3033  cls 0.7255  dfl 1.0548)  | Base 99.537 (box 1.3113  cls 0.7480  dfl 1.0513)  | KD 9.110 (box 0.27486  cls 0.00836  dfl 0.00067  feat 0.00082)
+  Epoch 12/30  Batch 1309/2188 (59.8%)  | Super 99.737 (box 1.2518  cls 0.7733  dfl 1.0917)  | Base 101.508 (box 1.2859  cls 0.8014  dfl 1.0848)  | KD 10.518 (box 0.31409  cls 0.01259  dfl 0.00097  feat 0.00104)
+  Epoch 12/30  Batch 1527/2188 (69.8%)  | Super 110.535 (box 1.4341  cls 0.8492  dfl 1.1709)  | Base 112.647 (box 1.4636  cls 0.8955  dfl 1.1611)  | KD 10.640 (box 0.31294  cls 0.01789  dfl 0.00072  feat 0.00093)
+  Epoch 12/30  Batch 1745/2188 (79.8%)  | Super 101.597 (box 1.3429  cls 0.7251  dfl 1.1069)  | Base 103.110 (box 1.3545  cls 0.7702  dfl 1.0974)  | KD 10.018 (box 0.30145  cls 0.01001  dfl 0.00073  feat 0.00088)
+  Epoch 12/30  Batch 1963/2188 (89.7%)  | Super 99.823 (box 1.2808  cls 0.7959  dfl 1.0427)  | Base 100.935 (box 1.2900  cls 0.8337  dfl 1.0305)  | KD 11.321 (box 0.33932  cls 0.01263  dfl 0.00078  feat 0.00105)
+  Epoch 12/30  Batch 2181/2188 (99.7%)  | Super 106.273 (box 1.3710  cls 0.7869  dfl 1.1632)  | Base 107.015 (box 1.3757  cls 0.8158  dfl 1.1527)  | KD 9.655 (box 0.28486  cls 0.01514  dfl 0.00074  feat 0.00097)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 12/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.639      0.511      0.573      0.333
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 12/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.617      0.504      0.558       0.32
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 13/30  Batch 1/2188 (0.0%)  | Super 105.650 (box 1.3695  cls 0.8020  dfl 1.1301)  | Base 110.223 (box 1.4197  cls 0.8633  dfl 1.1615)  | KD 11.546 (box 0.33634  cls 0.02271  dfl 0.00085  feat 0.00091)
+  Epoch 13/30  Batch 219/2188 (10.0%)  | Super 109.400 (box 1.4419  cls 0.8373  dfl 1.1395)  | Base 110.511 (box 1.4481  cls 0.8696  dfl 1.1357)  | KD 9.895 (box 0.29799  cls 0.00955  dfl 0.00075  feat 0.00092)
+  Epoch 13/30  Batch 437/2188 (20.0%)  | Super 114.843 (box 1.5736  cls 0.8532  dfl 1.1621)  | Base 116.024 (box 1.5811  cls 0.8860  dfl 1.1587)  | KD 11.686 (box 0.35211  cls 0.01129  dfl 0.00071  feat 0.00107)
+  Epoch 13/30  Batch 655/2188 (29.9%)  | Super 100.207 (box 1.3184  cls 0.7342  dfl 1.0788)  | Base 101.015 (box 1.3234  cls 0.7695  dfl 1.0639)  | KD 9.298 (box 0.27803  cls 0.01100  dfl 0.00067  feat 0.00086)
+  Epoch 13/30  Batch 873/2188 (39.9%)  | Super 110.914 (box 1.4128  cls 0.9138  dfl 1.1395)  | Base 112.821 (box 1.4297  cls 0.9563  dfl 1.1397)  | KD 10.851 (box 0.32583  cls 0.01160  dfl 0.00075  feat 0.00092)
+  Epoch 13/30  Batch 1091/2188 (49.9%)  | Super 100.937 (box 1.3191  cls 0.7379  dfl 1.0973)  | Base 102.283 (box 1.3309  cls 0.7667  dfl 1.0987)  | KD 8.936 (box 0.26940  cls 0.00838  dfl 0.00063  feat 0.00084)
+  Epoch 13/30  Batch 1309/2188 (59.8%)  | Super 98.357 (box 1.2315  cls 0.7345  dfl 1.1076)  | Base 99.513 (box 1.2496  cls 0.7616  dfl 1.0986)  | KD 9.641 (box 0.29092  cls 0.00875  dfl 0.00070  feat 0.00092)
+  Epoch 13/30  Batch 1527/2188 (69.8%)  | Super 110.373 (box 1.4042  cls 0.8953  dfl 1.1497)  | Base 111.554 (box 1.4233  cls 0.9162  dfl 1.1465)  | KD 10.911 (box 0.32350  cls 0.01551  dfl 0.00089  feat 0.00105)
+  Epoch 13/30  Batch 1745/2188 (79.8%)  | Super 102.808 (box 1.3388  cls 0.7527  dfl 1.1213)  | Base 104.918 (box 1.3638  cls 0.7984  dfl 1.1165)  | KD 9.689 (box 0.28875  cls 0.01231  dfl 0.00071  feat 0.00101)
+  Epoch 13/30  Batch 1963/2188 (89.7%)  | Super 105.931 (box 1.3625  cls 0.8075  dfl 1.1403)  | Base 107.118 (box 1.3787  cls 0.8343  dfl 1.1344)  | KD 9.572 (box 0.28761  cls 0.00977  dfl 0.00075  feat 0.00101)
+  Epoch 13/30  Batch 2181/2188 (99.7%)  | Super 104.787 (box 1.3690  cls 0.7289  dfl 1.1766)  | Base 106.803 (box 1.3866  cls 0.7823  dfl 1.1687)  | KD 9.043 (box 0.26665  cls 0.01419  dfl 0.00062  feat 0.00114)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 13/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.642      0.518      0.577      0.336
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 13/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.615      0.505      0.559      0.323
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 14/30  Batch 1/2188 (0.0%)  | Super 103.557 (box 1.3116  cls 0.7890  dfl 1.1355)  | Base 106.029 (box 1.3283  cls 0.8520  dfl 1.1331)  | KD 10.922 (box 0.32737  cls 0.01229  dfl 0.00085  feat 0.00080)
+  Epoch 14/30  Batch 219/2188 (10.0%)  | Super 110.041 (box 1.4442  cls 0.8370  dfl 1.1575)  | Base 111.833 (box 1.4619  cls 0.8774  dfl 1.1555)  | KD 9.937 (box 0.29897  cls 0.00990  dfl 0.00074  feat 0.00092)
+  Epoch 14/30  Batch 437/2188 (20.0%)  | Super 113.350 (box 1.5458  cls 0.8541  dfl 1.1423)  | Base 113.933 (box 1.5526  cls 0.8818  dfl 1.1259)  | KD 11.400 (box 0.34596  cls 0.00846  dfl 0.00073  feat 0.00110)
+  Epoch 14/30  Batch 655/2188 (29.9%)  | Super 100.270 (box 1.2902  cls 0.7593  dfl 1.0839)  | Base 102.276 (box 1.3091  cls 0.7968  dfl 1.0903)  | KD 9.254 (box 0.27749  cls 0.01022  dfl 0.00064  feat 0.00084)
+  Epoch 14/30  Batch 873/2188 (39.9%)  | Super 115.502 (box 1.4687  cls 0.9340  dfl 1.2067)  | Base 117.267 (box 1.4956  cls 0.9673  dfl 1.2017)  | KD 11.649 (box 0.35347  cls 0.00889  dfl 0.00076  feat 0.00092)
+  Epoch 14/30  Batch 1091/2188 (49.9%)  | Super 100.691 (box 1.3199  cls 0.7348  dfl 1.0919)  | Base 101.333 (box 1.3125  cls 0.7669  dfl 1.0873)  | KD 9.447 (box 0.28545  cls 0.00827  dfl 0.00069  feat 0.00082)
+  Epoch 14/30  Batch 1309/2188 (59.8%)  | Super 104.448 (box 1.3302  cls 0.7733  dfl 1.1606)  | Base 105.674 (box 1.3465  cls 0.7978  dfl 1.1581)  | KD 10.076 (box 0.30469  cls 0.00862  dfl 0.00072  feat 0.00085)
+  Epoch 14/30  Batch 1527/2188 (69.8%)  | Super 105.753 (box 1.3951  cls 0.8120  dfl 1.0977)  | Base 108.390 (box 1.4255  cls 0.8556  dfl 1.1061)  | KD 10.327 (box 0.30591  cls 0.01521  dfl 0.00075  feat 0.00085)
+  Epoch 14/30  Batch 1745/2188 (79.8%)  | Super 97.240 (box 1.2713  cls 0.7081  dfl 1.0593)  | Base 98.256 (box 1.2691  cls 0.7527  dfl 1.0486)  | KD 9.832 (box 0.29846  cls 0.00727  dfl 0.00066  feat 0.00085)
+  Epoch 14/30  Batch 1963/2188 (89.7%)  | Super 106.183 (box 1.3395  cls 0.8226  dfl 1.1560)  | Base 107.452 (box 1.3519  cls 0.8453  dfl 1.1607)  | KD 10.615 (box 0.31972  cls 0.01010  dfl 0.00072  feat 0.00117)
+  Epoch 14/30  Batch 2181/2188 (99.7%)  | Super 104.617 (box 1.3480  cls 0.7605  dfl 1.1607)  | Base 106.013 (box 1.3613  cls 0.7910  dfl 1.1606)  | KD 8.813 (box 0.26265  cls 0.01093  dfl 0.00065  feat 0.00119)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 14/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578       0.74       0.52      0.578      0.338
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 14/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.618      0.505      0.561      0.324
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 15/30  Batch 1/2188 (0.0%)  | Super 108.508 (box 1.3810  cls 0.8261  dfl 1.1837)  | Base 110.130 (box 1.4017  cls 0.8572  dfl 1.1826)  | KD 10.705 (box 0.32199  cls 0.01088  dfl 0.00082  feat 0.00084)
+  Epoch 15/30  Batch 219/2188 (10.0%)  | Super 113.413 (box 1.4963  cls 0.8492  dfl 1.1987)  | Base 115.581 (box 1.5255  cls 0.8877  dfl 1.1987)  | KD 10.526 (box 0.31459  cls 0.01260  dfl 0.00081  feat 0.00093)
+  Epoch 15/30  Batch 437/2188 (20.0%)  | Super 118.080 (box 1.6054  cls 0.8973  dfl 1.1873)  | Base 119.922 (box 1.6221  cls 0.9342  dfl 1.1913)  | KD 11.146 (box 0.33639  cls 0.01034  dfl 0.00066  feat 0.00092)
+  Epoch 15/30  Batch 655/2188 (29.9%)  | Super 99.540 (box 1.3078  cls 0.7285  dfl 1.0743)  | Base 100.926 (box 1.3215  cls 0.7610  dfl 1.0714)  | KD 8.705 (box 0.26083  cls 0.00977  dfl 0.00060  feat 0.00084)
+  Epoch 15/30  Batch 873/2188 (39.9%)  | Super 111.377 (box 1.4142  cls 0.9017  dfl 1.1646)  | Base 113.343 (box 1.4329  cls 0.9450  dfl 1.1641)  | KD 12.224 (box 0.36774  cls 0.01260  dfl 0.00088  feat 0.00079)
+  Epoch 15/30  Batch 1091/2188 (49.9%)  | Super 100.817 (box 1.3195  cls 0.7248  dfl 1.1062)  | Base 102.051 (box 1.3296  cls 0.7641  dfl 1.0955)  | KD 9.349 (box 0.28145  cls 0.00924  dfl 0.00069  feat 0.00080)
+  Epoch 15/30  Batch 1309/2188 (59.8%)  | Super 100.987 (box 1.3287  cls 0.7390  dfl 1.0881)  | Base 102.078 (box 1.3310  cls 0.7804  dfl 1.0785)  | KD 10.527 (box 0.31797  cls 0.00941  dfl 0.00074  feat 0.00086)
+  Epoch 15/30  Batch 1527/2188 (69.8%)  | Super 109.176 (box 1.4391  cls 0.8295  dfl 1.1431)  | Base 111.037 (box 1.4656  cls 0.8541  dfl 1.1502)  | KD 10.009 (box 0.29981  cls 0.01126  dfl 0.00083  feat 0.00087)
+  Epoch 15/30  Batch 1745/2188 (79.8%)  | Super 100.812 (box 1.3080  cls 0.7622  dfl 1.0802)  | Base 102.603 (box 1.3315  cls 0.8015  dfl 1.0733)  | KD 10.054 (box 0.30182  cls 0.01081  dfl 0.00067  feat 0.00088)
+  Epoch 15/30  Batch 1963/2188 (89.7%)  | Super 101.154 (box 1.2699  cls 0.7988  dfl 1.0923)  | Base 102.458 (box 1.2795  cls 0.8304  dfl 1.0919)  | KD 10.189 (box 0.30672  cls 0.00993  dfl 0.00074  feat 0.00100)
+  Epoch 15/30  Batch 2181/2188 (99.7%)  | Super 104.574 (box 1.3740  cls 0.7560  dfl 1.1379)  | Base 106.340 (box 1.3870  cls 0.7989  dfl 1.1373)  | KD 9.795 (box 0.29023  cls 0.01424  dfl 0.00063  feat 0.00101)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 15/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.636      0.522      0.579      0.338
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 15/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.625      0.509      0.564      0.325
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 16/30  Batch 1/2188 (0.0%)  | Super 106.467 (box 1.3575  cls 0.7999  dfl 1.1697)  | Base 109.601 (box 1.3854  cls 0.8628  dfl 1.1768)  | KD 10.865 (box 0.32495  cls 0.01296  dfl 0.00076  feat 0.00086)
+  Epoch 16/30  Batch 219/2188 (10.0%)  | Super 109.724 (box 1.4366  cls 0.8417  dfl 1.1506)  | Base 110.845 (box 1.4403  cls 0.8765  dfl 1.1471)  | KD 9.009 (box 0.26933  cls 0.01048  dfl 0.00073  feat 0.00098)
+  Epoch 16/30  Batch 437/2188 (20.0%)  | Super 114.028 (box 1.5713  cls 0.8452  dfl 1.1469)  | Base 115.516 (box 1.5779  cls 0.8873  dfl 1.1447)  | KD 10.008 (box 0.30235  cls 0.00895  dfl 0.00055  feat 0.00090)
+  Epoch 16/30  Batch 655/2188 (29.9%)  | Super 100.208 (box 1.3117  cls 0.7246  dfl 1.0952)  | Base 101.264 (box 1.3121  cls 0.7683  dfl 1.0840)  | KD 8.519 (box 0.25649  cls 0.00826  dfl 0.00060  feat 0.00086)
+  Epoch 16/30  Batch 873/2188 (39.9%)  | Super 112.585 (box 1.4125  cls 0.9141  dfl 1.1917)  | Base 113.786 (box 1.4292  cls 0.9535  dfl 1.1732)  | KD 11.585 (box 0.34885  cls 0.01145  dfl 0.00080  feat 0.00094)
+  Epoch 16/30  Batch 1091/2188 (49.9%)  | Super 98.534 (box 1.3154  cls 0.7124  dfl 1.0514)  | Base 100.793 (box 1.3335  cls 0.7586  dfl 1.0577)  | KD 9.237 (box 0.27607  cls 0.01115  dfl 0.00065  feat 0.00079)
+  Epoch 16/30  Batch 1309/2188 (59.8%)  | Super 97.867 (box 1.2216  cls 0.7543  dfl 1.0824)  | Base 99.196 (box 1.2442  cls 0.7705  dfl 1.0851)  | KD 10.333 (box 0.30633  cls 0.01498  dfl 0.00074  feat 0.00084)
+  Epoch 16/30  Batch 1527/2188 (69.8%)  | Super 106.307 (box 1.3790  cls 0.8077  dfl 1.1354)  | Base 108.267 (box 1.3936  cls 0.8503  dfl 1.1394)  | KD 9.980 (box 0.29759  cls 0.01259  dfl 0.00078  feat 0.00092)
+  Epoch 16/30  Batch 1745/2188 (79.8%)  | Super 103.237 (box 1.3335  cls 0.7768  dfl 1.1158)  | Base 105.260 (box 1.3540  cls 0.8172  dfl 1.1182)  | KD 10.728 (box 0.31881  cls 0.01479  dfl 0.00077  feat 0.00088)
+  Epoch 16/30  Batch 1963/2188 (89.7%)  | Super 101.075 (box 1.3107  cls 0.7595  dfl 1.0884)  | Base 102.028 (box 1.3228  cls 0.7677  dfl 1.0979)  | KD 10.438 (box 0.31323  cls 0.01114  dfl 0.00075  feat 0.00105)
+  Epoch 16/30  Batch 2181/2188 (99.7%)  | Super 102.149 (box 1.3221  cls 0.7669  dfl 1.1031)  | Base 104.672 (box 1.3474  cls 0.8144  dfl 1.1092)  | KD 9.520 (box 0.28246  cls 0.01341  dfl 0.00069  feat 0.00095)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 16/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.737      0.523      0.581      0.339
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 16/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.621       0.51      0.565      0.327
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 17/30  Batch 1/2188 (0.0%)  | Super 111.417 (box 1.4034  cls 0.8649  dfl 1.2135)  | Base 112.999 (box 1.4124  cls 0.9071  dfl 1.2117)  | KD 9.964 (box 0.29652  cls 0.01319  dfl 0.00074  feat 0.00093)
+  Epoch 17/30  Batch 219/2188 (10.0%)  | Super 107.405 (box 1.4136  cls 0.8077  dfl 1.1351)  | Base 109.473 (box 1.4588  cls 0.8272  dfl 1.1350)  | KD 9.706 (box 0.29005  cls 0.01163  dfl 0.00066  feat 0.00095)
+  Epoch 17/30  Batch 437/2188 (20.0%)  | Super 113.095 (box 1.5634  cls 0.8309  dfl 1.1399)  | Base 114.724 (box 1.5825  cls 0.8568  dfl 1.1459)  | KD 10.629 (box 0.32060  cls 0.00998  dfl 0.00066  feat 0.00093)
+  Epoch 17/30  Batch 655/2188 (29.9%)  | Super 104.092 (box 1.3567  cls 0.8035  dfl 1.0926)  | Base 105.828 (box 1.3680  cls 0.8514  dfl 1.0877)  | KD 10.317 (box 0.30825  cls 0.01250  dfl 0.00074  feat 0.00092)
+  Epoch 17/30  Batch 873/2188 (39.9%)  | Super 110.178 (box 1.4023  cls 0.8662  dfl 1.1746)  | Base 113.318 (box 1.4389  cls 0.9253  dfl 1.1770)  | KD 11.008 (box 0.33093  cls 0.01148  dfl 0.00078  feat 0.00082)
+  Epoch 17/30  Batch 1091/2188 (49.9%)  | Super 101.734 (box 1.3161  cls 0.7769  dfl 1.0862)  | Base 101.035 (box 1.3208  cls 0.7682  dfl 1.0683)  | KD 9.639 (box 0.28063  cls 0.01905  dfl 0.00063  feat 0.00090)
+  Epoch 17/30  Batch 1309/2188 (59.8%)  | Super 98.531 (box 1.2667  cls 0.7353  dfl 1.0771)  | Base 98.866 (box 1.2693  cls 0.7525  dfl 1.0678)  | KD 9.801 (box 0.29331  cls 0.01139  dfl 0.00065  feat 0.00092)
+  Epoch 17/30  Batch 1527/2188 (69.8%)  | Super 106.408 (box 1.3881  cls 0.8385  dfl 1.0987)  | Base 109.629 (box 1.4276  cls 0.8894  dfl 1.1090)  | KD 10.299 (box 0.30573  cls 0.01431  dfl 0.00088  feat 0.00092)
+  Epoch 17/30  Batch 1745/2188 (79.8%)  | Super 102.305 (box 1.3361  cls 0.7729  dfl 1.0880)  | Base 104.258 (box 1.3491  cls 0.8168  dfl 1.0921)  | KD 10.137 (box 0.30422  cls 0.01088  dfl 0.00079  feat 0.00087)
+  Epoch 17/30  Batch 1963/2188 (89.7%)  | Super 107.368 (box 1.3419  cls 0.8461  dfl 1.1672)  | Base 111.416 (box 1.3857  cls 0.9146  dfl 1.1814)  | KD 9.701 (box 0.28786  cls 0.01340  dfl 0.00076  feat 0.00114)
+  Epoch 17/30  Batch 2181/2188 (99.7%)  | Super 107.020 (box 1.3982  cls 0.7549  dfl 1.1913)  | Base 108.636 (box 1.4075  cls 0.7978  dfl 1.1895)  | KD 9.610 (box 0.28206  cls 0.01659  dfl 0.00065  feat 0.00102)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 17/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.632      0.525      0.579      0.339
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 17/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.622      0.513      0.568      0.327
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 18/30  Batch 1/2188 (0.0%)  | Super 105.341 (box 1.3522  cls 0.7911  dfl 1.1486)  | Base 105.976 (box 1.3438  cls 0.8431  dfl 1.1248)  | KD 11.208 (box 0.33046  cls 0.01814  dfl 0.00087  feat 0.00080)
+  Epoch 18/30  Batch 219/2188 (10.0%)  | Super 111.543 (box 1.4606  cls 0.8642  dfl 1.1609)  | Base 112.942 (box 1.4739  cls 0.8936  dfl 1.1619)  | KD 9.680 (box 0.29218  cls 0.00863  dfl 0.00079  feat 0.00088)
+  Epoch 18/30  Batch 437/2188 (20.0%)  | Super 113.679 (box 1.5590  cls 0.8253  dfl 1.1682)  | Base 115.739 (box 1.5825  cls 0.8647  dfl 1.1697)  | KD 10.334 (box 0.31278  cls 0.00865  dfl 0.00062  feat 0.00089)
+  Epoch 18/30  Batch 655/2188 (29.9%)  | Super 100.250 (box 1.3328  cls 0.7211  dfl 1.0789)  | Base 100.637 (box 1.3175  cls 0.7621  dfl 1.0653)  | KD 9.045 (box 0.26881  cls 0.01237  dfl 0.00066  feat 0.00082)
+  Epoch 18/30  Batch 873/2188 (39.9%)  | Super 112.085 (box 1.4155  cls 0.9279  dfl 1.1593)  | Base 114.351 (box 1.4323  cls 0.9722  dfl 1.1690)  | KD 11.775 (box 0.35379  cls 0.01231  dfl 0.00084  feat 0.00103)
+  Epoch 18/30  Batch 1091/2188 (49.9%)  | Super 98.936 (box 1.3084  cls 0.7257  dfl 1.0576)  | Base 100.087 (box 1.3210  cls 0.7483  dfl 1.0584)  | KD 9.480 (box 0.28562  cls 0.00913  dfl 0.00073  feat 0.00076)
+  Epoch 18/30  Batch 1309/2188 (59.8%)  | Super 100.007 (box 1.2646  cls 0.7413  dfl 1.1194)  | Base 100.508 (box 1.2679  cls 0.7536  dfl 1.1194)  | KD 9.758 (box 0.29465  cls 0.00875  dfl 0.00072  feat 0.00082)
+  Epoch 18/30  Batch 1527/2188 (69.8%)  | Super 109.063 (box 1.4115  cls 0.8473  dfl 1.1494)  | Base 112.447 (box 1.4450  cls 0.9194  dfl 1.1496)  | KD 10.930 (box 0.32435  cls 0.01537  dfl 0.00087  feat 0.00096)
+  Epoch 18/30  Batch 1745/2188 (79.8%)  | Super 105.758 (box 1.3420  cls 0.8177  dfl 1.1452)  | Base 107.982 (box 1.3599  cls 0.8716  dfl 1.1429)  | KD 10.744 (box 0.31759  cls 0.01631  dfl 0.00076  feat 0.00110)
+  Epoch 18/30  Batch 1963/2188 (89.7%)  | Super 103.486 (box 1.3260  cls 0.7887  dfl 1.1192)  | Base 105.261 (box 1.3417  cls 0.8352  dfl 1.1126)  | KD 10.071 (box 0.30127  cls 0.01164  dfl 0.00071  feat 0.00111)
+  Epoch 18/30  Batch 2181/2188 (99.7%)  | Super 105.648 (box 1.3556  cls 0.7861  dfl 1.1598)  | Base 106.298 (box 1.3655  cls 0.8099  dfl 1.1464)  | KD 9.884 (box 0.29126  cls 0.01596  dfl 0.00067  feat 0.00100)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 18/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.737      0.522      0.581       0.34
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 18/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.615      0.516      0.567      0.328
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 19/30  Batch 1/2188 (0.0%)  | Super 107.275 (box 1.3657  cls 0.8172  dfl 1.1694)  | Base 108.663 (box 1.3759  cls 0.8568  dfl 1.1630)  | KD 10.472 (box 0.31131  cls 0.01445  dfl 0.00071  feat 0.00079)
+  Epoch 19/30  Batch 219/2188 (10.0%)  | Super 111.186 (box 1.4724  cls 0.8698  dfl 1.1323)  | Base 112.555 (box 1.4836  cls 0.8970  dfl 1.1367)  | KD 9.845 (box 0.29187  cls 0.01419  dfl 0.00074  feat 0.00086)
+  Epoch 19/30  Batch 437/2188 (20.0%)  | Super 110.090 (box 1.5064  cls 0.8298  dfl 1.1042)  | Base 111.378 (box 1.5183  cls 0.8583  dfl 1.1039)  | KD 11.712 (box 0.35211  cls 0.01213  dfl 0.00076  feat 0.00099)
+  Epoch 19/30  Batch 655/2188 (29.9%)  | Super 99.763 (box 1.3065  cls 0.7388  dfl 1.0723)  | Base 100.956 (box 1.3132  cls 0.7649  dfl 1.0769)  | KD 8.780 (box 0.26216  cls 0.01082  dfl 0.00058  feat 0.00083)
+  Epoch 19/30  Batch 873/2188 (39.9%)  | Super 116.907 (box 1.4779  cls 0.9470  dfl 1.2285)  | Base 117.083 (box 1.4750  cls 0.9914  dfl 1.1924)  | KD 10.662 (box 0.31874  cls 0.01270  dfl 0.00075  feat 0.00100)
+  Epoch 19/30  Batch 1091/2188 (49.9%)  | Super 101.225 (box 1.3351  cls 0.7352  dfl 1.0929)  | Base 103.969 (box 1.3653  cls 0.7881  dfl 1.0957)  | KD 9.123 (box 0.27508  cls 0.00866  dfl 0.00060  feat 0.00077)
+  Epoch 19/30  Batch 1309/2188 (59.8%)  | Super 103.962 (box 1.3337  cls 0.7895  dfl 1.1256)  | Base 105.998 (box 1.3619  cls 0.8140  dfl 1.1366)  | KD 10.144 (box 0.30103  cls 0.01445  dfl 0.00068  feat 0.00084)
+  Epoch 19/30  Batch 1527/2188 (69.8%)  | Super 105.036 (box 1.3696  cls 0.7979  dfl 1.1148)  | Base 106.388 (box 1.3801  cls 0.8394  dfl 1.1051)  | KD 9.626 (box 0.28156  cls 0.01767  dfl 0.00070  feat 0.00088)
+  Epoch 19/30  Batch 1745/2188 (79.8%)  | Super 103.158 (box 1.3627  cls 0.7386  dfl 1.1223)  | Base 105.073 (box 1.3740  cls 0.7954  dfl 1.1142)  | KD 9.628 (box 0.28126  cls 0.01814  dfl 0.00063  feat 0.00085)
+  Epoch 19/30  Batch 1963/2188 (89.7%)  | Super 98.775 (box 1.2620  cls 0.7752  dfl 1.0496)  | Base 100.832 (box 1.2842  cls 0.8072  dfl 1.0596)  | KD 10.212 (box 0.30639  cls 0.01109  dfl 0.00077  feat 0.00088)
+  Epoch 19/30  Batch 2181/2188 (99.7%)  | Super 105.482 (box 1.3784  cls 0.7553  dfl 1.1625)  | Base 105.241 (box 1.3669  cls 0.7859  dfl 1.1360)  | KD 8.865 (box 0.26364  cls 0.01173  dfl 0.00066  feat 0.00099)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 19/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.739      0.523      0.582      0.341
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 19/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.624      0.511      0.568      0.329
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 20/30  Batch 1/2188 (0.0%)  | Super 105.707 (box 1.3725  cls 0.7800  dfl 1.1509)  | Base 106.693 (box 1.3722  cls 0.8221  dfl 1.1399)  | KD 10.706 (box 0.31986  cls 0.01303  dfl 0.00080  feat 0.00087)
+  Epoch 20/30  Batch 219/2188 (10.0%)  | Super 113.933 (box 1.4995  cls 0.8474  dfl 1.2134)  | Base 116.105 (box 1.5216  cls 0.8923  dfl 1.2145)  | KD 9.133 (box 0.27343  cls 0.01037  dfl 0.00061  feat 0.00100)
+  Epoch 20/30  Batch 437/2188 (20.0%)  | Super 112.178 (box 1.5426  cls 0.8131  dfl 1.1498)  | Base 114.549 (box 1.5642  cls 0.8663  dfl 1.1491)  | KD 11.051 (box 0.33388  cls 0.00983  dfl 0.00073  feat 0.00090)
+  Epoch 20/30  Batch 655/2188 (29.9%)  | Super 97.107 (box 1.2441  cls 0.7322  dfl 1.0583)  | Base 98.651 (box 1.2605  cls 0.7635  dfl 1.0589)  | KD 9.433 (box 0.28524  cls 0.00818  dfl 0.00059  feat 0.00077)
+  Epoch 20/30  Batch 873/2188 (39.9%)  | Super 113.455 (box 1.4515  cls 0.8950  dfl 1.1989)  | Base 115.962 (box 1.4799  cls 0.9371  dfl 1.2068)  | KD 10.971 (box 0.33046  cls 0.01076  dfl 0.00076  feat 0.00086)
+  Epoch 20/30  Batch 1091/2188 (49.9%)  | Super 98.634 (box 1.2980  cls 0.7154  dfl 1.0689)  | Base 101.116 (box 1.3234  cls 0.7715  dfl 1.0649)  | KD 9.311 (box 0.28083  cls 0.00869  dfl 0.00067  feat 0.00077)
+  Epoch 20/30  Batch 1309/2188 (59.8%)  | Super 99.348 (box 1.2537  cls 0.7379  dfl 1.1131)  | Base 100.457 (box 1.2581  cls 0.7774  dfl 1.1039)  | KD 10.302 (box 0.30745  cls 0.01278  dfl 0.00077  feat 0.00093)
+  Epoch 20/30  Batch 1527/2188 (69.8%)  | Super 104.186 (box 1.3471  cls 0.8159  dfl 1.0928)  | Base 106.142 (box 1.3753  cls 0.8491  dfl 1.0925)  | KD 9.795 (box 0.29120  cls 0.01324  dfl 0.00078  feat 0.00087)
+  Epoch 20/30  Batch 1745/2188 (79.8%)  | Super 100.711 (box 1.3155  cls 0.7303  dfl 1.1014)  | Base 102.240 (box 1.3307  cls 0.7728  dfl 1.0915)  | KD 9.928 (box 0.30076  cls 0.00799  dfl 0.00070  feat 0.00080)
+  Epoch 20/30  Batch 1963/2188 (89.7%)  | Super 101.215 (box 1.3039  cls 0.7761  dfl 1.0829)  | Base 103.172 (box 1.3291  cls 0.8088  dfl 1.0863)  | KD 10.600 (box 0.32164  cls 0.00781  dfl 0.00072  feat 0.00107)
+  Epoch 20/30  Batch 2181/2188 (99.7%)  | Super 104.225 (box 1.3572  cls 0.7715  dfl 1.1283)  | Base 105.652 (box 1.3686  cls 0.8093  dfl 1.1237)  | KD 10.190 (box 0.30292  cls 0.01383  dfl 0.00072  feat 0.00098)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 20/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.736      0.529      0.582      0.341
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 20/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.719      0.515      0.568       0.33
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 21/30  Batch 1/2188 (0.0%)  | Super 104.634 (box 1.3593  cls 0.7868  dfl 1.1237)  | Base 105.175 (box 1.3612  cls 0.8241  dfl 1.1014)  | KD 10.782 (box 0.32254  cls 0.01280  dfl 0.00077  feat 0.00083)
+  Epoch 21/30  Batch 219/2188 (10.0%)  | Super 110.175 (box 1.4334  cls 0.8300  dfl 1.1796)  | Base 111.927 (box 1.4461  cls 0.8762  dfl 1.1754)  | KD 9.769 (box 0.29087  cls 0.01274  dfl 0.00078  feat 0.00089)
+  Epoch 21/30  Batch 437/2188 (20.0%)  | Super 115.365 (box 1.5935  cls 0.8588  dfl 1.1529)  | Base 116.727 (box 1.6001  cls 0.8989  dfl 1.1487)  | KD 11.407 (box 0.34619  cls 0.00858  dfl 0.00067  feat 0.00102)
+  Epoch 21/30  Batch 655/2188 (29.9%)  | Super 98.874 (box 1.2817  cls 0.7357  dfl 1.0724)  | Base 99.702 (box 1.2890  cls 0.7650  dfl 1.0617)  | KD 9.013 (box 0.27098  cls 0.00925  dfl 0.00065  feat 0.00078)
+  Epoch 21/30  Batch 873/2188 (39.9%)  | Super 110.144 (box 1.3721  cls 0.9065  dfl 1.1634)  | Base 111.758 (box 1.3942  cls 0.9498  dfl 1.1484)  | KD 11.435 (box 0.34626  cls 0.00944  dfl 0.00077  feat 0.00087)
+  Epoch 21/30  Batch 1091/2188 (49.9%)  | Super 98.277 (box 1.3001  cls 0.7093  dfl 1.0617)  | Base 99.137 (box 1.3137  cls 0.7346  dfl 1.0497)  | KD 9.445 (box 0.28426  cls 0.00948  dfl 0.00068  feat 0.00075)
+  Epoch 21/30  Batch 1309/2188 (59.8%)  | Super 97.135 (box 1.2356  cls 0.7251  dfl 1.0748)  | Base 99.295 (box 1.2632  cls 0.7625  dfl 1.0773)  | KD 10.204 (box 0.30266  cls 0.01454  dfl 0.00079  feat 0.00090)
+  Epoch 21/30  Batch 1527/2188 (69.8%)  | Super 104.196 (box 1.3433  cls 0.8073  dfl 1.1055)  | Base 106.261 (box 1.3665  cls 0.8575  dfl 1.0967)  | KD 10.046 (box 0.29462  cls 0.01751  dfl 0.00079  feat 0.00102)
+  Epoch 21/30  Batch 1745/2188 (79.8%)  | Super 100.653 (box 1.2939  cls 0.7571  dfl 1.0944)  | Base 102.841 (box 1.3172  cls 0.8090  dfl 1.0875)  | KD 10.378 (box 0.31216  cls 0.01048  dfl 0.00077  feat 0.00091)
+  Epoch 21/30  Batch 1963/2188 (89.7%)  | Super 97.962 (box 1.2736  cls 0.7381  dfl 1.0496)  | Base 98.614 (box 1.2804  cls 0.7554  dfl 1.0458)  | KD 9.473 (box 0.28291  cls 0.01130  dfl 0.00070  feat 0.00111)
+  Epoch 21/30  Batch 2181/2188 (99.7%)  | Super 105.741 (box 1.3840  cls 0.7373  dfl 1.1831)  | Base 107.438 (box 1.4040  cls 0.7806  dfl 1.1728)  | KD 9.169 (box 0.27235  cls 0.01260  dfl 0.00066  feat 0.00090)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 21/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.741      0.526      0.583      0.342
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 21/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.717      0.516       0.57       0.33
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 22/30  Batch 1/2188 (0.0%)  | Super 106.791 (box 1.3660  cls 0.8034  dfl 1.1678)  | Base 110.248 (box 1.4082  cls 0.8695  dfl 1.1675)  | KD 10.805 (box 0.32140  cls 0.01447  dfl 0.00079  feat 0.00098)
+  Epoch 22/30  Batch 219/2188 (10.0%)  | Super 106.361 (box 1.4205  cls 0.8014  dfl 1.1018)  | Base 109.162 (box 1.4620  cls 0.8425  dfl 1.1068)  | KD 9.456 (box 0.28418  cls 0.00979  dfl 0.00063  feat 0.00088)
+  Epoch 22/30  Batch 437/2188 (20.0%)  | Super 112.449 (box 1.5379  cls 0.8388  dfl 1.1374)  | Base 114.272 (box 1.5538  cls 0.8761  dfl 1.1411)  | KD 11.531 (box 0.34925  cls 0.00947  dfl 0.00074  feat 0.00088)
+  Epoch 22/30  Batch 655/2188 (29.9%)  | Super 100.492 (box 1.3278  cls 0.7279  dfl 1.0847)  | Base 101.852 (box 1.3408  cls 0.7621  dfl 1.0799)  | KD 9.297 (box 0.27956  cls 0.00945  dfl 0.00059  feat 0.00093)
+  Epoch 22/30  Batch 873/2188 (39.9%)  | Super 111.063 (box 1.4325  cls 0.8581  dfl 1.1801)  | Base 112.388 (box 1.4304  cls 0.9227  dfl 1.1591)  | KD 11.466 (box 0.34664  cls 0.01006  dfl 0.00079  feat 0.00084)
+  Epoch 22/30  Batch 1091/2188 (49.9%)  | Super 100.730 (box 1.3401  cls 0.7198  dfl 1.0879)  | Base 101.968 (box 1.3480  cls 0.7588  dfl 1.0797)  | KD 8.605 (box 0.25601  cls 0.01152  dfl 0.00055  feat 0.00082)
+  Epoch 22/30  Batch 1309/2188 (59.8%)  | Super 100.425 (box 1.2606  cls 0.7589  dfl 1.1188)  | Base 101.615 (box 1.2857  cls 0.7692  dfl 1.1206)  | KD 9.930 (box 0.29883  cls 0.00947  dfl 0.00088  feat 0.00114)
+  Epoch 22/30  Batch 1527/2188 (69.8%)  | Super 109.730 (box 1.4387  cls 0.8408  dfl 1.1496)  | Base 111.061 (box 1.4549  cls 0.8621  dfl 1.1537)  | KD 9.872 (box 0.29282  cls 0.01393  dfl 0.00075  feat 0.00100)
+  Epoch 22/30  Batch 1745/2188 (79.8%)  | Super 101.201 (box 1.3231  cls 0.7191  dfl 1.1203)  | Base 103.015 (box 1.3358  cls 0.7722  dfl 1.1112)  | KD 9.166 (box 0.27519  cls 0.00975  dfl 0.00063  feat 0.00087)
+  Epoch 22/30  Batch 1963/2188 (89.7%)  | Super 101.331 (box 1.2829  cls 0.7631  dfl 1.1206)  | Base 103.689 (box 1.3015  cls 0.8147  dfl 1.1241)  | KD 8.657 (box 0.25925  cls 0.00946  dfl 0.00065  feat 0.00115)
+  Epoch 22/30  Batch 2181/2188 (99.7%)  | Super 103.683 (box 1.3735  cls 0.7328  dfl 1.1338)  | Base 105.051 (box 1.3800  cls 0.7671  dfl 1.1357)  | KD 9.871 (box 0.29511  cls 0.01168  dfl 0.00079  feat 0.00090)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 22/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.738      0.527      0.584      0.342
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 22/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578       0.72      0.518      0.571      0.331
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 23/30  Batch 1/2188 (0.0%)  | Super 104.497 (box 1.3458  cls 0.7867  dfl 1.1330)  | Base 106.381 (box 1.3599  cls 0.8412  dfl 1.1233)  | KD 11.072 (box 0.32926  cls 0.01498  dfl 0.00083  feat 0.00093)
+  Epoch 23/30  Batch 219/2188 (10.0%)  | Super 107.822 (box 1.4401  cls 0.7725  dfl 1.1569)  | Base 111.311 (box 1.4857  cls 0.8251  dfl 1.1677)  | KD 8.946 (box 0.26177  cls 0.01603  dfl 0.00068  feat 0.00108)
+  Epoch 23/30  Batch 437/2188 (20.0%)  | Super 115.818 (box 1.5786  cls 0.8622  dfl 1.1786)  | Base 118.035 (box 1.6138  cls 0.8815  dfl 1.1933)  | KD 11.017 (box 0.33146  cls 0.01102  dfl 0.00074  feat 0.00107)
+  Epoch 23/30  Batch 655/2188 (29.9%)  | Super 99.342 (box 1.2946  cls 0.7337  dfl 1.0762)  | Base 99.603 (box 1.2978  cls 0.7524  dfl 1.0624)  | KD 8.822 (box 0.26314  cls 0.01108  dfl 0.00057  feat 0.00088)
+  Epoch 23/30  Batch 873/2188 (39.9%)  | Super 109.183 (box 1.4035  cls 0.8798  dfl 1.1286)  | Base 110.579 (box 1.4139  cls 0.9076  dfl 1.1341)  | KD 10.706 (box 0.31822  cls 0.01478  dfl 0.00072  feat 0.00085)
+  Epoch 23/30  Batch 1091/2188 (49.9%)  | Super 99.488 (box 1.2908  cls 0.7382  dfl 1.0800)  | Base 100.879 (box 1.3031  cls 0.7650  dfl 1.0844)  | KD 8.657 (box 0.26030  cls 0.00885  dfl 0.00061  feat 0.00076)
+  Epoch 23/30  Batch 1309/2188 (59.8%)  | Super 103.514 (box 1.3348  cls 0.7655  dfl 1.1345)  | Base 103.192 (box 1.3177  cls 0.7832  dfl 1.1239)  | KD 10.120 (box 0.29700  cls 0.01760  dfl 0.00069  feat 0.00094)
+  Epoch 23/30  Batch 1527/2188 (69.8%)  | Super 102.208 (box 1.3488  cls 0.7710  dfl 1.0742)  | Base 104.487 (box 1.3784  cls 0.8082  dfl 1.0786)  | KD 10.342 (box 0.30843  cls 0.01303  dfl 0.00084  feat 0.00089)
+  Epoch 23/30  Batch 1745/2188 (79.8%)  | Super 101.339 (box 1.3347  cls 0.7194  dfl 1.1127)  | Base 103.142 (box 1.3532  cls 0.7637  dfl 1.1063)  | KD 8.856 (box 0.26637  cls 0.00882  dfl 0.00064  feat 0.00092)
+  Epoch 23/30  Batch 1963/2188 (89.7%)  | Super 102.050 (box 1.3154  cls 0.7664  dfl 1.1073)  | Base 104.283 (box 1.3214  cls 0.8288  dfl 1.1087)  | KD 10.001 (box 0.30292  cls 0.00794  dfl 0.00070  feat 0.00096)
+  Epoch 23/30  Batch 2181/2188 (99.7%)  | Super 102.383 (box 1.3534  cls 0.7076  dfl 1.1385)  | Base 104.152 (box 1.3741  cls 0.7377  dfl 1.1429)  | KD 8.988 (box 0.26830  cls 0.01108  dfl 0.00064  feat 0.00087)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 23/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.739      0.526      0.584      0.342
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 23/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.724      0.516      0.571      0.331
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 24/30  Batch 1/2188 (0.0%)  | Super 104.487 (box 1.3208  cls 0.8083  dfl 1.1361)  | Base 107.362 (box 1.3559  cls 0.8591  dfl 1.1400)  | KD 10.625 (box 0.31467  cls 0.01567  dfl 0.00083  feat 0.00087)
+  Epoch 24/30  Batch 219/2188 (10.0%)  | Super 108.163 (box 1.4370  cls 0.7698  dfl 1.1733)  | Base 109.566 (box 1.4600  cls 0.7926  dfl 1.1713)  | KD 9.315 (box 0.27657  cls 0.01295  dfl 0.00067  feat 0.00089)
+  Epoch 24/30  Batch 437/2188 (20.0%)  | Super 112.066 (box 1.5336  cls 0.8285  dfl 1.1400)  | Base 113.275 (box 1.5434  cls 0.8703  dfl 1.1261)  | KD 11.020 (box 0.33582  cls 0.00702  dfl 0.00072  feat 0.00082)
+  Epoch 24/30  Batch 655/2188 (29.9%)  | Super 96.212 (box 1.2583  cls 0.7046  dfl 1.0438)  | Base 97.098 (box 1.2736  cls 0.7287  dfl 1.0320)  | KD 8.939 (box 0.26568  cls 0.01226  dfl 0.00062  feat 0.00080)
+  Epoch 24/30  Batch 873/2188 (39.9%)  | Super 112.681 (box 1.3959  cls 0.9645  dfl 1.1609)  | Base 115.001 (box 1.4209  cls 1.0045  dfl 1.1683)  | KD 10.921 (box 0.32597  cls 0.01372  dfl 0.00072  feat 0.00088)
+  Epoch 24/30  Batch 1091/2188 (49.9%)  | Super 103.092 (box 1.3497  cls 0.7417  dfl 1.1302)  | Base 103.735 (box 1.3564  cls 0.7665  dfl 1.1188)  | KD 8.592 (box 0.25945  cls 0.00763  dfl 0.00058  feat 0.00085)
+  Epoch 24/30  Batch 1309/2188 (59.8%)  | Super 102.217 (box 1.2911  cls 0.7394  dfl 1.1637)  | Base 103.043 (box 1.3035  cls 0.7592  dfl 1.1574)  | KD 9.803 (box 0.29408  cls 0.01043  dfl 0.00087  feat 0.00096)
+  Epoch 24/30  Batch 1527/2188 (69.8%)  | Super 108.628 (box 1.4217  cls 0.8180  dfl 1.1549)  | Base 110.482 (box 1.4375  cls 0.8589  dfl 1.1562)  | KD 9.543 (box 0.28216  cls 0.01448  dfl 0.00075  feat 0.00081)
+  Epoch 24/30  Batch 1745/2188 (79.8%)  | Super 100.653 (box 1.3120  cls 0.7221  dfl 1.1113)  | Base 102.015 (box 1.3282  cls 0.7647  dfl 1.0951)  | KD 9.410 (box 0.28462  cls 0.00787  dfl 0.00069  feat 0.00090)
+  Epoch 24/30  Batch 1963/2188 (89.7%)  | Super 108.290 (box 1.3463  cls 0.8681  dfl 1.1697)  | Base 110.454 (box 1.3640  cls 0.9188  dfl 1.1689)  | KD 10.532 (box 0.31019  cls 0.01715  dfl 0.00075  feat 0.00103)
+  Epoch 24/30  Batch 2181/2188 (99.7%)  | Super 103.783 (box 1.3560  cls 0.7278  dfl 1.1595)  | Base 105.399 (box 1.3734  cls 0.7729  dfl 1.1475)  | KD 9.949 (box 0.29945  cls 0.00981  dfl 0.00075  feat 0.00091)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 24/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.732      0.532      0.586      0.343
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 24/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.724      0.515      0.571      0.331
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 25/30  Batch 1/2188 (0.0%)  | Super 100.465 (box 1.2977  cls 0.7303  dfl 1.1116)  | Base 102.866 (box 1.3192  cls 0.7838  dfl 1.1115)  | KD 9.851 (box 0.29660  cls 0.00974  dfl 0.00072  feat 0.00078)
+  Epoch 25/30  Batch 219/2188 (10.0%)  | Super 109.048 (box 1.4427  cls 0.7791  dfl 1.1860)  | Base 111.234 (box 1.4686  cls 0.8202  dfl 1.1872)  | KD 8.817 (box 0.26165  cls 0.01231  dfl 0.00071  feat 0.00085)
+  Epoch 25/30  Batch 437/2188 (20.0%)  | Super 116.248 (box 1.6051  cls 0.8332  dfl 1.1944)  | Base 118.501 (box 1.6288  cls 0.8789  dfl 1.1955)  | KD 10.780 (box 0.32757  cls 0.00769  dfl 0.00068  feat 0.00093)
+  Epoch 25/30  Batch 655/2188 (29.9%)  | Super 99.116 (box 1.2948  cls 0.7247  dfl 1.0779)  | Base 99.636 (box 1.2941  cls 0.7490  dfl 1.0705)  | KD 9.224 (box 0.27400  cls 0.01278  dfl 0.00061  feat 0.00085)
+  Epoch 25/30  Batch 873/2188 (39.9%)  | Super 107.703 (box 1.3674  cls 0.8497  dfl 1.1486)  | Base 109.594 (box 1.3868  cls 0.8969  dfl 1.1410)  | KD 10.844 (box 0.32794  cls 0.00934  dfl 0.00076  feat 0.00083)
+  Epoch 25/30  Batch 1091/2188 (49.9%)  | Super 100.174 (box 1.3377  cls 0.7304  dfl 1.0623)  | Base 102.047 (box 1.3629  cls 0.7595  dfl 1.0666)  | KD 9.703 (box 0.28997  cls 0.01181  dfl 0.00069  feat 0.00076)
+  Epoch 25/30  Batch 1309/2188 (59.8%)  | Super 100.698 (box 1.2777  cls 0.7302  dfl 1.1388)  | Base 101.804 (box 1.2881  cls 0.7620  dfl 1.1313)  | KD 9.912 (box 0.29756  cls 0.01052  dfl 0.00080  feat 0.00087)
+  Epoch 25/30  Batch 1527/2188 (69.8%)  | Super 106.778 (box 1.3811  cls 0.8399  dfl 1.1158)  | Base 109.023 (box 1.4048  cls 0.8872  dfl 1.1150)  | KD 9.765 (box 0.28630  cls 0.01716  dfl 0.00068  feat 0.00102)
+  Epoch 25/30  Batch 1745/2188 (79.8%)  | Super 103.705 (box 1.3304  cls 0.7910  dfl 1.1194)  | Base 105.879 (box 1.3470  cls 0.8481  dfl 1.1136)  | KD 10.237 (box 0.30826  cls 0.01014  dfl 0.00073  feat 0.00079)
+  Epoch 25/30  Batch 1963/2188 (89.7%)  | Super 104.224 (box 1.3418  cls 0.8118  dfl 1.1034)  | Base 106.352 (box 1.3651  cls 0.8595  dfl 1.0989)  | KD 10.968 (box 0.32707  cls 0.01379  dfl 0.00092  feat 0.00099)
+  Epoch 25/30  Batch 2181/2188 (99.7%)  | Super 110.618 (box 1.4550  cls 0.7730  dfl 1.2288)  | Base 110.788 (box 1.4590  cls 0.7922  dfl 1.2110)  | KD 9.434 (box 0.28118  cls 0.01208  dfl 0.00070  feat 0.00085)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 25/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.741      0.525      0.585      0.343
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 25/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.726      0.513      0.571      0.331
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 26/30  Batch 1/2188 (0.0%)  | Super 107.374 (box 1.3729  cls 0.7931  dfl 1.1894)  | Base 110.762 (box 1.4054  cls 0.8551  dfl 1.2008)  | KD 10.202 (box 0.29822  cls 0.01889  dfl 0.00079  feat 0.00092)
+  Epoch 26/30  Batch 219/2188 (10.0%)  | Super 111.998 (box 1.4778  cls 0.8836  dfl 1.1385)  | Base 113.246 (box 1.5004  cls 0.8943  dfl 1.1443)  | KD 10.025 (box 0.29566  cls 0.01607  dfl 0.00070  feat 0.00086)
+  Epoch 26/30  Batch 437/2188 (20.0%)  | Super 112.920 (box 1.5546  cls 0.8536  dfl 1.1206)  | Base 114.565 (box 1.5773  cls 0.8871  dfl 1.1157)  | KD 11.196 (box 0.33489  cls 0.01338  dfl 0.00065  feat 0.00095)
+  Epoch 26/30  Batch 655/2188 (29.9%)  | Super 101.828 (box 1.3408  cls 0.7391  dfl 1.1023)  | Base 102.044 (box 1.3430  cls 0.7520  dfl 1.0938)  | KD 9.342 (box 0.28016  cls 0.01024  dfl 0.00064  feat 0.00090)
+  Epoch 26/30  Batch 873/2188 (39.9%)  | Super 107.744 (box 1.3811  cls 0.8344  dfl 1.1515)  | Base 107.818 (box 1.3813  cls 0.8708  dfl 1.1173)  | KD 10.688 (box 0.32234  cls 0.01012  dfl 0.00069  feat 0.00084)
+  Epoch 26/30  Batch 1091/2188 (49.9%)  | Super 105.299 (box 1.3598  cls 0.7816  dfl 1.1491)  | Base 105.802 (box 1.3813  cls 0.7768  dfl 1.1483)  | KD 9.438 (box 0.28476  cls 0.00866  dfl 0.00066  feat 0.00087)
+  Epoch 26/30  Batch 1309/2188 (59.8%)  | Super 95.417 (box 1.2197  cls 0.7112  dfl 1.0509)  | Base 96.885 (box 1.2443  cls 0.7265  dfl 1.0568)  | KD 10.024 (box 0.29493  cls 0.01673  dfl 0.00072  feat 0.00088)
+  Epoch 26/30  Batch 1527/2188 (69.8%)  | Super 107.053 (box 1.3726  cls 0.8355  dfl 1.1373)  | Base 109.618 (box 1.4048  cls 0.8840  dfl 1.1368)  | KD 10.793 (box 0.31947  cls 0.01616  dfl 0.00073  feat 0.00094)
+  Epoch 26/30  Batch 1745/2188 (79.8%)  | Super 102.321 (box 1.3355  cls 0.7381  dfl 1.1239)  | Base 103.736 (box 1.3422  cls 0.7799  dfl 1.1197)  | KD 9.946 (box 0.29281  cls 0.01634  dfl 0.00069  feat 0.00098)
+  Epoch 26/30  Batch 1963/2188 (89.7%)  | Super 103.100 (box 1.3296  cls 0.7993  dfl 1.0930)  | Base 104.466 (box 1.3374  cls 0.8343  dfl 1.0928)  | KD 10.496 (box 0.31418  cls 0.01198  dfl 0.00079  feat 0.00104)
+  Epoch 26/30  Batch 2181/2188 (99.7%)  | Super 104.804 (box 1.3524  cls 0.7806  dfl 1.1421)  | Base 105.800 (box 1.3624  cls 0.8034  dfl 1.1404)  | KD 9.957 (box 0.29606  cls 0.01349  dfl 0.00070  feat 0.00090)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 26/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578       0.74      0.529      0.586      0.343
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 26/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.731      0.514      0.572      0.332
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 27/30  Batch 1/2188 (0.0%)  | Super 104.105 (box 1.3132  cls 0.8039  dfl 1.1362)  | Base 106.390 (box 1.3408  cls 0.8365  dfl 1.1474)  | KD 11.085 (box 0.32896  cls 0.01581  dfl 0.00082  feat 0.00083)
+  Epoch 27/30  Batch 219/2188 (10.0%)  | Super 104.059 (box 1.3740  cls 0.8028  dfl 1.0751)  | Base 105.659 (box 1.3985  cls 0.8391  dfl 1.0642)  | KD 9.280 (box 0.28036  cls 0.00813  dfl 0.00061  feat 0.00089)
+  Epoch 27/30  Batch 437/2188 (20.0%)  | Super 113.345 (box 1.5473  cls 0.8234  dfl 1.1713)  | Base 115.755 (box 1.5855  cls 0.8576  dfl 1.1742)  | KD 11.261 (box 0.33937  cls 0.01090  dfl 0.00068  feat 0.00096)
+  Epoch 27/30  Batch 655/2188 (29.9%)  | Super 99.705 (box 1.3176  cls 0.7178  dfl 1.0803)  | Base 99.961 (box 1.3064  cls 0.7442  dfl 1.0732)  | KD 8.966 (box 0.26761  cls 0.01107  dfl 0.00056  feat 0.00096)
+  Epoch 27/30  Batch 873/2188 (39.9%)  | Super 112.208 (box 1.4170  cls 0.9047  dfl 1.1848)  | Base 113.232 (box 1.4181  cls 0.9478  dfl 1.1726)  | KD 10.819 (box 0.32634  cls 0.01014  dfl 0.00070  feat 0.00090)
+  Epoch 27/30  Batch 1091/2188 (49.9%)  | Super 100.485 (box 1.3124  cls 0.7298  dfl 1.0980)  | Base 102.995 (box 1.3421  cls 0.7717  dfl 1.1048)  | KD 9.263 (box 0.27919  cls 0.00871  dfl 0.00069  feat 0.00088)
+  Epoch 27/30  Batch 1309/2188 (59.8%)  | Super 100.527 (box 1.2819  cls 0.7498  dfl 1.1098)  | Base 100.794 (box 1.2776  cls 0.7741  dfl 1.0981)  | KD 9.941 (box 0.30234  cls 0.00675  dfl 0.00067  feat 0.00089)
+  Epoch 27/30  Batch 1527/2188 (69.8%)  | Super 102.993 (box 1.3671  cls 0.7655  dfl 1.0859)  | Base 105.134 (box 1.3799  cls 0.8127  dfl 1.0928)  | KD 10.383 (box 0.30795  cls 0.01481  dfl 0.00087  feat 0.00085)
+  Epoch 27/30  Batch 1745/2188 (79.8%)  | Super 103.850 (box 1.3319  cls 0.7724  dfl 1.1410)  | Base 105.534 (box 1.3603  cls 0.8037  dfl 1.1339)  | KD 10.316 (box 0.31050  cls 0.01023  dfl 0.00078  feat 0.00087)
+  Epoch 27/30  Batch 1963/2188 (89.7%)  | Super 105.396 (box 1.3508  cls 0.8079  dfl 1.1350)  | Base 106.568 (box 1.3506  cls 0.8605  dfl 1.1191)  | KD 10.420 (box 0.31358  cls 0.01027  dfl 0.00071  feat 0.00108)
+  Epoch 27/30  Batch 2181/2188 (99.7%)  | Super 107.942 (box 1.4092  cls 0.7461  dfl 1.2179)  | Base 109.511 (box 1.4235  cls 0.7751  dfl 1.2236)  | KD 9.148 (box 0.27343  cls 0.01068  dfl 0.00072  feat 0.00106)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 27/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.743      0.528      0.586      0.344
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 27/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.736      0.511      0.573      0.333
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 28/30  Batch 1/2188 (0.0%)  | Super 103.017 (box 1.3297  cls 0.7580  dfl 1.1316)  | Base 105.189 (box 1.3601  cls 0.7960  dfl 1.1311)  | KD 10.292 (box 0.30893  cls 0.01114  dfl 0.00075  feat 0.00079)
+  Epoch 28/30  Batch 219/2188 (10.0%)  | Super 103.229 (box 1.3596  cls 0.7729  dfl 1.0935)  | Base 105.309 (box 1.3775  cls 0.8307  dfl 1.0827)  | KD 9.691 (box 0.28970  cls 0.01144  dfl 0.00079  feat 0.00093)
+  Epoch 28/30  Batch 437/2188 (20.0%)  | Super 110.855 (box 1.5254  cls 0.8116  dfl 1.1272)  | Base 112.371 (box 1.5459  cls 0.8358  dfl 1.1298)  | KD 11.158 (box 0.33484  cls 0.01229  dfl 0.00073  feat 0.00084)
+  Epoch 28/30  Batch 655/2188 (29.9%)  | Super 99.475 (box 1.3132  cls 0.7190  dfl 1.0764)  | Base 100.112 (box 1.3118  cls 0.7496  dfl 1.0671)  | KD 8.393 (box 0.24996  cls 0.01094  dfl 0.00058  feat 0.00079)
+  Epoch 28/30  Batch 873/2188 (39.9%)  | Super 109.198 (box 1.3995  cls 0.8450  dfl 1.1680)  | Base 111.967 (box 1.4179  cls 0.9082  dfl 1.1728)  | KD 10.828 (box 0.32550  cls 0.01118  dfl 0.00077  feat 0.00091)
+  Epoch 28/30  Batch 1091/2188 (49.9%)  | Super 99.596 (box 1.3106  cls 0.6970  dfl 1.1047)  | Base 100.781 (box 1.3196  cls 0.7283  dfl 1.1015)  | KD 9.067 (box 0.27319  cls 0.00875  dfl 0.00059  feat 0.00080)
+  Epoch 28/30  Batch 1309/2188 (59.8%)  | Super 93.415 (box 1.1888  cls 0.6913  dfl 1.0391)  | Base 93.916 (box 1.1912  cls 0.7120  dfl 1.0317)  | KD 9.477 (box 0.27935  cls 0.01518  dfl 0.00075  feat 0.00087)
+  Epoch 28/30  Batch 1527/2188 (69.8%)  | Super 108.334 (box 1.3985  cls 0.8548  dfl 1.1322)  | Base 109.923 (box 1.4171  cls 0.8974  dfl 1.1206)  | KD 10.183 (box 0.29842  cls 0.01801  dfl 0.00082  feat 0.00096)
+  Epoch 28/30  Batch 1745/2188 (79.8%)  | Super 98.016 (box 1.2711  cls 0.7309  dfl 1.0610)  | Base 99.500 (box 1.2864  cls 0.7711  dfl 1.0519)  | KD 9.789 (box 0.29440  cls 0.01003  dfl 0.00073  feat 0.00076)
+  Epoch 28/30  Batch 1963/2188 (89.7%)  | Super 101.697 (box 1.2705  cls 0.8354  dfl 1.0721)  | Base 102.371 (box 1.2629  cls 0.8782  dfl 1.0580)  | KD 10.325 (box 0.30840  cls 0.01223  dfl 0.00087  feat 0.00116)
+  Epoch 28/30  Batch 2181/2188 (99.7%)  | Super 104.791 (box 1.3662  cls 0.7380  dfl 1.1705)  | Base 106.325 (box 1.3850  cls 0.7800  dfl 1.1576)  | KD 9.155 (box 0.27406  cls 0.01032  dfl 0.00063  feat 0.00109)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 28/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.743      0.527      0.587      0.344
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 28/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.731      0.515      0.573      0.333
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 29/30  Batch 1/2188 (0.0%)  | Super 103.951 (box 1.3246  cls 0.7959  dfl 1.1280)  | Base 106.028 (box 1.3367  cls 0.8496  dfl 1.1271)  | KD 10.076 (box 0.30170  cls 0.01157  dfl 0.00081  feat 0.00080)
+  Epoch 29/30  Batch 219/2188 (10.0%)  | Super 104.614 (box 1.3847  cls 0.7661  dfl 1.1184)  | Base 105.760 (box 1.4056  cls 0.7910  dfl 1.1084)  | KD 9.236 (box 0.27757  cls 0.00947  dfl 0.00068  feat 0.00093)
+  Epoch 29/30  Batch 437/2188 (20.0%)  | Super 113.578 (box 1.5537  cls 0.8478  dfl 1.1478)  | Base 116.727 (box 1.5951  cls 0.8984  dfl 1.1542)  | KD 10.852 (box 0.32766  cls 0.00988  dfl 0.00064  feat 0.00093)
+  Epoch 29/30  Batch 655/2188 (29.9%)  | Super 98.901 (box 1.2906  cls 0.7417  dfl 1.0583)  | Base 99.932 (box 1.2962  cls 0.7765  dfl 1.0502)  | KD 8.821 (box 0.26338  cls 0.01075  dfl 0.00066  feat 0.00088)
+  Epoch 29/30  Batch 873/2188 (39.9%)  | Super 108.331 (box 1.3838  cls 0.8864  dfl 1.1152)  | Base 109.745 (box 1.3901  cls 0.9162  dfl 1.1232)  | KD 10.715 (box 0.32232  cls 0.01098  dfl 0.00073  feat 0.00082)
+  Epoch 29/30  Batch 1091/2188 (49.9%)  | Super 100.497 (box 1.3036  cls 0.7186  dfl 1.1184)  | Base 101.434 (box 1.3215  cls 0.7367  dfl 1.1116)  | KD 8.940 (box 0.26819  cls 0.00971  dfl 0.00063  feat 0.00084)
+  Epoch 29/30  Batch 1309/2188 (59.8%)  | Super 97.725 (box 1.2522  cls 0.7069  dfl 1.0947)  | Base 98.840 (box 1.2639  cls 0.7317  dfl 1.0932)  | KD 9.450 (box 0.27952  cls 0.01431  dfl 0.00069  feat 0.00080)
+  Epoch 29/30  Batch 1527/2188 (69.8%)  | Super 109.050 (box 1.4375  cls 0.8132  dfl 1.1570)  | Base 111.075 (box 1.4659  cls 0.8400  dfl 1.1651)  | KD 10.053 (box 0.29205  cls 0.02042  dfl 0.00075  feat 0.00094)
+  Epoch 29/30  Batch 1745/2188 (79.8%)  | Super 103.531 (box 1.3396  cls 0.7622  dfl 1.1336)  | Base 105.051 (box 1.3516  cls 0.7973  dfl 1.1339)  | KD 9.422 (box 0.28370  cls 0.00920  dfl 0.00062  feat 0.00091)
+  Epoch 29/30  Batch 1963/2188 (89.7%)  | Super 102.661 (box 1.2908  cls 0.7730  dfl 1.1443)  | Base 105.198 (box 1.3080  cls 0.8364  dfl 1.1431)  | KD 9.448 (box 0.28315  cls 0.01044  dfl 0.00066  feat 0.00101)
+  Epoch 29/30  Batch 2181/2188 (99.7%)  | Super 105.991 (box 1.3863  cls 0.7442  dfl 1.1817)  | Base 107.651 (box 1.4138  cls 0.7692  dfl 1.1811)  | KD 9.506 (box 0.28154  cls 0.01371  dfl 0.00077  feat 0.00103)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 29/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.744      0.526      0.587      0.344
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 29/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.731      0.514      0.573      0.333
+
+           Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
+  Epoch 30/30  Batch 1/2188 (0.0%)  | Super 104.493 (box 1.3212  cls 0.7946  dfl 1.1496)  | Base 107.947 (box 1.3603  cls 0.8547  dfl 1.1583)  | KD 10.724 (box 0.31455  cls 0.01893  dfl 0.00078  feat 0.00088)
+  Epoch 30/30  Batch 219/2188 (10.0%)  | Super 108.590 (box 1.4342  cls 0.7920  dfl 1.1672)  | Base 109.007 (box 1.4261  cls 0.8335  dfl 1.1469)  | KD 9.176 (box 0.27477  cls 0.01002  dfl 0.00073  feat 0.00121)
+  Epoch 30/30  Batch 437/2188 (20.0%)  | Super 112.445 (box 1.5379  cls 0.8195  dfl 1.1565)  | Base 114.820 (box 1.5787  cls 0.8509  dfl 1.1585)  | KD 10.604 (box 0.31815  cls 0.01164  dfl 0.00069  feat 0.00090)
+  Epoch 30/30  Batch 655/2188 (29.9%)  | Super 100.838 (box 1.3221  cls 0.7367  dfl 1.0924)  | Base 102.427 (box 1.3385  cls 0.7683  dfl 1.0940)  | KD 9.042 (box 0.27082  cls 0.01016  dfl 0.00065  feat 0.00093)
+  Epoch 30/30  Batch 873/2188 (39.9%)  | Super 114.909 (box 1.4460  cls 0.9021  dfl 1.2429)  | Base 116.478 (box 1.4681  cls 0.9446  dfl 1.2272)  | KD 11.421 (box 0.34352  cls 0.01165  dfl 0.00081  feat 0.00092)
+  Epoch 30/30  Batch 1091/2188 (49.9%)  | Super 98.435 (box 1.2889  cls 0.6983  dfl 1.0889)  | Base 100.397 (box 1.3142  cls 0.7351  dfl 1.0881)  | KD 8.773 (box 0.26030  cls 0.01249  dfl 0.00058  feat 0.00079)
+  Epoch 30/30  Batch 1309/2188 (59.8%)  | Super 95.714 (box 1.2343  cls 0.6850  dfl 1.0718)  | Base 95.954 (box 1.2484  cls 0.6878  dfl 1.0623)  | KD 10.106 (box 0.30045  cls 0.01379  dfl 0.00073  feat 0.00084)
+  Epoch 30/30  Batch 1527/2188 (69.8%)  | Super 105.101 (box 1.3652  cls 0.8020  dfl 1.1172)  | Base 106.364 (box 1.3746  cls 0.8314  dfl 1.1179)  | KD 9.754 (box 0.28557  cls 0.01766  dfl 0.00075  feat 0.00084)
+  Epoch 30/30  Batch 1745/2188 (79.8%)  | Super 101.611 (box 1.3262  cls 0.7436  dfl 1.1056)  | Base 103.390 (box 1.3438  cls 0.7867  dfl 1.1005)  | KD 9.262 (box 0.27816  cls 0.00975  dfl 0.00072  feat 0.00082)
+  Epoch 30/30  Batch 1963/2188 (89.7%)  | Super 102.461 (box 1.3122  cls 0.7572  dfl 1.1325)  | Base 103.035 (box 1.2970  cls 0.8077  dfl 1.1151)  | KD 9.315 (box 0.27760  cls 0.01178  dfl 0.00069  feat 0.00102)
+  Epoch 30/30  Batch 2181/2188 (99.7%)  | Super 104.175 (box 1.3545  cls 0.7483  dfl 1.1526)  | Base 105.931 (box 1.3698  cls 0.7898  dfl 1.1507)  | KD 9.433 (box 0.28082  cls 0.01226  dfl 0.00073  feat 0.00096)
+
+================================================================================
+  [Validation] Super model (skip=False)  |  Epoch 30/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.738       0.53      0.587      0.344
+
+================================================================================
+  [Validation] Base model  (skip=True)   |  Epoch 30/30
+================================================================================
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.732      0.515      0.574      0.333
+
+30 epochs completed in 7.282 hours.
+Optimizer stripped from runs/bdd100k/detect/anydepth-yolov12s/train/weights/last.pt, 15.7MB
+Optimizer stripped from runs/bdd100k/detect/anydepth-yolov12s/train/weights/best.pt, 15.7MB
+
+Validating runs/bdd100k/detect/anydepth-yolov12s/train/weights/best.pt...
+Ultralytics 8.3.63 🚀 Python-3.11.13 torch-2.2.2+cu121 CUDA:0 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
+                                                       CUDA:1 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
+YOLO-ad-v12s-orig summary: 827 layers, 7,403,518 parameters, 0 gradients, 22.3 GFLOPs
+
+[*] FLOPs calculated at resolution: 736x1312
+| module                 | #parameters or shape   | #flops   |
+|:-----------------------|:-----------------------|:---------|
+| base_model.model.model | 7.404M                 | 26.158G  |
+| 0.conv                 | 0.896K                 | 0.209G   |
+| 0.conv.weight          | (32, 3, 3, 3)          |          |
+| 0.conv.bias            | (32,)                  |          |
+| 1.conv                 | 9.28K                  | 0.556G   |
+| 1.conv.weight          | (64, 16, 3, 3)         |          |
+| 1.conv.bias            | (64,)                  |          |
+| 2                      | 39.92K                 | 2.377G   |
+| 2.cv1                  | 4.352K                 | 0.255G   |
+| 2.cv1.conv             | 4.096K                 | 0.247G   |
+| 2.cv1.bn               | 0.128K                 | 7.725M   |
+| 2.cv1.bn_skip          | 0.128K                 |          |
+| 2.cv2                  | 16.896K                | 1.004G   |
+| 2.cv2.conv             | 16.384K                | 0.989G   |
+| 2.cv2.bn               | 0.256K                 | 15.45M   |
+| 2.cv2.bn_skip          | 0.256K                 |          |
+| 2.m                    | 18.672K                | 1.118G   |
+| 2.m.0                  | 9.408K                 | 0.562G   |
+| 2.m.1                  | 9.264K                 | 0.556G   |
+| 3                      | 37.376K                | 0.56G    |
+| 3.conv                 | 36.864K                | 0.556G   |
+| 3.conv.weight          | (128, 32, 3, 3)        |          |
+| 3.bn                   | 0.256K                 | 3.863M   |
+| 3.bn.weight            | (128,)                 |          |
+| 3.bn.bias              | (128,)                 |          |
+| 3.bn_skip              | 0.256K                 |          |
+| 3.bn_skip.weight       | (128,)                 |          |
+| 3.bn_skip.bias         | (128,)                 |          |
+| 4                      | 0.158M                 | 2.363G   |
+| 4.cv1                  | 16.896K                | 0.251G   |
+| 4.cv1.conv             | 16.384K                | 0.247G   |
+| 4.cv1.bn               | 0.256K                 | 3.863M   |
+| 4.cv1.bn_skip          | 0.256K                 |          |
+| 4.cv2                  | 66.56K                 | 0.997G   |
+| 4.cv2.conv             | 65.536K                | 0.989G   |
+| 4.cv2.bn               | 0.512K                 | 7.725M   |
+| 4.cv2.bn_skip          | 0.512K                 |          |
+| 4.m                    | 74.208K                | 1.115G   |
+| 4.m.0                  | 37.248K                | 0.559G   |
+| 4.m.1                  | 36.96K                 | 0.556G   |
+| 5                      | 0.591M                 | 2.227G   |
+| 5.conv                 | 0.59M                  | 2.225G   |
+| 5.conv.weight          | (256, 256, 3, 3)       |          |
+| 5.bn                   | 0.512K                 | 1.931M   |
+| 5.bn.weight            | (256,)                 |          |
+| 5.bn.bias              | (256,)                 |          |
+| 5.bn_skip              | 0.512K                 |          |
+| 5.bn_skip.weight       | (256,)                 |          |
+| 5.bn_skip.bias         | (256,)                 |          |
+| 6                      | 1.391M                 | 4.827G   |
+| 6.gamma                | (256,)                 |          |
+| 6.cv1                  | 33.28K                 | 0.125G   |
+| 6.cv1.conv             | 32.768K                | 0.124G   |
+| 6.cv1.bn               | 0.256K                 | 0.966M   |
+| 6.cv1.bn_skip          | 0.256K                 |          |
+| 6.cv2                  | 0.263M                 | 0.62G    |
+| 6.cv2.conv             | 0.164M                 | 0.618G   |
+| 6.cv2.bn               | 0.512K                 | 1.931M   |
+| 6.cv2.bn_skip          | 0.512K                 |          |
+| 6.cv2.conv_skip        | 98.304K                |          |
+| 6.m                    | 1.095M                 | 4.083G   |
+| 6.m.0                  | 0.277M                 | 1.028G   |
+| 6.m.1                  | 0.277M                 | 1.028G   |
+| 6.m.2                  | 0.271M                 | 1.013G   |
+| 6.m.3                  | 0.271M                 | 1.013G   |
+| 7                      | 0.591M                 | 0.557G   |
+| 7.conv                 | 0.59M                  | 0.556G   |
+| 7.conv.weight          | (256, 256, 3, 3)       |          |
+| 7.bn                   | 0.512K                 | 0.483M   |
+| 7.bn.weight            | (256,)                 |          |
+| 7.bn.bias              | (256,)                 |          |
+| 7.bn_skip              | 0.512K                 |          |
+| 7.bn_skip.weight       | (256,)                 |          |
+| 7.bn_skip.bias         | (256,)                 |          |
+| 8                      | 1.391M                 | 1.207G   |
+| 8.gamma                | (256,)                 |          |
+| 8.cv1                  | 33.28K                 | 31.142M  |
+| 8.cv1.conv             | 32.768K                | 30.9M    |
+| 8.cv1.bn               | 0.256K                 | 0.241M   |
+| 8.cv1.bn_skip          | 0.256K                 |          |
+| 8.cv2                  | 0.263M                 | 0.155G   |
+| 8.cv2.conv             | 0.164M                 | 0.155G   |
+| 8.cv2.bn               | 0.512K                 | 0.483M   |
+| 8.cv2.bn_skip          | 0.512K                 |          |
+| 8.cv2.conv_skip        | 98.304K                |          |
+| 8.m                    | 1.095M                 | 1.021G   |
+| 8.m.0                  | 0.277M                 | 0.257G   |
+| 8.m.1                  | 0.277M                 | 0.257G   |
+| 8.m.2                  | 0.271M                 | 0.253G   |
+| 8.m.3                  | 0.271M                 | 0.253G   |
+| 11                     | 0.528M                 | 1.984G   |
+| 11.cv1                 | 66.048K                | 0.248G   |
+| 11.cv1.conv            | 65.536K                | 0.247G   |
+| 11.cv1.bn              | 0.256K                 | 0.966M   |
+| 11.cv1.bn_skip         | 0.256K                 |          |
+| 11.cv2                 | 99.328K                | 0.373G   |
+| 11.cv2.conv            | 98.304K                | 0.371G   |
+| 11.cv2.bn              | 0.512K                 | 1.931M   |
+| 11.cv2.bn_skip         | 0.512K                 |          |
+| 11.m                   | 0.363M                 | 1.363G   |
+| 11.m.0                 | 0.182M                 | 0.684G   |
+| 11.m.1                 | 0.181M                 | 0.68G    |
+| 14                     | 0.15M                  | 2.238G   |
+| 14.cv1                 | 33.024K                | 0.496G   |
+| 14.cv1.conv            | 32.768K                | 0.494G   |
+| 14.cv1.bn              | 0.128K                 | 1.931M   |
+| 14.cv1.bn_skip         | 0.128K                 |          |
+| 14.cv2                 | 25.088K                | 0.375G   |
+| 14.cv2.conv            | 24.576K                | 0.371G   |
+| 14.cv2.bn              | 0.256K                 | 3.863M   |
+| 14.cv2.bn_skip         | 0.256K                 |          |
+| 14.m                   | 91.392K                | 1.367G   |
+| 14.m.0                 | 46.08K                 | 0.688G   |
+| 14.m.1                 | 45.312K                | 0.68G    |
+| 15                     | 0.148M                 | 0.557G   |
+| 15.conv                | 0.147M                 | 0.556G   |
+| 15.conv.weight         | (128, 128, 3, 3)       |          |
+| 15.bn                  | 0.256K                 | 0.966M   |
+| 15.bn.weight           | (128,)                 |          |
+| 15.bn.bias             | (128,)                 |          |
+| 15.bn_skip             | 0.256K                 |          |
+| 15.bn_skip.weight      | (128,)                 |          |
+| 15.bn_skip.bias        | (128,)                 |          |
+| 17                     | 0.512M                 | 1.923G   |
+| 17.cv1                 | 49.664K                | 0.186G   |
+| 17.cv1.conv            | 49.152K                | 0.185G   |
+| 17.cv1.bn              | 0.256K                 | 0.966M   |
+| 17.cv1.bn_skip         | 0.256K                 |          |
+| 17.cv2                 | 99.328K                | 0.373G   |
+| 17.cv2.conv            | 98.304K                | 0.371G   |
+| 17.cv2.bn              | 0.512K                 | 1.931M   |
+| 17.cv2.bn_skip         | 0.512K                 |          |
+| 17.m                   | 0.363M                 | 1.363G   |
+| 17.m.0                 | 0.182M                 | 0.684G   |
+| 17.m.1                 | 0.181M                 | 0.68G    |
+| 18                     | 0.591M                 | 0.557G   |
+| 18.conv                | 0.59M                  | 0.556G   |
+| 18.conv.weight         | (256, 256, 3, 3)       |          |
+| 18.bn                  | 0.512K                 | 0.483M   |
+| 18.bn.weight           | (256,)                 |          |
+| 18.bn.bias             | (256,)                 |          |
+| 18.bn_skip             | 0.512K                 |          |
+| 18.bn_skip.weight      | (256,)                 |          |
+| 18.bn_skip.bias        | (256,)                 |          |
+| 20                     | 0.627M                 | 0.589G   |
+| 20.cv1                 | 0.132M                 | 0.124G   |
+| 20.cv1.conv            | 0.131M                 | 0.124G   |
+| 20.cv1.bn              | 0.512K                 | 0.483M   |
+| 20.cv1.bn_skip         | 0.512K                 |          |
+| 20.cv2                 | 0.132M                 | 0.124G   |
+| 20.cv2.conv            | 0.131M                 | 0.124G   |
+| 20.cv2.bn              | 0.512K                 | 0.483M   |
+| 20.cv2.bn_skip         | 0.512K                 |          |
+| 20.m                   | 0.363M                 | 0.341G   |
+| 20.m.0                 | 0.182M                 | 0.171G   |
+| 20.m.1                 | 0.181M                 | 0.17G    |
+| 21                     | 0.638M                 | 3.423G   |
+| 21.cv2                 | 0.492M                 | 2.619G   |
+| 21.cv2.0               | 0.115M                 | 1.73G    |
+| 21.cv2.1               | 0.189M                 | 0.711G   |
+| 21.cv2.2               | 0.189M                 | 0.178G   |
+| 21.cv3                 | 0.146M                 | 0.803G   |
+| 21.cv3.0               | 36.874K                | 0.548G   |
+| 21.cv3.1               | 54.538K                | 0.203G   |
+| 21.cv3.2               | 54.538K                | 50.816M  |
+| 21.dfl.conv            | 16                     | 1.267M   |
+| 21.dfl.conv.weight     | (1, 16, 1, 1)          |          |
+| 9                      |                        | 0.966M   |
+| 12                     |                        | 3.863M   |
+  MACs  : 26.16 GMACs
+  FLOPs : 52.32 GFLOPs
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.739      0.529      0.586      0.344
+                person       3220      13265      0.782      0.621      0.719      0.386
+                 rider        515        649       0.71      0.478      0.528      0.293
+                   car       9879     102540      0.832      0.736      0.831      0.525
+                   bus       1242       1597      0.675      0.586      0.655      0.514
+                 truck       2689       4247      0.628      0.633      0.661      0.492
+                  bike        578       1007      0.639      0.505      0.557      0.292
+                 motor        334        452      0.663      0.429      0.493      0.261
+         traffic light       5653      26891      0.724      0.628      0.681      0.275
+          traffic sign       8221      34915      0.738      0.671      0.736      0.403
+                 train         14         15          1          0          0          0
+Speed: 0.1ms preprocess, 2.6ms inference, 0.0ms loss, 0.3ms postprocess per image
+Results saved to [1mruns/bdd100k/detect/anydepth-yolov12s/train[0m
+WARNING: Plotting error for runs/bdd100k/detect/anydepth-yolov12s/train/results.csv: could not convert string to float: 'super'
+/home/hslee/context-anydepth-det/anydepth-yolov12/ultralytics/utils/plotting.py:1231: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  ax[1].legend()

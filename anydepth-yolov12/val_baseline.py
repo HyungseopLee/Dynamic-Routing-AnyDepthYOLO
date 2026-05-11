@@ -21,23 +21,24 @@ model.val(
     project=args.project,
     name=f'Full_{IMG_SIZE}',
     imgsz=IMG_SIZE,
+    rect=False
 )
 
 
 '''
 
 # weight path
-baseline: ./pretrained/yolov12l.pt
+baseline: ./pretrained/yolov12s.pt
 
 
 
 # val on 1-gpu
-mkdir -p runs/baseline-yolov12l
+mkdir -p runs/coco/baseline-yolov12s
 python val_baseline.py \
     --imgsz 640 \
-    --weight ./pretrained/yolov12l.pt \
-    --project runs/baseline-yolov12l \
-    2>&1 | tee ./runs/baseline-yolov12l/val_640.log
+    --weight ./pretrained/yolov12s.pt \
+    --project runs/coco/baseline-yolov12s \
+    2>&1 | tee ./runs/coco/baseline-yolov12s/val_640.log
 
 
 '''
