@@ -897,7 +897,7 @@ class DetectionLossAnyDepth:
         conflict_mask = (fg_mask_super & fg_mask_base) & (target_gt_idx_super != target_gt_idx_base) # [B, Num_Anchors]
 
         # if RANK in (0, -1):
-        if False:
+        if True:
             print("[debug] fg_mask_super.sum(): ", fg_mask_super.sum().item())
             print("[debug] fg_mask_base.sum(): ", fg_mask_base.sum().item())
             print("[debug] fg_mask common sum: ", (fg_mask_super & fg_mask_base).sum().item())

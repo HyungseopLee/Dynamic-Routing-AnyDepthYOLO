@@ -11,6 +11,7 @@ parser.add_argument('--weight', type=str, default='')
 parser.add_argument('--task', type=str, default='')
 parser.add_argument('--data', type=str, default='')
 parser.add_argument('--resume', action='store_true', help='Resume training from the provided weight')
+parser.add_argument('--seed', type=int, default=0, help='Random seed for reproducibility')
 
 args = parser.parse_args()
 IMG_SIZE = args.imgsz
@@ -73,7 +74,11 @@ else:
       
       # self-distillation
       alpha_base=0.6, # (float) loss weight for the base model
-      
+
+      # reproducibility
+      seed=args.seed,
+      deterministic=True,
+
       device="0,1",
       # device="0,1,2,3",
     )
@@ -110,7 +115,7 @@ python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
   --imgsz 1280 \
   --weight ./pretrained/yolov12s.pt \
   --project ./runs/bdd100k/detect/baseline-yolov12s \
-  2>&1 | tee ./runs/bdd100k/detect/test.log
+  2>&1 | tee ./runs/bdd100k/detect/baseline-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing.log
 
 
 # Any-depth
