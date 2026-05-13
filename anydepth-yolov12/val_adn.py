@@ -30,6 +30,7 @@ model.val(
     project=args.project,
     name=f'Full_{IMG_SIZE}',
     imgsz=IMG_SIZE,
+    rect=False,
 )
 
 # Base
@@ -41,6 +42,7 @@ model.val(
     project=args.project,
     name=f'Base_{IMG_SIZE}',
     imgsz=IMG_SIZE,
+    rect=False,
 )
 
 
@@ -52,12 +54,12 @@ model.val(
 
 
 # val on 1-gpu
-mkdir -p runs/coco/anydepth-yolov12l
+mkdir -p runs/coco/anydepth-yolov12s
 python val_adn.py \
     --imgsz 640 \
-    --weight ./pretrained/yolo-ad-exp8_105_epoch539_0.539_0.520.pt \
-    --project runs/coco/anydepth-yolov12l \
-    2>&1 | tee ./runs/coco/anydepth-yolov12l/val_640.log
+    --weight ./pretrained/yolo-ad-small_0.479_0.451.pt \
+    --project ./runs/coco/anydepth-yolov12s \
+    2>&1 | tee ./runs/coco/anydepth-yolov12s/val_640.log
 
 '''
 

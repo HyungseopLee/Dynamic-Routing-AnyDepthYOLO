@@ -46,7 +46,7 @@ if is_anydepth:
 
 else:
     model.val(
-        task='detect_wst',
+        task='detect',
         data='bdd100k.yaml', 
         save_json=True, 
         project=args.project,
@@ -56,7 +56,7 @@ else:
         rect=True,
     )
 
-    
+
 
 '''
 
@@ -70,9 +70,9 @@ else:
 mkdir -p ./runs/bdd100k/detect/baseline-yolov12s
 python val_adn_bdd100k.py \
     --imgsz 1280 \
-    --weight ./runs/bdd100k/detect/baseline-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing/weights/best.pt \
-    --project ./runs/bdd100k/detect/baseline-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing \
-    2>&1 | tee ./runs/bdd100k/detect/baseline-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing/val.log
+    --weight ./runs/bdd100k/detect/anydepth-yolov12s/train/weights/best.pt \
+    --project ./runs/bdd100k/detect/anydepth-yolov12s/train \
+    2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s/train/val.log
 
 
 # any-depth
@@ -80,9 +80,9 @@ python val_adn_bdd100k.py \
 mkdir -p ./runs/bdd100k/detect_wst/anydepth-yolov12l
 python val_adn_bdd100k.py \
     --imgsz 1280 \
-    --weight ./runs/bdd100k/detect/anydepth-yolov12s/50e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing/weights/best.pt \
-    --project ./runs/bdd100k/detect/anydepth-yolov12s \
-    2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s/50e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing/val_1280.log
+    --weight ./runs/bdd100k/detect/anydepth-yolov12s/train/weights/best.pt \
+    --project ./runs/bdd100k/detect/anydepth-yolov12s/train \
+    2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s/train/val_1280.log
 
 
 

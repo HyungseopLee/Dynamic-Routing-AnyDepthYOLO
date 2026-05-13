@@ -71,6 +71,8 @@ else:
       copy_paste=0.0,  # n:0.1; S:0.15; M:0.4; L:0.5; X:0.6
       flipud=0.0, # (float) image flip up-down (probability)rect=
       
+      # self-distillation
+      alpha_base=0.6, # (float) loss weight for the base model
       
       device="0,1",
       # device="0,1,2,3",
@@ -108,7 +110,7 @@ python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
   --imgsz 1280 \
   --weight ./pretrained/yolov12s.pt \
   --project ./runs/bdd100k/detect/baseline-yolov12s \
-  2>&1 | tee ./runs/bdd100k/detect/baseline-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-740_singleScale_augNothing.log
+  2>&1 | tee ./runs/bdd100k/detect/test.log
 
 
 # Any-depth
@@ -123,9 +125,9 @@ python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
   --imgsz 1280 \
   --weight ./pretrained/yolo-ad-small_0.479_0.451.pt \
   --project ./runs/bdd100k/detect/anydepth-yolov12s \
-  2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_orig.log
+  2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.0_orig.log
 
-./runs/bdd100k/detect/anydepth-yolov12s/50e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_orig/weights/best.pt  
+
 
   --weight ./pretrained/yolo-ad-exp8_105_epoch539_0.539_0.520.pt \
 

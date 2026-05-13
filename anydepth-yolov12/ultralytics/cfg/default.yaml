@@ -141,5 +141,5 @@ kd_cls: 0.5 # (float) cls kd loss gain (scale with pixels)
 kd_dfl: 1.5 # (float) dfl kd loss gain
 kd_feat: 0.1 # (float) feature kd loss gain
 skip: # (list, optional) skip list for AnyDepth models
-alpha_base: 0.3 # (float) loss weight for the base model
+alpha_base: 0.0 # (float) loss weight for the base model
 kd_warmup_epochs: 0 # (int) number of epochs for kd loss warmup
