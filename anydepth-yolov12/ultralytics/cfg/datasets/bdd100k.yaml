@@ -1,6 +1,6 @@
 # @HyungseopLee: For object detection
 # https://www.kaggle.com/datasets/a7madmostafa/bdd100k-yolo/data?select=data.yaml
-path: /media/data/bdd100k_yolo
+path: /media/data/bdd100k-yolo
 train: train/images
 val: val/images
 test: test/images
