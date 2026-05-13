@@ -13,7 +13,7 @@ cache: false
 device: 0,1
 workers: 8
 project: ./runs/bdd100k/detect/anydepth-yolov12s
-name: train2
+name: train
 exist_ok: false
 pretrained: ./pretrained/yolo-ad-small_0.479_0.451.pt
 optimizer: SGD
@@ -112,6 +112,6 @@ kd_cls: 0.5
 kd_dfl: 1.5
 kd_feat: 0.1
 skip: null
-alpha_base: 0.6
+alpha_base: 0.0
 kd_warmup_epochs: 0
-save_dir: runs/bdd100k/detect/anydepth-yolov12s/train2
+save_dir: runs/bdd100k/detect/anydepth-yolov12s/train

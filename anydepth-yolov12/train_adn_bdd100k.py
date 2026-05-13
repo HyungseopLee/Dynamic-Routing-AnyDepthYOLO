@@ -73,7 +73,7 @@ else:
       flipud=0.0, # (float) image flip up-down (probability)rect=
       
       # self-distillation
-      alpha_base=0.6, # (float) loss weight for the base model
+      alpha_base=0.0, # (float) loss weight for the base model
 
       # reproducibility
       seed=args.seed,
