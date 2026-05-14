@@ -26,9 +26,8 @@ if is_anydepth:
         skip=skip,
         project=args.project,
         name=f'Full_{IMG_SIZE}',
-        
         imgsz=IMG_SIZE,
-        rect=True, # for IMG_SIZE x IMG_SIZE
+        rect=True,
     )
     # Base
     skip = [True,] * model.num_skippable_layers
@@ -39,7 +38,6 @@ if is_anydepth:
         skip=skip,
         project=args.project,
         name=f'Base_{IMG_SIZE}',
-        
         imgsz=IMG_SIZE,
         rect=True,
     )
@@ -51,7 +49,6 @@ else:
         save_json=True, 
         project=args.project,
         name=f'Baseline_{IMG_SIZE}',
-        
         imgsz=IMG_SIZE,
         rect=True,
     )
@@ -80,9 +77,9 @@ python val_adn_bdd100k.py \
 mkdir -p ./runs/bdd100k/detect_wst/anydepth-yolov12l
 python val_adn_bdd100k.py \
     --imgsz 1280 \
-    --weight ./runs/bdd100k/detect/anydepth-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.0_orig/weights/best.pt \
-    --project ./runs/bdd100k/detect/anydepth-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.0_orig \
-    2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.0_orig/val_1280.log
+    --weight ./runs/bdd100k/detect/anydepth-yolov12s/train/weights/best.pt \
+    --project ./runs/bdd100k/detect/anydepth-yolov12s/train \
+    2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s/train/val_1280.log
 
 
 
