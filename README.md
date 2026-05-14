@@ -19,6 +19,9 @@ Two directories:
 - `./pretrained_coco/` — COCO-pretrained weights, used as `--weight` for BDD100K fine-tuning.
 - `./finetuned_bdd100k/` — BDD100K fine-tuned weights, used as `--weight` for validation.
 
+Download from [Google Drive](https://drive.google.com/drive/folders/14FmMgIdWbPSiqEa0yzlnkx6apuYdsQzl?usp=drive_link) and place files into the matching directory:
+
+
 ### COCO-pretrained (`./pretrained_coco/`)
 
 | Model | Config | Weight |
