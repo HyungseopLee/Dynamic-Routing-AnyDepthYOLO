@@ -112,6 +112,6 @@ kd_cls: 0.5
 kd_dfl: 1.5
 kd_feat: 0.1
 skip: null
-alpha_base: 1.0
+alpha_base: 0.0
 kd_warmup_epochs: 0
 save_dir: runs/bdd100k/detect/anydepth-yolov12s/train

@@ -73,7 +73,7 @@ else:
       flipud=0.0, # (float) image flip up-down (probability)rect=
       
       # self-distillation
-      alpha_base=0.0, # (float) loss weight for the base model
+      alpha_base=1.0, # (float) loss weight for the base model
 
       # reproducibility
       seed=args.seed,
@@ -130,7 +130,7 @@ python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
   --imgsz 1280 \
   --weight ./pretrained/yolo-ad-small_0.479_0.451.pt \
   --project ./runs/bdd100k/detect/anydepth-yolov12s \
-  2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.0_orig.log
+  2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha1.0_orig.log
 
 
 

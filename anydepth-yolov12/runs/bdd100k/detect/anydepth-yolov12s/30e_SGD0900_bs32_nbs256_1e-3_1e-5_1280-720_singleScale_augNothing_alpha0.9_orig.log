@@ -25,17 +25,13 @@ Freezing layer 'model.21.dfl.conv.weight'
 [34m[1mAMP: [0mrunning Automatic Mixed Precision (AMP) checks...
 task: None
 [34m[1mAMP: [0mchecks passed ✅
-
-[34m[1mtrain: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s]
-[34m[1mtrain: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s]
+[34m[1mtrain: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s][34m[1mtrain: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s]
 [34m[1mtrain: [0mWARNING ⚠️ /media/data/bdd100k_yolo/train/images/75055858-7d04a650.jpg: 1 duplicate labels removed
 /home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/albumentations/__init__.py:28: UserWarning: A new version of Albumentations is available: '2.0.8' (you have '2.0.4'). Upgrade using: pip install -U albumentations. To disable automatic update checks, set the environment variable NO_ALBUMENTATIONS_UPDATE to 1.
   check_for_updates()
 [34m[1malbumentations: [0mBlur(p=0.01, blur_limit=(3, 7)), MedianBlur(p=0.01, blur_limit=(3, 7)), ToGray(p=0.01, num_output_channels=3, method='weighted_average'), CLAHE(p=0.01, clip_limit=(1.0, 4.0), tile_grid_size=(8, 8))
 WARNING ⚠️ 'rect=True' is incompatible with DataLoader shuffle, setting shuffle=False
-
-[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
-[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s][34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
 /home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/albumentations/__init__.py:28: UserWarning: A new version of Albumentations is available: '2.0.8' (you have '2.0.4'). Upgrade using: pip install -U albumentations. To disable automatic update checks, set the environment variable NO_ALBUMENTATIONS_UPDATE to 1.
   check_for_updates()
 Plotting labels to runs/bdd100k/detect/anydepth-yolov12s/train/labels.jpg... 
@@ -1432,815 +1428,815 @@ grad.sizes() = [128, 128, 1, 1], strides() = [128, 1, 128, 128]
 bucket_view.sizes() = [128, 128, 1, 1], strides() = [128, 1, 1, 1] (Triggered internally at ../torch/csrc/distributed/c10d/reducer.cpp:322.)
   Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
   Epoch 1/30  Batch 1/2188 (0.0%)  | Super 205.561 (box 1.6296  cls 3.4781  dfl 1.3160)  | Base 222.416 (box 1.7446  cls 3.8339  dfl 1.3720)  | KD 29.095 (box 0.76010  cls 0.14419  dfl 0.00240  feat 0.00254)
-  Epoch 1/30  Batch 219/2188 (10.0%)  | Super 180.959 (box 1.6439  cls 2.7190  dfl 1.2920)  | Base 191.978 (box 1.7275  cls 2.9648  dfl 1.3071)  | KD 26.682 (box 0.74788  cls 0.08054  dfl 0.00286  feat 0.00252)
-  Epoch 1/30  Batch 437/2188 (20.0%)  | Super 162.703 (box 1.8050  cls 1.9534  dfl 1.3261)  | Base 169.584 (box 1.8204  cls 2.1411  dfl 1.3380)  | KD 27.778 (box 0.79429  cls 0.06879  dfl 0.00258  feat 0.00239)
-  Epoch 1/30  Batch 655/2188 (29.9%)  | Super 128.111 (box 1.4595  cls 1.3635  dfl 1.1805)  | Base 134.298 (box 1.4916  cls 1.5117  dfl 1.1935)  | KD 17.572 (box 0.50491  cls 0.04114  dfl 0.00133  feat 0.00174)
-  Epoch 1/30  Batch 873/2188 (39.9%)  | Super 139.593 (box 1.5684  cls 1.5596  dfl 1.2343)  | Base 145.403 (box 1.5776  cls 1.7330  dfl 1.2332)  | KD 19.777 (box 0.56878  cls 0.04580  dfl 0.00154  feat 0.00193)
-  Epoch 1/30  Batch 1091/2188 (49.9%)  | Super 117.646 (box 1.4129  cls 1.1069  dfl 1.1567)  | Base 123.932 (box 1.4011  cls 1.3134  dfl 1.1584)  | KD 16.903 (box 0.49643  cls 0.02914  dfl 0.00122  feat 0.00143)
-  Epoch 1/30  Batch 1309/2188 (59.8%)  | Super 115.152 (box 1.3697  cls 1.1060  dfl 1.1228)  | Base 121.292 (box 1.3847  cls 1.2765  dfl 1.1292)  | KD 14.401 (box 0.42444  cls 0.02304  dfl 0.00108  feat 0.00148)
-  Epoch 1/30  Batch 1527/2188 (69.8%)  | Super 125.770 (box 1.5141  cls 1.1833  dfl 1.2329)  | Base 132.018 (box 1.5298  cls 1.3605  dfl 1.2353)  | KD 14.192 (box 0.41225  cls 0.02867  dfl 0.00103  feat 0.00155)
-  Epoch 1/30  Batch 1745/2188 (79.8%)  | Super 115.667 (box 1.3744  cls 1.0955  dfl 1.1446)  | Base 121.686 (box 1.3805  cls 1.2804  dfl 1.1418)  | KD 15.033 (box 0.43691  cls 0.03024  dfl 0.00120  feat 0.00144)
-  Epoch 1/30  Batch 1963/2188 (89.7%)  | Super 119.909 (box 1.4121  cls 1.1401  dfl 1.1949)  | Base 127.347 (box 1.4348  cls 1.3333  dfl 1.2115)  | KD 15.523 (box 0.45034  cls 0.03172  dfl 0.00119  feat 0.00185)
-  Epoch 1/30  Batch 2181/2188 (99.7%)  | Super 115.446 (box 1.4199  cls 1.0160  dfl 1.1718)  | Base 121.240 (box 1.4222  cls 1.2021  dfl 1.1645)  | KD 15.208 (box 0.44374  cls 0.02845  dfl 0.00125  feat 0.00182)
+  Epoch 1/30  Batch 219/2188 (10.0%)  | Super 177.297 (box 1.6529  cls 2.5985  dfl 1.2891)  | Base 186.373 (box 1.7419  cls 2.7795  dfl 1.3027)  | KD 27.328 (box 0.76030  cls 0.08828  dfl 0.00286  feat 0.00257)
+  Epoch 1/30  Batch 437/2188 (20.0%)  | Super 159.689 (box 1.8235  cls 1.8298  dfl 1.3370)  | Base 165.027 (box 1.8484  cls 1.9627  dfl 1.3460)  | KD 29.020 (box 0.81311  cls 0.08861  dfl 0.00271  feat 0.00243)
+  Epoch 1/30  Batch 655/2188 (29.9%)  | Super 124.799 (box 1.4501  cls 1.2787  dfl 1.1712)  | Base 129.217 (box 1.4894  cls 1.3681  dfl 1.1805)  | KD 19.075 (box 0.52346  cls 0.06951  dfl 0.00136  feat 0.00177)
+  Epoch 1/30  Batch 873/2188 (39.9%)  | Super 137.404 (box 1.5796  cls 1.4864  dfl 1.2279)  | Base 139.634 (box 1.5843  cls 1.5680  dfl 1.2113)  | KD 22.127 (box 0.59108  cls 0.09685  dfl 0.00156  feat 0.00197)
+  Epoch 1/30  Batch 1091/2188 (49.9%)  | Super 115.696 (box 1.3983  cls 1.0671  dfl 1.1501)  | Base 119.987 (box 1.4261  cls 1.1759  dfl 1.1475)  | KD 18.656 (box 0.51760  cls 0.06263  dfl 0.00125  feat 0.00150)
+  Epoch 1/30  Batch 1309/2188 (59.8%)  | Super 113.406 (box 1.3723  cls 1.0492  dfl 1.1225)  | Base 116.452 (box 1.3946  cls 1.1184  dfl 1.1261)  | KD 15.935 (box 0.44916  cls 0.04614  dfl 0.00113  feat 0.00156)
+  Epoch 1/30  Batch 1527/2188 (69.8%)  | Super 123.959 (box 1.5133  cls 1.1334  dfl 1.2270)  | Base 127.870 (box 1.5464  cls 1.2199  dfl 1.2297)  | KD 15.429 (box 0.42864  cls 0.05085  dfl 0.00111  feat 0.00157)
+  Epoch 1/30  Batch 1745/2188 (79.8%)  | Super 113.633 (box 1.3695  cls 1.0445  dfl 1.1370)  | Base 117.168 (box 1.3980  cls 1.1252  dfl 1.1383)  | KD 16.409 (box 0.46160  cls 0.04850  dfl 0.00121  feat 0.00147)
+  Epoch 1/30  Batch 1963/2188 (89.7%)  | Super 117.662 (box 1.4033  cls 1.0969  dfl 1.1767)  | Base 122.745 (box 1.4514  cls 1.1799  dfl 1.2045)  | KD 16.901 (box 0.47921  cls 0.04573  dfl 0.00130  feat 0.00190)
+  Epoch 1/30  Batch 2181/2188 (99.7%)  | Super 114.044 (box 1.4242  cls 0.9697  dfl 1.1700)  | Base 115.772 (box 1.4387  cls 1.0265  dfl 1.1526)  | KD 16.724 (box 0.46960  cls 0.04981  dfl 0.00128  feat 0.00193)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 1/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.737      0.346      0.403       0.23
+                   all      10000     185578      0.602      0.374      0.421      0.238
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 1/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.717      0.325      0.374      0.209
+                   all      10000     185578       0.59      0.358      0.399      0.222
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 2/30  Batch 1/2188 (0.0%)  | Super 124.628 (box 1.4835  cls 1.1123  dfl 1.2989)  | Base 131.938 (box 1.5111  cls 1.2951  dfl 1.3168)  | KD 15.751 (box 0.45984  cls 0.02926  dfl 0.00127  feat 0.00184)
-  Epoch 2/30  Batch 219/2188 (10.0%)  | Super 113.988 (box 1.4358  cls 0.9814  dfl 1.1449)  | Base 121.321 (box 1.4545  cls 1.1863  dfl 1.1505)  | KD 13.263 (box 0.39062  cls 0.02127  dfl 0.00101  feat 0.00157)
-  Epoch 2/30  Batch 437/2188 (20.0%)  | Super 134.522 (box 1.7347  cls 1.1614  dfl 1.3078)  | Base 139.078 (box 1.7224  cls 1.3214  dfl 1.3024)  | KD 18.185 (box 0.54089  cls 0.02435  dfl 0.00144  feat 0.00159)
-  Epoch 2/30  Batch 655/2188 (29.9%)  | Super 110.625 (box 1.3584  cls 0.9641  dfl 1.1346)  | Base 116.091 (box 1.3598  cls 1.1327  dfl 1.1354)  | KD 14.195 (box 0.41405  cls 0.02709  dfl 0.00100  feat 0.00145)
-  Epoch 2/30  Batch 873/2188 (39.9%)  | Super 126.888 (box 1.5186  cls 1.2002  dfl 1.2464)  | Base 131.029 (box 1.5005  cls 1.3655  dfl 1.2286)  | KD 15.574 (box 0.45775  cls 0.02615  dfl 0.00122  feat 0.00157)
-  Epoch 2/30  Batch 1091/2188 (49.9%)  | Super 106.145 (box 1.3683  cls 0.8672  dfl 1.0815)  | Base 110.451 (box 1.3558  cls 1.0289  dfl 1.0669)  | KD 13.142 (box 0.38876  cls 0.01964  dfl 0.00104  feat 0.00124)
-  Epoch 2/30  Batch 1309/2188 (59.8%)  | Super 105.204 (box 1.3319  cls 0.8608  dfl 1.0949)  | Base 111.220 (box 1.3186  cls 1.0745  dfl 1.0826)  | KD 12.984 (box 0.37912  cls 0.02416  dfl 0.00108  feat 0.00138)
-  Epoch 2/30  Batch 1527/2188 (69.8%)  | Super 118.878 (box 1.4735  cls 1.0211  dfl 1.2203)  | Base 125.333 (box 1.4770  cls 1.2201  dfl 1.2195)  | KD 14.350 (box 0.42219  cls 0.02360  dfl 0.00125  feat 0.00140)
-  Epoch 2/30  Batch 1745/2188 (79.8%)  | Super 109.544 (box 1.3698  cls 0.9201  dfl 1.1333)  | Base 114.401 (box 1.3591  cls 1.0769  dfl 1.1390)  | KD 12.416 (box 0.36924  cls 0.01661  dfl 0.00092  feat 0.00121)
-  Epoch 2/30  Batch 1963/2188 (89.7%)  | Super 112.895 (box 1.3515  cls 1.0324  dfl 1.1440)  | Base 116.151 (box 1.3131  cls 1.1777  dfl 1.1390)  | KD 12.988 (box 0.38128  cls 0.02209  dfl 0.00109  feat 0.00142)
-  Epoch 2/30  Batch 2181/2188 (99.7%)  | Super 112.568 (box 1.4216  cls 0.9139  dfl 1.1822)  | Base 117.781 (box 1.4137  cls 1.0906  dfl 1.1764)  | KD 13.307 (box 0.38905  cls 0.02427  dfl 0.00109  feat 0.00144)
+  Epoch 2/30  Batch 1/2188 (0.0%)  | Super 123.378 (box 1.4851  cls 1.0758  dfl 1.2947)  | Base 127.896 (box 1.5388  cls 1.1536  dfl 1.3044)  | KD 16.755 (box 0.46520  cls 0.05516  dfl 0.00123  feat 0.00200)
+  Epoch 2/30  Batch 219/2188 (10.0%)  | Super 113.536 (box 1.4563  cls 0.9591  dfl 1.1326)  | Base 116.535 (box 1.4847  cls 1.0253  dfl 1.1317)  | KD 15.117 (box 0.42885  cls 0.04074  dfl 0.00110  feat 0.00172)
+  Epoch 2/30  Batch 437/2188 (20.0%)  | Super 131.732 (box 1.7134  cls 1.1243  dfl 1.2789)  | Base 135.018 (box 1.7419  cls 1.1970  dfl 1.2805)  | KD 19.734 (box 0.57575  cls 0.03770  dfl 0.00147  feat 0.00176)
+  Epoch 2/30  Batch 655/2188 (29.9%)  | Super 109.815 (box 1.3703  cls 0.9429  dfl 1.1185)  | Base 112.042 (box 1.3870  cls 0.9955  dfl 1.1189)  | KD 14.986 (box 0.43134  cls 0.03445  dfl 0.00101  feat 0.00152)
+  Epoch 2/30  Batch 873/2188 (39.9%)  | Super 125.257 (box 1.5169  cls 1.1623  dfl 1.2351)  | Base 125.629 (box 1.5321  cls 1.1751  dfl 1.2187)  | KD 16.311 (box 0.47147  cls 0.03547  dfl 0.00114  feat 0.00164)
+  Epoch 2/30  Batch 1091/2188 (49.9%)  | Super 104.165 (box 1.3654  cls 0.8213  dfl 1.0685)  | Base 106.586 (box 1.3911  cls 0.8834  dfl 1.0563)  | KD 14.332 (box 0.41618  cls 0.02931  dfl 0.00106  feat 0.00132)
+  Epoch 2/30  Batch 1309/2188 (59.8%)  | Super 104.270 (box 1.3321  cls 0.8363  dfl 1.0901)  | Base 105.959 (box 1.3382  cls 0.9030  dfl 1.0700)  | KD 15.130 (box 0.42349  cls 0.04667  dfl 0.00114  feat 0.00151)
+  Epoch 2/30  Batch 1527/2188 (69.8%)  | Super 118.905 (box 1.4874  cls 1.0081  dfl 1.2203)  | Base 121.393 (box 1.5190  cls 1.0629  dfl 1.2116)  | KD 15.420 (box 0.43680  cls 0.04236  dfl 0.00122  feat 0.00151)
+  Epoch 2/30  Batch 1745/2188 (79.8%)  | Super 108.524 (box 1.3645  cls 0.8934  dfl 1.1335)  | Base 110.364 (box 1.3929  cls 0.9225  dfl 1.1334)  | KD 14.106 (box 0.40873  cls 0.02965  dfl 0.00102  feat 0.00143)
+  Epoch 2/30  Batch 1963/2188 (89.7%)  | Super 108.724 (box 1.3196  cls 0.9612  dfl 1.1168)  | Base 110.269 (box 1.3295  cls 1.0045  dfl 1.1119)  | KD 14.084 (box 0.40657  cls 0.03069  dfl 0.00111  feat 0.00176)
+  Epoch 2/30  Batch 2181/2188 (99.7%)  | Super 110.276 (box 1.4075  cls 0.8863  dfl 1.1524)  | Base 114.548 (box 1.4502  cls 0.9673  dfl 1.1620)  | KD 15.204 (box 0.43514  cls 0.03713  dfl 0.00121  feat 0.00164)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 2/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578       0.67      0.449      0.486      0.278
+                   all      10000     185578       0.68      0.455      0.498      0.285
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 2/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.651      0.416      0.452      0.255
+                   all      10000     185578      0.664      0.437      0.476      0.267
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 3/30  Batch 1/2188 (0.0%)  | Super 113.587 (box 1.3940  cls 0.9694  dfl 1.1862)  | Base 119.203 (box 1.3885  cls 1.1559  dfl 1.1807)  | KD 13.227 (box 0.38533  cls 0.02557  dfl 0.00105  feat 0.00138)
-  Epoch 3/30  Batch 219/2188 (10.0%)  | Super 118.542 (box 1.5104  cls 0.9818  dfl 1.2123)  | Base 123.997 (box 1.5053  cls 1.1577  dfl 1.2119)  | KD 13.245 (box 0.39367  cls 0.01747  dfl 0.00125  feat 0.00153)
-  Epoch 3/30  Batch 437/2188 (20.0%)  | Super 124.022 (box 1.6633  cls 1.0258  dfl 1.1866)  | Base 131.167 (box 1.6876  cls 1.2046  dfl 1.2068)  | KD 15.148 (box 0.45397  cls 0.01699  dfl 0.00112  feat 0.00130)
-  Epoch 3/30  Batch 655/2188 (29.9%)  | Super 107.565 (box 1.3693  cls 0.8639  dfl 1.1283)  | Base 112.562 (box 1.3637  cls 1.0211  dfl 1.1328)  | KD 11.272 (box 0.33036  cls 0.01969  dfl 0.00079  feat 0.00143)
-  Epoch 3/30  Batch 873/2188 (39.9%)  | Super 116.102 (box 1.4523  cls 1.0288  dfl 1.1471)  | Base 120.607 (box 1.4310  cls 1.2128  dfl 1.1252)  | KD 13.357 (box 0.39550  cls 0.01958  dfl 0.00108  feat 0.00124)
-  Epoch 3/30  Batch 1091/2188 (49.9%)  | Super 105.609 (box 1.3669  cls 0.8130  dfl 1.1204)  | Base 110.094 (box 1.3591  cls 0.9686  dfl 1.1128)  | KD 11.185 (box 0.33405  cls 0.01357  dfl 0.00084  feat 0.00107)
-  Epoch 3/30  Batch 1309/2188 (59.8%)  | Super 107.661 (box 1.3536  cls 0.8369  dfl 1.1739)  | Base 113.293 (box 1.3431  cls 1.0358  dfl 1.1615)  | KD 12.194 (box 0.36111  cls 0.01776  dfl 0.00097  feat 0.00123)
-  Epoch 3/30  Batch 1527/2188 (69.8%)  | Super 116.032 (box 1.4726  cls 0.9696  dfl 1.1838)  | Base 122.295 (box 1.4682  cls 1.1761  dfl 1.1774)  | KD 12.654 (box 0.37152  cls 0.02167  dfl 0.00100  feat 0.00125)
-  Epoch 3/30  Batch 1745/2188 (79.8%)  | Super 109.086 (box 1.3815  cls 0.8846  dfl 1.1429)  | Base 114.766 (box 1.3790  cls 1.0655  dfl 1.1419)  | KD 12.502 (box 0.37133  cls 0.01730  dfl 0.00096  feat 0.00108)
-  Epoch 3/30  Batch 1963/2188 (89.7%)  | Super 117.621 (box 1.4214  cls 1.0271  dfl 1.2272)  | Base 123.860 (box 1.4231  cls 1.2386  dfl 1.2090)  | KD 13.041 (box 0.38299  cls 0.02207  dfl 0.00107  feat 0.00140)
-  Epoch 3/30  Batch 2181/2188 (99.7%)  | Super 111.639 (box 1.4367  cls 0.8394  dfl 1.2126)  | Base 118.036 (box 1.4389  cls 1.0476  dfl 1.2021)  | KD 10.879 (box 0.32054  cls 0.01748  dfl 0.00086  feat 0.00110)
+  Epoch 3/30  Batch 1/2188 (0.0%)  | Super 112.791 (box 1.4051  cls 0.9460  dfl 1.1735)  | Base 114.636 (box 1.4164  cls 1.0100  dfl 1.1560)  | KD 14.539 (box 0.41626  cls 0.03548  dfl 0.00105  feat 0.00156)
+  Epoch 3/30  Batch 219/2188 (10.0%)  | Super 116.701 (box 1.4963  cls 0.9671  dfl 1.1835)  | Base 119.045 (box 1.5359  cls 0.9992  dfl 1.1850)  | KD 13.759 (box 0.40017  cls 0.02686  dfl 0.00111  feat 0.00183)
+  Epoch 3/30  Batch 437/2188 (20.0%)  | Super 123.253 (box 1.6600  cls 1.0115  dfl 1.1801)  | Base 125.152 (box 1.6766  cls 1.0620  dfl 1.1724)  | KD 16.843 (box 0.49443  cls 0.02907  dfl 0.00115  feat 0.00169)
+  Epoch 3/30  Batch 655/2188 (29.9%)  | Super 107.629 (box 1.3743  cls 0.8570  dfl 1.1320)  | Base 109.430 (box 1.3947  cls 0.9037  dfl 1.1213)  | KD 12.822 (box 0.37138  cls 0.02672  dfl 0.00091  feat 0.00167)
+  Epoch 3/30  Batch 873/2188 (39.9%)  | Super 113.368 (box 1.4292  cls 0.9936  dfl 1.1199)  | Base 114.591 (box 1.4412  cls 1.0402  dfl 1.0996)  | KD 14.927 (box 0.43223  cls 0.03170  dfl 0.00105  feat 0.00149)
+  Epoch 3/30  Batch 1091/2188 (49.9%)  | Super 104.546 (box 1.3603  cls 0.7948  dfl 1.1120)  | Base 106.901 (box 1.3795  cls 0.8487  dfl 1.1125)  | KD 12.257 (box 0.35840  cls 0.02243  dfl 0.00087  feat 0.00133)
+  Epoch 3/30  Batch 1309/2188 (59.8%)  | Super 106.187 (box 1.3370  cls 0.8264  dfl 1.1550)  | Base 106.775 (box 1.3424  cls 0.8585  dfl 1.1359)  | KD 14.698 (box 0.42470  cls 0.03209  dfl 0.00106  feat 0.00145)
+  Epoch 3/30  Batch 1527/2188 (69.8%)  | Super 116.043 (box 1.4868  cls 0.9578  dfl 1.1818)  | Base 118.869 (box 1.5195  cls 1.0229  dfl 1.1722)  | KD 13.979 (box 0.40224  cls 0.03206  dfl 0.00102  feat 0.00154)
+  Epoch 3/30  Batch 1745/2188 (79.8%)  | Super 107.938 (box 1.3710  cls 0.8732  dfl 1.1288)  | Base 110.525 (box 1.4001  cls 0.9268  dfl 1.1270)  | KD 13.450 (box 0.39211  cls 0.02579  dfl 0.00097  feat 0.00145)
+  Epoch 3/30  Batch 1963/2188 (89.7%)  | Super 114.514 (box 1.3939  cls 0.9855  dfl 1.1992)  | Base 117.154 (box 1.4340  cls 1.0309  dfl 1.1962)  | KD 13.907 (box 0.40599  cls 0.02566  dfl 0.00105  feat 0.00190)
+  Epoch 3/30  Batch 2181/2188 (99.7%)  | Super 111.834 (box 1.4525  cls 0.8223  dfl 1.2200)  | Base 114.742 (box 1.4780  cls 0.9042  dfl 1.2035)  | KD 13.115 (box 0.37924  cls 0.02811  dfl 0.00104  feat 0.00145)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 3/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.698      0.473      0.519      0.297
+                   all      10000     185578      0.696      0.479      0.523        0.3
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 3/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.577      0.449      0.493      0.278
+                   all      10000     185578      0.692      0.457      0.504      0.285
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 4/30  Batch 1/2188 (0.0%)  | Super 113.127 (box 1.4134  cls 0.9099  dfl 1.2120)  | Base 118.984 (box 1.4000  cls 1.1120  dfl 1.2062)  | KD 11.850 (box 0.35198  cls 0.01628  dfl 0.00099  feat 0.00108)
-  Epoch 4/30  Batch 219/2188 (10.0%)  | Super 117.353 (box 1.4761  cls 0.9848  dfl 1.2064)  | Base 122.702 (box 1.4601  cls 1.1773  dfl 1.1970)  | KD 11.530 (box 0.34109  cls 0.01710  dfl 0.00092  feat 0.00122)
-  Epoch 4/30  Batch 437/2188 (20.0%)  | Super 120.655 (box 1.6356  cls 0.9814  dfl 1.1535)  | Base 125.155 (box 1.6239  cls 1.1364  dfl 1.1508)  | KD 13.776 (box 0.41328  cls 0.01521  dfl 0.00084  feat 0.00118)
-  Epoch 4/30  Batch 655/2188 (29.9%)  | Super 104.126 (box 1.3315  cls 0.8214  dfl 1.1010)  | Base 108.880 (box 1.3224  cls 0.9870  dfl 1.0931)  | KD 10.267 (box 0.30503  cls 0.01404  dfl 0.00065  feat 0.00113)
-  Epoch 4/30  Batch 873/2188 (39.9%)  | Super 118.899 (box 1.5105  cls 0.9887  dfl 1.2164)  | Base 124.295 (box 1.4949  cls 1.1823  dfl 1.2071)  | KD 13.936 (box 0.41675  cls 0.01657  dfl 0.00108  feat 0.00111)
-  Epoch 4/30  Batch 1091/2188 (49.9%)  | Super 104.634 (box 1.3443  cls 0.8396  dfl 1.0859)  | Base 109.102 (box 1.3420  cls 0.9857  dfl 1.0817)  | KD 10.598 (box 0.31579  cls 0.01359  dfl 0.00076  feat 0.00103)
-  Epoch 4/30  Batch 1309/2188 (59.8%)  | Super 102.791 (box 1.3106  cls 0.7934  dfl 1.1082)  | Base 107.374 (box 1.3130  cls 0.9347  dfl 1.1077)  | KD 11.224 (box 0.33698  cls 0.01180  dfl 0.00085  feat 0.00112)
-  Epoch 4/30  Batch 1527/2188 (69.8%)  | Super 113.099 (box 1.4467  cls 0.9179  dfl 1.1698)  | Base 117.981 (box 1.4394  cls 1.0861  dfl 1.1614)  | KD 12.281 (box 0.36287  cls 0.01895  dfl 0.00087  feat 0.00110)
-  Epoch 4/30  Batch 1745/2188 (79.8%)  | Super 106.813 (box 1.3714  cls 0.8512  dfl 1.1153)  | Base 112.184 (box 1.3630  cls 1.0301  dfl 1.1126)  | KD 11.860 (box 0.35704  cls 0.01171  dfl 0.00084  feat 0.00103)
-  Epoch 4/30  Batch 1963/2188 (89.7%)  | Super 109.135 (box 1.3654  cls 0.9172  dfl 1.1278)  | Base 112.565 (box 1.3483  cls 1.0496  dfl 1.1198)  | KD 11.236 (box 0.33479  cls 0.01424  dfl 0.00081  feat 0.00129)
-  Epoch 4/30  Batch 2181/2188 (99.7%)  | Super 110.736 (box 1.4205  cls 0.8114  dfl 1.2286)  | Base 114.822 (box 1.3962  cls 0.9979  dfl 1.1941)  | KD 10.994 (box 0.32411  cls 0.01737  dfl 0.00075  feat 0.00132)
+  Epoch 4/30  Batch 1/2188 (0.0%)  | Super 112.174 (box 1.4026  cls 0.8976  dfl 1.2053)  | Base 114.076 (box 1.4198  cls 0.9606  dfl 1.1845)  | KD 14.703 (box 0.42673  cls 0.03021  dfl 0.00112  feat 0.00140)
+  Epoch 4/30  Batch 219/2188 (10.0%)  | Super 116.245 (box 1.4753  cls 0.9638  dfl 1.1936)  | Base 116.453 (box 1.4803  cls 0.9963  dfl 1.1626)  | KD 12.872 (box 0.36584  cls 0.03387  dfl 0.00092  feat 0.00162)
+  Epoch 4/30  Batch 437/2188 (20.0%)  | Super 119.395 (box 1.6095  cls 0.9587  dfl 1.1629)  | Base 121.169 (box 1.6317  cls 1.0054  dfl 1.1494)  | KD 15.858 (box 0.47073  cls 0.02227  dfl 0.00101  feat 0.00157)
+  Epoch 4/30  Batch 655/2188 (29.9%)  | Super 103.581 (box 1.3304  cls 0.8122  dfl 1.0943)  | Base 105.442 (box 1.3430  cls 0.8658  dfl 1.0863)  | KD 11.537 (box 0.33801  cls 0.02038  dfl 0.00072  feat 0.00141)
+  Epoch 4/30  Batch 873/2188 (39.9%)  | Super 118.185 (box 1.5002  cls 0.9755  dfl 1.2176)  | Base 120.618 (box 1.5310  cls 1.0295  dfl 1.2089)  | KD 15.067 (box 0.44137  cls 0.02689  dfl 0.00119  feat 0.00140)
+  Epoch 4/30  Batch 1091/2188 (49.9%)  | Super 103.134 (box 1.3283  cls 0.8035  dfl 1.0911)  | Base 104.003 (box 1.3423  cls 0.8375  dfl 1.0703)  | KD 12.439 (box 0.36832  cls 0.01817  dfl 0.00093  feat 0.00131)
+  Epoch 4/30  Batch 1309/2188 (59.8%)  | Super 102.762 (box 1.3224  cls 0.7716  dfl 1.1173)  | Base 102.530 (box 1.3141  cls 0.7893  dfl 1.1007)  | KD 13.126 (box 0.38891  cls 0.01873  dfl 0.00096  feat 0.00159)
+  Epoch 4/30  Batch 1527/2188 (69.8%)  | Super 111.502 (box 1.4351  cls 0.8854  dfl 1.1639)  | Base 113.347 (box 1.4499  cls 0.9399  dfl 1.1524)  | KD 13.652 (box 0.39655  cls 0.02769  dfl 0.00104  feat 0.00135)
+  Epoch 4/30  Batch 1745/2188 (79.8%)  | Super 105.791 (box 1.3523  cls 0.8448  dfl 1.1089)  | Base 107.751 (box 1.3878  cls 0.8737  dfl 1.1058)  | KD 13.517 (box 0.39728  cls 0.02274  dfl 0.00092  feat 0.00145)
+  Epoch 4/30  Batch 1963/2188 (89.7%)  | Super 109.285 (box 1.3709  cls 0.8872  dfl 1.1571)  | Base 109.085 (box 1.3698  cls 0.9208  dfl 1.1182)  | KD 13.163 (box 0.38345  cls 0.02529  dfl 0.00100  feat 0.00159)
+  Epoch 4/30  Batch 2181/2188 (99.7%)  | Super 108.731 (box 1.4052  cls 0.7876  dfl 1.2050)  | Base 109.139 (box 1.3966  cls 0.8390  dfl 1.1749)  | KD 12.651 (box 0.36663  cls 0.02606  dfl 0.00089  feat 0.00175)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 4/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.714      0.485      0.538      0.307
+                   all      10000     185578      0.716      0.493      0.542       0.31
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 4/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.591      0.464      0.513       0.29
+                   all      10000     185578      0.612      0.472      0.525      0.296
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 5/30  Batch 1/2188 (0.0%)  | Super 110.408 (box 1.3916  cls 0.8860  dfl 1.1726)  | Base 115.226 (box 1.3796  cls 1.0595  dfl 1.1617)  | KD 11.415 (box 0.34146  cls 0.01355  dfl 0.00078  feat 0.00092)
-  Epoch 5/30  Batch 219/2188 (10.0%)  | Super 111.479 (box 1.4651  cls 0.9225  dfl 1.0960)  | Base 116.349 (box 1.4374  cls 1.0999  dfl 1.0986)  | KD 11.616 (box 0.34537  cls 0.01568  dfl 0.00091  feat 0.00104)
-  Epoch 5/30  Batch 437/2188 (20.0%)  | Super 119.393 (box 1.5876  cls 0.9363  dfl 1.2071)  | Base 124.467 (box 1.5899  cls 1.0930  dfl 1.2068)  | KD 13.473 (box 0.40662  cls 0.01199  dfl 0.00101  feat 0.00141)
-  Epoch 5/30  Batch 655/2188 (29.9%)  | Super 105.324 (box 1.3670  cls 0.8099  dfl 1.1145)  | Base 111.313 (box 1.3664  cls 0.9986  dfl 1.1136)  | KD 10.743 (box 0.32136  cls 0.01265  dfl 0.00071  feat 0.00098)
-  Epoch 5/30  Batch 873/2188 (39.9%)  | Super 118.370 (box 1.4433  cls 1.0567  dfl 1.1990)  | Base 124.626 (box 1.4528  cls 1.2423  dfl 1.1995)  | KD 12.784 (box 0.37936  cls 0.01795  dfl 0.00098  feat 0.00119)
-  Epoch 5/30  Batch 1091/2188 (49.9%)  | Super 107.257 (box 1.3583  cls 0.8350  dfl 1.1585)  | Base 112.177 (box 1.3518  cls 1.0042  dfl 1.1495)  | KD 10.972 (box 0.32654  cls 0.01437  dfl 0.00079  feat 0.00117)
-  Epoch 5/30  Batch 1309/2188 (59.8%)  | Super 101.568 (box 1.2671  cls 0.8003  dfl 1.1066)  | Base 107.981 (box 1.2665  cls 1.0025  dfl 1.1054)  | KD 11.987 (box 0.36086  cls 0.01190  dfl 0.00096  feat 0.00088)
-  Epoch 5/30  Batch 1527/2188 (69.8%)  | Super 115.486 (box 1.4699  cls 0.9439  dfl 1.1951)  | Base 120.520 (box 1.4718  cls 1.0991  dfl 1.1953)  | KD 10.763 (box 0.32130  cls 0.01329  dfl 0.00079  feat 0.00096)
-  Epoch 5/30  Batch 1745/2188 (79.8%)  | Super 106.562 (box 1.3717  cls 0.8278  dfl 1.1306)  | Base 113.257 (box 1.3678  cls 1.0435  dfl 1.1279)  | KD 11.203 (box 0.33705  cls 0.01121  dfl 0.00089  feat 0.00094)
-  Epoch 5/30  Batch 1963/2188 (89.7%)  | Super 107.297 (box 1.3433  cls 0.8688  dfl 1.1409)  | Base 112.777 (box 1.3439  cls 1.0387  dfl 1.1417)  | KD 10.743 (box 0.32136  cls 0.01243  dfl 0.00077  feat 0.00114)
-  Epoch 5/30  Batch 2181/2188 (99.7%)  | Super 109.454 (box 1.4220  cls 0.7946  dfl 1.2039)  | Base 113.234 (box 1.3953  cls 0.9710  dfl 1.1723)  | KD 9.995 (box 0.29809  cls 0.01235  dfl 0.00069  feat 0.00120)
+  Epoch 5/30  Batch 1/2188 (0.0%)  | Super 108.868 (box 1.3900  cls 0.8512  dfl 1.1609)  | Base 112.253 (box 1.4162  cls 0.9313  dfl 1.1604)  | KD 12.771 (box 0.37521  cls 0.02166  dfl 0.00091  feat 0.00131)
+  Epoch 5/30  Batch 219/2188 (10.0%)  | Super 108.950 (box 1.4358  cls 0.8905  dfl 1.0783)  | Base 110.735 (box 1.4424  cls 0.9364  dfl 1.0816)  | KD 13.562 (box 0.39757  cls 0.02383  dfl 0.00112  feat 0.00130)
+  Epoch 5/30  Batch 437/2188 (20.0%)  | Super 117.769 (box 1.5865  cls 0.9095  dfl 1.1842)  | Base 119.357 (box 1.5963  cls 0.9585  dfl 1.1751)  | KD 15.675 (box 0.46710  cls 0.01981  dfl 0.00118  feat 0.00176)
+  Epoch 5/30  Batch 655/2188 (29.9%)  | Super 104.330 (box 1.3707  cls 0.7905  dfl 1.0991)  | Base 105.555 (box 1.3671  cls 0.8392  dfl 1.0923)  | KD 12.105 (box 0.35974  cls 0.01637  dfl 0.00082  feat 0.00135)
+  Epoch 5/30  Batch 873/2188 (39.9%)  | Super 115.316 (box 1.4106  cls 1.0279  dfl 1.1652)  | Base 117.682 (box 1.4617  cls 1.0484  dfl 1.1675)  | KD 14.322 (box 0.41621  cls 0.02882  dfl 0.00103  feat 0.00152)
+  Epoch 5/30  Batch 1091/2188 (49.9%)  | Super 106.040 (box 1.3423  cls 0.8264  dfl 1.1450)  | Base 107.789 (box 1.3726  cls 0.8557  dfl 1.1401)  | KD 12.036 (box 0.35559  cls 0.01817  dfl 0.00093  feat 0.00143)
+  Epoch 5/30  Batch 1309/2188 (59.8%)  | Super 100.499 (box 1.2539  cls 0.7920  dfl 1.0947)  | Base 102.259 (box 1.2854  cls 0.8220  dfl 1.0882)  | KD 13.713 (box 0.40806  cls 0.01818  dfl 0.00108  feat 0.00122)
+  Epoch 5/30  Batch 1527/2188 (69.8%)  | Super 115.235 (box 1.4759  cls 0.9308  dfl 1.1944)  | Base 118.167 (box 1.5114  cls 0.9852  dfl 1.1962)  | KD 12.618 (box 0.37000  cls 0.02206  dfl 0.00094  feat 0.00133)
+  Epoch 5/30  Batch 1745/2188 (79.8%)  | Super 104.928 (box 1.3460  cls 0.8204  dfl 1.1126)  | Base 107.224 (box 1.3852  cls 0.8532  dfl 1.1123)  | KD 12.716 (box 0.37771  cls 0.01737  dfl 0.00096  feat 0.00133)
+  Epoch 5/30  Batch 1963/2188 (89.7%)  | Super 104.733 (box 1.3219  cls 0.8288  dfl 1.1222)  | Base 106.273 (box 1.3354  cls 0.8776  dfl 1.1081)  | KD 12.808 (box 0.37583  cls 0.02179  dfl 0.00098  feat 0.00164)
+  Epoch 5/30  Batch 2181/2188 (99.7%)  | Super 107.766 (box 1.4029  cls 0.7724  dfl 1.1924)  | Base 108.698 (box 1.4155  cls 0.8184  dfl 1.1629)  | KD 11.695 (box 0.33644  cls 0.02645  dfl 0.00080  feat 0.00176)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 5/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.616      0.495      0.547      0.312
+                   all      10000     185578       0.72      0.498      0.551      0.316
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 5/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.596      0.472      0.521      0.294
+                   all      10000     185578      0.607      0.479      0.532      0.302
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 6/30  Batch 1/2188 (0.0%)  | Super 108.949 (box 1.3815  cls 0.8828  dfl 1.1404)  | Base 115.421 (box 1.3929  cls 1.0697  dfl 1.1442)  | KD 11.273 (box 0.33745  cls 0.01301  dfl 0.00081  feat 0.00101)
-  Epoch 6/30  Batch 219/2188 (10.0%)  | Super 108.624 (box 1.4117  cls 0.8608  dfl 1.1220)  | Base 114.890 (box 1.4125  cls 1.0567  dfl 1.1211)  | KD 11.567 (box 0.34077  cls 0.01887  dfl 0.00083  feat 0.00099)
-  Epoch 6/30  Batch 437/2188 (20.0%)  | Super 118.512 (box 1.5932  cls 0.9612  dfl 1.1490)  | Base 123.849 (box 1.6076  cls 1.1015  dfl 1.1611)  | KD 12.874 (box 0.38753  cls 0.01284  dfl 0.00085  feat 0.00110)
-  Epoch 6/30  Batch 655/2188 (29.9%)  | Super 105.199 (box 1.3611  cls 0.7878  dfl 1.1386)  | Base 110.044 (box 1.3561  cls 0.9462  dfl 1.1366)  | KD 9.793 (box 0.29015  cls 0.01425  dfl 0.00064  feat 0.00099)
-  Epoch 6/30  Batch 873/2188 (39.9%)  | Super 116.283 (box 1.4561  cls 0.9873  dfl 1.1904)  | Base 121.940 (box 1.4616  cls 1.1579  dfl 1.1912)  | KD 11.599 (box 0.34575  cls 0.01493  dfl 0.00083  feat 0.00097)
-  Epoch 6/30  Batch 1091/2188 (49.9%)  | Super 103.371 (box 1.3608  cls 0.7805  dfl 1.0891)  | Base 107.326 (box 1.3425  cls 0.9260  dfl 1.0854)  | KD 9.912 (box 0.29705  cls 0.01106  dfl 0.00064  feat 0.00100)
-  Epoch 6/30  Batch 1309/2188 (59.8%)  | Super 105.295 (box 1.3488  cls 0.7975  dfl 1.1442)  | Base 111.225 (box 1.3435  cls 0.9868  dfl 1.1455)  | KD 10.744 (box 0.31838  cls 0.01569  dfl 0.00077  feat 0.00092)
-  Epoch 6/30  Batch 1527/2188 (69.8%)  | Super 110.775 (box 1.4168  cls 0.8780  dfl 1.1669)  | Base 116.648 (box 1.4169  cls 1.0561  dfl 1.1723)  | KD 10.623 (box 0.31234  cls 0.01771  dfl 0.00081  feat 0.00111)
-  Epoch 6/30  Batch 1745/2188 (79.8%)  | Super 99.941 (box 1.2895  cls 0.7667  dfl 1.0669)  | Base 104.849 (box 1.2611  cls 0.9583  dfl 1.0571)  | KD 10.394 (box 0.31022  cls 0.01293  dfl 0.00078  feat 0.00087)
-  Epoch 6/30  Batch 1963/2188 (89.7%)  | Super 110.395 (box 1.3857  cls 0.9013  dfl 1.1629)  | Base 114.329 (box 1.3776  cls 1.0221  dfl 1.1730)  | KD 10.678 (box 0.31824  cls 0.01346  dfl 0.00081  feat 0.00118)
-  Epoch 6/30  Batch 2181/2188 (99.7%)  | Super 106.789 (box 1.4089  cls 0.7605  dfl 1.1677)  | Base 110.946 (box 1.3820  cls 0.9292  dfl 1.1559)  | KD 10.114 (box 0.30211  cls 0.01217  dfl 0.00080  feat 0.00099)
+  Epoch 6/30  Batch 1/2188 (0.0%)  | Super 107.292 (box 1.3667  cls 0.8467  dfl 1.1395)  | Base 110.117 (box 1.4018  cls 0.9023  dfl 1.1370)  | KD 12.994 (box 0.38664  cls 0.01714  dfl 0.00100  feat 0.00128)
+  Epoch 6/30  Batch 219/2188 (10.0%)  | Super 107.411 (box 1.3911  cls 0.8319  dfl 1.1336)  | Base 107.999 (box 1.3940  cls 0.8776  dfl 1.1033)  | KD 13.197 (box 0.38903  cls 0.02097  dfl 0.00101  feat 0.00139)
+  Epoch 6/30  Batch 437/2188 (20.0%)  | Super 117.906 (box 1.5869  cls 0.9382  dfl 1.1595)  | Base 118.967 (box 1.6153  cls 0.9701  dfl 1.1323)  | KD 14.686 (box 0.43986  cls 0.01671  dfl 0.00094  feat 0.00145)
+  Epoch 6/30  Batch 655/2188 (29.9%)  | Super 104.048 (box 1.3570  cls 0.7632  dfl 1.1313)  | Base 104.829 (box 1.3532  cls 0.8070  dfl 1.1156)  | KD 11.159 (box 0.32753  cls 0.01912  dfl 0.00074  feat 0.00133)
+  Epoch 6/30  Batch 873/2188 (39.9%)  | Super 115.947 (box 1.4574  cls 0.9742  dfl 1.1918)  | Base 117.883 (box 1.4918  cls 1.0000  dfl 1.1921)  | KD 13.679 (box 0.40490  cls 0.02016  dfl 0.00111  feat 0.00130)
+  Epoch 6/30  Batch 1091/2188 (49.9%)  | Super 101.193 (box 1.3293  cls 0.7531  dfl 1.0799)  | Base 102.154 (box 1.3429  cls 0.7802  dfl 1.0692)  | KD 11.241 (box 0.33392  cls 0.01513  dfl 0.00081  feat 0.00142)
+  Epoch 6/30  Batch 1309/2188 (59.8%)  | Super 104.519 (box 1.3488  cls 0.7871  dfl 1.1303)  | Base 106.752 (box 1.3656  cls 0.8342  dfl 1.1362)  | KD 12.465 (box 0.36604  cls 0.02121  dfl 0.00099  feat 0.00129)
+  Epoch 6/30  Batch 1527/2188 (69.8%)  | Super 111.113 (box 1.4225  cls 0.8782  dfl 1.1716)  | Base 112.488 (box 1.4403  cls 0.9138  dfl 1.1612)  | KD 13.066 (box 0.37957  cls 0.02617  dfl 0.00109  feat 0.00149)
+  Epoch 6/30  Batch 1745/2188 (79.8%)  | Super 98.989 (box 1.2768  cls 0.7597  dfl 1.0569)  | Base 100.171 (box 1.2826  cls 0.8010  dfl 1.0467)  | KD 12.286 (box 0.36522  cls 0.01651  dfl 0.00097  feat 0.00123)
+  Epoch 6/30  Batch 1963/2188 (89.7%)  | Super 105.449 (box 1.3117  cls 0.8343  dfl 1.1492)  | Base 107.252 (box 1.3466  cls 0.8649  dfl 1.1401)  | KD 13.129 (box 0.38290  cls 0.02463  dfl 0.00105  feat 0.00171)
+  Epoch 6/30  Batch 2181/2188 (99.7%)  | Super 104.284 (box 1.3724  cls 0.7393  dfl 1.1471)  | Base 105.479 (box 1.3820  cls 0.7690  dfl 1.1452)  | KD 11.580 (box 0.34394  cls 0.01548  dfl 0.00098  feat 0.00147)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 6/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.722      0.498      0.555      0.318
+                   all      10000     185578      0.622      0.498      0.557       0.32
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 6/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.602      0.479       0.53        0.3
+                   all      10000     185578      0.618      0.482      0.537      0.306
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 7/30  Batch 1/2188 (0.0%)  | Super 108.087 (box 1.4095  cls 0.8194  dfl 1.1488)  | Base 113.047 (box 1.4082  cls 0.9783  dfl 1.1462)  | KD 10.772 (box 0.31936  cls 0.01569  dfl 0.00065  feat 0.00094)
-  Epoch 7/30  Batch 219/2188 (10.0%)  | Super 114.293 (box 1.4957  cls 0.9116  dfl 1.1643)  | Base 118.051 (box 1.4666  cls 1.0688  dfl 1.1537)  | KD 11.059 (box 0.32408  cls 0.01964  dfl 0.00087  feat 0.00099)
-  Epoch 7/30  Batch 437/2188 (20.0%)  | Super 115.384 (box 1.5804  cls 0.8863  dfl 1.1390)  | Base 119.646 (box 1.5759  cls 1.0292  dfl 1.1338)  | KD 12.399 (box 0.37563  cls 0.01002  dfl 0.00080  feat 0.00101)
-  Epoch 7/30  Batch 655/2188 (29.9%)  | Super 101.707 (box 1.3152  cls 0.7778  dfl 1.0853)  | Base 105.918 (box 1.3037  cls 0.9256  dfl 1.0806)  | KD 9.222 (box 0.27707  cls 0.00965  dfl 0.00062  feat 0.00086)
-  Epoch 7/30  Batch 873/2188 (39.9%)  | Super 114.484 (box 1.4619  cls 0.9489  dfl 1.1668)  | Base 120.010 (box 1.4484  cls 1.1493  dfl 1.1526)  | KD 11.904 (box 0.35583  cls 0.01433  dfl 0.00086  feat 0.00099)
-  Epoch 7/30  Batch 1091/2188 (49.9%)  | Super 100.503 (box 1.3155  cls 0.7588  dfl 1.0664)  | Base 103.139 (box 1.2991  cls 0.8628  dfl 1.0612)  | KD 10.205 (box 0.30708  cls 0.01026  dfl 0.00070  feat 0.00088)
-  Epoch 7/30  Batch 1309/2188 (59.8%)  | Super 101.854 (box 1.2962  cls 0.7556  dfl 1.1311)  | Base 108.361 (box 1.2896  cls 0.9665  dfl 1.1302)  | KD 10.129 (box 0.30428  cls 0.01053  dfl 0.00076  feat 0.00096)
-  Epoch 7/30  Batch 1527/2188 (69.8%)  | Super 111.098 (box 1.4073  cls 0.9105  dfl 1.1539)  | Base 115.110 (box 1.3914  cls 1.0584  dfl 1.1474)  | KD 10.624 (box 0.31733  cls 0.01288  dfl 0.00079  feat 0.00098)
-  Epoch 7/30  Batch 1745/2188 (79.8%)  | Super 103.681 (box 1.3347  cls 0.8018  dfl 1.1035)  | Base 109.297 (box 1.3271  cls 0.9870  dfl 1.1014)  | KD 10.787 (box 0.32415  cls 0.01129  dfl 0.00079  feat 0.00088)
-  Epoch 7/30  Batch 1963/2188 (89.7%)  | Super 109.874 (box 1.4027  cls 0.9016  dfl 1.1293)  | Base 113.353 (box 1.3783  cls 1.0410  dfl 1.1230)  | KD 11.726 (box 0.34973  cls 0.01482  dfl 0.00087  feat 0.00101)
-  Epoch 7/30  Batch 2181/2188 (99.7%)  | Super 112.077 (box 1.4567  cls 0.7765  dfl 1.2692)  | Base 117.724 (box 1.4401  cls 0.9915  dfl 1.2472)  | KD 9.822 (box 0.28728  cls 0.01780  dfl 0.00074  feat 0.00111)
+  Epoch 7/30  Batch 1/2188 (0.0%)  | Super 108.090 (box 1.4099  cls 0.8077  dfl 1.1602)  | Base 109.849 (box 1.4351  cls 0.8445  dfl 1.1532)  | KD 12.971 (box 0.38283  cls 0.02020  dfl 0.00086  feat 0.00146)
+  Epoch 7/30  Batch 219/2188 (10.0%)  | Super 112.300 (box 1.4679  cls 0.9033  dfl 1.1383)  | Base 114.050 (box 1.4864  cls 0.9450  dfl 1.1327)  | KD 12.789 (box 0.37262  cls 0.02461  dfl 0.00106  feat 0.00137)
+  Epoch 7/30  Batch 437/2188 (20.0%)  | Super 113.878 (box 1.5643  cls 0.8584  dfl 1.1360)  | Base 115.011 (box 1.5684  cls 0.9012  dfl 1.1245)  | KD 14.504 (box 0.43618  cls 0.01461  dfl 0.00102  feat 0.00145)
+  Epoch 7/30  Batch 655/2188 (29.9%)  | Super 99.709 (box 1.3062  cls 0.7389  dfl 1.0708)  | Base 100.790 (box 1.3099  cls 0.7708  dfl 1.0690)  | KD 10.965 (box 0.32675  cls 0.01391  dfl 0.00078  feat 0.00121)
+  Epoch 7/30  Batch 873/2188 (39.9%)  | Super 113.745 (box 1.4496  cls 0.9437  dfl 1.1613)  | Base 114.311 (box 1.4510  cls 0.9706  dfl 1.1506)  | KD 13.783 (box 0.40760  cls 0.02078  dfl 0.00105  feat 0.00129)
+  Epoch 7/30  Batch 1091/2188 (49.9%)  | Super 98.917 (box 1.3073  cls 0.7279  dfl 1.0560)  | Base 100.003 (box 1.3176  cls 0.7570  dfl 1.0505)  | KD 11.109 (box 0.33225  cls 0.01284  dfl 0.00085  feat 0.00122)
+  Epoch 7/30  Batch 1309/2188 (59.8%)  | Super 101.843 (box 1.2964  cls 0.7596  dfl 1.1266)  | Base 102.330 (box 1.2973  cls 0.7930  dfl 1.1075)  | KD 12.251 (box 0.36262  cls 0.01795  dfl 0.00097  feat 0.00130)
+  Epoch 7/30  Batch 1527/2188 (69.8%)  | Super 109.320 (box 1.3959  cls 0.8787  dfl 1.1416)  | Base 111.386 (box 1.4229  cls 0.9253  dfl 1.1326)  | KD 12.452 (box 0.36609  cls 0.02055  dfl 0.00104  feat 0.00145)
+  Epoch 7/30  Batch 1745/2188 (79.8%)  | Super 102.878 (box 1.3370  cls 0.7924  dfl 1.0856)  | Base 104.859 (box 1.3630  cls 0.8301  dfl 1.0837)  | KD 12.108 (box 0.35794  cls 0.01822  dfl 0.00093  feat 0.00130)
+  Epoch 7/30  Batch 1963/2188 (89.7%)  | Super 107.918 (box 1.3852  cls 0.8600  dfl 1.1272)  | Base 108.224 (box 1.3743  cls 0.8942  dfl 1.1135)  | KD 12.320 (box 0.36393  cls 0.01868  dfl 0.00093  feat 0.00147)
+  Epoch 7/30  Batch 2181/2188 (99.7%)  | Super 109.257 (box 1.4364  cls 0.7563  dfl 1.2216)  | Base 109.878 (box 1.4384  cls 0.7983  dfl 1.1969)  | KD 11.817 (box 0.34589  cls 0.02074  dfl 0.00092  feat 0.00174)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 7/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.733      0.498      0.559      0.322
+                   all      10000     185578      0.626       0.51      0.563      0.325
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 7/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578       0.61       0.48      0.535      0.304
+                   all      10000     185578      0.614       0.49      0.543      0.309
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 8/30  Batch 1/2188 (0.0%)  | Super 109.781 (box 1.3727  cls 0.8740  dfl 1.1839)  | Base 115.382 (box 1.3677  cls 1.0625  dfl 1.1755)  | KD 10.767 (box 0.31953  cls 0.01526  dfl 0.00077  feat 0.00091)
-  Epoch 8/30  Batch 219/2188 (10.0%)  | Super 105.549 (box 1.4048  cls 0.8062  dfl 1.0874)  | Base 112.414 (box 1.4194  cls 0.9987  dfl 1.0949)  | KD 10.351 (box 0.30645  cls 0.01533  dfl 0.00066  feat 0.00102)
-  Epoch 8/30  Batch 437/2188 (20.0%)  | Super 116.643 (box 1.5910  cls 0.9196  dfl 1.1346)  | Base 121.416 (box 1.5913  cls 1.0586  dfl 1.1443)  | KD 12.565 (box 0.38042  cls 0.01047  dfl 0.00075  feat 0.00102)
-  Epoch 8/30  Batch 655/2188 (29.9%)  | Super 99.391 (box 1.2748  cls 0.7689  dfl 1.0622)  | Base 104.353 (box 1.2669  cls 0.9334  dfl 1.0607)  | KD 9.449 (box 0.28113  cls 0.01264  dfl 0.00062  feat 0.00089)
-  Epoch 8/30  Batch 873/2188 (39.9%)  | Super 120.194 (box 1.5284  cls 1.0006  dfl 1.2271)  | Base 124.386 (box 1.4969  cls 1.1739  dfl 1.2163)  | KD 11.804 (box 0.35329  cls 0.01377  dfl 0.00078  feat 0.00103)
-  Epoch 8/30  Batch 1091/2188 (49.9%)  | Super 99.726 (box 1.2873  cls 0.7375  dfl 1.0916)  | Base 105.501 (box 1.2862  cls 0.9142  dfl 1.0965)  | KD 9.396 (box 0.28318  cls 0.00898  dfl 0.00067  feat 0.00080)
-  Epoch 8/30  Batch 1309/2188 (59.8%)  | Super 101.016 (box 1.2831  cls 0.7594  dfl 1.1142)  | Base 105.225 (box 1.2573  cls 0.9342  dfl 1.0968)  | KD 10.247 (box 0.30309  cls 0.01547  dfl 0.00078  feat 0.00086)
-  Epoch 8/30  Batch 1527/2188 (69.8%)  | Super 113.745 (box 1.4413  cls 0.9515  dfl 1.1617)  | Base 118.599 (box 1.4221  cls 1.1223  dfl 1.1619)  | KD 10.890 (box 0.32258  cls 0.01587  dfl 0.00081  feat 0.00105)
-  Epoch 8/30  Batch 1745/2188 (79.8%)  | Super 105.323 (box 1.3576  cls 0.7942  dfl 1.1395)  | Base 111.548 (box 1.3571  cls 0.9935  dfl 1.1353)  | KD 10.144 (box 0.30701  cls 0.00828  dfl 0.00079  feat 0.00093)
-  Epoch 8/30  Batch 1963/2188 (89.7%)  | Super 107.487 (box 1.3702  cls 0.8479  dfl 1.1408)  | Base 111.582 (box 1.3428  cls 1.0057  dfl 1.1384)  | KD 10.294 (box 0.30891  cls 0.01080  dfl 0.00078  feat 0.00118)
-  Epoch 8/30  Batch 2181/2188 (99.7%)  | Super 108.129 (box 1.3994  cls 0.7805  dfl 1.1991)  | Base 113.399 (box 1.3798  cls 0.9823  dfl 1.1817)  | KD 10.038 (box 0.29871  cls 0.01316  dfl 0.00072  feat 0.00110)
+  Epoch 8/30  Batch 1/2188 (0.0%)  | Super 107.215 (box 1.3577  cls 0.8491  dfl 1.1437)  | Base 109.305 (box 1.3840  cls 0.8882  dfl 1.1435)  | KD 12.192 (box 0.35776  cls 0.02113  dfl 0.00086  feat 0.00125)
+  Epoch 8/30  Batch 219/2188 (10.0%)  | Super 104.589 (box 1.3981  cls 0.7926  dfl 1.0777)  | Base 106.422 (box 1.4203  cls 0.8340  dfl 1.0714)  | KD 11.969 (box 0.35223  cls 0.01948  dfl 0.00087  feat 0.00148)
+  Epoch 8/30  Batch 437/2188 (20.0%)  | Super 116.444 (box 1.5990  cls 0.9023  dfl 1.1376)  | Base 117.965 (box 1.6108  cls 0.9421  dfl 1.1335)  | KD 15.117 (box 0.45314  cls 0.01679  dfl 0.00101  feat 0.00145)
+  Epoch 8/30  Batch 655/2188 (29.9%)  | Super 98.527 (box 1.2697  cls 0.7553  dfl 1.0540)  | Base 100.160 (box 1.2853  cls 0.7927  dfl 1.0520)  | KD 11.173 (box 0.33245  cls 0.01455  dfl 0.00083  feat 0.00132)
+  Epoch 8/30  Batch 873/2188 (39.9%)  | Super 120.631 (box 1.5457  cls 0.9855  dfl 1.2385)  | Base 120.717 (box 1.5496  cls 1.0137  dfl 1.2090)  | KD 13.094 (box 0.38644  cls 0.02036  dfl 0.00095  feat 0.00146)
+  Epoch 8/30  Batch 1091/2188 (49.9%)  | Super 98.819 (box 1.2927  cls 0.7190  dfl 1.0764)  | Base 100.120 (box 1.3172  cls 0.7378  dfl 1.0738)  | KD 11.313 (box 0.33827  cls 0.01313  dfl 0.00090  feat 0.00121)
+  Epoch 8/30  Batch 1309/2188 (59.8%)  | Super 100.776 (box 1.3007  cls 0.7484  dfl 1.1001)  | Base 100.574 (box 1.2873  cls 0.7764  dfl 1.0792)  | KD 12.435 (box 0.36521  cls 0.02120  dfl 0.00092  feat 0.00125)
+  Epoch 8/30  Batch 1527/2188 (69.8%)  | Super 112.711 (box 1.4507  cls 0.9263  dfl 1.1452)  | Base 113.143 (box 1.4519  cls 0.9513  dfl 1.1326)  | KD 12.342 (box 0.36099  cls 0.02234  dfl 0.00091  feat 0.00147)
+  Epoch 8/30  Batch 1745/2188 (79.8%)  | Super 103.702 (box 1.3404  cls 0.7888  dfl 1.1115)  | Base 106.023 (box 1.3726  cls 0.8341  dfl 1.1065)  | KD 11.786 (box 0.35460  cls 0.01146  dfl 0.00090  feat 0.00136)
+  Epoch 8/30  Batch 1963/2188 (89.7%)  | Super 103.979 (box 1.3283  cls 0.8114  dfl 1.1097)  | Base 106.050 (box 1.3466  cls 0.8586  dfl 1.1088)  | KD 11.468 (box 0.33910  cls 0.01681  dfl 0.00083  feat 0.00162)
+  Epoch 8/30  Batch 2181/2188 (99.7%)  | Super 105.214 (box 1.3772  cls 0.7408  dfl 1.1700)  | Base 106.587 (box 1.3909  cls 0.7857  dfl 1.1542)  | KD 10.740 (box 0.31636  cls 0.01687  dfl 0.00076  feat 0.00163)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 8/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.625      0.506       0.56      0.324
+                   all      10000     185578       0.62      0.516      0.567      0.327
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 8/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.601      0.487      0.537      0.306
+                   all      10000     185578      0.609        0.5      0.549      0.313
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 9/30  Batch 1/2188 (0.0%)  | Super 104.065 (box 1.3369  cls 0.8390  dfl 1.0762)  | Base 110.244 (box 1.3277  cls 1.0335  dfl 1.0839)  | KD 11.608 (box 0.34822  cls 0.01283  dfl 0.00080  feat 0.00090)
-  Epoch 9/30  Batch 219/2188 (10.0%)  | Super 115.143 (box 1.5092  cls 0.8936  dfl 1.1953)  | Base 121.724 (box 1.5149  cls 1.0949  dfl 1.1940)  | KD 10.353 (box 0.30852  cls 0.01330  dfl 0.00082  feat 0.00089)
-  Epoch 9/30  Batch 437/2188 (20.0%)  | Super 117.146 (box 1.5987  cls 0.9062  dfl 1.1560)  | Base 120.360 (box 1.5850  cls 1.0290  dfl 1.1473)  | KD 11.072 (box 0.33254  cls 0.01165  dfl 0.00065  feat 0.00116)
-  Epoch 9/30  Batch 655/2188 (29.9%)  | Super 98.435 (box 1.3056  cls 0.7217  dfl 1.0488)  | Base 103.651 (box 1.2987  cls 0.8858  dfl 1.0546)  | KD 8.493 (box 0.25568  cls 0.00836  dfl 0.00053  feat 0.00083)
-  Epoch 9/30  Batch 873/2188 (39.9%)  | Super 114.400 (box 1.4628  cls 0.9355  dfl 1.1767)  | Base 118.773 (box 1.4349  cls 1.1175  dfl 1.1593)  | KD 11.096 (box 0.33189  cls 0.01328  dfl 0.00073  feat 0.00083)
-  Epoch 9/30  Batch 1091/2188 (49.9%)  | Super 102.477 (box 1.3321  cls 0.7669  dfl 1.1034)  | Base 106.615 (box 1.3259  cls 0.9041  dfl 1.1017)  | KD 9.759 (box 0.29262  cls 0.01086  dfl 0.00062  feat 0.00086)
-  Epoch 9/30  Batch 1309/2188 (59.8%)  | Super 103.508 (box 1.3247  cls 0.7843  dfl 1.1256)  | Base 108.717 (box 1.3079  cls 0.9706  dfl 1.1189)  | KD 10.357 (box 0.31028  cls 0.01163  dfl 0.00080  feat 0.00095)
-  Epoch 9/30  Batch 1527/2188 (69.8%)  | Super 109.428 (box 1.4104  cls 0.8676  dfl 1.1416)  | Base 115.202 (box 1.4130  cls 1.0431  dfl 1.1439)  | KD 9.854 (box 0.29219  cls 0.01388  dfl 0.00077  feat 0.00109)
-  Epoch 9/30  Batch 1745/2188 (79.8%)  | Super 103.342 (box 1.3234  cls 0.7971  dfl 1.1089)  | Base 109.159 (box 1.3151  cls 0.9815  dfl 1.1146)  | KD 10.646 (box 0.31455  cls 0.01653  dfl 0.00077  feat 0.00085)
-  Epoch 9/30  Batch 1963/2188 (89.7%)  | Super 100.147 (box 1.2797  cls 0.7594  dfl 1.0905)  | Base 105.990 (box 1.2733  cls 0.9486  dfl 1.0903)  | KD 9.595 (box 0.28526  cls 0.01275  dfl 0.00080  feat 0.00102)
-  Epoch 9/30  Batch 2181/2188 (99.7%)  | Super 107.941 (box 1.3841  cls 0.8032  dfl 1.1858)  | Base 114.083 (box 1.3908  cls 1.0050  dfl 1.1692)  | KD 10.767 (box 0.31904  cls 0.01574  dfl 0.00079  feat 0.00091)
+  Epoch 9/30  Batch 1/2188 (0.0%)  | Super 101.671 (box 1.3154  cls 0.8037  dfl 1.0581)  | Base 103.959 (box 1.3427  cls 0.8390  dfl 1.0670)  | KD 13.429 (box 0.39641  cls 0.02092  dfl 0.00100  feat 0.00134)
+  Epoch 9/30  Batch 219/2188 (10.0%)  | Super 113.554 (box 1.4980  cls 0.8821  dfl 1.1684)  | Base 114.889 (box 1.5084  cls 0.9196  dfl 1.1623)  | KD 11.599 (box 0.34212  cls 0.01830  dfl 0.00083  feat 0.00123)
+  Epoch 9/30  Batch 437/2188 (20.0%)  | Super 115.132 (box 1.5897  cls 0.8734  dfl 1.1347)  | Base 117.601 (box 1.6169  cls 0.9179  dfl 1.1402)  | KD 13.124 (box 0.39356  cls 0.01414  dfl 0.00090  feat 0.00153)
+  Epoch 9/30  Batch 655/2188 (29.9%)  | Super 98.329 (box 1.3147  cls 0.7109  dfl 1.0471)  | Base 98.989 (box 1.3125  cls 0.7428  dfl 1.0382)  | KD 10.731 (box 0.32204  cls 0.01136  dfl 0.00074  feat 0.00120)
+  Epoch 9/30  Batch 873/2188 (39.9%)  | Super 113.999 (box 1.4781  cls 0.9141  dfl 1.1703)  | Base 115.009 (box 1.4813  cls 0.9538  dfl 1.1589)  | KD 12.801 (box 0.38250  cls 0.01532  dfl 0.00095  feat 0.00127)
+  Epoch 9/30  Batch 1091/2188 (49.9%)  | Super 101.863 (box 1.3327  cls 0.7496  dfl 1.1010)  | Base 102.893 (box 1.3511  cls 0.7679  dfl 1.0964)  | KD 11.157 (box 0.33358  cls 0.01291  dfl 0.00083  feat 0.00133)
+  Epoch 9/30  Batch 1309/2188 (59.8%)  | Super 102.283 (box 1.3141  cls 0.7698  dfl 1.1124)  | Base 102.753 (box 1.3129  cls 0.7945  dfl 1.1036)  | KD 12.383 (box 0.36704  cls 0.01767  dfl 0.00098  feat 0.00127)
+  Epoch 9/30  Batch 1527/2188 (69.8%)  | Super 108.392 (box 1.3909  cls 0.8585  dfl 1.1378)  | Base 109.329 (box 1.4178  cls 0.8702  dfl 1.1285)  | KD 12.206 (box 0.35443  cls 0.02458  dfl 0.00095  feat 0.00146)
+  Epoch 9/30  Batch 1745/2188 (79.8%)  | Super 100.556 (box 1.2880  cls 0.7636  dfl 1.0908)  | Base 102.338 (box 1.3167  cls 0.7996  dfl 1.0817)  | KD 11.559 (box 0.33877  cls 0.02034  dfl 0.00089  feat 0.00122)
+  Epoch 9/30  Batch 1963/2188 (89.7%)  | Super 97.480 (box 1.2458  cls 0.7448  dfl 1.0557)  | Base 100.995 (box 1.2922  cls 0.7887  dfl 1.0752)  | KD 11.470 (box 0.33381  cls 0.02222  dfl 0.00092  feat 0.00150)
+  Epoch 9/30  Batch 2181/2188 (99.7%)  | Super 106.993 (box 1.3941  cls 0.7893  dfl 1.1601)  | Base 109.281 (box 1.4262  cls 0.8306  dfl 1.1583)  | KD 12.693 (box 0.37528  cls 0.01901  dfl 0.00102  feat 0.00135)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 9/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.629      0.504      0.564      0.326
+                   all      10000     185578      0.629      0.512      0.568       0.33
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 9/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.609      0.489       0.54      0.309
+                   all      10000     185578      0.619      0.495       0.55      0.315
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 10/30  Batch 1/2188 (0.0%)  | Super 107.561 (box 1.3585  cls 0.8691  dfl 1.1337)  | Base 114.937 (box 1.3769  cls 1.0781  dfl 1.1368)  | KD 10.210 (box 0.29738  cls 0.01998  dfl 0.00073  feat 0.00098)
-  Epoch 10/30  Batch 219/2188 (10.0%)  | Super 109.030 (box 1.4171  cls 0.8269  dfl 1.1632)  | Base 114.199 (box 1.4057  cls 1.0054  dfl 1.1577)  | KD 9.548 (box 0.28352  cls 0.01315  dfl 0.00068  feat 0.00102)
-  Epoch 10/30  Batch 437/2188 (20.0%)  | Super 116.953 (box 1.5839  cls 0.9003  dfl 1.1706)  | Base 121.994 (box 1.5838  cls 1.0520  dfl 1.1765)  | KD 11.987 (box 0.36067  cls 0.01215  dfl 0.00078  feat 0.00099)
-  Epoch 10/30  Batch 655/2188 (29.9%)  | Super 105.535 (box 1.3736  cls 0.8003  dfl 1.1241)  | Base 110.016 (box 1.3487  cls 0.9705  dfl 1.1187)  | KD 10.078 (box 0.29927  cls 0.01399  dfl 0.00074  feat 0.00093)
-  Epoch 10/30  Batch 873/2188 (39.9%)  | Super 117.306 (box 1.4839  cls 0.9712  dfl 1.2107)  | Base 121.365 (box 1.4612  cls 1.1378  dfl 1.1936)  | KD 11.096 (box 0.33363  cls 0.01124  dfl 0.00073  feat 0.00114)
-  Epoch 10/30  Batch 1091/2188 (49.9%)  | Super 102.589 (box 1.3381  cls 0.7797  dfl 1.0881)  | Base 106.259 (box 1.3241  cls 0.9027  dfl 1.0939)  | KD 9.882 (box 0.29741  cls 0.00980  dfl 0.00073  feat 0.00087)
-  Epoch 10/30  Batch 1309/2188 (59.8%)  | Super 102.976 (box 1.2907  cls 0.7931  dfl 1.1343)  | Base 108.404 (box 1.2757  cls 0.9766  dfl 1.1353)  | KD 9.959 (box 0.29962  cls 0.00990  dfl 0.00074  feat 0.00097)
-  Epoch 10/30  Batch 1527/2188 (69.8%)  | Super 111.211 (box 1.4201  cls 0.8976  dfl 1.1576)  | Base 117.784 (box 1.4127  cls 1.1151  dfl 1.1529)  | KD 11.537 (box 0.34177  cls 0.01668  dfl 0.00106  feat 0.00102)
-  Epoch 10/30  Batch 1745/2188 (79.8%)  | Super 103.089 (box 1.3322  cls 0.7817  dfl 1.1076)  | Base 108.373 (box 1.3243  cls 0.9614  dfl 1.1010)  | KD 10.431 (box 0.31313  cls 0.01106  dfl 0.00080  feat 0.00098)
-  Epoch 10/30  Batch 1963/2188 (89.7%)  | Super 105.058 (box 1.3296  cls 0.8041  dfl 1.1493)  | Base 110.812 (box 1.3231  cls 0.9786  dfl 1.1611)  | KD 9.102 (box 0.27022  cls 0.01242  dfl 0.00065  feat 0.00115)
-  Epoch 10/30  Batch 2181/2188 (99.7%)  | Super 108.631 (box 1.4313  cls 0.7706  dfl 1.1927)  | Base 114.165 (box 1.4039  cls 0.9835  dfl 1.1802)  | KD 9.723 (box 0.28867  cls 0.01364  dfl 0.00068  feat 0.00086)
+  Epoch 10/30  Batch 1/2188 (0.0%)  | Super 106.539 (box 1.3539  cls 0.8426  dfl 1.1329)  | Base 109.827 (box 1.3953  cls 0.9129  dfl 1.1238)  | KD 11.797 (box 0.34459  cls 0.02179  dfl 0.00087  feat 0.00140)
+  Epoch 10/30  Batch 219/2188 (10.0%)  | Super 109.243 (box 1.4224  cls 0.8335  dfl 1.1579)  | Base 110.341 (box 1.4265  cls 0.8798  dfl 1.1418)  | KD 11.315 (box 0.33089  cls 0.02048  dfl 0.00083  feat 0.00142)
+  Epoch 10/30  Batch 437/2188 (20.0%)  | Super 115.561 (box 1.5793  cls 0.8718  dfl 1.1602)  | Base 117.400 (box 1.5982  cls 0.9058  dfl 1.1647)  | KD 13.900 (box 0.41405  cls 0.01794  dfl 0.00101  feat 0.00138)
+  Epoch 10/30  Batch 655/2188 (29.9%)  | Super 103.570 (box 1.3553  cls 0.7797  dfl 1.1016)  | Base 104.938 (box 1.3693  cls 0.8187  dfl 1.0913)  | KD 11.639 (box 0.34556  cls 0.01597  dfl 0.00090  feat 0.00128)
+  Epoch 10/30  Batch 873/2188 (39.9%)  | Super 115.212 (box 1.4665  cls 0.9472  dfl 1.1866)  | Base 117.115 (box 1.4946  cls 0.9846  dfl 1.1806)  | KD 13.215 (box 0.39491  cls 0.01568  dfl 0.00092  feat 0.00145)
+  Epoch 10/30  Batch 1091/2188 (49.9%)  | Super 100.514 (box 1.3159  cls 0.7434  dfl 1.0818)  | Base 101.563 (box 1.3157  cls 0.7831  dfl 1.0751)  | KD 11.489 (box 0.34626  cls 0.01066  dfl 0.00092  feat 0.00120)
+  Epoch 10/30  Batch 1309/2188 (59.8%)  | Super 100.790 (box 1.2704  cls 0.7623  dfl 1.1170)  | Base 101.846 (box 1.2882  cls 0.7733  dfl 1.1211)  | KD 12.020 (box 0.36042  cls 0.01291  dfl 0.00095  feat 0.00134)
+  Epoch 10/30  Batch 1527/2188 (69.8%)  | Super 110.668 (box 1.4203  cls 0.8876  dfl 1.1505)  | Base 112.047 (box 1.4377  cls 0.9269  dfl 1.1368)  | KD 12.960 (box 0.38106  cls 0.02131  dfl 0.00118  feat 0.00146)
+  Epoch 10/30  Batch 1745/2188 (79.8%)  | Super 102.230 (box 1.3361  cls 0.7705  dfl 1.0880)  | Base 103.682 (box 1.3452  cls 0.8216  dfl 1.0733)  | KD 11.916 (box 0.35528  cls 0.01494  dfl 0.00089  feat 0.00127)
+  Epoch 10/30  Batch 1963/2188 (89.7%)  | Super 101.306 (box 1.2922  cls 0.7522  dfl 1.1214)  | Base 104.998 (box 1.3384  cls 0.8050  dfl 1.1377)  | KD 11.272 (box 0.33365  cls 0.01624  dfl 0.00082  feat 0.00156)
+  Epoch 10/30  Batch 2181/2188 (99.7%)  | Super 106.835 (box 1.3962  cls 0.7804  dfl 1.1619)  | Base 107.414 (box 1.3786  cls 0.8323  dfl 1.1457)  | KD 10.624 (box 0.31636  cls 0.01348  dfl 0.00080  feat 0.00136)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 10/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.627      0.515      0.569       0.33
+                   all      10000     185578      0.627      0.519      0.571      0.331
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 10/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.608       0.49      0.545      0.312
+                   all      10000     185578      0.618      0.497      0.555      0.318
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 11/30  Batch 1/2188 (0.0%)  | Super 104.619 (box 1.3418  cls 0.8026  dfl 1.1250)  | Base 110.088 (box 1.3315  cls 0.9865  dfl 1.1223)  | KD 10.818 (box 0.32295  cls 0.01340  dfl 0.00077  feat 0.00096)
-  Epoch 11/30  Batch 219/2188 (10.0%)  | Super 116.619 (box 1.5409  cls 0.9012  dfl 1.2023)  | Base 121.998 (box 1.5257  cls 1.0836  dfl 1.2031)  | KD 10.465 (box 0.31253  cls 0.01281  dfl 0.00069  feat 0.00098)
-  Epoch 11/30  Batch 437/2188 (20.0%)  | Super 114.702 (box 1.5526  cls 0.8965  dfl 1.1353)  | Base 119.240 (box 1.5572  cls 1.0447  dfl 1.1243)  | KD 12.004 (box 0.36469  cls 0.00867  dfl 0.00080  feat 0.00096)
-  Epoch 11/30  Batch 655/2188 (29.9%)  | Super 100.940 (box 1.3051  cls 0.7574  dfl 1.0919)  | Base 106.362 (box 1.2994  cls 0.9435  dfl 1.0809)  | KD 9.681 (box 0.29007  cls 0.01097  dfl 0.00070  feat 0.00078)
-  Epoch 11/30  Batch 873/2188 (39.9%)  | Super 118.477 (box 1.4863  cls 0.9871  dfl 1.2290)  | Base 124.406 (box 1.4871  cls 1.1772  dfl 1.2234)  | KD 12.208 (box 0.36770  cls 0.01203  dfl 0.00079  feat 0.00097)
-  Epoch 11/30  Batch 1091/2188 (49.9%)  | Super 102.385 (box 1.3475  cls 0.7623  dfl 1.0897)  | Base 106.338 (box 1.3320  cls 0.9048  dfl 1.0863)  | KD 9.439 (box 0.28319  cls 0.01023  dfl 0.00074  feat 0.00080)
-  Epoch 11/30  Batch 1309/2188 (59.8%)  | Super 96.354 (box 1.2310  cls 0.7289  dfl 1.0512)  | Base 101.343 (box 1.2265  cls 0.8899  dfl 1.0505)  | KD 9.288 (box 0.28023  cls 0.00853  dfl 0.00067  feat 0.00082)
-  Epoch 11/30  Batch 1527/2188 (69.8%)  | Super 112.048 (box 1.4526  cls 0.8884  dfl 1.1605)  | Base 118.036 (box 1.4519  cls 1.0777  dfl 1.1590)  | KD 9.942 (box 0.29791  cls 0.01110  dfl 0.00077  feat 0.00091)
-  Epoch 11/30  Batch 1745/2188 (79.8%)  | Super 103.772 (box 1.3400  cls 0.7840  dfl 1.1188)  | Base 109.386 (box 1.3247  cls 0.9828  dfl 1.1108)  | KD 10.406 (box 0.31521  cls 0.00834  dfl 0.00079  feat 0.00087)
-  Epoch 11/30  Batch 1963/2188 (89.7%)  | Super 100.750 (box 1.2787  cls 0.7845  dfl 1.0853)  | Base 106.667 (box 1.2914  cls 0.9543  dfl 1.0877)  | KD 10.041 (box 0.30213  cls 0.00988  dfl 0.00079  feat 0.00100)
-  Epoch 11/30  Batch 2181/2188 (99.7%)  | Super 108.297 (box 1.3928  cls 0.7809  dfl 1.2105)  | Base 114.868 (box 1.3876  cls 0.9944  dfl 1.2076)  | KD 10.092 (box 0.29450  cls 0.01923  dfl 0.00069  feat 0.00096)
+  Epoch 11/30  Batch 1/2188 (0.0%)  | Super 103.271 (box 1.3351  cls 0.7742  dfl 1.1179)  | Base 106.887 (box 1.3654  cls 0.8459  dfl 1.1290)  | KD 12.165 (box 0.35850  cls 0.01937  dfl 0.00090  feat 0.00140)
+  Epoch 11/30  Batch 219/2188 (10.0%)  | Super 115.855 (box 1.5474  cls 0.8794  dfl 1.1936)  | Base 116.807 (box 1.5366  cls 0.9311  dfl 1.1825)  | KD 11.884 (box 0.35296  cls 0.01621  dfl 0.00085  feat 0.00136)
+  Epoch 11/30  Batch 437/2188 (20.0%)  | Super 113.119 (box 1.5378  cls 0.8844  dfl 1.1128)  | Base 115.026 (box 1.5681  cls 0.9250  dfl 1.1014)  | KD 14.252 (box 0.42971  cls 0.01332  dfl 0.00095  feat 0.00140)
+  Epoch 11/30  Batch 655/2188 (29.9%)  | Super 98.733 (box 1.2828  cls 0.7408  dfl 1.0619)  | Base 99.855 (box 1.2929  cls 0.7713  dfl 1.0563)  | KD 11.322 (box 0.33765  cls 0.01407  dfl 0.00082  feat 0.00127)
+  Epoch 11/30  Batch 873/2188 (39.9%)  | Super 117.252 (box 1.5013  cls 0.9639  dfl 1.1989)  | Base 118.404 (box 1.5237  cls 0.9781  dfl 1.1983)  | KD 14.017 (box 0.41681  cls 0.01868  dfl 0.00103  feat 0.00150)
+  Epoch 11/30  Batch 1091/2188 (49.9%)  | Super 101.015 (box 1.3401  cls 0.7376  dfl 1.0790)  | Base 101.686 (box 1.3487  cls 0.7603  dfl 1.0687)  | KD 10.735 (box 0.32051  cls 0.01284  dfl 0.00084  feat 0.00127)
+  Epoch 11/30  Batch 1309/2188 (59.8%)  | Super 94.864 (box 1.2143  cls 0.7135  dfl 1.0367)  | Base 95.918 (box 1.2283  cls 0.7340  dfl 1.0352)  | KD 11.922 (box 0.35216  cls 0.01828  dfl 0.00089  feat 0.00122)
+  Epoch 11/30  Batch 1527/2188 (69.8%)  | Super 110.046 (box 1.4394  cls 0.8651  dfl 1.1344)  | Base 111.458 (box 1.4542  cls 0.9013  dfl 1.1275)  | KD 11.576 (box 0.34395  cls 0.01556  dfl 0.00085  feat 0.00139)
+  Epoch 11/30  Batch 1745/2188 (79.8%)  | Super 101.725 (box 1.3196  cls 0.7742  dfl 1.0851)  | Base 104.265 (box 1.3475  cls 0.8226  dfl 1.0882)  | KD 12.069 (box 0.36193  cls 0.01292  dfl 0.00098  feat 0.00131)
+  Epoch 11/30  Batch 1963/2188 (89.7%)  | Super 100.110 (box 1.2822  cls 0.7772  dfl 1.0691)  | Base 102.892 (box 1.3308  cls 0.8063  dfl 1.0783)  | KD 11.774 (box 0.34927  cls 0.01623  dfl 0.00091  feat 0.00152)
+  Epoch 11/30  Batch 2181/2188 (99.7%)  | Super 107.320 (box 1.3944  cls 0.7573  dfl 1.2021)  | Base 109.137 (box 1.4169  cls 0.8050  dfl 1.1887)  | KD 11.742 (box 0.34145  cls 0.02315  dfl 0.00077  feat 0.00156)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 11/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.635      0.512       0.57      0.331
+                   all      10000     185578      0.625      0.516      0.572      0.333
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 11/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.611      0.487      0.545      0.313
+                   all      10000     185578      0.617      0.498      0.555      0.319
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 12/30  Batch 1/2188 (0.0%)  | Super 106.975 (box 1.3612  cls 0.8116  dfl 1.1702)  | Base 112.172 (box 1.3524  cls 0.9931  dfl 1.1599)  | KD 10.808 (box 0.32104  cls 0.01493  dfl 0.00096  feat 0.00083)
-  Epoch 12/30  Batch 219/2188 (10.0%)  | Super 112.889 (box 1.4945  cls 0.8646  dfl 1.1686)  | Base 118.080 (box 1.4845  cls 1.0434  dfl 1.1621)  | KD 9.066 (box 0.27010  cls 0.01162  dfl 0.00067  feat 0.00093)
-  Epoch 12/30  Batch 437/2188 (20.0%)  | Super 113.103 (box 1.5210  cls 0.9044  dfl 1.1091)  | Base 118.488 (box 1.5245  cls 1.0644  dfl 1.1138)  | KD 11.402 (box 0.34465  cls 0.01003  dfl 0.00069  feat 0.00092)
-  Epoch 12/30  Batch 655/2188 (29.9%)  | Super 100.618 (box 1.3066  cls 0.7450  dfl 1.0927)  | Base 104.481 (box 1.2945  cls 0.8861  dfl 1.0844)  | KD 8.551 (box 0.25749  cls 0.00832  dfl 0.00054  feat 0.00089)
-  Epoch 12/30  Batch 873/2188 (39.9%)  | Super 118.928 (box 1.4952  cls 0.9893  dfl 1.2319)  | Base 123.767 (box 1.4784  cls 1.1626  dfl 1.2267)  | KD 10.652 (box 0.31869  cls 0.01249  dfl 0.00071  feat 0.00098)
-  Epoch 12/30  Batch 1091/2188 (49.9%)  | Super 100.143 (box 1.3181  cls 0.7362  dfl 1.0751)  | Base 104.249 (box 1.3009  cls 0.8910  dfl 1.0658)  | KD 9.152 (box 0.27646  cls 0.00812  dfl 0.00062  feat 0.00081)
-  Epoch 12/30  Batch 1309/2188 (59.8%)  | Super 101.147 (box 1.2713  cls 0.7868  dfl 1.1027)  | Base 107.309 (box 1.2720  cls 0.9817  dfl 1.0997)  | KD 9.704 (box 0.28936  cls 0.01205  dfl 0.00084  feat 0.00099)
-  Epoch 12/30  Batch 1527/2188 (69.8%)  | Super 110.313 (box 1.4192  cls 0.8632  dfl 1.1648)  | Base 116.823 (box 1.4381  cls 1.0376  dfl 1.1750)  | KD 10.407 (box 0.30752  cls 0.01600  dfl 0.00080  feat 0.00089)
-  Epoch 12/30  Batch 1745/2188 (79.8%)  | Super 102.727 (box 1.3525  cls 0.7424  dfl 1.1154)  | Base 107.015 (box 1.3334  cls 0.9148  dfl 1.0960)  | KD 9.683 (box 0.29208  cls 0.00901  dfl 0.00070  feat 0.00082)
-  Epoch 12/30  Batch 1963/2188 (89.7%)  | Super 100.950 (box 1.2938  cls 0.8002  dfl 1.0607)  | Base 104.529 (box 1.2786  cls 0.9515  dfl 1.0364)  | KD 10.842 (box 0.32762  cls 0.00949  dfl 0.00070  feat 0.00101)
-  Epoch 12/30  Batch 2181/2188 (99.7%)  | Super 107.366 (box 1.3952  cls 0.8020  dfl 1.1579)  | Base 111.960 (box 1.3715  cls 0.9793  dfl 1.1480)  | KD 9.587 (box 0.28459  cls 0.01335  dfl 0.00071  feat 0.00093)
+  Epoch 12/30  Batch 1/2188 (0.0%)  | Super 105.397 (box 1.3545  cls 0.7862  dfl 1.1529)  | Base 106.068 (box 1.3592  cls 0.8201  dfl 1.1353)  | KD 12.425 (box 0.36383  cls 0.02223  dfl 0.00102  feat 0.00121)
+  Epoch 12/30  Batch 219/2188 (10.0%)  | Super 110.164 (box 1.4647  cls 0.8256  dfl 1.1523)  | Base 110.329 (box 1.4608  cls 0.8560  dfl 1.1309)  | KD 11.700 (box 0.34823  cls 0.01512  dfl 0.00092  feat 0.00136)
+  Epoch 12/30  Batch 437/2188 (20.0%)  | Super 113.182 (box 1.5448  cls 0.8790  dfl 1.1131)  | Base 114.706 (box 1.5654  cls 0.9116  dfl 1.1075)  | KD 13.430 (box 0.40471  cls 0.01269  dfl 0.00083  feat 0.00146)
+  Epoch 12/30  Batch 655/2188 (29.9%)  | Super 99.968 (box 1.3039  cls 0.7324  dfl 1.0877)  | Base 100.624 (box 1.3084  cls 0.7613  dfl 1.0748)  | KD 9.963 (box 0.29896  cls 0.01049  dfl 0.00067  feat 0.00123)
+  Epoch 12/30  Batch 873/2188 (39.9%)  | Super 117.736 (box 1.4727  cls 0.9750  dfl 1.2316)  | Base 119.886 (box 1.5041  cls 1.0178  dfl 1.2245)  | KD 12.836 (box 0.37934  cls 0.01952  dfl 0.00085  feat 0.00141)
+  Epoch 12/30  Batch 1091/2188 (49.9%)  | Super 99.387 (box 1.3115  cls 0.7222  dfl 1.0722)  | Base 98.926 (box 1.3126  cls 0.7351  dfl 1.0437)  | KD 10.906 (box 0.32665  cls 0.01208  dfl 0.00084  feat 0.00124)
+  Epoch 12/30  Batch 1309/2188 (59.8%)  | Super 100.217 (box 1.2565  cls 0.7733  dfl 1.1019)  | Base 100.210 (box 1.2622  cls 0.7959  dfl 1.0735)  | KD 11.625 (box 0.34482  cls 0.01607  dfl 0.00101  feat 0.00139)
+  Epoch 12/30  Batch 1527/2188 (69.8%)  | Super 109.894 (box 1.4262  cls 0.8493  dfl 1.1586)  | Base 111.477 (box 1.4546  cls 0.8866  dfl 1.1424)  | KD 12.322 (box 0.35911  cls 0.02365  dfl 0.00101  feat 0.00129)
+  Epoch 12/30  Batch 1745/2188 (79.8%)  | Super 100.796 (box 1.3321  cls 0.7246  dfl 1.0931)  | Base 102.276 (box 1.3458  cls 0.7711  dfl 1.0792)  | KD 11.523 (box 0.34296  cls 0.01499  dfl 0.00085  feat 0.00129)
+  Epoch 12/30  Batch 1963/2188 (89.7%)  | Super 99.314 (box 1.2840  cls 0.7727  dfl 1.0468)  | Base 99.474 (box 1.2847  cls 0.8066  dfl 1.0173)  | KD 13.281 (box 0.39771  cls 0.01497  dfl 0.00092  feat 0.00143)
+  Epoch 12/30  Batch 2181/2188 (99.7%)  | Super 105.310 (box 1.3765  cls 0.7611  dfl 1.1533)  | Base 106.926 (box 1.3831  cls 0.8123  dfl 1.1461)  | KD 10.791 (box 0.31761  cls 0.01733  dfl 0.00092  feat 0.00135)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 12/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.733      0.513       0.57      0.331
+                   all      10000     185578      0.733      0.517      0.574      0.335
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 12/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.614      0.492      0.548      0.314
+                   all      10000     185578      0.615      0.504      0.557      0.321
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 13/30  Batch 1/2188 (0.0%)  | Super 107.900 (box 1.3985  cls 0.8237  dfl 1.1497)  | Base 115.498 (box 1.4167  cls 1.0325  dfl 1.1602)  | KD 11.758 (box 0.34111  cls 0.02460  dfl 0.00082  feat 0.00090)
-  Epoch 13/30  Batch 219/2188 (10.0%)  | Super 111.024 (box 1.4596  cls 0.8630  dfl 1.1470)  | Base 116.145 (box 1.4512  cls 1.0320  dfl 1.1463)  | KD 9.818 (box 0.29542  cls 0.00981  dfl 0.00070  feat 0.00090)
-  Epoch 13/30  Batch 437/2188 (20.0%)  | Super 115.200 (box 1.5768  cls 0.8733  dfl 1.1499)  | Base 119.471 (box 1.5730  cls 1.0012  dfl 1.1592)  | KD 11.373 (box 0.34279  cls 0.01092  dfl 0.00071  feat 0.00100)
-  Epoch 13/30  Batch 655/2188 (29.9%)  | Super 101.104 (box 1.3374  cls 0.7465  dfl 1.0756)  | Base 105.275 (box 1.3191  cls 0.8961  dfl 1.0746)  | KD 9.257 (box 0.27667  cls 0.01124  dfl 0.00059  feat 0.00078)
-  Epoch 13/30  Batch 873/2188 (39.9%)  | Super 110.822 (box 1.4126  cls 0.9144  dfl 1.1362)  | Base 115.961 (box 1.4182  cls 1.0708  dfl 1.1347)  | KD 10.530 (box 0.31724  cls 0.01028  dfl 0.00067  feat 0.00088)
-  Epoch 13/30  Batch 1091/2188 (49.9%)  | Super 101.867 (box 1.3335  cls 0.7480  dfl 1.1018)  | Base 106.312 (box 1.3230  cls 0.8963  dfl 1.1030)  | KD 9.287 (box 0.27963  cls 0.00916  dfl 0.00062  feat 0.00082)
-  Epoch 13/30  Batch 1309/2188 (59.8%)  | Super 98.481 (box 1.2396  cls 0.7375  dfl 1.1004)  | Base 104.114 (box 1.2374  cls 0.9226  dfl 1.0935)  | KD 9.269 (box 0.28026  cls 0.00789  dfl 0.00062  feat 0.00089)
-  Epoch 13/30  Batch 1527/2188 (69.8%)  | Super 110.783 (box 1.4180  cls 0.8810  dfl 1.1629)  | Base 115.595 (box 1.4118  cls 1.0397  dfl 1.1609)  | KD 10.129 (box 0.30093  cls 0.01377  dfl 0.00079  feat 0.00103)
-  Epoch 13/30  Batch 1745/2188 (79.8%)  | Super 104.305 (box 1.3532  cls 0.7737  dfl 1.1326)  | Base 109.830 (box 1.3465  cls 0.9579  dfl 1.1278)  | KD 9.845 (box 0.29251  cls 0.01348  dfl 0.00066  feat 0.00099)
-  Epoch 13/30  Batch 1963/2188 (89.7%)  | Super 107.153 (box 1.3766  cls 0.8074  dfl 1.1646)  | Base 111.191 (box 1.3509  cls 0.9676  dfl 1.1562)  | KD 9.388 (box 0.28355  cls 0.00814  dfl 0.00069  feat 0.00099)
-  Epoch 13/30  Batch 2181/2188 (99.7%)  | Super 106.188 (box 1.3762  cls 0.7529  dfl 1.1893)  | Base 111.048 (box 1.3550  cls 0.9594  dfl 1.1559)  | KD 8.953 (box 0.26587  cls 0.01223  dfl 0.00064  feat 0.00105)
+  Epoch 13/30  Batch 1/2188 (0.0%)  | Super 106.307 (box 1.3887  cls 0.8025  dfl 1.1309)  | Base 109.385 (box 1.4204  cls 0.8642  dfl 1.1337)  | KD 12.917 (box 0.37702  cls 0.02441  dfl 0.00096  feat 0.00127)
+  Epoch 13/30  Batch 219/2188 (10.0%)  | Super 108.760 (box 1.4360  cls 0.8301  dfl 1.1327)  | Base 109.729 (box 1.4466  cls 0.8557  dfl 1.1267)  | KD 11.539 (box 0.34203  cls 0.01639  dfl 0.00091  feat 0.00125)
+  Epoch 13/30  Batch 437/2188 (20.0%)  | Super 114.523 (box 1.5662  cls 0.8618  dfl 1.1509)  | Base 115.543 (box 1.5842  cls 0.8833  dfl 1.1432)  | KD 12.707 (box 0.38097  cls 0.01383  dfl 0.00081  feat 0.00148)
+  Epoch 13/30  Batch 655/2188 (29.9%)  | Super 98.978 (box 1.3107  cls 0.7148  dfl 1.0675)  | Base 99.905 (box 1.3223  cls 0.7482  dfl 1.0515)  | KD 11.035 (box 0.32715  cls 0.01572  dfl 0.00082  feat 0.00117)
+  Epoch 13/30  Batch 873/2188 (39.9%)  | Super 109.637 (box 1.3895  cls 0.8932  dfl 1.1434)  | Base 113.018 (box 1.4329  cls 0.9620  dfl 1.1369)  | KD 12.614 (box 0.37386  cls 0.01804  dfl 0.00096  feat 0.00133)
+  Epoch 13/30  Batch 1091/2188 (49.9%)  | Super 100.340 (box 1.3164  cls 0.7284  dfl 1.0908)  | Base 101.493 (box 1.3256  cls 0.7618  dfl 1.0843)  | KD 10.284 (box 0.30858  cls 0.01078  dfl 0.00078  feat 0.00123)
+  Epoch 13/30  Batch 1309/2188 (59.8%)  | Super 98.157 (box 1.2343  cls 0.7378  dfl 1.0953)  | Base 99.469 (box 1.2576  cls 0.7631  dfl 1.0877)  | KD 11.664 (box 0.34665  cls 0.01563  dfl 0.00091  feat 0.00130)
+  Epoch 13/30  Batch 1527/2188 (69.8%)  | Super 109.553 (box 1.4025  cls 0.8699  dfl 1.1511)  | Base 109.913 (box 1.4117  cls 0.8922  dfl 1.1308)  | KD 12.236 (box 0.35687  cls 0.02302  dfl 0.00103  feat 0.00147)
+  Epoch 13/30  Batch 1745/2188 (79.8%)  | Super 102.972 (box 1.3377  cls 0.7545  dfl 1.1257)  | Base 104.365 (box 1.3584  cls 0.7930  dfl 1.1100)  | KD 12.075 (box 0.35729  cls 0.01769  dfl 0.00094  feat 0.00141)
+  Epoch 13/30  Batch 1963/2188 (89.7%)  | Super 105.255 (box 1.3516  cls 0.7968  dfl 1.1407)  | Base 104.612 (box 1.3489  cls 0.8155  dfl 1.1047)  | KD 10.977 (box 0.32779  cls 0.01294  dfl 0.00087  feat 0.00143)
+  Epoch 13/30  Batch 2181/2188 (99.7%)  | Super 104.089 (box 1.3623  cls 0.7242  dfl 1.1663)  | Base 105.038 (box 1.3682  cls 0.7635  dfl 1.1508)  | KD 10.814 (box 0.31786  cls 0.01773  dfl 0.00076  feat 0.00160)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 13/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.738      0.517      0.574      0.334
+                   all      10000     185578      0.632      0.519      0.577      0.337
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 13/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.612      0.495      0.551      0.318
+                   all      10000     185578      0.622      0.499       0.56      0.323
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 14/30  Batch 1/2188 (0.0%)  | Super 104.754 (box 1.3280  cls 0.7913  dfl 1.1543)  | Base 109.891 (box 1.3189  cls 0.9604  dfl 1.1548)  | KD 11.186 (box 0.33497  cls 0.01299  dfl 0.00082  feat 0.00079)
-  Epoch 14/30  Batch 219/2188 (10.0%)  | Super 110.652 (box 1.4519  cls 0.8500  dfl 1.1560)  | Base 116.257 (box 1.4499  cls 1.0261  dfl 1.1570)  | KD 9.360 (box 0.28076  cls 0.01020  dfl 0.00065  feat 0.00088)
-  Epoch 14/30  Batch 437/2188 (20.0%)  | Super 114.176 (box 1.5485  cls 0.8722  dfl 1.1473)  | Base 118.082 (box 1.5329  cls 1.0160  dfl 1.1411)  | KD 11.275 (box 0.34298  cls 0.00766  dfl 0.00071  feat 0.00102)
-  Epoch 14/30  Batch 655/2188 (29.9%)  | Super 100.907 (box 1.2816  cls 0.7788  dfl 1.0930)  | Base 106.394 (box 1.2931  cls 0.9364  dfl 1.0953)  | KD 8.810 (box 0.26315  cls 0.01074  dfl 0.00060  feat 0.00082)
-  Epoch 14/30  Batch 873/2188 (39.9%)  | Super 117.780 (box 1.4981  cls 0.9576  dfl 1.2249)  | Base 121.569 (box 1.4732  cls 1.1213  dfl 1.2046)  | KD 11.752 (box 0.35353  cls 0.01210  dfl 0.00074  feat 0.00087)
-  Epoch 14/30  Batch 1091/2188 (49.9%)  | Super 101.544 (box 1.3320  cls 0.7420  dfl 1.0993)  | Base 106.094 (box 1.3121  cls 0.8999  dfl 1.1035)  | KD 9.577 (box 0.28843  cls 0.00938  dfl 0.00067  feat 0.00080)
-  Epoch 14/30  Batch 1309/2188 (59.8%)  | Super 105.336 (box 1.3350  cls 0.7863  dfl 1.1705)  | Base 110.690 (box 1.3227  cls 0.9774  dfl 1.1590)  | KD 9.858 (box 0.29944  cls 0.00713  dfl 0.00068  feat 0.00080)
-  Epoch 14/30  Batch 1527/2188 (69.8%)  | Super 106.299 (box 1.4010  cls 0.8195  dfl 1.1013)  | Base 113.681 (box 1.4088  cls 1.0333  dfl 1.1105)  | KD 9.947 (box 0.29251  cls 0.01670  dfl 0.00083  feat 0.00079)
-  Epoch 14/30  Batch 1745/2188 (79.8%)  | Super 96.763 (box 1.2583  cls 0.7105  dfl 1.0551)  | Base 102.194 (box 1.2479  cls 0.8993  dfl 1.0464)  | KD 9.542 (box 0.28904  cls 0.00768  dfl 0.00064  feat 0.00083)
-  Epoch 14/30  Batch 1963/2188 (89.7%)  | Super 107.063 (box 1.3498  cls 0.8353  dfl 1.1606)  | Base 112.556 (box 1.3458  cls 0.9996  dfl 1.1719)  | KD 9.969 (box 0.30054  cls 0.00919  dfl 0.00073  feat 0.00109)
-  Epoch 14/30  Batch 2181/2188 (99.7%)  | Super 104.970 (box 1.3670  cls 0.7532  dfl 1.1601)  | Base 109.558 (box 1.3455  cls 0.9240  dfl 1.1542)  | KD 8.934 (box 0.26698  cls 0.01052  dfl 0.00060  feat 0.00109)
+  Epoch 14/30  Batch 1/2188 (0.0%)  | Super 102.857 (box 1.3025  cls 0.7822  dfl 1.1296)  | Base 104.695 (box 1.3302  cls 0.8274  dfl 1.1141)  | KD 12.374 (box 0.36775  cls 0.01685  dfl 0.00088  feat 0.00122)
+  Epoch 14/30  Batch 219/2188 (10.0%)  | Super 108.705 (box 1.4212  cls 0.8296  dfl 1.1462)  | Base 110.789 (box 1.4453  cls 0.8753  dfl 1.1416)  | KD 11.497 (box 0.34210  cls 0.01490  dfl 0.00096  feat 0.00133)
+  Epoch 14/30  Batch 437/2188 (20.0%)  | Super 112.398 (box 1.5370  cls 0.8509  dfl 1.1245)  | Base 113.106 (box 1.5450  cls 0.8785  dfl 1.1110)  | KD 13.282 (box 0.40050  cls 0.01231  dfl 0.00081  feat 0.00144)
+  Epoch 14/30  Batch 655/2188 (29.9%)  | Super 100.243 (box 1.2959  cls 0.7588  dfl 1.0780)  | Base 101.155 (box 1.3051  cls 0.7879  dfl 1.0682)  | KD 11.597 (box 0.34579  cls 0.01447  dfl 0.00095  feat 0.00121)
+  Epoch 14/30  Batch 873/2188 (39.9%)  | Super 115.000 (box 1.4770  cls 0.9260  dfl 1.1907)  | Base 115.372 (box 1.4844  cls 0.9473  dfl 1.1737)  | KD 13.654 (box 0.40712  cls 0.01733  dfl 0.00093  feat 0.00132)
+  Epoch 14/30  Batch 1091/2188 (49.9%)  | Super 100.331 (box 1.3172  cls 0.7294  dfl 1.0887)  | Base 100.306 (box 1.3099  cls 0.7524  dfl 1.0723)  | KD 11.507 (box 0.33956  cls 0.01789  dfl 0.00088  feat 0.00125)
+  Epoch 14/30  Batch 1309/2188 (59.8%)  | Super 105.018 (box 1.3378  cls 0.7773  dfl 1.1667)  | Base 104.512 (box 1.3320  cls 0.7956  dfl 1.1384)  | KD 12.275 (box 0.36904  cls 0.01249  dfl 0.00088  feat 0.00119)
+  Epoch 14/30  Batch 1527/2188 (69.8%)  | Super 105.282 (box 1.4019  cls 0.7914  dfl 1.0968)  | Base 107.473 (box 1.4278  cls 0.8278  dfl 1.1030)  | KD 12.650 (box 0.37002  cls 0.02308  dfl 0.00093  feat 0.00128)
+  Epoch 14/30  Batch 1745/2188 (79.8%)  | Super 96.642 (box 1.2665  cls 0.7012  dfl 1.0523)  | Base 98.297 (box 1.2831  cls 0.7547  dfl 1.0340)  | KD 11.702 (box 0.34967  cls 0.01397  dfl 0.00083  feat 0.00122)
+  Epoch 14/30  Batch 1963/2188 (89.7%)  | Super 106.172 (box 1.3479  cls 0.8207  dfl 1.1493)  | Base 106.613 (box 1.3456  cls 0.8402  dfl 1.1458)  | KD 12.173 (box 0.36204  cls 0.01585  dfl 0.00091  feat 0.00162)
+  Epoch 14/30  Batch 2181/2188 (99.7%)  | Super 102.810 (box 1.3389  cls 0.7376  dfl 1.1363)  | Base 105.088 (box 1.3722  cls 0.7738  dfl 1.1380)  | KD 10.713 (box 0.31480  cls 0.01737  dfl 0.00081  feat 0.00178)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 14/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.636      0.519      0.576      0.335
+                   all      10000     185578      0.731       0.52      0.578      0.338
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 14/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.614      0.496      0.553      0.318
+                   all      10000     185578      0.615      0.507       0.56      0.323
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 15/30  Batch 1/2188 (0.0%)  | Super 108.639 (box 1.3969  cls 0.8107  dfl 1.1874)  | Base 113.389 (box 1.3815  cls 1.0018  dfl 1.1601)  | KD 10.715 (box 0.32334  cls 0.01001  dfl 0.00073  feat 0.00076)
-  Epoch 15/30  Batch 219/2188 (10.0%)  | Super 113.890 (box 1.5131  cls 0.8529  dfl 1.1931)  | Base 120.797 (box 1.5161  cls 1.0533  dfl 1.2055)  | KD 10.064 (box 0.29868  cls 0.01418  dfl 0.00076  feat 0.00088)
-  Epoch 15/30  Batch 437/2188 (20.0%)  | Super 118.102 (box 1.5994  cls 0.9070  dfl 1.1843)  | Base 122.942 (box 1.6012  cls 1.0525  dfl 1.1882)  | KD 10.953 (box 0.33095  cls 0.00978  dfl 0.00066  feat 0.00090)
-  Epoch 15/30  Batch 655/2188 (29.9%)  | Super 99.707 (box 1.3107  cls 0.7357  dfl 1.0694)  | Base 103.862 (box 1.3040  cls 0.8705  dfl 1.0712)  | KD 8.370 (box 0.25016  cls 0.01006  dfl 0.00052  feat 0.00081)
-  Epoch 15/30  Batch 873/2188 (39.9%)  | Super 112.678 (box 1.4381  cls 0.9071  dfl 1.1760)  | Base 117.962 (box 1.4190  cls 1.0965  dfl 1.1708)  | KD 12.070 (box 0.36266  cls 0.01292  dfl 0.00084  feat 0.00077)
-  Epoch 15/30  Batch 1091/2188 (49.9%)  | Super 100.800 (box 1.3104  cls 0.7324  dfl 1.1072)  | Base 105.876 (box 1.2962  cls 0.9156  dfl 1.0969)  | KD 8.945 (box 0.26985  cls 0.00834  dfl 0.00058  feat 0.00076)
-  Epoch 15/30  Batch 1309/2188 (59.8%)  | Super 100.207 (box 1.3101  cls 0.7447  dfl 1.0767)  | Base 104.611 (box 1.2955  cls 0.9058  dfl 1.0678)  | KD 9.339 (box 0.28165  cls 0.00875  dfl 0.00063  feat 0.00083)
-  Epoch 15/30  Batch 1527/2188 (69.8%)  | Super 108.981 (box 1.4430  cls 0.8264  dfl 1.1363)  | Base 116.171 (box 1.4486  cls 1.0328  dfl 1.1490)  | KD 10.276 (box 0.30620  cls 0.01332  dfl 0.00083  feat 0.00079)
-  Epoch 15/30  Batch 1745/2188 (79.8%)  | Super 101.415 (box 1.3330  cls 0.7614  dfl 1.0749)  | Base 107.675 (box 1.3299  cls 0.9480  dfl 1.0870)  | KD 10.035 (box 0.30197  cls 0.00990  dfl 0.00079  feat 0.00093)
-  Epoch 15/30  Batch 1963/2188 (89.7%)  | Super 102.816 (box 1.2853  cls 0.8148  dfl 1.1130)  | Base 107.156 (box 1.2585  cls 0.9897  dfl 1.1004)  | KD 10.438 (box 0.31194  cls 0.01254  dfl 0.00076  feat 0.00095)
-  Epoch 15/30  Batch 2181/2188 (99.7%)  | Super 105.292 (box 1.3815  cls 0.7664  dfl 1.1424)  | Base 110.690 (box 1.3717  cls 0.9522  dfl 1.1351)  | KD 9.486 (box 0.28108  cls 0.01376  dfl 0.00064  feat 0.00096)
+  Epoch 15/30  Batch 1/2188 (0.0%)  | Super 107.183 (box 1.3771  cls 0.8123  dfl 1.1601)  | Base 107.845 (box 1.3953  cls 0.8270  dfl 1.1479)  | KD 12.646 (box 0.37622  cls 0.01684  dfl 0.00091  feat 0.00121)
+  Epoch 15/30  Batch 219/2188 (10.0%)  | Super 111.524 (box 1.4783  cls 0.8340  dfl 1.1728)  | Base 113.943 (box 1.5097  cls 0.8771  dfl 1.1738)  | KD 12.079 (box 0.35541  cls 0.01966  dfl 0.00094  feat 0.00146)
+  Epoch 15/30  Batch 437/2188 (20.0%)  | Super 116.636 (box 1.5951  cls 0.8854  dfl 1.1644)  | Base 117.939 (box 1.6142  cls 0.9090  dfl 1.1624)  | KD 13.687 (box 0.41037  cls 0.01516  dfl 0.00087  feat 0.00132)
+  Epoch 15/30  Batch 655/2188 (29.9%)  | Super 99.620 (box 1.3213  cls 0.7305  dfl 1.0613)  | Base 99.937 (box 1.3208  cls 0.7570  dfl 1.0452)  | KD 11.048 (box 0.32754  cls 0.01577  dfl 0.00075  feat 0.00120)
+  Epoch 15/30  Batch 873/2188 (39.9%)  | Super 111.581 (box 1.4178  cls 0.9072  dfl 1.1619)  | Base 111.712 (box 1.4301  cls 0.9219  dfl 1.1390)  | KD 13.911 (box 0.41305  cls 0.01936  dfl 0.00104  feat 0.00126)
+  Epoch 15/30  Batch 1091/2188 (49.9%)  | Super 99.909 (box 1.3104  cls 0.7160  dfl 1.0958)  | Base 100.585 (box 1.3157  cls 0.7479  dfl 1.0798)  | KD 11.384 (box 0.33996  cls 0.01370  dfl 0.00087  feat 0.00122)
+  Epoch 15/30  Batch 1309/2188 (59.8%)  | Super 99.534 (box 1.3049  cls 0.7295  dfl 1.0760)  | Base 99.887 (box 1.2982  cls 0.7675  dfl 1.0557)  | KD 12.452 (box 0.37020  cls 0.01669  dfl 0.00098  feat 0.00128)
+  Epoch 15/30  Batch 1527/2188 (69.8%)  | Super 108.005 (box 1.4379  cls 0.8126  dfl 1.1246)  | Base 109.027 (box 1.4617  cls 0.8308  dfl 1.1147)  | KD 11.436 (box 0.33668  cls 0.01844  dfl 0.00099  feat 0.00125)
+  Epoch 15/30  Batch 1745/2188 (79.8%)  | Super 100.016 (box 1.3073  cls 0.7580  dfl 1.0601)  | Base 101.260 (box 1.3298  cls 0.7885  dfl 1.0461)  | KD 11.443 (box 0.34105  cls 0.01444  dfl 0.00082  feat 0.00128)
+  Epoch 15/30  Batch 1963/2188 (89.7%)  | Super 100.350 (box 1.2544  cls 0.7899  dfl 1.0917)  | Base 100.248 (box 1.2586  cls 0.8078  dfl 1.0663)  | KD 12.123 (box 0.35524  cls 0.02124  dfl 0.00092  feat 0.00144)
+  Epoch 15/30  Batch 2181/2188 (99.7%)  | Super 103.489 (box 1.3561  cls 0.7493  dfl 1.1286)  | Base 104.790 (box 1.3736  cls 0.7838  dfl 1.1172)  | KD 11.806 (box 0.34446  cls 0.02213  dfl 0.00087  feat 0.00148)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 15/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.637       0.52      0.578      0.337
+                   all      10000     185578      0.728      0.526      0.579      0.339
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 15/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.614      0.502      0.555       0.32
+                   all      10000     185578      0.724      0.506      0.563      0.324
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 16/30  Batch 1/2188 (0.0%)  | Super 107.157 (box 1.3593  cls 0.8143  dfl 1.1751)  | Base 113.836 (box 1.3634  cls 1.0174  dfl 1.1766)  | KD 11.117 (box 0.33071  cls 0.01502  dfl 0.00085  feat 0.00084)
-  Epoch 16/30  Batch 219/2188 (10.0%)  | Super 112.169 (box 1.4658  cls 0.8487  dfl 1.1908)  | Base 117.925 (box 1.4295  cls 1.0856  dfl 1.1700)  | KD 9.310 (box 0.27761  cls 0.01159  dfl 0.00084  feat 0.00090)
-  Epoch 16/30  Batch 437/2188 (20.0%)  | Super 115.271 (box 1.5687  cls 0.8812  dfl 1.1523)  | Base 118.827 (box 1.5559  cls 1.0086  dfl 1.1489)  | KD 10.124 (box 0.30519  cls 0.00970  dfl 0.00058  feat 0.00092)
-  Epoch 16/30  Batch 655/2188 (29.9%)  | Super 101.475 (box 1.3187  cls 0.7468  dfl 1.1056)  | Base 106.317 (box 1.2956  cls 0.9351  dfl 1.0918)  | KD 8.643 (box 0.25982  cls 0.00886  dfl 0.00062  feat 0.00080)
-  Epoch 16/30  Batch 873/2188 (39.9%)  | Super 112.933 (box 1.4209  cls 0.9253  dfl 1.1830)  | Base 117.500 (box 1.3933  cls 1.1197  dfl 1.1589)  | KD 11.226 (box 0.33962  cls 0.00953  dfl 0.00076  feat 0.00090)
-  Epoch 16/30  Batch 1091/2188 (49.9%)  | Super 99.948 (box 1.3300  cls 0.7314  dfl 1.0620)  | Base 105.309 (box 1.3241  cls 0.9022  dfl 1.0646)  | KD 8.876 (box 0.26354  cls 0.01252  dfl 0.00060  feat 0.00073)
-  Epoch 16/30  Batch 1309/2188 (59.8%)  | Super 98.001 (box 1.2274  cls 0.7527  dfl 1.0824)  | Base 104.350 (box 1.2294  cls 0.9437  dfl 1.0879)  | KD 9.638 (box 0.28706  cls 0.01251  dfl 0.00077  feat 0.00084)
-  Epoch 16/30  Batch 1527/2188 (69.8%)  | Super 107.236 (box 1.3862  cls 0.8255  dfl 1.1394)  | Base 112.753 (box 1.3690  cls 1.0219  dfl 1.1326)  | KD 9.790 (box 0.29087  cls 0.01345  dfl 0.00079  feat 0.00083)
-  Epoch 16/30  Batch 1745/2188 (79.8%)  | Super 104.133 (box 1.3477  cls 0.7885  dfl 1.1180)  | Base 110.090 (box 1.3401  cls 0.9785  dfl 1.1217)  | KD 10.664 (box 0.31224  cls 0.01953  dfl 0.00070  feat 0.00078)
-  Epoch 16/30  Batch 1963/2188 (89.7%)  | Super 100.855 (box 1.3133  cls 0.7498  dfl 1.0886)  | Base 105.563 (box 1.2943  cls 0.9196  dfl 1.0849)  | KD 9.750 (box 0.29435  cls 0.00863  dfl 0.00074  feat 0.00096)
-  Epoch 16/30  Batch 2181/2188 (99.7%)  | Super 102.208 (box 1.3184  cls 0.7682  dfl 1.1074)  | Base 108.034 (box 1.3017  cls 0.9575  dfl 1.1168)  | KD 9.236 (box 0.27403  cls 0.01301  dfl 0.00067  feat 0.00090)
+  Epoch 16/30  Batch 1/2188 (0.0%)  | Super 107.410 (box 1.3725  cls 0.8079  dfl 1.1761)  | Base 108.741 (box 1.3886  cls 0.8373  dfl 1.1723)  | KD 13.135 (box 0.39028  cls 0.01797  dfl 0.00094  feat 0.00128)
+  Epoch 16/30  Batch 219/2188 (10.0%)  | Super 108.840 (box 1.4278  cls 0.8219  dfl 1.1515)  | Base 110.431 (box 1.4429  cls 0.8692  dfl 1.1389)  | KD 10.959 (box 0.32385  cls 0.01633  dfl 0.00090  feat 0.00140)
+  Epoch 16/30  Batch 437/2188 (20.0%)  | Super 114.822 (box 1.5829  cls 0.8556  dfl 1.1496)  | Base 114.658 (box 1.5702  cls 0.8800  dfl 1.1328)  | KD 12.477 (box 0.37481  cls 0.01299  dfl 0.00076  feat 0.00135)
+  Epoch 16/30  Batch 655/2188 (29.9%)  | Super 99.386 (box 1.3039  cls 0.7270  dfl 1.0750)  | Base 99.961 (box 1.2956  cls 0.7600  dfl 1.0681)  | KD 10.091 (box 0.30231  cls 0.01097  dfl 0.00076  feat 0.00130)
+  Epoch 16/30  Batch 873/2188 (39.9%)  | Super 112.083 (box 1.4203  cls 0.9144  dfl 1.1679)  | Base 112.274 (box 1.4269  cls 0.9369  dfl 1.1448)  | KD 13.533 (box 0.40384  cls 0.01665  dfl 0.00107  feat 0.00132)
+  Epoch 16/30  Batch 1091/2188 (49.9%)  | Super 98.361 (box 1.3149  cls 0.7034  dfl 1.0555)  | Base 98.961 (box 1.3186  cls 0.7315  dfl 1.0424)  | KD 10.601 (box 0.31674  cls 0.01254  dfl 0.00077  feat 0.00123)
+  Epoch 16/30  Batch 1309/2188 (59.8%)  | Super 96.160 (box 1.2078  cls 0.7319  dfl 1.0652)  | Base 98.217 (box 1.2413  cls 0.7574  dfl 1.0706)  | KD 12.621 (box 0.37171  cls 0.02054  dfl 0.00094  feat 0.00121)
+  Epoch 16/30  Batch 1527/2188 (69.8%)  | Super 106.090 (box 1.3814  cls 0.8026  dfl 1.1314)  | Base 107.282 (box 1.3870  cls 0.8388  dfl 1.1268)  | KD 11.734 (box 0.34401  cls 0.02041  dfl 0.00099  feat 0.00128)
+  Epoch 16/30  Batch 1745/2188 (79.8%)  | Super 103.337 (box 1.3446  cls 0.7703  dfl 1.1144)  | Base 103.913 (box 1.3534  cls 0.7952  dfl 1.0988)  | KD 13.139 (box 0.38546  cls 0.02287  dfl 0.00099  feat 0.00127)
+  Epoch 16/30  Batch 1963/2188 (89.7%)  | Super 99.016 (box 1.2931  cls 0.7151  dfl 1.0860)  | Base 98.775 (box 1.2854  cls 0.7354  dfl 1.0660)  | KD 12.002 (box 0.35652  cls 0.01604  dfl 0.00096  feat 0.00153)
+  Epoch 16/30  Batch 2181/2188 (99.7%)  | Super 101.928 (box 1.3155  cls 0.7497  dfl 1.1200)  | Base 102.364 (box 1.3306  cls 0.7830  dfl 1.0853)  | KD 10.978 (box 0.32555  cls 0.01541  dfl 0.00081  feat 0.00131)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 16/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.737      0.516      0.577      0.337
+                   all      10000     185578      0.733      0.524      0.581       0.34
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 16/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.621      0.493      0.555      0.321
+                   all      10000     185578      0.721      0.508      0.564      0.326
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 17/30  Batch 1/2188 (0.0%)  | Super 112.158 (box 1.4057  cls 0.8756  dfl 1.2237)  | Base 117.219 (box 1.3749  cls 1.0806  dfl 1.2076)  | KD 10.264 (box 0.30474  cls 0.01416  dfl 0.00087  feat 0.00099)
-  Epoch 17/30  Batch 219/2188 (10.0%)  | Super 107.890 (box 1.4256  cls 0.8027  dfl 1.1432)  | Base 113.751 (box 1.4371  cls 0.9751  dfl 1.1425)  | KD 9.277 (box 0.27688  cls 0.01152  dfl 0.00065  feat 0.00085)
-  Epoch 17/30  Batch 437/2188 (20.0%)  | Super 113.895 (box 1.5742  cls 0.8444  dfl 1.1406)  | Base 118.825 (box 1.5799  cls 0.9790  dfl 1.1544)  | KD 10.437 (box 0.31490  cls 0.00969  dfl 0.00063  feat 0.00094)
-  Epoch 17/30  Batch 655/2188 (29.9%)  | Super 103.697 (box 1.3450  cls 0.8129  dfl 1.0827)  | Base 109.275 (box 1.3485  cls 0.9799  dfl 1.0865)  | KD 10.048 (box 0.30016  cls 0.01215  dfl 0.00074  feat 0.00094)
-  Epoch 17/30  Batch 873/2188 (39.9%)  | Super 112.967 (box 1.4312  cls 0.9002  dfl 1.1988)  | Base 119.304 (box 1.4211  cls 1.1055  dfl 1.2016)  | KD 11.178 (box 0.33706  cls 0.01053  dfl 0.00088  feat 0.00084)
-  Epoch 17/30  Batch 1091/2188 (49.9%)  | Super 100.003 (box 1.3068  cls 0.7324  dfl 1.0859)  | Base 105.018 (box 1.2963  cls 0.9041  dfl 1.0814)  | KD 9.310 (box 0.27757  cls 0.01185  dfl 0.00063  feat 0.00089)
-  Epoch 17/30  Batch 1309/2188 (59.8%)  | Super 99.290 (box 1.2662  cls 0.7420  dfl 1.0946)  | Base 106.179 (box 1.2636  cls 0.9687  dfl 1.0857)  | KD 10.107 (box 0.30311  cls 0.01106  dfl 0.00074  feat 0.00092)
-  Epoch 17/30  Batch 1527/2188 (69.8%)  | Super 108.277 (box 1.4043  cls 0.8556  dfl 1.1238)  | Base 114.426 (box 1.3947  cls 1.0595  dfl 1.1217)  | KD 9.744 (box 0.29259  cls 0.01018  dfl 0.00083  feat 0.00089)
-  Epoch 17/30  Batch 1745/2188 (79.8%)  | Super 103.695 (box 1.3551  cls 0.7790  dfl 1.1064)  | Base 108.579 (box 1.3286  cls 0.9685  dfl 1.0960)  | KD 10.297 (box 0.30463  cls 0.01543  dfl 0.00085  feat 0.00087)
-  Epoch 17/30  Batch 1963/2188 (89.7%)  | Super 108.761 (box 1.3670  cls 0.8499  dfl 1.1818)  | Base 115.096 (box 1.3729  cls 1.0420  dfl 1.1819)  | KD 9.119 (box 0.27199  cls 0.01112  dfl 0.00071  feat 0.00114)
-  Epoch 17/30  Batch 2181/2188 (99.7%)  | Super 107.534 (box 1.4130  cls 0.7505  dfl 1.1970)  | Base 113.619 (box 1.3984  cls 0.9657  dfl 1.1865)  | KD 9.337 (box 0.26867  cls 0.02150  dfl 0.00060  feat 0.00099)
+  Epoch 17/30  Batch 1/2188 (0.0%)  | Super 110.700 (box 1.3912  cls 0.8602  dfl 1.2080)  | Base 112.082 (box 1.4067  cls 0.8936  dfl 1.2022)  | KD 11.293 (box 0.33221  cls 0.01850  dfl 0.00089  feat 0.00130)
+  Epoch 17/30  Batch 219/2188 (10.0%)  | Super 107.581 (box 1.4254  cls 0.8000  dfl 1.1365)  | Base 109.028 (box 1.4557  cls 0.8286  dfl 1.1228)  | KD 11.181 (box 0.33008  cls 0.01707  dfl 0.00085  feat 0.00139)
+  Epoch 17/30  Batch 437/2188 (20.0%)  | Super 112.143 (box 1.5488  cls 0.8145  dfl 1.1411)  | Base 113.877 (box 1.5733  cls 0.8511  dfl 1.1342)  | KD 12.449 (box 0.37383  cls 0.01292  dfl 0.00085  feat 0.00142)
+  Epoch 17/30  Batch 655/2188 (29.9%)  | Super 103.328 (box 1.3525  cls 0.7826  dfl 1.0939)  | Base 104.322 (box 1.3640  cls 0.8220  dfl 1.0741)  | KD 12.649 (box 0.37602  cls 0.01690  dfl 0.00102  feat 0.00134)
+  Epoch 17/30  Batch 873/2188 (39.9%)  | Super 110.947 (box 1.4193  cls 0.8903  dfl 1.1575)  | Base 112.604 (box 1.4569  cls 0.9048  dfl 1.1572)  | KD 13.104 (box 0.38931  cls 0.01802  dfl 0.00097  feat 0.00122)
+  Epoch 17/30  Batch 1091/2188 (49.9%)  | Super 100.406 (box 1.3074  cls 0.7478  dfl 1.0825)  | Base 99.367 (box 1.3012  cls 0.7494  dfl 1.0546)  | KD 11.575 (box 0.33788  cls 0.02168  dfl 0.00083  feat 0.00134)
+  Epoch 17/30  Batch 1309/2188 (59.8%)  | Super 98.142 (box 1.2620  cls 0.7309  dfl 1.0741)  | Base 98.594 (box 1.2792  cls 0.7502  dfl 1.0517)  | KD 11.959 (box 0.35430  cls 0.01724  dfl 0.00083  feat 0.00133)
+  Epoch 17/30  Batch 1527/2188 (69.8%)  | Super 107.270 (box 1.3998  cls 0.8488  dfl 1.1036)  | Base 107.942 (box 1.4201  cls 0.8644  dfl 1.0887)  | KD 12.866 (box 0.37891  cls 0.02066  dfl 0.00118  feat 0.00131)
+  Epoch 17/30  Batch 1745/2188 (79.8%)  | Super 101.866 (box 1.3294  cls 0.7694  dfl 1.0845)  | Base 102.899 (box 1.3363  cls 0.8047  dfl 1.0747)  | KD 11.672 (box 0.35008  cls 0.01244  dfl 0.00093  feat 0.00130)
+  Epoch 17/30  Batch 1963/2188 (89.7%)  | Super 107.522 (box 1.3542  cls 0.8410  dfl 1.1648)  | Base 109.387 (box 1.3725  cls 0.8780  dfl 1.1679)  | KD 11.842 (box 0.35309  cls 0.01439  dfl 0.00095  feat 0.00163)
+  Epoch 17/30  Batch 2181/2188 (99.7%)  | Super 105.529 (box 1.3893  cls 0.7353  dfl 1.1732)  | Base 106.933 (box 1.3995  cls 0.7963  dfl 1.1459)  | KD 11.888 (box 0.34500  cls 0.02407  dfl 0.00087  feat 0.00156)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 17/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.732      0.526       0.58      0.337
+                   all      10000     185578      0.737      0.521       0.58      0.339
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 17/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.619      0.502      0.559      0.323
+                   all      10000     185578      0.723      0.508      0.565      0.326
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 18/30  Batch 1/2188 (0.0%)  | Super 105.525 (box 1.3447  cls 0.8047  dfl 1.1482)  | Base 110.485 (box 1.3220  cls 0.9917  dfl 1.1390)  | KD 10.494 (box 0.31029  cls 0.01596  dfl 0.00084  feat 0.00084)
-  Epoch 18/30  Batch 219/2188 (10.0%)  | Super 112.123 (box 1.4786  cls 0.8657  dfl 1.1595)  | Base 118.147 (box 1.4705  cls 1.0528  dfl 1.1688)  | KD 9.099 (box 0.27324  cls 0.00955  dfl 0.00071  feat 0.00085)
-  Epoch 18/30  Batch 437/2188 (20.0%)  | Super 114.134 (box 1.5660  cls 0.8353  dfl 1.1655)  | Base 118.978 (box 1.5586  cls 0.9902  dfl 1.1692)  | KD 10.293 (box 0.31065  cls 0.00948  dfl 0.00062  feat 0.00092)
-  Epoch 18/30  Batch 655/2188 (29.9%)  | Super 100.028 (box 1.3229  cls 0.7309  dfl 1.0721)  | Base 104.694 (box 1.3102  cls 0.8974  dfl 1.0641)  | KD 8.444 (box 0.25121  cls 0.01129  dfl 0.00056  feat 0.00083)
-  Epoch 18/30  Batch 873/2188 (39.9%)  | Super 112.596 (box 1.4194  cls 0.9280  dfl 1.1712)  | Base 118.409 (box 1.4036  cls 1.1246  dfl 1.1721)  | KD 11.466 (box 0.34153  cls 0.01485  dfl 0.00091  feat 0.00101)
-  Epoch 18/30  Batch 1091/2188 (49.9%)  | Super 99.258 (box 1.3141  cls 0.7322  dfl 1.0555)  | Base 104.463 (box 1.3146  cls 0.8905  dfl 1.0594)  | KD 9.331 (box 0.28193  cls 0.00823  dfl 0.00067  feat 0.00076)
-  Epoch 18/30  Batch 1309/2188 (59.8%)  | Super 99.660 (box 1.2569  cls 0.7466  dfl 1.1109)  | Base 105.487 (box 1.2525  cls 0.9278  dfl 1.1162)  | KD 9.497 (box 0.28746  cls 0.00788  dfl 0.00066  feat 0.00080)
-  Epoch 18/30  Batch 1527/2188 (69.8%)  | Super 108.893 (box 1.3952  cls 0.8650  dfl 1.1428)  | Base 115.925 (box 1.4177  cls 1.0597  dfl 1.1453)  | KD 10.156 (box 0.30072  cls 0.01485  dfl 0.00084  feat 0.00096)
-  Epoch 18/30  Batch 1745/2188 (79.8%)  | Super 105.958 (box 1.3507  cls 0.8127  dfl 1.1477)  | Base 111.108 (box 1.3321  cls 1.0057  dfl 1.1343)  | KD 10.400 (box 0.30753  cls 0.01565  dfl 0.00077  feat 0.00106)
-  Epoch 18/30  Batch 1963/2188 (89.7%)  | Super 103.921 (box 1.3274  cls 0.8084  dfl 1.1117)  | Base 109.835 (box 1.3282  cls 0.9915  dfl 1.1126)  | KD 9.925 (box 0.29468  cls 0.01370  dfl 0.00073  feat 0.00103)
-  Epoch 18/30  Batch 2181/2188 (99.7%)  | Super 106.232 (box 1.3702  cls 0.7926  dfl 1.1570)  | Base 110.418 (box 1.3476  cls 0.9565  dfl 1.1465)  | KD 9.896 (box 0.29090  cls 0.01672  dfl 0.00068  feat 0.00094)
+  Epoch 18/30  Batch 1/2188 (0.0%)  | Super 103.172 (box 1.3367  cls 0.7675  dfl 1.1200)  | Base 104.963 (box 1.3367  cls 0.8341  dfl 1.1093)  | KD 12.371 (box 0.36038  cls 0.02409  dfl 0.00095  feat 0.00118)
+  Epoch 18/30  Batch 219/2188 (10.0%)  | Super 109.400 (box 1.4374  cls 0.8429  dfl 1.1384)  | Base 112.286 (box 1.4739  cls 0.8986  dfl 1.1365)  | KD 11.336 (box 0.33722  cls 0.01483  dfl 0.00090  feat 0.00128)
+  Epoch 18/30  Batch 437/2188 (20.0%)  | Super 113.161 (box 1.5581  cls 0.8235  dfl 1.1547)  | Base 114.863 (box 1.5846  cls 0.8537  dfl 1.1512)  | KD 12.306 (box 0.36992  cls 0.01248  dfl 0.00079  feat 0.00136)
+  Epoch 18/30  Batch 655/2188 (29.9%)  | Super 99.211 (box 1.3196  cls 0.7152  dfl 1.0655)  | Base 100.083 (box 1.3245  cls 0.7467  dfl 1.0564)  | KD 10.256 (box 0.30544  cls 0.01310  dfl 0.00074  feat 0.00123)
+  Epoch 18/30  Batch 873/2188 (39.9%)  | Super 110.697 (box 1.4121  cls 0.8984  dfl 1.1488)  | Base 112.995 (box 1.4234  cls 0.9567  dfl 1.1510)  | KD 13.116 (box 0.39017  cls 0.01721  dfl 0.00100  feat 0.00148)
+  Epoch 18/30  Batch 1091/2188 (49.9%)  | Super 98.038 (box 1.2956  cls 0.7143  dfl 1.0539)  | Base 99.065 (box 1.3146  cls 0.7367  dfl 1.0445)  | KD 11.046 (box 0.33136  cls 0.01175  dfl 0.00088  feat 0.00118)
+  Epoch 18/30  Batch 1309/2188 (59.8%)  | Super 98.466 (box 1.2467  cls 0.7325  dfl 1.0978)  | Base 98.307 (box 1.2418  cls 0.7432  dfl 1.0870)  | KD 11.469 (box 0.34325  cls 0.01307  dfl 0.00087  feat 0.00122)
+  Epoch 18/30  Batch 1527/2188 (69.8%)  | Super 108.954 (box 1.4135  cls 0.8483  dfl 1.1429)  | Base 110.764 (box 1.4412  cls 0.8910  dfl 1.1293)  | KD 12.726 (box 0.37570  cls 0.01943  dfl 0.00120  feat 0.00135)
+  Epoch 18/30  Batch 1745/2188 (79.8%)  | Super 105.328 (box 1.3430  cls 0.8123  dfl 1.1361)  | Base 106.442 (box 1.3558  cls 0.8438  dfl 1.1267)  | KD 11.995 (box 0.34863  cls 0.02381  dfl 0.00084  feat 0.00156)
+  Epoch 18/30  Batch 1963/2188 (89.7%)  | Super 101.759 (box 1.2962  cls 0.7956  dfl 1.0882)  | Base 102.796 (box 1.3074  cls 0.8185  dfl 1.0865)  | KD 11.598 (box 0.34370  cls 0.01631  dfl 0.00083  feat 0.00160)
+  Epoch 18/30  Batch 2181/2188 (99.7%)  | Super 105.445 (box 1.3630  cls 0.7887  dfl 1.1435)  | Base 104.432 (box 1.3567  cls 0.7985  dfl 1.1083)  | KD 12.281 (box 0.35829  cls 0.02311  dfl 0.00089  feat 0.00148)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 18/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.736      0.522       0.58      0.338
+                   all      10000     185578      0.737      0.522      0.582       0.34
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 18/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.618      0.503      0.559      0.323
+                   all      10000     185578      0.725      0.509      0.566      0.327
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 19/30  Batch 1/2188 (0.0%)  | Super 107.091 (box 1.3636  cls 0.8202  dfl 1.1628)  | Base 113.487 (box 1.3521  cls 1.0301  dfl 1.1643)  | KD 10.144 (box 0.30063  cls 0.01487  dfl 0.00070  feat 0.00080)
-  Epoch 19/30  Batch 219/2188 (10.0%)  | Super 112.347 (box 1.4839  cls 0.8785  dfl 1.1484)  | Base 117.330 (box 1.4761  cls 1.0367  dfl 1.1537)  | KD 9.302 (box 0.27648  cls 0.01271  dfl 0.00064  feat 0.00084)
-  Epoch 19/30  Batch 437/2188 (20.0%)  | Super 111.783 (box 1.5320  cls 0.8412  dfl 1.1200)  | Base 116.132 (box 1.5066  cls 1.0096  dfl 1.1130)  | KD 11.256 (box 0.33814  cls 0.01197  dfl 0.00072  feat 0.00091)
-  Epoch 19/30  Batch 655/2188 (29.9%)  | Super 100.941 (box 1.3226  cls 0.7449  dfl 1.0869)  | Base 105.626 (box 1.3150  cls 0.8952  dfl 1.0906)  | KD 8.488 (box 0.25327  cls 0.01061  dfl 0.00056  feat 0.00080)
-  Epoch 19/30  Batch 873/2188 (39.9%)  | Super 116.256 (box 1.4660  cls 0.9569  dfl 1.2101)  | Base 121.676 (box 1.4673  cls 1.1295  dfl 1.2056)  | KD 10.773 (box 0.32113  cls 0.01384  dfl 0.00073  feat 0.00094)
-  Epoch 19/30  Batch 1091/2188 (49.9%)  | Super 103.174 (box 1.3558  cls 0.7610  dfl 1.1074)  | Base 107.665 (box 1.3494  cls 0.9087  dfl 1.1064)  | KD 9.031 (box 0.27093  cls 0.00991  dfl 0.00058  feat 0.00080)
-  Epoch 19/30  Batch 1309/2188 (59.8%)  | Super 104.403 (box 1.3346  cls 0.7897  dfl 1.1383)  | Base 110.485 (box 1.3267  cls 0.9878  dfl 1.1382)  | KD 9.738 (box 0.28969  cls 0.01309  dfl 0.00071  feat 0.00083)
-  Epoch 19/30  Batch 1527/2188 (69.8%)  | Super 106.061 (box 1.3673  cls 0.8238  dfl 1.1233)  | Base 111.480 (box 1.3616  cls 1.0049  dfl 1.1173)  | KD 9.896 (box 0.28991  cls 0.01771  dfl 0.00079  feat 0.00085)
-  Epoch 19/30  Batch 1745/2188 (79.8%)  | Super 103.356 (box 1.3683  cls 0.7436  dfl 1.1180)  | Base 109.050 (box 1.3439  cls 0.9494  dfl 1.1146)  | KD 9.465 (box 0.27984  cls 0.01454  dfl 0.00059  feat 0.00081)
-  Epoch 19/30  Batch 1963/2188 (89.7%)  | Super 99.446 (box 1.2715  cls 0.7864  dfl 1.0498)  | Base 105.983 (box 1.2771  cls 0.9788  dfl 1.0561)  | KD 10.081 (box 0.30416  cls 0.00926  dfl 0.00074  feat 0.00085)
-  Epoch 19/30  Batch 2181/2188 (99.7%)  | Super 105.097 (box 1.3796  cls 0.7422  dfl 1.1625)  | Base 109.282 (box 1.3634  cls 0.9035  dfl 1.1481)  | KD 8.383 (box 0.25230  cls 0.00813  dfl 0.00059  feat 0.00095)
+  Epoch 19/30  Batch 1/2188 (0.0%)  | Super 105.776 (box 1.3553  cls 0.7978  dfl 1.1524)  | Base 107.264 (box 1.3777  cls 0.8347  dfl 1.1396)  | KD 12.467 (box 0.36638  cls 0.02109  dfl 0.00086  feat 0.00125)
+  Epoch 19/30  Batch 219/2188 (10.0%)  | Super 110.002 (box 1.4620  cls 0.8562  dfl 1.1194)  | Base 110.899 (box 1.4667  cls 0.8890  dfl 1.1099)  | KD 11.102 (box 0.32822  cls 0.01648  dfl 0.00092  feat 0.00133)
+  Epoch 19/30  Batch 437/2188 (20.0%)  | Super 110.258 (box 1.5153  cls 0.8312  dfl 1.0991)  | Base 110.782 (box 1.5278  cls 0.8513  dfl 1.0828)  | KD 13.535 (box 0.40406  cls 0.01660  dfl 0.00091  feat 0.00141)
+  Epoch 19/30  Batch 655/2188 (29.9%)  | Super 99.178 (box 1.2986  cls 0.7298  dfl 1.0709)  | Base 101.005 (box 1.3185  cls 0.7688  dfl 1.0691)  | KD 10.917 (box 0.32516  cls 0.01392  dfl 0.00084  feat 0.00122)
+  Epoch 19/30  Batch 873/2188 (39.9%)  | Super 115.330 (box 1.4689  cls 0.9388  dfl 1.1964)  | Base 115.352 (box 1.4586  cls 0.9693  dfl 1.1768)  | KD 12.629 (box 0.37342  cls 0.01885  dfl 0.00095  feat 0.00142)
+  Epoch 19/30  Batch 1091/2188 (49.9%)  | Super 101.347 (box 1.3438  cls 0.7332  dfl 1.0902)  | Base 102.057 (box 1.3489  cls 0.7669  dfl 1.0734)  | KD 10.721 (box 0.32167  cls 0.01139  dfl 0.00079  feat 0.00118)
+  Epoch 19/30  Batch 1309/2188 (59.8%)  | Super 103.783 (box 1.3356  cls 0.7865  dfl 1.1211)  | Base 104.997 (box 1.3608  cls 0.7917  dfl 1.1287)  | KD 12.073 (box 0.35761  cls 0.01759  dfl 0.00086  feat 0.00121)
+  Epoch 19/30  Batch 1527/2188 (69.8%)  | Super 104.492 (box 1.3663  cls 0.8088  dfl 1.0902)  | Base 105.062 (box 1.3824  cls 0.8203  dfl 1.0804)  | KD 11.396 (box 0.33601  cls 0.01780  dfl 0.00099  feat 0.00133)
+  Epoch 19/30  Batch 1745/2188 (79.8%)  | Super 102.851 (box 1.3598  cls 0.7394  dfl 1.1148)  | Base 104.634 (box 1.3823  cls 0.7846  dfl 1.1029)  | KD 10.992 (box 0.32131  cls 0.02010  dfl 0.00076  feat 0.00134)
+  Epoch 19/30  Batch 1963/2188 (89.7%)  | Super 98.477 (box 1.2567  cls 0.7798  dfl 1.0408)  | Base 99.733 (box 1.2810  cls 0.7949  dfl 1.0408)  | KD 11.813 (box 0.35017  cls 0.01661  dfl 0.00092  feat 0.00146)
+  Epoch 19/30  Batch 2181/2188 (99.7%)  | Super 103.878 (box 1.3602  cls 0.7477  dfl 1.1383)  | Base 104.325 (box 1.3589  cls 0.7750  dfl 1.1263)  | KD 10.413 (box 0.30696  cls 0.01619  dfl 0.00083  feat 0.00145)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 19/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.738      0.522       0.58      0.339
+                   all      10000     185578      0.743      0.518      0.583      0.341
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 19/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.616      0.503      0.559      0.323
+                   all      10000     185578      0.727      0.506      0.566      0.328
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 20/30  Batch 1/2188 (0.0%)  | Super 106.458 (box 1.3791  cls 0.8000  dfl 1.1478)  | Base 111.847 (box 1.3726  cls 0.9832  dfl 1.1394)  | KD 10.358 (box 0.30744  cls 0.01465  dfl 0.00075  feat 0.00083)
-  Epoch 20/30  Batch 219/2188 (10.0%)  | Super 115.537 (box 1.5129  cls 0.8621  dfl 1.2356)  | Base 121.000 (box 1.5054  cls 1.0471  dfl 1.2287)  | KD 8.880 (box 0.26597  cls 0.00995  dfl 0.00060  feat 0.00097)
-  Epoch 20/30  Batch 437/2188 (20.0%)  | Super 113.008 (box 1.5480  cls 0.8225  dfl 1.1610)  | Base 118.573 (box 1.5488  cls 0.9941  dfl 1.1625)  | KD 11.109 (box 0.33318  cls 0.01236  dfl 0.00076  feat 0.00085)
-  Epoch 20/30  Batch 655/2188 (29.9%)  | Super 97.384 (box 1.2457  cls 0.7341  dfl 1.0635)  | Base 102.345 (box 1.2439  cls 0.8899  dfl 1.0645)  | KD 8.949 (box 0.26908  cls 0.00921  dfl 0.00056  feat 0.00079)
-  Epoch 20/30  Batch 873/2188 (39.9%)  | Super 113.592 (box 1.4531  cls 0.8934  dfl 1.2033)  | Base 120.308 (box 1.4617  cls 1.0877  dfl 1.2102)  | KD 10.592 (box 0.31836  cls 0.01107  dfl 0.00070  feat 0.00087)
-  Epoch 20/30  Batch 1091/2188 (49.9%)  | Super 100.067 (box 1.3189  cls 0.7232  dfl 1.0850)  | Base 105.872 (box 1.3134  cls 0.9139  dfl 1.0812)  | KD 9.085 (box 0.27422  cls 0.00826  dfl 0.00064  feat 0.00078)
-  Epoch 20/30  Batch 1309/2188 (59.8%)  | Super 100.169 (box 1.2625  cls 0.7442  dfl 1.1236)  | Base 104.750 (box 1.2383  cls 0.9342  dfl 1.1010)  | KD 9.752 (box 0.29114  cls 0.01206  dfl 0.00064  feat 0.00089)
-  Epoch 20/30  Batch 1527/2188 (69.8%)  | Super 104.739 (box 1.3594  cls 0.8204  dfl 1.0933)  | Base 111.729 (box 1.3639  cls 1.0296  dfl 1.0981)  | KD 9.688 (box 0.28849  cls 0.01268  dfl 0.00073  feat 0.00085)
-  Epoch 20/30  Batch 1745/2188 (79.8%)  | Super 100.624 (box 1.3134  cls 0.7387  dfl 1.0924)  | Base 105.840 (box 1.3028  cls 0.9146  dfl 1.0901)  | KD 9.513 (box 0.28742  cls 0.00839  dfl 0.00069  feat 0.00078)
-  Epoch 20/30  Batch 1963/2188 (89.7%)  | Super 101.797 (box 1.3026  cls 0.7877  dfl 1.0909)  | Base 106.840 (box 1.2979  cls 0.9502  dfl 1.0907)  | KD 9.868 (box 0.29752  cls 0.00912  dfl 0.00074  feat 0.00100)
-  Epoch 20/30  Batch 2181/2188 (99.7%)  | Super 104.181 (box 1.3614  cls 0.7721  dfl 1.1221)  | Base 110.614 (box 1.3567  cls 0.9743  dfl 1.1257)  | KD 10.110 (box 0.30205  cls 0.01227  dfl 0.00071  feat 0.00092)
+  Epoch 20/30  Batch 1/2188 (0.0%)  | Super 104.755 (box 1.3661  cls 0.7696  dfl 1.1379)  | Base 105.553 (box 1.3611  cls 0.8182  dfl 1.1193)  | KD 12.363 (box 0.36479  cls 0.01936  dfl 0.00091  feat 0.00128)
+  Epoch 20/30  Batch 219/2188 (10.0%)  | Super 113.613 (box 1.5005  cls 0.8355  dfl 1.2144)  | Base 115.368 (box 1.5339  cls 0.8674  dfl 1.2039)  | KD 11.117 (box 0.33085  cls 0.01436  dfl 0.00075  feat 0.00144)
+  Epoch 20/30  Batch 437/2188 (20.0%)  | Super 111.293 (box 1.5293  cls 0.8064  dfl 1.1422)  | Base 112.907 (box 1.5487  cls 0.8538  dfl 1.1258)  | KD 13.349 (box 0.39844  cls 0.01641  dfl 0.00093  feat 0.00137)
+  Epoch 20/30  Batch 655/2188 (29.9%)  | Super 96.798 (box 1.2509  cls 0.7149  dfl 1.0591)  | Base 97.848 (box 1.2605  cls 0.7511  dfl 1.0462)  | KD 10.961 (box 0.33018  cls 0.01041  dfl 0.00083  feat 0.00112)
+  Epoch 20/30  Batch 873/2188 (39.9%)  | Super 112.962 (box 1.4646  cls 0.8727  dfl 1.1928)  | Base 114.234 (box 1.4766  cls 0.9143  dfl 1.1789)  | KD 12.450 (box 0.37043  cls 0.01628  dfl 0.00098  feat 0.00138)
+  Epoch 20/30  Batch 1091/2188 (49.9%)  | Super 99.210 (box 1.2970  cls 0.7331  dfl 1.0703)  | Base 99.803 (box 1.3067  cls 0.7607  dfl 1.0515)  | KD 11.927 (box 0.35164  cls 0.01888  dfl 0.00097  feat 0.00122)
+  Epoch 20/30  Batch 1309/2188 (59.8%)  | Super 99.021 (box 1.2420  cls 0.7437  dfl 1.1088)  | Base 100.133 (box 1.2599  cls 0.7779  dfl 1.0914)  | KD 11.521 (box 0.34227  cls 0.01559  dfl 0.00086  feat 0.00131)
+  Epoch 20/30  Batch 1527/2188 (69.8%)  | Super 103.696 (box 1.3575  cls 0.8025  dfl 1.0806)  | Base 104.491 (box 1.3751  cls 0.8271  dfl 1.0631)  | KD 11.491 (box 0.34255  cls 0.01437  dfl 0.00091  feat 0.00127)
+  Epoch 20/30  Batch 1745/2188 (79.8%)  | Super 100.241 (box 1.3184  cls 0.7245  dfl 1.0896)  | Base 99.881 (box 1.3144  cls 0.7449  dfl 1.0620)  | KD 11.285 (box 0.33943  cls 0.01126  dfl 0.00078  feat 0.00120)
+  Epoch 20/30  Batch 1963/2188 (89.7%)  | Super 100.924 (box 1.2995  cls 0.7732  dfl 1.0811)  | Base 101.139 (box 1.2999  cls 0.7899  dfl 1.0708)  | KD 11.689 (box 0.34947  cls 0.01338  dfl 0.00082  feat 0.00162)
+  Epoch 20/30  Batch 2181/2188 (99.7%)  | Super 103.921 (box 1.3627  cls 0.7595  dfl 1.1254)  | Base 105.055 (box 1.3662  cls 0.7851  dfl 1.1317)  | KD 11.589 (box 0.34556  cls 0.01433  dfl 0.00084  feat 0.00143)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 20/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.743       0.52       0.58      0.339
+                   all      10000     185578      0.739      0.524      0.582      0.341
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 20/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.616      0.506      0.559      0.324
+                   all      10000     185578      0.728      0.509      0.567      0.329
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 21/30  Batch 1/2188 (0.0%)  | Super 105.610 (box 1.3800  cls 0.7984  dfl 1.1219)  | Base 110.232 (box 1.3622  cls 0.9711  dfl 1.1114)  | KD 10.532 (box 0.31239  cls 0.01521  dfl 0.00069  feat 0.00082)
-  Epoch 21/30  Batch 219/2188 (10.0%)  | Super 111.802 (box 1.4572  cls 0.8476  dfl 1.1890)  | Base 116.850 (box 1.4332  cls 1.0384  dfl 1.1800)  | KD 9.500 (box 0.28137  cls 0.01394  dfl 0.00073  feat 0.00086)
-  Epoch 21/30  Batch 437/2188 (20.0%)  | Super 114.977 (box 1.5792  cls 0.8713  dfl 1.1426)  | Base 119.272 (box 1.5779  cls 1.0020  dfl 1.1474)  | KD 11.214 (box 0.34016  cls 0.00865  dfl 0.00061  feat 0.00100)
-  Epoch 21/30  Batch 655/2188 (29.9%)  | Super 99.276 (box 1.2860  cls 0.7551  dfl 1.0613)  | Base 103.794 (box 1.2763  cls 0.9105  dfl 1.0567)  | KD 8.648 (box 0.25876  cls 0.01014  dfl 0.00058  feat 0.00076)
-  Epoch 21/30  Batch 873/2188 (39.9%)  | Super 110.091 (box 1.3765  cls 0.9172  dfl 1.1467)  | Base 115.436 (box 1.3605  cls 1.1156  dfl 1.1313)  | KD 10.816 (box 0.32734  cls 0.00913  dfl 0.00065  feat 0.00085)
-  Epoch 21/30  Batch 1091/2188 (49.9%)  | Super 98.319 (box 1.3030  cls 0.7124  dfl 1.0570)  | Base 102.886 (box 1.2931  cls 0.8660  dfl 1.0561)  | KD 8.930 (box 0.26754  cls 0.01018  dfl 0.00061  feat 0.00075)
-  Epoch 21/30  Batch 1309/2188 (59.8%)  | Super 97.320 (box 1.2328  cls 0.7429  dfl 1.0656)  | Base 104.242 (box 1.2302  cls 0.9497  dfl 1.0777)  | KD 10.100 (box 0.29641  cls 0.01754  dfl 0.00080  feat 0.00088)
-  Epoch 21/30  Batch 1527/2188 (69.8%)  | Super 104.882 (box 1.3572  cls 0.8065  dfl 1.1139)  | Base 111.375 (box 1.3458  cls 1.0325  dfl 1.1022)  | KD 9.596 (box 0.28276  cls 0.01538  dfl 0.00073  feat 0.00099)
-  Epoch 21/30  Batch 1745/2188 (79.8%)  | Super 100.913 (box 1.2983  cls 0.7586  dfl 1.0966)  | Base 107.495 (box 1.3012  cls 0.9644  dfl 1.0936)  | KD 9.924 (box 0.29922  cls 0.00933  dfl 0.00071  feat 0.00087)
-  Epoch 21/30  Batch 1963/2188 (89.7%)  | Super 98.715 (box 1.2848  cls 0.7478  dfl 1.0523)  | Base 103.107 (box 1.2729  cls 0.9038  dfl 1.0454)  | KD 9.204 (box 0.27549  cls 0.01042  dfl 0.00064  feat 0.00107)
-  Epoch 21/30  Batch 2181/2188 (99.7%)  | Super 106.739 (box 1.3924  cls 0.7550  dfl 1.1883)  | Base 112.098 (box 1.3948  cls 0.9269  dfl 1.1814)  | KD 9.229 (box 0.27399  cls 0.01291  dfl 0.00069  feat 0.00081)
+  Epoch 21/30  Batch 1/2188 (0.0%)  | Super 104.285 (box 1.3621  cls 0.7882  dfl 1.1086)  | Base 105.638 (box 1.3768  cls 0.8268  dfl 1.0976)  | KD 12.096 (box 0.35754  cls 0.01839  dfl 0.00084  feat 0.00123)
+  Epoch 21/30  Batch 219/2188 (10.0%)  | Super 109.760 (box 1.4342  cls 0.8283  dfl 1.1674)  | Base 110.893 (box 1.4429  cls 0.8676  dfl 1.1549)  | KD 11.383 (box 0.33790  cls 0.01559  dfl 0.00086  feat 0.00135)
+  Epoch 21/30  Batch 437/2188 (20.0%)  | Super 114.577 (box 1.5837  cls 0.8563  dfl 1.1406)  | Base 115.720 (box 1.5832  cls 0.8987  dfl 1.1343)  | KD 13.632 (box 0.41109  cls 0.01261  dfl 0.00086  feat 0.00144)
+  Epoch 21/30  Batch 655/2188 (29.9%)  | Super 97.610 (box 1.2728  cls 0.7187  dfl 1.0588)  | Base 98.210 (box 1.2705  cls 0.7567  dfl 1.0418)  | KD 10.502 (box 0.31470  cls 0.01152  dfl 0.00083  feat 0.00115)
+  Epoch 21/30  Batch 873/2188 (39.9%)  | Super 108.494 (box 1.3756  cls 0.8705  dfl 1.1443)  | Base 110.197 (box 1.4017  cls 0.9134  dfl 1.1286)  | KD 13.060 (box 0.38981  cls 0.01605  dfl 0.00099  feat 0.00128)
+  Epoch 21/30  Batch 1091/2188 (49.9%)  | Super 97.573 (box 1.2917  cls 0.7021  dfl 1.0554)  | Base 98.371 (box 1.3029  cls 0.7260  dfl 1.0452)  | KD 10.870 (box 0.32549  cls 0.01226  dfl 0.00080  feat 0.00114)
+  Epoch 21/30  Batch 1309/2188 (59.8%)  | Super 97.783 (box 1.2514  cls 0.7255  dfl 1.0787)  | Base 98.869 (box 1.2704  cls 0.7569  dfl 1.0623)  | KD 12.175 (box 0.35307  cls 0.02509  dfl 0.00099  feat 0.00133)
+  Epoch 21/30  Batch 1527/2188 (69.8%)  | Super 103.974 (box 1.3538  cls 0.7989  dfl 1.0965)  | Base 105.502 (box 1.3756  cls 0.8314  dfl 1.0899)  | KD 12.099 (box 0.35888  cls 0.01666  dfl 0.00110  feat 0.00146)
+  Epoch 21/30  Batch 1745/2188 (79.8%)  | Super 99.890 (box 1.2927  cls 0.7480  dfl 1.0809)  | Base 101.192 (box 1.3167  cls 0.7754  dfl 1.0702)  | KD 11.525 (box 0.34417  cls 0.01383  dfl 0.00086  feat 0.00130)
+  Epoch 21/30  Batch 1963/2188 (89.7%)  | Super 96.582 (box 1.2513  cls 0.7231  dfl 1.0439)  | Base 97.154 (box 1.2615  cls 0.7541  dfl 1.0204)  | KD 11.691 (box 0.34867  cls 0.01414  dfl 0.00093  feat 0.00160)
+  Epoch 21/30  Batch 2181/2188 (99.7%)  | Super 104.595 (box 1.3766  cls 0.7335  dfl 1.1585)  | Base 106.866 (box 1.4118  cls 0.7652  dfl 1.1626)  | KD 10.815 (box 0.31731  cls 0.01846  dfl 0.00085  feat 0.00135)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 21/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.739      0.523       0.58      0.339
+                   all      10000     185578      0.739      0.522      0.584      0.342
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 21/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578       0.62      0.503       0.56      0.325
+                   all      10000     185578      0.732      0.505      0.568       0.33
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 22/30  Batch 1/2188 (0.0%)  | Super 106.956 (box 1.3599  cls 0.8056  dfl 1.1769)  | Base 114.792 (box 1.3786  cls 1.0261  dfl 1.1825)  | KD 10.467 (box 0.31145  cls 0.01382  dfl 0.00085  feat 0.00096)
-  Epoch 22/30  Batch 219/2188 (10.0%)  | Super 107.480 (box 1.4346  cls 0.8053  dfl 1.1188)  | Base 113.359 (box 1.4385  cls 0.9874  dfl 1.1166)  | KD 9.218 (box 0.27697  cls 0.00963  dfl 0.00066  feat 0.00081)
-  Epoch 22/30  Batch 437/2188 (20.0%)  | Super 113.248 (box 1.5431  cls 0.8461  dfl 1.1498)  | Base 117.915 (box 1.5412  cls 0.9965  dfl 1.1472)  | KD 11.361 (box 0.34269  cls 0.01085  dfl 0.00067  feat 0.00083)
-  Epoch 22/30  Batch 655/2188 (29.9%)  | Super 101.415 (box 1.3432  cls 0.7325  dfl 1.0935)  | Base 106.466 (box 1.3386  cls 0.8939  dfl 1.0946)  | KD 8.784 (box 0.26288  cls 0.01016  dfl 0.00055  feat 0.00092)
-  Epoch 22/30  Batch 873/2188 (39.9%)  | Super 112.148 (box 1.4501  cls 0.8728  dfl 1.1818)  | Base 118.214 (box 1.4226  cls 1.1180  dfl 1.1536)  | KD 11.272 (box 0.33887  cls 0.01177  dfl 0.00077  feat 0.00085)
-  Epoch 22/30  Batch 1091/2188 (49.9%)  | Super 100.921 (box 1.3421  cls 0.7284  dfl 1.0833)  | Base 105.398 (box 1.3352  cls 0.8814  dfl 1.0771)  | KD 8.372 (box 0.24977  cls 0.01051  dfl 0.00053  feat 0.00083)
-  Epoch 22/30  Batch 1309/2188 (59.8%)  | Super 100.781 (box 1.2623  cls 0.7595  dfl 1.1276)  | Base 106.260 (box 1.2592  cls 0.9454  dfl 1.1161)  | KD 9.755 (box 0.29120  cls 0.01164  dfl 0.00086  feat 0.00115)
-  Epoch 22/30  Batch 1527/2188 (69.8%)  | Super 109.936 (box 1.4360  cls 0.8424  dfl 1.1571)  | Base 114.172 (box 1.4062  cls 1.0125  dfl 1.1492)  | KD 9.232 (box 0.27512  cls 0.01178  dfl 0.00066  feat 0.00095)
-  Epoch 22/30  Batch 1745/2188 (79.8%)  | Super 102.545 (box 1.3283  cls 0.7448  dfl 1.1314)  | Base 108.158 (box 1.3228  cls 0.9343  dfl 1.1229)  | KD 9.431 (box 0.27935  cls 0.01387  dfl 0.00069  feat 0.00081)
-  Epoch 22/30  Batch 1963/2188 (89.7%)  | Super 102.795 (box 1.2976  cls 0.7814  dfl 1.1334)  | Base 110.105 (box 1.3058  cls 0.9992  dfl 1.1358)  | KD 9.279 (box 0.27807  cls 0.01004  dfl 0.00070  feat 0.00115)
-  Epoch 22/30  Batch 2181/2188 (99.7%)  | Super 105.383 (box 1.3862  cls 0.7561  dfl 1.1509)  | Base 108.360 (box 1.3531  cls 0.9083  dfl 1.1249)  | KD 9.823 (box 0.29238  cls 0.01301  dfl 0.00073  feat 0.00086)
+  Epoch 22/30  Batch 1/2188 (0.0%)  | Super 106.745 (box 1.3729  cls 0.7917  dfl 1.1712)  | Base 108.969 (box 1.3984  cls 0.8545  dfl 1.1524)  | KD 12.385 (box 0.36123  cls 0.02346  dfl 0.00094  feat 0.00140)
+  Epoch 22/30  Batch 219/2188 (10.0%)  | Super 105.683 (box 1.4190  cls 0.7887  dfl 1.0948)  | Base 107.631 (box 1.4446  cls 0.8292  dfl 1.0897)  | KD 11.212 (box 0.33673  cls 0.01137  dfl 0.00086  feat 0.00140)
+  Epoch 22/30  Batch 437/2188 (20.0%)  | Super 111.934 (box 1.5266  cls 0.8341  dfl 1.1372)  | Base 113.170 (box 1.5460  cls 0.8659  dfl 1.1247)  | KD 13.464 (box 0.40471  cls 0.01381  dfl 0.00085  feat 0.00137)
+  Epoch 22/30  Batch 655/2188 (29.9%)  | Super 99.760 (box 1.3259  cls 0.7181  dfl 1.0735)  | Base 101.065 (box 1.3397  cls 0.7509  dfl 1.0676)  | KD 10.508 (box 0.31319  cls 0.01320  dfl 0.00069  feat 0.00130)
+  Epoch 22/30  Batch 873/2188 (39.9%)  | Super 111.304 (box 1.4405  cls 0.8672  dfl 1.1705)  | Base 112.406 (box 1.4502  cls 0.9246  dfl 1.1379)  | KD 13.207 (box 0.39476  cls 0.01573  dfl 0.00096  feat 0.00127)
+  Epoch 22/30  Batch 1091/2188 (49.9%)  | Super 100.095 (box 1.3317  cls 0.7171  dfl 1.0793)  | Base 99.939 (box 1.3313  cls 0.7340  dfl 1.0578)  | KD 10.152 (box 0.29995  cls 0.01537  dfl 0.00068  feat 0.00125)
+  Epoch 22/30  Batch 1309/2188 (59.8%)  | Super 99.805 (box 1.2607  cls 0.7475  dfl 1.1106)  | Base 100.988 (box 1.2885  cls 0.7669  dfl 1.1005)  | KD 12.518 (box 0.37219  cls 0.01638  dfl 0.00104  feat 0.00157)
+  Epoch 22/30  Batch 1527/2188 (69.8%)  | Super 109.207 (box 1.4344  cls 0.8296  dfl 1.1488)  | Base 109.578 (box 1.4505  cls 0.8374  dfl 1.1364)  | KD 12.027 (box 0.35470  cls 0.01875  dfl 0.00099  feat 0.00139)
+  Epoch 22/30  Batch 1745/2188 (79.8%)  | Super 100.229 (box 1.3189  cls 0.7067  dfl 1.1066)  | Base 102.252 (box 1.3358  cls 0.7605  dfl 1.0991)  | KD 10.923 (box 0.32442  cls 0.01489  dfl 0.00078  feat 0.00123)
+  Epoch 22/30  Batch 1963/2188 (89.7%)  | Super 100.678 (box 1.2722  cls 0.7699  dfl 1.1041)  | Base 102.638 (box 1.2877  cls 0.8145  dfl 1.1053)  | KD 11.013 (box 0.32593  cls 0.01565  dfl 0.00093  feat 0.00165)
+  Epoch 22/30  Batch 2181/2188 (99.7%)  | Super 104.397 (box 1.3925  cls 0.7294  dfl 1.1405)  | Base 104.853 (box 1.3916  cls 0.7550  dfl 1.1301)  | KD 11.710 (box 0.34763  cls 0.01607  dfl 0.00093  feat 0.00130)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 22/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.743      0.521      0.581       0.34
+                   all      10000     185578       0.74      0.525      0.584      0.343
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 22/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.621      0.507      0.562      0.326
+                   all      10000     185578      0.731      0.505      0.568      0.329
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 23/30  Batch 1/2188 (0.0%)  | Super 104.989 (box 1.3450  cls 0.7992  dfl 1.1367)  | Base 110.133 (box 1.3338  cls 0.9835  dfl 1.1244)  | KD 10.783 (box 0.32245  cls 0.01280  dfl 0.00080  feat 0.00090)
-  Epoch 23/30  Batch 219/2188 (10.0%)  | Super 108.888 (box 1.4563  cls 0.7794  dfl 1.1670)  | Base 116.420 (box 1.4651  cls 0.9958  dfl 1.1773)  | KD 8.450 (box 0.24875  cls 0.01359  dfl 0.00067  feat 0.00106)
-  Epoch 23/30  Batch 437/2188 (20.0%)  | Super 116.696 (box 1.5967  cls 0.8690  dfl 1.1811)  | Base 121.165 (box 1.5895  cls 1.0010  dfl 1.1959)  | KD 10.521 (box 0.31849  cls 0.00865  dfl 0.00064  feat 0.00100)
-  Epoch 23/30  Batch 655/2188 (29.9%)  | Super 99.606 (box 1.3009  cls 0.7386  dfl 1.0731)  | Base 103.957 (box 1.2969  cls 0.8861  dfl 1.0656)  | KD 8.886 (box 0.26540  cls 0.01089  dfl 0.00057  feat 0.00083)
-  Epoch 23/30  Batch 873/2188 (39.9%)  | Super 109.386 (box 1.4091  cls 0.8838  dfl 1.1254)  | Base 115.265 (box 1.4022  cls 1.0648  dfl 1.1350)  | KD 10.530 (box 0.31237  cls 0.01517  dfl 0.00069  feat 0.00085)
-  Epoch 23/30  Batch 1091/2188 (49.9%)  | Super 99.573 (box 1.2918  cls 0.7423  dfl 1.0775)  | Base 104.855 (box 1.2920  cls 0.8971  dfl 1.0876)  | KD 8.887 (box 0.26781  cls 0.00848  dfl 0.00065  feat 0.00076)
-  Epoch 23/30  Batch 1309/2188 (59.8%)  | Super 103.232 (box 1.3262  cls 0.7635  dfl 1.1363)  | Base 108.493 (box 1.2985  cls 0.9651  dfl 1.1268)  | KD 10.087 (box 0.29945  cls 0.01422  dfl 0.00065  feat 0.00091)
-  Epoch 23/30  Batch 1527/2188 (69.8%)  | Super 102.580 (box 1.3473  cls 0.7805  dfl 1.0778)  | Base 109.390 (box 1.3543  cls 0.9867  dfl 1.0774)  | KD 9.891 (box 0.29600  cls 0.01147  dfl 0.00076  feat 0.00086)
-  Epoch 23/30  Batch 1745/2188 (79.8%)  | Super 101.789 (box 1.3394  cls 0.7264  dfl 1.1150)  | Base 108.355 (box 1.3351  cls 0.9397  dfl 1.1113)  | KD 8.625 (box 0.25986  cls 0.00808  dfl 0.00068  feat 0.00091)
-  Epoch 23/30  Batch 1963/2188 (89.7%)  | Super 102.563 (box 1.3154  cls 0.7857  dfl 1.1040)  | Base 108.759 (box 1.2985  cls 0.9982  dfl 1.1020)  | KD 9.602 (box 0.28873  cls 0.00974  dfl 0.00068  feat 0.00092)
-  Epoch 23/30  Batch 2181/2188 (99.7%)  | Super 103.026 (box 1.3546  cls 0.7159  dfl 1.1491)  | Base 109.435 (box 1.3474  cls 0.9360  dfl 1.1365)  | KD 8.896 (box 0.26645  cls 0.01001  dfl 0.00070  feat 0.00085)
+  Epoch 23/30  Batch 1/2188 (0.0%)  | Super 103.748 (box 1.3366  cls 0.7846  dfl 1.1210)  | Base 104.311 (box 1.3452  cls 0.8142  dfl 1.1003)  | KD 12.169 (box 0.35734  cls 0.02068  dfl 0.00093  feat 0.00135)
+  Epoch 23/30  Batch 219/2188 (10.0%)  | Super 107.596 (box 1.4337  cls 0.7799  dfl 1.1488)  | Base 109.717 (box 1.4577  cls 0.8340  dfl 1.1370)  | KD 10.275 (box 0.29787  cls 0.02086  dfl 0.00078  feat 0.00159)
+  Epoch 23/30  Batch 437/2188 (20.0%)  | Super 114.915 (box 1.5727  cls 0.8519  dfl 1.1665)  | Base 116.198 (box 1.5966  cls 0.8682  dfl 1.1664)  | KD 12.565 (box 0.37745  cls 0.01273  dfl 0.00085  feat 0.00163)
+  Epoch 23/30  Batch 655/2188 (29.9%)  | Super 97.926 (box 1.2784  cls 0.7228  dfl 1.0590)  | Base 98.926 (box 1.2996  cls 0.7472  dfl 1.0446)  | KD 10.490 (box 0.31143  cls 0.01446  dfl 0.00074  feat 0.00120)
+  Epoch 23/30  Batch 873/2188 (39.9%)  | Super 109.006 (box 1.4031  cls 0.8844  dfl 1.1190)  | Base 110.222 (box 1.4293  cls 0.8965  dfl 1.1187)  | KD 13.368 (box 0.39681  cls 0.01868  dfl 0.00100  feat 0.00126)
+  Epoch 23/30  Batch 1091/2188 (49.9%)  | Super 98.950 (box 1.2912  cls 0.7296  dfl 1.0714)  | Base 99.295 (box 1.2962  cls 0.7527  dfl 1.0540)  | KD 10.366 (box 0.31006  cls 0.01192  dfl 0.00079  feat 0.00117)
+  Epoch 23/30  Batch 1309/2188 (59.8%)  | Super 102.444 (box 1.3186  cls 0.7598  dfl 1.1230)  | Base 102.770 (box 1.3228  cls 0.7761  dfl 1.1127)  | KD 12.475 (box 0.36316  cls 0.02447  dfl 0.00088  feat 0.00134)
+  Epoch 23/30  Batch 1527/2188 (69.8%)  | Super 101.451 (box 1.3475  cls 0.7548  dfl 1.0680)  | Base 102.495 (box 1.3636  cls 0.7771  dfl 1.0622)  | KD 12.516 (box 0.36548  cls 0.02332  dfl 0.00102  feat 0.00130)
+  Epoch 23/30  Batch 1745/2188 (79.8%)  | Super 100.485 (box 1.3363  cls 0.7066  dfl 1.0973)  | Base 101.631 (box 1.3465  cls 0.7406  dfl 1.0888)  | KD 10.358 (box 0.31084  cls 0.01072  dfl 0.00082  feat 0.00132)
+  Epoch 23/30  Batch 1963/2188 (89.7%)  | Super 100.603 (box 1.2934  cls 0.7694  dfl 1.0811)  | Base 102.735 (box 1.3088  cls 0.8151  dfl 1.0865)  | KD 10.968 (box 0.32668  cls 0.01385  dfl 0.00079  feat 0.00145)
+  Epoch 23/30  Batch 2181/2188 (99.7%)  | Super 101.554 (box 1.3448  cls 0.7066  dfl 1.1222)  | Base 103.986 (box 1.3755  cls 0.7532  dfl 1.1208)  | KD 10.615 (box 0.31043  cls 0.01916  dfl 0.00082  feat 0.00131)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 23/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.742      0.524      0.582       0.34
+                   all      10000     185578      0.738      0.529      0.585      0.343
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 23/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.627      0.507      0.563      0.327
+                   all      10000     185578      0.733      0.509       0.57       0.33
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 24/30  Batch 1/2188 (0.0%)  | Super 104.919 (box 1.3327  cls 0.8085  dfl 1.1375)  | Base 112.263 (box 1.3358  cls 1.0260  dfl 1.1464)  | KD 10.747 (box 0.32164  cls 0.01250  dfl 0.00084  feat 0.00085)
-  Epoch 24/30  Batch 219/2188 (10.0%)  | Super 108.587 (box 1.4403  cls 0.7865  dfl 1.1665)  | Base 113.745 (box 1.4212  cls 0.9672  dfl 1.1662)  | KD 9.184 (box 0.27368  cls 0.01181  dfl 0.00064  feat 0.00087)
-  Epoch 24/30  Batch 437/2188 (20.0%)  | Super 112.402 (box 1.5356  cls 0.8398  dfl 1.1371)  | Base 116.722 (box 1.5241  cls 0.9965  dfl 1.1270)  | KD 10.847 (box 0.33059  cls 0.00691  dfl 0.00068  feat 0.00080)
-  Epoch 24/30  Batch 655/2188 (29.9%)  | Super 96.771 (box 1.2629  cls 0.7213  dfl 1.0399)  | Base 101.245 (box 1.2581  cls 0.8653  dfl 1.0405)  | KD 8.590 (box 0.25391  cls 0.01320  dfl 0.00055  feat 0.00079)
-  Epoch 24/30  Batch 873/2188 (39.9%)  | Super 113.410 (box 1.4059  cls 0.9720  dfl 1.1662)  | Base 119.406 (box 1.4067  cls 1.1578  dfl 1.1670)  | KD 10.831 (box 0.32517  cls 0.01165  dfl 0.00071  feat 0.00093)
-  Epoch 24/30  Batch 1091/2188 (49.9%)  | Super 102.784 (box 1.3472  cls 0.7452  dfl 1.1196)  | Base 107.666 (box 1.3364  cls 0.9126  dfl 1.1156)  | KD 8.828 (box 0.26531  cls 0.00913  dfl 0.00059  feat 0.00084)
-  Epoch 24/30  Batch 1309/2188 (59.8%)  | Super 101.825 (box 1.2863  cls 0.7307  dfl 1.1651)  | Base 108.277 (box 1.2800  cls 0.9504  dfl 1.1533)  | KD 9.304 (box 0.27821  cls 0.01073  dfl 0.00082  feat 0.00099)
-  Epoch 24/30  Batch 1527/2188 (69.8%)  | Super 109.265 (box 1.4259  cls 0.8329  dfl 1.1557)  | Base 114.582 (box 1.4131  cls 1.0216  dfl 1.1461)  | KD 9.568 (box 0.28455  cls 0.01296  dfl 0.00072  feat 0.00077)
-  Epoch 24/30  Batch 1745/2188 (79.8%)  | Super 101.281 (box 1.3204  cls 0.7304  dfl 1.1142)  | Base 106.502 (box 1.3055  cls 0.9201  dfl 1.1026)  | KD 9.453 (box 0.28478  cls 0.00907  dfl 0.00071  feat 0.00086)
-  Epoch 24/30  Batch 1963/2188 (89.7%)  | Super 109.469 (box 1.3585  cls 0.8947  dfl 1.1677)  | Base 114.484 (box 1.3484  cls 1.0583  dfl 1.1709)  | KD 10.349 (box 0.30838  cls 0.01329  dfl 0.00073  feat 0.00101)
-  Epoch 24/30  Batch 2181/2188 (99.7%)  | Super 104.585 (box 1.3720  cls 0.7353  dfl 1.1610)  | Base 110.979 (box 1.3618  cls 0.9473  dfl 1.1590)  | KD 9.400 (box 0.28295  cls 0.00925  dfl 0.00066  feat 0.00089)
+  Epoch 24/30  Batch 1/2188 (0.0%)  | Super 103.365 (box 1.3138  cls 0.7967  dfl 1.1196)  | Base 105.120 (box 1.3338  cls 0.8454  dfl 1.1058)  | KD 12.225 (box 0.36091  cls 0.01889  dfl 0.00092  feat 0.00132)
+  Epoch 24/30  Batch 219/2188 (10.0%)  | Super 107.072 (box 1.4311  cls 0.7581  dfl 1.1567)  | Base 109.135 (box 1.4656  cls 0.7871  dfl 1.1578)  | KD 10.603 (box 0.31554  cls 0.01368  dfl 0.00080  feat 0.00135)
+  Epoch 24/30  Batch 437/2188 (20.0%)  | Super 111.542 (box 1.5366  cls 0.8218  dfl 1.1273)  | Base 112.633 (box 1.5447  cls 0.8659  dfl 1.1092)  | KD 13.314 (box 0.40309  cls 0.01066  dfl 0.00100  feat 0.00131)
+  Epoch 24/30  Batch 655/2188 (29.9%)  | Super 96.082 (box 1.2618  cls 0.7050  dfl 1.0357)  | Base 96.586 (box 1.2811  cls 0.7102  dfl 1.0270)  | KD 10.479 (box 0.31373  cls 0.01181  dfl 0.00079  feat 0.00115)
+  Epoch 24/30  Batch 873/2188 (39.9%)  | Super 112.503 (box 1.4087  cls 0.9552  dfl 1.1519)  | Base 113.304 (box 1.4184  cls 0.9714  dfl 1.1510)  | KD 13.181 (box 0.39101  cls 0.01856  dfl 0.00096  feat 0.00137)
+  Epoch 24/30  Batch 1091/2188 (49.9%)  | Super 101.595 (box 1.3378  cls 0.7293  dfl 1.1078)  | Base 102.182 (box 1.3504  cls 0.7507  dfl 1.0921)  | KD 10.650 (box 0.32032  cls 0.01046  dfl 0.00079  feat 0.00124)
+  Epoch 24/30  Batch 1309/2188 (59.8%)  | Super 100.761 (box 1.2839  cls 0.7163  dfl 1.1486)  | Base 102.124 (box 1.3053  cls 0.7438  dfl 1.1422)  | KD 11.342 (box 0.33860  cls 0.01358  dfl 0.00092  feat 0.00134)
+  Epoch 24/30  Batch 1527/2188 (69.8%)  | Super 109.277 (box 1.4356  cls 0.8158  dfl 1.1635)  | Base 109.617 (box 1.4384  cls 0.8490  dfl 1.1381)  | KD 11.737 (box 0.34520  cls 0.01938  dfl 0.00101  feat 0.00122)
+  Epoch 24/30  Batch 1745/2188 (79.8%)  | Super 100.392 (box 1.3180  cls 0.7229  dfl 1.0963)  | Base 101.083 (box 1.3209  cls 0.7565  dfl 1.0814)  | KD 11.268 (box 0.33841  cls 0.01162  dfl 0.00086  feat 0.00122)
+  Epoch 24/30  Batch 1963/2188 (89.7%)  | Super 108.642 (box 1.3575  cls 0.8793  dfl 1.1582)  | Base 110.874 (box 1.3730  cls 0.9333  dfl 1.1585)  | KD 12.095 (box 0.35439  cls 0.02111  dfl 0.00095  feat 0.00153)
+  Epoch 24/30  Batch 2181/2188 (99.7%)  | Super 103.608 (box 1.3653  cls 0.7250  dfl 1.1474)  | Base 103.696 (box 1.3595  cls 0.7586  dfl 1.1224)  | KD 11.319 (box 0.33486  cls 0.01664  dfl 0.00086  feat 0.00137)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 24/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.742      0.525      0.583      0.341
+                   all      10000     185578      0.741      0.523      0.585      0.344
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 24/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.623      0.508      0.563      0.327
+                   all      10000     185578      0.731      0.509       0.57       0.33
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 25/30  Batch 1/2188 (0.0%)  | Super 99.739 (box 1.2899  cls 0.7244  dfl 1.1025)  | Base 107.351 (box 1.2960  cls 0.9450  dfl 1.1137)  | KD 9.670 (box 0.28905  cls 0.01165  dfl 0.00076  feat 0.00075)
-  Epoch 25/30  Batch 219/2188 (10.0%)  | Super 108.901 (box 1.4388  cls 0.7856  dfl 1.1788)  | Base 115.255 (box 1.4449  cls 0.9821  dfl 1.1748)  | KD 8.181 (box 0.24277  cls 0.01141  dfl 0.00065  feat 0.00082)
-  Epoch 25/30  Batch 437/2188 (20.0%)  | Super 116.847 (box 1.6084  cls 0.8428  dfl 1.2003)  | Base 122.139 (box 1.6014  cls 1.0214  dfl 1.1941)  | KD 10.703 (box 0.32427  cls 0.00863  dfl 0.00067  feat 0.00089)
-  Epoch 25/30  Batch 655/2188 (29.9%)  | Super 98.548 (box 1.2733  cls 0.7341  dfl 1.0722)  | Base 103.608 (box 1.2785  cls 0.8886  dfl 1.0707)  | KD 8.978 (box 0.26685  cls 0.01232  dfl 0.00057  feat 0.00082)
-  Epoch 25/30  Batch 873/2188 (39.9%)  | Super 108.408 (box 1.3859  cls 0.8597  dfl 1.1422)  | Base 114.125 (box 1.3761  cls 1.0549  dfl 1.1354)  | KD 10.454 (box 0.31435  cls 0.01081  dfl 0.00072  feat 0.00080)
-  Epoch 25/30  Batch 1091/2188 (49.9%)  | Super 100.657 (box 1.3373  cls 0.7418  dfl 1.0664)  | Base 105.976 (box 1.3472  cls 0.8923  dfl 1.0723)  | KD 9.324 (box 0.27781  cls 0.01221  dfl 0.00063  feat 0.00073)
-  Epoch 25/30  Batch 1309/2188 (59.8%)  | Super 101.880 (box 1.2909  cls 0.7463  dfl 1.1465)  | Base 108.152 (box 1.2727  cls 0.9663  dfl 1.1407)  | KD 9.739 (box 0.29202  cls 0.01076  dfl 0.00075  feat 0.00082)
-  Epoch 25/30  Batch 1527/2188 (69.8%)  | Super 107.202 (box 1.3900  cls 0.8380  dfl 1.1220)  | Base 113.770 (box 1.3888  cls 1.0406  dfl 1.1259)  | KD 9.536 (box 0.28185  cls 0.01451  dfl 0.00067  feat 0.00096)
-  Epoch 25/30  Batch 1745/2188 (79.8%)  | Super 104.215 (box 1.3305  cls 0.8093  dfl 1.1168)  | Base 109.569 (box 1.3161  cls 0.9933  dfl 1.1146)  | KD 10.209 (box 0.30616  cls 0.01141  dfl 0.00072  feat 0.00075)
-  Epoch 25/30  Batch 1963/2188 (89.7%)  | Super 105.499 (box 1.3560  cls 0.8384  dfl 1.1025)  | Base 113.224 (box 1.3766  cls 1.0473  dfl 1.1143)  | KD 11.405 (box 0.33623  cls 0.01827  dfl 0.00096  feat 0.00095)
-  Epoch 25/30  Batch 2181/2188 (99.7%)  | Super 111.638 (box 1.4528  cls 0.7957  dfl 1.2401)  | Base 116.038 (box 1.4384  cls 0.9727  dfl 1.2150)  | KD 9.570 (box 0.28500  cls 0.01252  dfl 0.00071  feat 0.00082)
+  Epoch 25/30  Batch 1/2188 (0.0%)  | Super 100.836 (box 1.3120  cls 0.7300  dfl 1.1090)  | Base 101.463 (box 1.3133  cls 0.7683  dfl 1.0892)  | KD 11.679 (box 0.34779  cls 0.01510  dfl 0.00091  feat 0.00117)
+  Epoch 25/30  Batch 219/2188 (10.0%)  | Super 108.469 (box 1.4462  cls 0.7685  dfl 1.1749)  | Base 109.874 (box 1.4642  cls 0.8246  dfl 1.1447)  | KD 10.961 (box 0.31826  cls 0.02213  dfl 0.00085  feat 0.00131)
+  Epoch 25/30  Batch 437/2188 (20.0%)  | Super 116.886 (box 1.6180  cls 0.8347  dfl 1.2000)  | Base 117.785 (box 1.6277  cls 0.8705  dfl 1.1826)  | KD 12.507 (box 0.37666  cls 0.01191  dfl 0.00085  feat 0.00144)
+  Epoch 25/30  Batch 655/2188 (29.9%)  | Super 98.742 (box 1.2959  cls 0.7180  dfl 1.0718)  | Base 98.953 (box 1.2949  cls 0.7455  dfl 1.0519)  | KD 10.533 (box 0.30839  cls 0.01881  dfl 0.00076  feat 0.00120)
+  Epoch 25/30  Batch 873/2188 (39.9%)  | Super 107.558 (box 1.3679  cls 0.8561  dfl 1.1372)  | Base 108.210 (box 1.3919  cls 0.8786  dfl 1.1110)  | KD 13.524 (box 0.40506  cls 0.01534  dfl 0.00099  feat 0.00123)
+  Epoch 25/30  Batch 1091/2188 (49.9%)  | Super 99.597 (box 1.3286  cls 0.7272  dfl 1.0566)  | Base 100.630 (box 1.3445  cls 0.7493  dfl 1.0509)  | KD 10.535 (box 0.31148  cls 0.01581  dfl 0.00081  feat 0.00113)
+  Epoch 25/30  Batch 1309/2188 (59.8%)  | Super 100.071 (box 1.2657  cls 0.7294  dfl 1.1322)  | Base 99.636 (box 1.2658  cls 0.7557  dfl 1.0922)  | KD 11.587 (box 0.34871  cls 0.01122  dfl 0.00092  feat 0.00124)
+  Epoch 25/30  Batch 1527/2188 (69.8%)  | Super 105.835 (box 1.3782  cls 0.8257  dfl 1.1034)  | Base 106.569 (box 1.3974  cls 0.8459  dfl 1.0870)  | KD 11.533 (box 0.33861  cls 0.01960  dfl 0.00080  feat 0.00142)
+  Epoch 25/30  Batch 1745/2188 (79.8%)  | Super 103.388 (box 1.3298  cls 0.7901  dfl 1.1110)  | Base 104.449 (box 1.3395  cls 0.8336  dfl 1.0909)  | KD 11.581 (box 0.34329  cls 0.01650  dfl 0.00086  feat 0.00126)
+  Epoch 25/30  Batch 1963/2188 (89.7%)  | Super 103.144 (box 1.3429  cls 0.7925  dfl 1.0879)  | Base 104.359 (box 1.3484  cls 0.8332  dfl 1.0797)  | KD 13.372 (box 0.39858  cls 0.01669  dfl 0.00110  feat 0.00150)
+  Epoch 25/30  Batch 2181/2188 (99.7%)  | Super 109.619 (box 1.4459  cls 0.7632  dfl 1.2165)  | Base 108.686 (box 1.4295  cls 0.7976  dfl 1.1693)  | KD 11.102 (box 0.32994  cls 0.01490  dfl 0.00083  feat 0.00126)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 25/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578       0.74      0.525      0.583      0.341
+                   all      10000     185578      0.741      0.527      0.586      0.344
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 25/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.622      0.508      0.562      0.327
+                   all      10000     185578      0.734      0.508       0.57       0.33
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 26/30  Batch 1/2188 (0.0%)  | Super 108.207 (box 1.3765  cls 0.8121  dfl 1.1929)  | Base 115.735 (box 1.3916  cls 1.0208  dfl 1.2043)  | KD 9.833 (box 0.28957  cls 0.01607  dfl 0.00074  feat 0.00089)
-  Epoch 26/30  Batch 219/2188 (10.0%)  | Super 113.159 (box 1.4961  cls 0.8825  dfl 1.1576)  | Base 118.207 (box 1.4814  cls 1.0577  dfl 1.1549)  | KD 10.004 (box 0.29488  cls 0.01619  dfl 0.00073  feat 0.00081)
-  Epoch 26/30  Batch 437/2188 (20.0%)  | Super 113.503 (box 1.5531  cls 0.8588  dfl 1.1351)  | Base 118.147 (box 1.5596  cls 1.0139  dfl 1.1187)  | KD 10.993 (box 0.33339  cls 0.00861  dfl 0.00066  feat 0.00088)
-  Epoch 26/30  Batch 655/2188 (29.9%)  | Super 101.491 (box 1.3295  cls 0.7400  dfl 1.1020)  | Base 105.726 (box 1.3221  cls 0.8825  dfl 1.0994)  | KD 9.118 (box 0.27382  cls 0.00965  dfl 0.00063  feat 0.00084)
-  Epoch 26/30  Batch 873/2188 (39.9%)  | Super 108.191 (box 1.3919  cls 0.8333  dfl 1.1557)  | Base 113.243 (box 1.3575  cls 1.0539  dfl 1.1275)  | KD 10.303 (box 0.30982  cls 0.01060  dfl 0.00070  feat 0.00084)
-  Epoch 26/30  Batch 1091/2188 (49.9%)  | Super 105.125 (box 1.3553  cls 0.7875  dfl 1.1424)  | Base 110.124 (box 1.3498  cls 0.9450  dfl 1.1465)  | KD 9.066 (box 0.27324  cls 0.00861  dfl 0.00067  feat 0.00080)
-  Epoch 26/30  Batch 1309/2188 (59.8%)  | Super 96.292 (box 1.2387  cls 0.7059  dfl 1.0646)  | Base 102.733 (box 1.2424  cls 0.9013  dfl 1.0666)  | KD 9.539 (box 0.27908  cls 0.01747  dfl 0.00068  feat 0.00088)
-  Epoch 26/30  Batch 1527/2188 (69.8%)  | Super 107.295 (box 1.3689  cls 0.8601  dfl 1.1239)  | Base 114.385 (box 1.3921  cls 1.0458  dfl 1.1366)  | KD 9.896 (box 0.29221  cls 0.01544  dfl 0.00070  feat 0.00092)
-  Epoch 26/30  Batch 1745/2188 (79.8%)  | Super 102.688 (box 1.3322  cls 0.7536  dfl 1.1232)  | Base 108.377 (box 1.3241  cls 0.9380  dfl 1.1248)  | KD 9.823 (box 0.28876  cls 0.01662  dfl 0.00065  feat 0.00094)
-  Epoch 26/30  Batch 1963/2188 (89.7%)  | Super 103.700 (box 1.3313  cls 0.8099  dfl 1.0994)  | Base 107.170 (box 1.3181  cls 0.9367  dfl 1.0942)  | KD 10.268 (box 0.30709  cls 0.01210  dfl 0.00073  feat 0.00095)
-  Epoch 26/30  Batch 2181/2188 (99.7%)  | Super 105.740 (box 1.3648  cls 0.7895  dfl 1.1501)  | Base 110.571 (box 1.3521  cls 0.9703  dfl 1.1329)  | KD 9.317 (box 0.27528  cls 0.01434  dfl 0.00064  feat 0.00090)
+  Epoch 26/30  Batch 1/2188 (0.0%)  | Super 106.677 (box 1.3724  cls 0.7865  dfl 1.1747)  | Base 109.797 (box 1.3994  cls 0.8551  dfl 1.1767)  | KD 12.273 (box 0.36489  cls 0.01637  dfl 0.00090  feat 0.00139)
+  Epoch 26/30  Batch 219/2188 (10.0%)  | Super 110.924 (box 1.4712  cls 0.8753  dfl 1.1198)  | Base 111.521 (box 1.4922  cls 0.8701  dfl 1.1228)  | KD 11.245 (box 0.33318  cls 0.01619  dfl 0.00078  feat 0.00125)
+  Epoch 26/30  Batch 437/2188 (20.0%)  | Super 112.359 (box 1.5529  cls 0.8490  dfl 1.1093)  | Base 114.455 (box 1.5707  cls 0.9017  dfl 1.1044)  | KD 13.365 (box 0.40304  cls 0.01235  dfl 0.00084  feat 0.00141)
+  Epoch 26/30  Batch 655/2188 (29.9%)  | Super 100.136 (box 1.3240  cls 0.7206  dfl 1.0847)  | Base 100.229 (box 1.3265  cls 0.7357  dfl 1.0699)  | KD 10.658 (box 0.31725  cls 0.01376  dfl 0.00079  feat 0.00126)
+  Epoch 26/30  Batch 873/2188 (39.9%)  | Super 106.991 (box 1.3902  cls 0.8364  dfl 1.1168)  | Base 106.673 (box 1.3851  cls 0.8675  dfl 1.0809)  | KD 12.708 (box 0.37813  cls 0.01671  dfl 0.00097  feat 0.00133)
+  Epoch 26/30  Batch 1091/2188 (49.9%)  | Super 103.799 (box 1.3584  cls 0.7609  dfl 1.1245)  | Base 103.677 (box 1.3602  cls 0.7594  dfl 1.1203)  | KD 10.802 (box 0.32350  cls 0.01194  dfl 0.00082  feat 0.00131)
+  Epoch 26/30  Batch 1309/2188 (59.8%)  | Super 96.039 (box 1.2428  cls 0.7052  dfl 1.0532)  | Base 95.669 (box 1.2413  cls 0.7051  dfl 1.0433)  | KD 12.354 (box 0.36213  cls 0.02174  dfl 0.00092  feat 0.00127)
+  Epoch 26/30  Batch 1527/2188 (69.8%)  | Super 106.897 (box 1.3800  cls 0.8290  dfl 1.1316)  | Base 108.570 (box 1.4068  cls 0.8698  dfl 1.1162)  | KD 12.761 (box 0.37697  cls 0.01947  dfl 0.00102  feat 0.00133)
+  Epoch 26/30  Batch 1745/2188 (79.8%)  | Super 102.133 (box 1.3323  cls 0.7471  dfl 1.1123)  | Base 103.597 (box 1.3492  cls 0.7880  dfl 1.1003)  | KD 11.577 (box 0.33761  cls 0.02191  dfl 0.00087  feat 0.00138)
+  Epoch 26/30  Batch 1963/2188 (89.7%)  | Super 101.734 (box 1.3086  cls 0.7945  dfl 1.0761)  | Base 103.386 (box 1.3216  cls 0.8331  dfl 1.0761)  | KD 13.164 (box 0.39144  cls 0.01737  dfl 0.00103  feat 0.00153)
+  Epoch 26/30  Batch 2181/2188 (99.7%)  | Super 104.484 (box 1.3567  cls 0.7748  dfl 1.1336)  | Base 105.346 (box 1.3678  cls 0.8043  dfl 1.1200)  | KD 11.432 (box 0.33591  cls 0.01918  dfl 0.00084  feat 0.00133)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 26/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.745      0.524      0.584      0.341
+                   all      10000     185578      0.747      0.523      0.587      0.344
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 26/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.622      0.505      0.563      0.327
+                   all      10000     185578      0.731      0.512      0.571      0.331
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 27/30  Batch 1/2188 (0.0%)  | Super 103.884 (box 1.3120  cls 0.8006  dfl 1.1338)  | Base 110.953 (box 1.3240  cls 0.9928  dfl 1.1505)  | KD 10.441 (box 0.30963  cls 0.01504  dfl 0.00082  feat 0.00078)
-  Epoch 27/30  Batch 219/2188 (10.0%)  | Super 104.273 (box 1.3805  cls 0.8051  dfl 1.0729)  | Base 110.922 (box 1.3829  cls 1.0127  dfl 1.0707)  | KD 9.036 (box 0.27273  cls 0.00817  dfl 0.00063  feat 0.00085)
-  Epoch 27/30  Batch 437/2188 (20.0%)  | Super 113.942 (box 1.5524  cls 0.8348  dfl 1.1735)  | Base 119.087 (box 1.5630  cls 0.9842  dfl 1.1743)  | KD 10.787 (box 0.32526  cls 0.01020  dfl 0.00073  feat 0.00092)
-  Epoch 27/30  Batch 655/2188 (29.9%)  | Super 99.671 (box 1.3080  cls 0.7252  dfl 1.0815)  | Base 104.138 (box 1.2922  cls 0.8844  dfl 1.0777)  | KD 8.763 (box 0.26013  cls 0.01226  dfl 0.00054  feat 0.00091)
-  Epoch 27/30  Batch 873/2188 (39.9%)  | Super 112.896 (box 1.4367  cls 0.8938  dfl 1.1975)  | Base 117.557 (box 1.3922  cls 1.1067  dfl 1.1747)  | KD 10.456 (box 0.31593  cls 0.00917  dfl 0.00071  feat 0.00091)
-  Epoch 27/30  Batch 1091/2188 (49.9%)  | Super 99.490 (box 1.2970  cls 0.7291  dfl 1.0829)  | Base 105.512 (box 1.3082  cls 0.8945  dfl 1.0945)  | KD 8.672 (box 0.26154  cls 0.00802  dfl 0.00062  feat 0.00081)
-  Epoch 27/30  Batch 1309/2188 (59.8%)  | Super 99.934 (box 1.2721  cls 0.7459  dfl 1.1049)  | Base 105.296 (box 1.2651  cls 0.9263  dfl 1.0992)  | KD 9.127 (box 0.27572  cls 0.00800  dfl 0.00062  feat 0.00087)
-  Epoch 27/30  Batch 1527/2188 (69.8%)  | Super 103.087 (box 1.3605  cls 0.7793  dfl 1.0817)  | Base 109.616 (box 1.3581  cls 0.9763  dfl 1.0911)  | KD 10.107 (box 0.29927  cls 0.01496  dfl 0.00081  feat 0.00079)
-  Epoch 27/30  Batch 1745/2188 (79.8%)  | Super 103.226 (box 1.3365  cls 0.7636  dfl 1.1256)  | Base 109.016 (box 1.3364  cls 0.9500  dfl 1.1204)  | KD 9.725 (box 0.29200  cls 0.01032  dfl 0.00076  feat 0.00082)
-  Epoch 27/30  Batch 1963/2188 (89.7%)  | Super 105.131 (box 1.3413  cls 0.8154  dfl 1.1287)  | Base 110.969 (box 1.3278  cls 1.0180  dfl 1.1220)  | KD 10.266 (box 0.30912  cls 0.00998  dfl 0.00068  feat 0.00104)
-  Epoch 27/30  Batch 2181/2188 (99.7%)  | Super 109.687 (box 1.4343  cls 0.7624  dfl 1.2310)  | Base 113.312 (box 1.3978  cls 0.9323  dfl 1.2110)  | KD 8.929 (box 0.26667  cls 0.01072  dfl 0.00063  feat 0.00103)
+  Epoch 27/30  Batch 1/2188 (0.0%)  | Super 103.746 (box 1.3166  cls 0.7990  dfl 1.1265)  | Base 104.932 (box 1.3398  cls 0.8119  dfl 1.1274)  | KD 13.295 (box 0.39203  cls 0.02123  dfl 0.00097  feat 0.00122)
+  Epoch 27/30  Batch 219/2188 (10.0%)  | Super 103.230 (box 1.3733  cls 0.7953  dfl 1.0573)  | Base 105.363 (box 1.4040  cls 0.8320  dfl 1.0567)  | KD 10.278 (box 0.30827  cls 0.01083  dfl 0.00075  feat 0.00132)
+  Epoch 27/30  Batch 437/2188 (20.0%)  | Super 112.903 (box 1.5446  cls 0.8160  dfl 1.1676)  | Base 114.446 (box 1.5817  cls 0.8497  dfl 1.1450)  | KD 13.217 (box 0.39956  cls 0.01123  dfl 0.00086  feat 0.00139)
+  Epoch 27/30  Batch 655/2188 (29.9%)  | Super 98.273 (box 1.2950  cls 0.7111  dfl 1.0650)  | Base 99.238 (box 1.2991  cls 0.7406  dfl 1.0614)  | KD 10.336 (box 0.30791  cls 0.01302  dfl 0.00070  feat 0.00137)
+  Epoch 27/30  Batch 873/2188 (39.9%)  | Super 111.579 (box 1.4182  cls 0.8946  dfl 1.1741)  | Base 111.252 (box 1.4071  cls 0.9233  dfl 1.1462)  | KD 12.819 (box 0.38515  cls 0.01323  dfl 0.00087  feat 0.00134)
+  Epoch 27/30  Batch 1091/2188 (49.9%)  | Super 99.824 (box 1.3054  cls 0.7203  dfl 1.0937)  | Base 100.765 (box 1.3183  cls 0.7517  dfl 1.0789)  | KD 11.011 (box 0.33075  cls 0.01111  dfl 0.00090  feat 0.00135)
+  Epoch 27/30  Batch 1309/2188 (59.8%)  | Super 99.952 (box 1.2792  cls 0.7405  dfl 1.1037)  | Base 99.241 (box 1.2623  cls 0.7591  dfl 1.0799)  | KD 11.504 (box 0.34669  cls 0.01059  dfl 0.00088  feat 0.00133)
+  Epoch 27/30  Batch 1527/2188 (69.8%)  | Super 102.778 (box 1.3604  cls 0.7685  dfl 1.0829)  | Base 105.091 (box 1.3923  cls 0.8051  dfl 1.0868)  | KD 12.198 (box 0.36229  cls 0.01644  dfl 0.00117  feat 0.00128)
+  Epoch 27/30  Batch 1745/2188 (79.8%)  | Super 103.178 (box 1.3375  cls 0.7510  dfl 1.1359)  | Base 103.982 (box 1.3567  cls 0.7839  dfl 1.1088)  | KD 11.843 (box 0.35408  cls 0.01365  dfl 0.00098  feat 0.00139)
+  Epoch 27/30  Batch 1963/2188 (89.7%)  | Super 105.113 (box 1.3463  cls 0.8210  dfl 1.1175)  | Base 105.275 (box 1.3429  cls 0.8472  dfl 1.0997)  | KD 11.971 (box 0.35642  cls 0.01516  dfl 0.00089  feat 0.00163)
+  Epoch 27/30  Batch 2181/2188 (99.7%)  | Super 107.883 (box 1.4139  cls 0.7436  dfl 1.2139)  | Base 108.056 (box 1.4192  cls 0.7667  dfl 1.1909)  | KD 10.507 (box 0.31317  cls 0.01284  dfl 0.00080  feat 0.00153)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 27/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.742      0.525      0.584      0.341
+                   all      10000     185578      0.742      0.525      0.586      0.344
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 27/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.621      0.508      0.564      0.328
+                   all      10000     185578      0.733       0.51      0.571      0.331
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 28/30  Batch 1/2188 (0.0%)  | Super 103.020 (box 1.3280  cls 0.7555  dfl 1.1358)  | Base 109.859 (box 1.3395  cls 0.9566  dfl 1.1369)  | KD 10.091 (box 0.30238  cls 0.01146  dfl 0.00072  feat 0.00079)
-  Epoch 28/30  Batch 219/2188 (10.0%)  | Super 103.729 (box 1.3654  cls 0.7805  dfl 1.0956)  | Base 110.107 (box 1.3600  cls 0.9915  dfl 1.0894)  | KD 9.459 (box 0.28161  cls 0.01234  dfl 0.00077  feat 0.00087)
-  Epoch 28/30  Batch 437/2188 (20.0%)  | Super 111.370 (box 1.5345  cls 0.8202  dfl 1.1256)  | Base 115.782 (box 1.5362  cls 0.9496  dfl 1.1324)  | KD 10.938 (box 0.32954  cls 0.01077  dfl 0.00070  feat 0.00081)
-  Epoch 28/30  Batch 655/2188 (29.9%)  | Super 99.436 (box 1.3087  cls 0.7252  dfl 1.0735)  | Base 103.957 (box 1.2945  cls 0.8887  dfl 1.0654)  | KD 8.086 (box 0.24231  cls 0.00912  dfl 0.00052  feat 0.00073)
-  Epoch 28/30  Batch 873/2188 (39.9%)  | Super 107.867 (box 1.3833  cls 0.8455  dfl 1.1421)  | Base 115.826 (box 1.3958  cls 1.0602  dfl 1.1636)  | KD 10.679 (box 0.32097  cls 0.01111  dfl 0.00072  feat 0.00090)
-  Epoch 28/30  Batch 1091/2188 (49.9%)  | Super 100.088 (box 1.3095  cls 0.7156  dfl 1.1026)  | Base 105.022 (box 1.3107  cls 0.8682  dfl 1.1030)  | KD 8.993 (box 0.27038  cls 0.00928  dfl 0.00058  feat 0.00079)
-  Epoch 28/30  Batch 1309/2188 (59.8%)  | Super 93.638 (box 1.1860  cls 0.6944  dfl 1.0458)  | Base 99.853 (box 1.1799  cls 0.9030  dfl 1.0375)  | KD 9.128 (box 0.27228  cls 0.01137  dfl 0.00075  feat 0.00084)
-  Epoch 28/30  Batch 1527/2188 (69.8%)  | Super 108.917 (box 1.3985  cls 0.8699  dfl 1.1353)  | Base 114.757 (box 1.4110  cls 1.0397  dfl 1.1354)  | KD 9.909 (box 0.29372  cls 0.01423  dfl 0.00078  feat 0.00092)
-  Epoch 28/30  Batch 1745/2188 (79.8%)  | Super 98.939 (box 1.2882  cls 0.7408  dfl 1.0628)  | Base 104.143 (box 1.2606  cls 0.9285  dfl 1.0654)  | KD 9.467 (box 0.28478  cls 0.00945  dfl 0.00084  feat 0.00077)
-  Epoch 28/30  Batch 1963/2188 (89.7%)  | Super 102.247 (box 1.2754  cls 0.8484  dfl 1.0714)  | Base 106.589 (box 1.2559  cls 1.0092  dfl 1.0658)  | KD 10.401 (box 0.31066  cls 0.01247  dfl 0.00081  feat 0.00107)
-  Epoch 28/30  Batch 2181/2188 (99.7%)  | Super 105.245 (box 1.3725  cls 0.7456  dfl 1.1708)  | Base 110.797 (box 1.3685  cls 0.9395  dfl 1.1544)  | KD 8.611 (box 0.25624  cls 0.01115  dfl 0.00065  feat 0.00105)
+  Epoch 28/30  Batch 1/2188 (0.0%)  | Super 102.710 (box 1.3344  cls 0.7457  dfl 1.1296)  | Base 103.962 (box 1.3520  cls 0.7858  dfl 1.1110)  | KD 11.670 (box 0.34767  cls 0.01497  dfl 0.00087  feat 0.00119)
+  Epoch 28/30  Batch 219/2188 (10.0%)  | Super 102.590 (box 1.3494  cls 0.7773  dfl 1.0793)  | Base 104.740 (box 1.3689  cls 0.8290  dfl 1.0752)  | KD 11.272 (box 0.33486  cls 0.01506  dfl 0.00097  feat 0.00136)
+  Epoch 28/30  Batch 437/2188 (20.0%)  | Super 110.871 (box 1.5260  cls 0.8123  dfl 1.1263)  | Base 112.288 (box 1.5520  cls 0.8404  dfl 1.1166)  | KD 13.931 (box 0.41298  cls 0.02009  dfl 0.00092  feat 0.00135)
+  Epoch 28/30  Batch 655/2188 (29.9%)  | Super 98.035 (box 1.2996  cls 0.7005  dfl 1.0635)  | Base 99.445 (box 1.3105  cls 0.7421  dfl 1.0550)  | KD 9.925 (box 0.29363  cls 0.01466  dfl 0.00076  feat 0.00110)
+  Epoch 28/30  Batch 873/2188 (39.9%)  | Super 108.826 (box 1.3964  cls 0.8501  dfl 1.1544)  | Base 111.485 (box 1.4279  cls 0.8965  dfl 1.1596)  | KD 13.191 (box 0.39355  cls 0.01624  dfl 0.00101  feat 0.00141)
+  Epoch 28/30  Batch 1091/2188 (49.9%)  | Super 99.109 (box 1.3078  cls 0.6901  dfl 1.0993)  | Base 100.146 (box 1.3166  cls 0.7197  dfl 1.0933)  | KD 10.688 (box 0.31979  cls 0.01230  dfl 0.00077  feat 0.00115)
+  Epoch 28/30  Batch 1309/2188 (59.8%)  | Super 92.755 (box 1.1753  cls 0.6915  dfl 1.0318)  | Base 93.400 (box 1.1824  cls 0.7170  dfl 1.0193)  | KD 11.612 (box 0.34189  cls 0.01872  dfl 0.00098  feat 0.00127)
+  Epoch 28/30  Batch 1527/2188 (69.8%)  | Super 108.720 (box 1.4162  cls 0.8501  dfl 1.1313)  | Base 108.794 (box 1.4198  cls 0.8777  dfl 1.1023)  | KD 12.111 (box 0.35420  cls 0.02180  dfl 0.00107  feat 0.00140)
+  Epoch 28/30  Batch 1745/2188 (79.8%)  | Super 98.412 (box 1.2794  cls 0.7372  dfl 1.0588)  | Base 98.930 (box 1.2829  cls 0.7654  dfl 1.0433)  | KD 11.735 (box 0.35045  cls 0.01415  dfl 0.00092  feat 0.00118)
+  Epoch 28/30  Batch 1963/2188 (89.7%)  | Super 101.661 (box 1.2740  cls 0.8294  dfl 1.0735)  | Base 101.613 (box 1.2736  cls 0.8457  dfl 1.0561)  | KD 12.776 (box 0.37551  cls 0.02103  dfl 0.00109  feat 0.00160)
+  Epoch 28/30  Batch 2181/2188 (99.7%)  | Super 104.638 (box 1.3715  cls 0.7409  dfl 1.1575)  | Base 104.850 (box 1.3755  cls 0.7746  dfl 1.1264)  | KD 10.814 (box 0.32036  cls 0.01524  dfl 0.00074  feat 0.00159)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 28/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.743      0.524      0.584      0.342
+                   all      10000     185578      0.741      0.529      0.587      0.345
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 28/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578       0.62      0.509      0.564      0.328
+                   all      10000     185578       0.73      0.514      0.573      0.332
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 29/30  Batch 1/2188 (0.0%)  | Super 104.127 (box 1.3323  cls 0.8009  dfl 1.1208)  | Base 110.494 (box 1.3275  cls 1.0034  dfl 1.1221)  | KD 9.899 (box 0.29703  cls 0.01068  dfl 0.00084  feat 0.00078)
-  Epoch 29/30  Batch 219/2188 (10.0%)  | Super 105.294 (box 1.3912  cls 0.7799  dfl 1.1193)  | Base 112.297 (box 1.4089  cls 0.9812  dfl 1.1191)  | KD 8.838 (box 0.26604  cls 0.00860  dfl 0.00066  feat 0.00088)
-  Epoch 29/30  Batch 437/2188 (20.0%)  | Super 114.731 (box 1.5788  cls 0.8568  dfl 1.1498)  | Base 119.148 (box 1.5596  cls 1.0186  dfl 1.1451)  | KD 10.685 (box 0.32242  cls 0.01000  dfl 0.00060  feat 0.00090)
-  Epoch 29/30  Batch 655/2188 (29.9%)  | Super 99.265 (box 1.2985  cls 0.7449  dfl 1.0586)  | Base 103.243 (box 1.2770  cls 0.9030  dfl 1.0463)  | KD 8.559 (box 0.25460  cls 0.01142  dfl 0.00061  feat 0.00083)
-  Epoch 29/30  Batch 873/2188 (39.9%)  | Super 108.796 (box 1.3875  cls 0.8860  dfl 1.1263)  | Base 113.070 (box 1.3615  cls 1.0606  dfl 1.1113)  | KD 10.559 (box 0.31917  cls 0.00924  dfl 0.00074  feat 0.00082)
-  Epoch 29/30  Batch 1091/2188 (49.9%)  | Super 101.206 (box 1.3196  cls 0.7251  dfl 1.1180)  | Base 106.667 (box 1.3130  cls 0.9037  dfl 1.1166)  | KD 8.745 (box 0.26216  cls 0.00970  dfl 0.00064  feat 0.00079)
-  Epoch 29/30  Batch 1309/2188 (59.8%)  | Super 98.353 (box 1.2643  cls 0.7171  dfl 1.0921)  | Base 103.630 (box 1.2493  cls 0.8947  dfl 1.0945)  | KD 9.216 (box 0.27456  cls 0.01201  dfl 0.00066  feat 0.00077)
-  Epoch 29/30  Batch 1527/2188 (69.8%)  | Super 109.274 (box 1.4368  cls 0.8283  dfl 1.1498)  | Base 114.983 (box 1.4194  cls 1.0204  dfl 1.1534)  | KD 9.430 (box 0.27496  cls 0.01812  dfl 0.00070  feat 0.00089)
-  Epoch 29/30  Batch 1745/2188 (79.8%)  | Super 103.484 (box 1.3417  cls 0.7624  dfl 1.1298)  | Base 109.355 (box 1.3338  cls 0.9538  dfl 1.1297)  | KD 8.914 (box 0.26796  cls 0.00906  dfl 0.00068  feat 0.00088)
-  Epoch 29/30  Batch 1963/2188 (89.7%)  | Super 103.277 (box 1.2934  cls 0.7938  dfl 1.1402)  | Base 110.514 (box 1.2959  cls 1.0135  dfl 1.1441)  | KD 9.050 (box 0.26931  cls 0.01184  dfl 0.00070  feat 0.00097)
-  Epoch 29/30  Batch 2181/2188 (99.7%)  | Super 106.319 (box 1.3855  cls 0.7663  dfl 1.1706)  | Base 112.296 (box 1.3793  cls 0.9719  dfl 1.1581)  | KD 9.235 (box 0.27537  cls 0.01155  dfl 0.00070  feat 0.00100)
+  Epoch 29/30  Batch 1/2188 (0.0%)  | Super 103.484 (box 1.3275  cls 0.7824  dfl 1.1240)  | Base 104.988 (box 1.3377  cls 0.8213  dfl 1.1219)  | KD 12.065 (box 0.35693  cls 0.01780  dfl 0.00108  feat 0.00121)
+  Epoch 29/30  Batch 219/2188 (10.0%)  | Super 103.760 (box 1.3764  cls 0.7695  dfl 1.0966)  | Base 105.577 (box 1.4147  cls 0.7986  dfl 1.0859)  | KD 11.081 (box 0.32549  cls 0.01844  dfl 0.00095  feat 0.00141)
+  Epoch 29/30  Batch 437/2188 (20.0%)  | Super 113.025 (box 1.5580  cls 0.8329  dfl 1.1411)  | Base 115.444 (box 1.5886  cls 0.8825  dfl 1.1365)  | KD 12.806 (box 0.38448  cls 0.01336  dfl 0.00083  feat 0.00152)
+  Epoch 29/30  Batch 655/2188 (29.9%)  | Super 98.135 (box 1.2909  cls 0.7289  dfl 1.0469)  | Base 98.896 (box 1.2984  cls 0.7603  dfl 1.0317)  | KD 10.241 (box 0.30501  cls 0.01296  dfl 0.00080  feat 0.00126)
+  Epoch 29/30  Batch 873/2188 (39.9%)  | Super 107.767 (box 1.3744  cls 0.8884  dfl 1.1050)  | Base 108.453 (box 1.3823  cls 0.9064  dfl 1.1004)  | KD 12.157 (box 0.36391  cls 0.01378  dfl 0.00093  feat 0.00128)
+  Epoch 29/30  Batch 1091/2188 (49.9%)  | Super 100.151 (box 1.3054  cls 0.7173  dfl 1.1069)  | Base 100.463 (box 1.3207  cls 0.7240  dfl 1.0948)  | KD 11.281 (box 0.33498  cls 0.01548  dfl 0.00083  feat 0.00124)
+  Epoch 29/30  Batch 1309/2188 (59.8%)  | Super 97.894 (box 1.2605  cls 0.7038  dfl 1.0949)  | Base 98.669 (box 1.2767  cls 0.7249  dfl 1.0818)  | KD 12.253 (box 0.35788  cls 0.02285  dfl 0.00095  feat 0.00121)
+  Epoch 29/30  Batch 1527/2188 (69.8%)  | Super 108.529 (box 1.4379  cls 0.8064  dfl 1.1473)  | Base 109.062 (box 1.4483  cls 0.8247  dfl 1.1353)  | KD 11.621 (box 0.33751  cls 0.02337  dfl 0.00091  feat 0.00138)
+  Epoch 29/30  Batch 1745/2188 (79.8%)  | Super 103.121 (box 1.3388  cls 0.7652  dfl 1.1186)  | Base 103.312 (box 1.3364  cls 0.7884  dfl 1.1036)  | KD 10.657 (box 0.31904  cls 0.01193  dfl 0.00074  feat 0.00133)
+  Epoch 29/30  Batch 1963/2188 (89.7%)  | Super 103.418 (box 1.3150  cls 0.7749  dfl 1.1420)  | Base 105.184 (box 1.3279  cls 0.8298  dfl 1.1293)  | KD 11.035 (box 0.32838  cls 0.01418  dfl 0.00080  feat 0.00148)
+  Epoch 29/30  Batch 2181/2188 (99.7%)  | Super 105.629 (box 1.3938  cls 0.7458  dfl 1.1613)  | Base 105.910 (box 1.4033  cls 0.7616  dfl 1.1448)  | KD 11.262 (box 0.33059  cls 0.01905  dfl 0.00086  feat 0.00144)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 29/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.738      0.527      0.584      0.341
+                   all      10000     185578      0.745      0.524      0.587      0.345
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 29/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.622       0.51      0.565      0.328
+                   all      10000     185578      0.737       0.51      0.572      0.332
 
            Epoch         GPU_mem          box_om          cls_om          dfl_om          box_oo          cls_oo          dfl_oo       Instances            Size
-  Epoch 30/30  Batch 1/2188 (0.0%)  | Super 104.498 (box 1.3171  cls 0.8059  dfl 1.1425)  | Base 111.440 (box 1.3267  cls 1.0176  dfl 1.1382)  | KD 10.937 (box 0.32305  cls 0.01709  dfl 0.00081  feat 0.00084)
-  Epoch 30/30  Batch 219/2188 (10.0%)  | Super 108.927 (box 1.4357  cls 0.8060  dfl 1.1623)  | Base 113.639 (box 1.4076  cls 0.9972  dfl 1.1465)  | KD 9.138 (box 0.27374  cls 0.00993  dfl 0.00071  feat 0.00119)
-  Epoch 30/30  Batch 437/2188 (20.0%)  | Super 113.647 (box 1.5586  cls 0.8341  dfl 1.1588)  | Base 117.894 (box 1.5536  cls 0.9714  dfl 1.1592)  | KD 10.456 (box 0.31352  cls 0.01172  dfl 0.00068  feat 0.00081)
-  Epoch 30/30  Batch 655/2188 (29.9%)  | Super 102.027 (box 1.3365  cls 0.7493  dfl 1.1025)  | Base 105.856 (box 1.3243  cls 0.8877  dfl 1.0960)  | KD 8.869 (box 0.26564  cls 0.01007  dfl 0.00060  feat 0.00085)
-  Epoch 30/30  Batch 873/2188 (39.9%)  | Super 114.867 (box 1.4488  cls 0.9088  dfl 1.2320)  | Base 120.111 (box 1.4361  cls 1.1015  dfl 1.2158)  | KD 10.953 (box 0.32963  cls 0.01098  dfl 0.00079  feat 0.00087)
-  Epoch 30/30  Batch 1091/2188 (49.9%)  | Super 98.837 (box 1.2869  cls 0.7109  dfl 1.0908)  | Base 104.673 (box 1.2979  cls 0.8756  dfl 1.0975)  | KD 8.509 (box 0.25331  cls 0.01124  dfl 0.00059  feat 0.00078)
-  Epoch 30/30  Batch 1309/2188 (59.8%)  | Super 95.464 (box 1.2311  cls 0.6823  dfl 1.0698)  | Base 100.902 (box 1.2378  cls 0.8480  dfl 1.0674)  | KD 9.417 (box 0.28417  cls 0.00862  dfl 0.00067  feat 0.00081)
-  Epoch 30/30  Batch 1527/2188 (69.8%)  | Super 106.276 (box 1.3802  cls 0.8187  dfl 1.1222)  | Base 111.140 (box 1.3631  cls 0.9889  dfl 1.1211)  | KD 9.710 (box 0.28207  cls 0.01978  dfl 0.00075  feat 0.00083)
-  Epoch 30/30  Batch 1745/2188 (79.8%)  | Super 102.087 (box 1.3358  cls 0.7518  dfl 1.1026)  | Base 107.692 (box 1.3201  cls 0.9475  dfl 1.0978)  | KD 9.022 (box 0.27140  cls 0.00903  dfl 0.00073  feat 0.00077)
-  Epoch 30/30  Batch 1963/2188 (89.7%)  | Super 103.735 (box 1.3361  cls 0.7689  dfl 1.1368)  | Base 108.485 (box 1.3109  cls 0.9539  dfl 1.1253)  | KD 9.284 (box 0.27523  cls 0.01330  dfl 0.00062  feat 0.00096)
-  Epoch 30/30  Batch 2181/2188 (99.7%)  | Super 105.231 (box 1.3638  cls 0.7679  dfl 1.1567)  | Base 110.348 (box 1.3572  cls 0.9429  dfl 1.1483)  | KD 9.088 (box 0.27042  cls 0.01195  dfl 0.00070  feat 0.00092)
+  Epoch 30/30  Batch 1/2188 (0.0%)  | Super 103.051 (box 1.3013  cls 0.7985  dfl 1.1206)  | Base 105.898 (box 1.3509  cls 0.8333  dfl 1.1251)  | KD 12.013 (box 0.35294  cls 0.02024  dfl 0.00093  feat 0.00131)
+  Epoch 30/30  Batch 219/2188 (10.0%)  | Super 107.899 (box 1.4327  cls 0.7946  dfl 1.1446)  | Base 107.581 (box 1.4208  cls 0.8272  dfl 1.1139)  | KD 10.755 (box 0.32225  cls 0.01119  dfl 0.00087  feat 0.00179)
+  Epoch 30/30  Batch 437/2188 (20.0%)  | Super 112.428 (box 1.5474  cls 0.8182  dfl 1.1477)  | Base 113.740 (box 1.5753  cls 0.8399  dfl 1.1392)  | KD 12.327 (box 0.36995  cls 0.01314  dfl 0.00079  feat 0.00133)
+  Epoch 30/30  Batch 655/2188 (29.9%)  | Super 100.395 (box 1.3187  cls 0.7343  dfl 1.0844)  | Base 101.309 (box 1.3346  cls 0.7583  dfl 1.0730)  | KD 10.660 (box 0.31736  cls 0.01373  dfl 0.00077  feat 0.00127)
+  Epoch 30/30  Batch 873/2188 (39.9%)  | Super 114.955 (box 1.4607  cls 0.9075  dfl 1.2242)  | Base 115.663 (box 1.4792  cls 0.9321  dfl 1.2032)  | KD 13.517 (box 0.40423  cls 0.01579  dfl 0.00103  feat 0.00135)
+  Epoch 30/30  Batch 1091/2188 (49.9%)  | Super 98.004 (box 1.2957  cls 0.6893  dfl 1.0776)  | Base 99.047 (box 1.3074  cls 0.7202  dfl 1.0676)  | KD 9.687 (box 0.28534  cls 0.01554  dfl 0.00066  feat 0.00118)
+  Epoch 30/30  Batch 1309/2188 (59.8%)  | Super 94.813 (box 1.2299  cls 0.6750  dfl 1.0580)  | Base 95.570 (box 1.2475  cls 0.6844  dfl 1.0547)  | KD 11.168 (box 0.32795  cls 0.01899  dfl 0.00084  feat 0.00122)
+  Epoch 30/30  Batch 1527/2188 (69.8%)  | Super 104.553 (box 1.3596  cls 0.7957  dfl 1.1121)  | Base 104.814 (box 1.3693  cls 0.8047  dfl 1.1014)  | KD 11.778 (box 0.34258  cls 0.02329  dfl 0.00091  feat 0.00128)
+  Epoch 30/30  Batch 1745/2188 (79.8%)  | Super 101.171 (box 1.3259  cls 0.7370  dfl 1.0987)  | Base 102.404 (box 1.3470  cls 0.7732  dfl 1.0799)  | KD 11.637 (box 0.34786  cls 0.01357  dfl 0.00096  feat 0.00127)
+  Epoch 30/30  Batch 1963/2188 (89.7%)  | Super 102.033 (box 1.3135  cls 0.7537  dfl 1.1213)  | Base 102.255 (box 1.2971  cls 0.7928  dfl 1.1056)  | KD 11.267 (box 0.33675  cls 0.01297  dfl 0.00088  feat 0.00149)
+  Epoch 30/30  Batch 2181/2188 (99.7%)  | Super 104.266 (box 1.3605  cls 0.7391  dfl 1.1587)  | Base 104.553 (box 1.3617  cls 0.7731  dfl 1.1324)  | KD 10.939 (box 0.32212  cls 0.01735  dfl 0.00085  feat 0.00151)
 
 ================================================================================
   [Validation] Super model (skip=False)  |  Epoch 30/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.738      0.529      0.584      0.342
+                   all      10000     185578      0.743      0.526      0.587      0.345
 
 ================================================================================
   [Validation] Base model  (skip=True)   |  Epoch 30/30
 ================================================================================
 [*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
-                   all      10000     185578      0.623       0.51      0.565      0.328
+                   all      10000     185578      0.738       0.51      0.573      0.332
 
-30 epochs completed in 7.245 hours.
+30 epochs completed in 7.239 hours.
 Optimizer stripped from runs/bdd100k/detect/anydepth-yolov12s/train/weights/last.pt, 15.7MB
 Optimizer stripped from runs/bdd100k/detect/anydepth-yolov12s/train/weights/best.pt, 15.7MB
 
@@ -2248,3 +2244,196 @@ Validating runs/bdd100k/detect/anydepth-yolov12s/train/weights/best.pt...
 Ultralytics 8.3.63 🚀 Python-3.11.13 torch-2.2.2+cu121 CUDA:0 (NVIDIA RTX 6000 Ada Generation, 48509MiB)
                                                        CUDA:1 (NVIDIA RTX 6000 Ada Generation, 48500MiB)
 YOLO-ad-v12s-orig summary: 827 layers, 7,403,518 parameters, 0 gradients, 22.3 GFLOPs
+
+[*] FLOPs calculated at resolution: 736x1312
+| module                 | #parameters or shape   | #flops   |
+|:-----------------------|:-----------------------|:---------|
+| base_model.model.model | 7.404M                 | 26.158G  |
+| 0.conv                 | 0.896K                 | 0.209G   |
+| 0.conv.weight          | (32, 3, 3, 3)          |          |
+| 0.conv.bias            | (32,)                  |          |
+| 1.conv                 | 9.28K                  | 0.556G   |
+| 1.conv.weight          | (64, 16, 3, 3)         |          |
+| 1.conv.bias            | (64,)                  |          |
+| 2                      | 39.92K                 | 2.377G   |
+| 2.cv1                  | 4.352K                 | 0.255G   |
+| 2.cv1.conv             | 4.096K                 | 0.247G   |
+| 2.cv1.bn               | 0.128K                 | 7.725M   |
+| 2.cv1.bn_skip          | 0.128K                 |          |
+| 2.cv2                  | 16.896K                | 1.004G   |
+| 2.cv2.conv             | 16.384K                | 0.989G   |
+| 2.cv2.bn               | 0.256K                 | 15.45M   |
+| 2.cv2.bn_skip          | 0.256K                 |          |
+| 2.m                    | 18.672K                | 1.118G   |
+| 2.m.0                  | 9.408K                 | 0.562G   |
+| 2.m.1                  | 9.264K                 | 0.556G   |
+| 3                      | 37.376K                | 0.56G    |
+| 3.conv                 | 36.864K                | 0.556G   |
+| 3.conv.weight          | (128, 32, 3, 3)        |          |
+| 3.bn                   | 0.256K                 | 3.863M   |
+| 3.bn.weight            | (128,)                 |          |
+| 3.bn.bias              | (128,)                 |          |
+| 3.bn_skip              | 0.256K                 |          |
+| 3.bn_skip.weight       | (128,)                 |          |
+| 3.bn_skip.bias         | (128,)                 |          |
+| 4                      | 0.158M                 | 2.363G   |
+| 4.cv1                  | 16.896K                | 0.251G   |
+| 4.cv1.conv             | 16.384K                | 0.247G   |
+| 4.cv1.bn               | 0.256K                 | 3.863M   |
+| 4.cv1.bn_skip          | 0.256K                 |          |
+| 4.cv2                  | 66.56K                 | 0.997G   |
+| 4.cv2.conv             | 65.536K                | 0.989G   |
+| 4.cv2.bn               | 0.512K                 | 7.725M   |
+| 4.cv2.bn_skip          | 0.512K                 |          |
+| 4.m                    | 74.208K                | 1.115G   |
+| 4.m.0                  | 37.248K                | 0.559G   |
+| 4.m.1                  | 36.96K                 | 0.556G   |
+| 5                      | 0.591M                 | 2.227G   |
+| 5.conv                 | 0.59M                  | 2.225G   |
+| 5.conv.weight          | (256, 256, 3, 3)       |          |
+| 5.bn                   | 0.512K                 | 1.931M   |
+| 5.bn.weight            | (256,)                 |          |
+| 5.bn.bias              | (256,)                 |          |
+| 5.bn_skip              | 0.512K                 |          |
+| 5.bn_skip.weight       | (256,)                 |          |
+| 5.bn_skip.bias         | (256,)                 |          |
+| 6                      | 1.391M                 | 4.827G   |
+| 6.gamma                | (256,)                 |          |
+| 6.cv1                  | 33.28K                 | 0.125G   |
+| 6.cv1.conv             | 32.768K                | 0.124G   |
+| 6.cv1.bn               | 0.256K                 | 0.966M   |
+| 6.cv1.bn_skip          | 0.256K                 |          |
+| 6.cv2                  | 0.263M                 | 0.62G    |
+| 6.cv2.conv             | 0.164M                 | 0.618G   |
+| 6.cv2.bn               | 0.512K                 | 1.931M   |
+| 6.cv2.bn_skip          | 0.512K                 |          |
+| 6.cv2.conv_skip        | 98.304K                |          |
+| 6.m                    | 1.095M                 | 4.083G   |
+| 6.m.0                  | 0.277M                 | 1.028G   |
+| 6.m.1                  | 0.277M                 | 1.028G   |
+| 6.m.2                  | 0.271M                 | 1.013G   |
+| 6.m.3                  | 0.271M                 | 1.013G   |
+| 7                      | 0.591M                 | 0.557G   |
+| 7.conv                 | 0.59M                  | 0.556G   |
+| 7.conv.weight          | (256, 256, 3, 3)       |          |
+| 7.bn                   | 0.512K                 | 0.483M   |
+| 7.bn.weight            | (256,)                 |          |
+| 7.bn.bias              | (256,)                 |          |
+| 7.bn_skip              | 0.512K                 |          |
+| 7.bn_skip.weight       | (256,)                 |          |
+| 7.bn_skip.bias         | (256,)                 |          |
+| 8                      | 1.391M                 | 1.207G   |
+| 8.gamma                | (256,)                 |          |
+| 8.cv1                  | 33.28K                 | 31.142M  |
+| 8.cv1.conv             | 32.768K                | 30.9M    |
+| 8.cv1.bn               | 0.256K                 | 0.241M   |
+| 8.cv1.bn_skip          | 0.256K                 |          |
+| 8.cv2                  | 0.263M                 | 0.155G   |
+| 8.cv2.conv             | 0.164M                 | 0.155G   |
+| 8.cv2.bn               | 0.512K                 | 0.483M   |
+| 8.cv2.bn_skip          | 0.512K                 |          |
+| 8.cv2.conv_skip        | 98.304K                |          |
+| 8.m                    | 1.095M                 | 1.021G   |
+| 8.m.0                  | 0.277M                 | 0.257G   |
+| 8.m.1                  | 0.277M                 | 0.257G   |
+| 8.m.2                  | 0.271M                 | 0.253G   |
+| 8.m.3                  | 0.271M                 | 0.253G   |
+| 11                     | 0.528M                 | 1.984G   |
+| 11.cv1                 | 66.048K                | 0.248G   |
+| 11.cv1.conv            | 65.536K                | 0.247G   |
+| 11.cv1.bn              | 0.256K                 | 0.966M   |
+| 11.cv1.bn_skip         | 0.256K                 |          |
+| 11.cv2                 | 99.328K                | 0.373G   |
+| 11.cv2.conv            | 98.304K                | 0.371G   |
+| 11.cv2.bn              | 0.512K                 | 1.931M   |
+| 11.cv2.bn_skip         | 0.512K                 |          |
+| 11.m                   | 0.363M                 | 1.363G   |
+| 11.m.0                 | 0.182M                 | 0.684G   |
+| 11.m.1                 | 0.181M                 | 0.68G    |
+| 14                     | 0.15M                  | 2.238G   |
+| 14.cv1                 | 33.024K                | 0.496G   |
+| 14.cv1.conv            | 32.768K                | 0.494G   |
+| 14.cv1.bn              | 0.128K                 | 1.931M   |
+| 14.cv1.bn_skip         | 0.128K                 |          |
+| 14.cv2                 | 25.088K                | 0.375G   |
+| 14.cv2.conv            | 24.576K                | 0.371G   |
+| 14.cv2.bn              | 0.256K                 | 3.863M   |
+| 14.cv2.bn_skip         | 0.256K                 |          |
+| 14.m                   | 91.392K                | 1.367G   |
+| 14.m.0                 | 46.08K                 | 0.688G   |
+| 14.m.1                 | 45.312K                | 0.68G    |
+| 15                     | 0.148M                 | 0.557G   |
+| 15.conv                | 0.147M                 | 0.556G   |
+| 15.conv.weight         | (128, 128, 3, 3)       |          |
+| 15.bn                  | 0.256K                 | 0.966M   |
+| 15.bn.weight           | (128,)                 |          |
+| 15.bn.bias             | (128,)                 |          |
+| 15.bn_skip             | 0.256K                 |          |
+| 15.bn_skip.weight      | (128,)                 |          |
+| 15.bn_skip.bias        | (128,)                 |          |
+| 17                     | 0.512M                 | 1.923G   |
+| 17.cv1                 | 49.664K                | 0.186G   |
+| 17.cv1.conv            | 49.152K                | 0.185G   |
+| 17.cv1.bn              | 0.256K                 | 0.966M   |
+| 17.cv1.bn_skip         | 0.256K                 |          |
+| 17.cv2                 | 99.328K                | 0.373G   |
+| 17.cv2.conv            | 98.304K                | 0.371G   |
+| 17.cv2.bn              | 0.512K                 | 1.931M   |
+| 17.cv2.bn_skip         | 0.512K                 |          |
+| 17.m                   | 0.363M                 | 1.363G   |
+| 17.m.0                 | 0.182M                 | 0.684G   |
+| 17.m.1                 | 0.181M                 | 0.68G    |
+| 18                     | 0.591M                 | 0.557G   |
+| 18.conv                | 0.59M                  | 0.556G   |
+| 18.conv.weight         | (256, 256, 3, 3)       |          |
+| 18.bn                  | 0.512K                 | 0.483M   |
+| 18.bn.weight           | (256,)                 |          |
+| 18.bn.bias             | (256,)                 |          |
+| 18.bn_skip             | 0.512K                 |          |
+| 18.bn_skip.weight      | (256,)                 |          |
+| 18.bn_skip.bias        | (256,)                 |          |
+| 20                     | 0.627M                 | 0.589G   |
+| 20.cv1                 | 0.132M                 | 0.124G   |
+| 20.cv1.conv            | 0.131M                 | 0.124G   |
+| 20.cv1.bn              | 0.512K                 | 0.483M   |
+| 20.cv1.bn_skip         | 0.512K                 |          |
+| 20.cv2                 | 0.132M                 | 0.124G   |
+| 20.cv2.conv            | 0.131M                 | 0.124G   |
+| 20.cv2.bn              | 0.512K                 | 0.483M   |
+| 20.cv2.bn_skip         | 0.512K                 |          |
+| 20.m                   | 0.363M                 | 0.341G   |
+| 20.m.0                 | 0.182M                 | 0.171G   |
+| 20.m.1                 | 0.181M                 | 0.17G    |
+| 21                     | 0.638M                 | 3.423G   |
+| 21.cv2                 | 0.492M                 | 2.619G   |
+| 21.cv2.0               | 0.115M                 | 1.73G    |
+| 21.cv2.1               | 0.189M                 | 0.711G   |
+| 21.cv2.2               | 0.189M                 | 0.178G   |
+| 21.cv3                 | 0.146M                 | 0.803G   |
+| 21.cv3.0               | 36.874K                | 0.548G   |
+| 21.cv3.1               | 54.538K                | 0.203G   |
+| 21.cv3.2               | 54.538K                | 50.816M  |
+| 21.dfl.conv            | 16                     | 1.267M   |
+| 21.dfl.conv.weight     | (1, 16, 1, 1)          |          |
+| 9                      |                        | 0.966M   |
+| 12                     |                        | 3.863M   |
+  MACs  : 26.16 GMACs
+  FLOPs : 52.32 GFLOPs
+[*] Validation input tensor shape: torch.Size([32, 3, 736, 1312])
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)
+                   all      10000     185578      0.741      0.526      0.587      0.345
+                person       3220      13265      0.788      0.621       0.72      0.388
+                 rider        515        649      0.686      0.478      0.526      0.295
+                   car       9879     102540      0.839      0.733      0.832      0.526
+                   bus       1242       1597      0.679      0.584      0.655      0.515
+                 truck       2689       4247      0.626      0.631      0.661      0.491
+                  bike        578       1007      0.651      0.497      0.557      0.295
+                 motor        334        452      0.674      0.431      0.497      0.261
+         traffic light       5653      26891      0.729      0.621      0.683      0.276
+          traffic sign       8221      34915      0.741      0.668      0.738      0.404
+                 train         14         15          1          0          0          0
+Speed: 0.1ms preprocess, 2.7ms inference, 0.0ms loss, 0.3ms postprocess per image
+Results saved to [1mruns/bdd100k/detect/anydepth-yolov12s/train[0m
+WARNING: Plotting error for runs/bdd100k/detect/anydepth-yolov12s/train/results.csv: could not convert string to float: 'super'
+/home/hslee/context-anydepth-det/anydepth-yolov12/ultralytics/utils/plotting.py:1231: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  ax[1].legend()
