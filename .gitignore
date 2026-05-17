@@ -4,4 +4,4 @@ per_frame_predictions*/
 summary*.json
 *latency*
 *energy*
-*.csv
+# *.csv
