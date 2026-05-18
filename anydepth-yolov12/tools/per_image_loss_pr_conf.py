@@ -1,20 +1,22 @@
 """
-Per-image precision / recall on BDD100K for Super-net and Base-net (AnyDepth).
+Per-image loss + post-NMS confidence + precision/recall + mAP@[0.5:0.95]
+for Super-net and Base-net (AnyDepth) on BDD100K.
 
-Extends per_image_loss_conf.py: also computes per-image (TP, FP, FN, P, R)
-at a single confidence threshold τ (default 0.25) with IoU threshold 0.5.
+For each image and for each of {Super-net (no skip), Base-net (skip all)}:
+  - loss components from v8DetectionLoss: box / cls / dfl / total
+  - post-NMS confidence stats (NMS at conf>=0.001, IoU=0.7):
+        n_pred_{10,25,50,75,all}, mean_conf_{10,25,50,75,all},
+        top10_mean_conf
+  - PR at conf>=0.25, IoU>=0.5: tp / fp / fn / precision / recall
+  - mAP@[0.5:0.95] threshold-free (10 IoUs averaged)
 
-A predicted box is TP if it matches an unmatched GT of the same class with
-IoU >= IOU_TH; greedy matching by descending conf.
-
-Outputs CSV with all previous columns plus, for {super, base}:
-    tp_*, fp_*, fn_*, precision_*, recall_*
+Outputs a single wide CSV; all downstream analyze_* scripts read from it.
 
 Usage:
-    PYTHONPATH=$PWD python tools/per_image_pr.py \
+    PYTHONPATH=$PWD python tools/per_image_loss_pr_conf.py \
         --weight ./finetuned_bdd100k/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.6_orig_mAP34.3_33.1.pt \
         --data bdd100k.yaml --imgsz 1280 \
-        --out ./analysis/bdd100k-AnyDepth/per_image_pr.csv
+        --out ./analysis/bdd100k-AnyDepth/per_image_loss_pr_conf.csv
 """
 import argparse
 import csv
@@ -29,8 +31,9 @@ from ultralytics.data import build_yolo_dataset
 from ultralytics.utils import DEFAULT_CFG_DICT, IterableSimpleNamespace
 from ultralytics.data.utils import check_det_dataset
 from ultralytics.utils.ops import non_max_suppression, xywh2xyxy
-from ultralytics.utils.metrics import box_iou
+from ultralytics.utils.metrics import box_iou, compute_ap
 from ultralytics.utils.loss import v8DetectionLoss
+import numpy as np
 
 
 THRESHOLDS = (0.10, 0.25, 0.50, 0.75)
@@ -38,7 +41,8 @@ TOPK = 10
 NMS_BASE_CONF = 0.001
 NMS_IOU = 0.7
 PR_CONF = 0.25       # τ for precision/recall
-PR_IOU = 0.5         # IoU threshold for TP
+PR_IOU = 0.5         # IoU threshold for TP (P/R only)
+IOU_GRID = tuple(round(x, 2) for x in np.arange(0.5, 1.0, 0.05))  # 0.5, 0.55, ..., 0.95
 
 
 def parse_args():
@@ -48,7 +52,7 @@ def parse_args():
     p.add_argument("--imgsz", type=int, default=1280)
     p.add_argument("--split", default="val", choices=["val", "train"])
     p.add_argument("--device", default="cuda:0")
-    p.add_argument("--out", default="analysis/bdd100k-AnyDepth/per_image_pr.csv")
+    p.add_argument("--out", default="analysis/bdd100k-AnyDepth/per_image_loss_pr_conf.csv")
     p.add_argument("--limit", type=int, default=0)
     return p.parse_args()
 
@@ -73,6 +77,59 @@ def conf_stats(conf_tensor):
     m_all = float(conf_tensor.mean().item()) if n_all > 0 else float("nan")
     out += [n_all, m_all]
     return out
+
+
+def per_image_ap5095(det, gt_xyxy, gt_cls, iou_grid=IOU_GRID):
+    """Per-image COCO-style mAP@[0.5:0.95]: average of per-IoU mean(per-class AP).
+
+    No conf threshold — uses all post-NMS boxes (threshold-free).
+    For each IoU in iou_grid: compute mean AP across classes present in GT.
+    Return mean over iou_grid.  NaN if image has no GT.
+    """
+    n_gt = int(gt_xyxy.shape[0])
+    if n_gt == 0:
+        return float("nan")
+    if det is None or det.numel() == 0:
+        return 0.0
+
+    order = torch.argsort(det[:, 4], descending=True)
+    det = det[order]
+    pred_cls = det[:, 5].long()
+    iou = box_iou(det[:, :4], gt_xyxy)
+    cls_match = pred_cls.unsqueeze(1) == gt_cls.unsqueeze(0)
+    iou_masked = (iou * cls_match.float()).cpu().numpy()
+    pred_cls_np = pred_cls.cpu().numpy()
+    gt_cls_np = gt_cls.cpu().numpy()
+
+    classes = np.unique(gt_cls_np)
+    ap_per_iou = []
+    for iou_th in iou_grid:
+        aps = []
+        for c in classes:
+            gt_idx = np.where(gt_cls_np == c)[0]
+            pred_idx = np.where(pred_cls_np == c)[0]
+            n_gt_c = len(gt_idx)
+            if len(pred_idx) == 0:
+                aps.append(0.0); continue
+            iou_c = iou_masked[pred_idx][:, gt_idx]   # (n_pred_c, n_gt_c)
+            n_pred_c = iou_c.shape[0]
+            matched = np.zeros(n_gt_c, dtype=bool)
+            tp = np.zeros(n_pred_c, dtype=np.float32)
+            for j in range(n_pred_c):
+                ious_j = iou_c[j].copy()
+                ious_j[matched] = 0
+                best = int(np.argmax(ious_j))
+                if ious_j[best] >= iou_th:
+                    matched[best] = True
+                    tp[j] = 1.0
+            fp = 1.0 - tp
+            tp_cum = np.cumsum(tp); fp_cum = np.cumsum(fp)
+            recall_c = tp_cum / max(n_gt_c, 1)
+            precision_c = tp_cum / np.maximum(tp_cum + fp_cum, 1e-9)
+            ap_c, _, _ = compute_ap(recall_c, precision_c)
+            aps.append(float(ap_c))
+        ap_per_iou.append(float(np.mean(aps)) if aps else 0.0)
+    return float(np.mean(ap_per_iou))
 
 
 def pr_stats(det, gt_xyxy, gt_cls, conf_th=PR_CONF, iou_th=PR_IOU):
@@ -154,7 +211,7 @@ def main():
         tag = f"{int(round(t*100)):02d}"
         conf_cols += [f"n_pred_{tag}", f"mean_conf_{tag}"]
     conf_cols += ["top10_mean_conf", "n_pred_all", "mean_conf_all"]
-    pr_cols = ["tp", "fp", "fn", "precision", "recall"]
+    pr_cols = ["tp", "fp", "fn", "precision", "recall", "ap5095"]
 
     header = ["stem",
               "loss_super", "box_super", "cls_super", "dfl_super",
@@ -195,6 +252,7 @@ def main():
             conf_s = det_s[:, 4] if det_s is not None and det_s.numel() else torch.empty(0, device=device)
             stats_s = conf_stats(conf_s)
             tp_s, fp_s, fn_s, p_s, r_s = pr_stats(det_s, gt_xyxy, gt_cls)
+            ap_s = per_image_ap5095(det_s, gt_xyxy, gt_cls)
 
             # --- Base ---
             preds_base = model.predict(batch["img"], skip=skip_base)
@@ -206,6 +264,7 @@ def main():
             conf_b = det_b[:, 4] if det_b is not None and det_b.numel() else torch.empty(0, device=device)
             stats_b = conf_stats(conf_b)
             tp_b, fp_b, fn_b, p_b, r_b = pr_stats(det_b, gt_xyxy, gt_cls)
+            ap_b = per_image_ap5095(det_b, gt_xyxy, gt_cls)
 
             stem = Path(batch["im_file"][0]).stem
             n_gt = int(batch["cls"].numel())
@@ -214,8 +273,8 @@ def main():
                          total_b, box_b, cls_b, dfl_b,
                          total_b - total_s, n_gt]
                         + stats_s + stats_b
-                        + [tp_s, fp_s, fn_s, p_s, r_s]
-                        + [tp_b, fp_b, fn_b, p_b, r_b])
+                        + [tp_s, fp_s, fn_s, p_s, r_s, ap_s]
+                        + [tp_b, fp_b, fn_b, p_b, r_b, ap_b])
             if i % 100 == 0:
                 pbar.set_postfix(s=f"{total_s:.2f}", b=f"{total_b:.2f}",
                                  pS=f"{p_s:.2f}", rS=f"{r_s:.2f}")

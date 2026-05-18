@@ -44,15 +44,17 @@ def main():
     df = pd.read_csv(args.csv)
     print(f"[*] n={len(df)}")
 
-    fig, axes = plt.subplots(2, 2, figsize=(12, 10), sharey="row")
+    METRICS = ["precision", "recall", "ap5095"]
+    fig, axes = plt.subplots(2, len(METRICS), figsize=(5.5 * len(METRICS), 10), sharey="row")
     for ri, (tag, color) in enumerate([("super", "tab:blue"), ("base", "tab:red")]):
         loss = df[f"loss_{tag}"].to_numpy(dtype=float)
-        for ci, metric in enumerate(["precision", "recall"]):
+        for ci, metric in enumerate(METRICS):
             x = df[f"{metric}_{tag}"].to_numpy(dtype=float)
             ax = axes[ri, ci]
             scatter(ax, x, loss, f"[{tag.title()}-net] loss vs {metric}", color)
             ax.set_xlabel(metric); ax.set_ylabel(f"loss_{tag}")
-    fig.suptitle("Loss vs per-image precision / recall  (conf>=0.25, IoU>=0.5)",
+    fig.suptitle("Loss vs per-image P / R / mAP@[0.5:0.95]  "
+                 "(P/R at conf>=0.25 & IoU>=0.5; mAP threshold-free, IoU=0.5:0.05:0.95)",
                  fontsize=12, fontweight="bold")
     fig.tight_layout()
     fig.savefig(outdir / "loss_pr_corr.png", dpi=150)
@@ -60,7 +62,7 @@ def main():
 
     print("\n[*] correlation table (Pearson / Spearman):")
     print(f"{'metric':22s} {'Super_P':>9s} {'Super_S':>9s} {'Base_P':>9s} {'Base_S':>9s}")
-    for metric in ["precision", "recall"]:
+    for metric in METRICS:
         row = []
         for tag in ["super", "base"]:
             x = df[f"{metric}_{tag}"].to_numpy(dtype=float)

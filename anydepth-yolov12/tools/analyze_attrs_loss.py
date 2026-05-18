@@ -8,10 +8,10 @@ Complements analyze_loss_correlation.py with:
   4) 2D heatmaps for attribute pairs (weather x timeofday, etc.)
 
 Usage:
-    python tools/analyze_loss_attrs.py \
+    python tools/analyze_attrs_loss.py \
         --csv ./analysis/bdd100k-AnyDepth/per_image_loss.csv \
         --attr /media/data/bdd100k_yolo/val/attributes.json \
-        --outdir ./analysis/bdd100k-AnyDepth/loss-attributes
+        --outdir ./analysis/bdd100k-AnyDepth/attributes-loss
 """
 import argparse
 import json
