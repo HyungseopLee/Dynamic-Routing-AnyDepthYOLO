@@ -581,7 +581,7 @@ if __name__ == '__main__':
 # Baseline (KITTI: 1242 x 375 → imgsz 192 640)
 mkdir -p ./runs/kitti/tracking/baseline-yolov12l
 python eval_video_kitti.py \
-        --weight /home/hslee/Desktop/Embedded_AI/context-anydepth-det/anydepth-yolov12/bdd_finetuned/baseline_best.pt \
+        --weight ./finetuned_bdd100k/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.6_orig_mAP34.3_33.1.pt \
         --kitti_root /media/data/kitti-tracking \
         --imgsz 192 640 \
         --conf 0.5 \
@@ -592,7 +592,7 @@ python eval_video_kitti.py \
 # AnyDepth Full (all layers used, skip=FFFFFFFF)
 mkdir -p ./runs/kitti/tracking/anydepth-yolov12l-full
 python eval_video_kitti.py \
-        --weight /home/hslee/Desktop/Embedded_AI/context-anydepth-det/anydepth-yolov12/bdd_finetuned/anydepth_best.pt \
+        --weight ./finetuned_bdd100k/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.6_orig_mAP34.3_33.1.pt \
         --kitti_root /media/data/kitti-tracking \
         --imgsz 192 640 \
         --conf 0.5 \
@@ -604,7 +604,7 @@ python eval_video_kitti.py \
 # AnyDepth Base (all layers skipped, skip=TTTTTTTT)
 mkdir -p ./runs/kitti/tracking/anydepth-yolov12l-base
 python eval_video_kitti.py \
-        --weight /home/hslee/Desktop/Embedded_AI/context-anydepth-det/anydepth-yolov12/bdd_finetuned/anydepth_best.pt \
+        --weight ./finetuned_bdd100k/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.6_orig_mAP34.3_33.1.pt \
         --kitti_root /media/data/kitti-tracking \
         --imgsz 192 640 \
         --conf 0.5 \

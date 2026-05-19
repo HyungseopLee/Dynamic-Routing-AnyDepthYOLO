@@ -5,9 +5,16 @@ Mirrors analyze_conf_loss.py but uses ap5095 (Super/Base) as the target
 instead of loss. Expected sign: positive correlation (higher conf -> higher AP).
 
 Usage:
+    # bdd100k
     python tools/analyze_conf_AP.py \
         --csv ./analysis/bdd100k-AnyDepth/per_image_pr.csv \
         --outdir ./analysis/bdd100k-AnyDepth/conf-ap
+    
+    
+    # kitti
+    python tools/analyze_conf_AP.py \
+        --csv ./analysis/kitti-AnyDepth/per_image_kitti.csv \
+        --outdir ./analysis/kitti-AnyDepth/conf-ap
 """
 import argparse
 from pathlib import Path

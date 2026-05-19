@@ -1,0 +1,19 @@
+# KITTI 2D Object Detection — 7 classes (Misc + DontCare ignored).
+# Original KITTI label types kept as-is (no merging):
+#   Car, Van, Truck, Pedestrian, Person_sitting, Cyclist, Tram
+# Dropped during YOLO conversion: Misc, DontCare.
+
+path: /media/data/kitti_yolo
+train: images/train   # 80:20 split: 5985 images
+val:   images/val     # 80:20 split: 1496 images
+
+nc: 7
+
+names:
+  0: car
+  1: van
+  2: truck
+  3: pedestrian
+  4: person_sitting
+  5: cyclist
+  6: tram
