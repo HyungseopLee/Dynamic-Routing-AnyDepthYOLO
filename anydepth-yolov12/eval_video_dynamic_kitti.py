@@ -833,56 +833,75 @@ def main():
     overall = summary["overall"]
     ap_super = overall.get("random_p100", {}).get("mAP@50")
     ap_base  = overall.get("random_p000", {}).get("mAP@50")
+    lat_super = overall.get("random_p100", {}).get("mean_latency_ms")
+    lat_base  = overall.get("random_p000", {}).get("mean_latency_ms")
 
-    fig, ax = plt.subplots(1, 1, figsize=(8.5, 6))
-    xkey = "pct_super"
-    if ap_super is not None:
-        ax.axhline(ap_super, color="tab:blue", ls=":", lw=1.2, alpha=0.9,
-                   label=f"always_super (mAP@50={ap_super:.3f})")
-    if ap_base is not None:
-        ax.axhline(ap_base, color="tab:red", ls=":", lw=1.2, alpha=0.9,
-                   label=f"always_base (mAP@50={ap_base:.3f})")
-    if ap_super is not None and ap_base is not None:
-        ax.plot([0.0, 100.0], [ap_base, ap_super], color="gray", ls="-",
-                lw=1.0, alpha=0.6, zorder=2, label="base–super linear interp")
-    # Random sweep baseline (random_p000 .. random_p100).
-    rand_pts = []
-    for name, s in overall.items():
-        if not name.startswith("random_p"): continue
-        try:
-            p = int(name[len("random_p"):])
-        except ValueError:
-            continue
-        rand_pts.append((_x_value(s, xkey), s["mAP@50"], p))
-    if rand_pts:
-        rand_pts.sort(key=lambda t: t[0])
-        rx = [p[0] for p in rand_pts]; ry = [p[1] for p in rand_pts]
-        ax.plot(rx, ry, "--s", color="black", lw=1.2, ms=4, alpha=0.85,
-                zorder=3, label="random sweep (baseline)")
-    for feat, color, marker in FOCUS_FEATS:
-        pts = []
+    fig, (ax_l, ax_p) = plt.subplots(1, 2, figsize=(15, 6))
+    for xkey, ax, xlabel in [("latency", ax_l, "mean latency (ms)"),
+                              ("pct_super", ax_p, "% super-net used")]:
+        if ap_super is not None:
+            ax.axhline(ap_super, color="tab:blue", ls=":", lw=1.2, alpha=0.9,
+                       label=f"always_super (mAP@50={ap_super:.3f})")
+        if ap_base is not None:
+            ax.axhline(ap_base, color="tab:red", ls=":", lw=1.2, alpha=0.9,
+                       label=f"always_base (mAP@50={ap_base:.3f})")
+        if xkey == "latency":
+            if lat_super is not None:
+                ax.axvline(lat_super, color="tab:blue", ls=":", lw=0.8, alpha=0.5)
+            if lat_base is not None:
+                ax.axvline(lat_base,  color="tab:red",  ls=":", lw=0.8, alpha=0.5)
+        # Linear-interpolation baseline between always-base and always-super
+        # (= expected random_pXX curve, since mAP/lat both average linearly).
+        if ap_super is not None and ap_base is not None:
+            xs_lin = ys_lin = None
+            if xkey == "pct_super":
+                xs_lin, ys_lin = [0.0, 100.0], [ap_base, ap_super]
+            elif lat_super is not None and lat_base is not None:
+                xs_lin, ys_lin = [lat_base, lat_super], [ap_base, ap_super]
+            if xs_lin is not None:
+                ax.plot(xs_lin, ys_lin, color="gray", ls="-", lw=1.0, alpha=0.6,
+                        zorder=2, label="base–super linear interp")
+        # Random sweep baseline (random_p000 .. random_p100).
+        rand_pts = []
         for name, s in overall.items():
-            parsed = _parse_rule_name(name)
-            if parsed is None: continue
-            f_, tt = parsed
-            if f_ != feat: continue
-            pts.append((_x_value(s, xkey), s["mAP@50"], tt))
-        if not pts: continue
-        pts.sort(key=lambda t: t[0])
-        xs = [p[0] for p in pts]; ys = [p[1] for p in pts]
-        tts = [p[2] for p in pts]
-        ax.plot(xs, ys, "-", color=color, lw=1.6, marker=marker, ms=5,
-                alpha=0.9, label=f"{feat} (τ sweep)")
-        for xv, yv, tt in zip(xs, ys, tts):
-            ax.annotate(f"{tt/100:.2f}", (xv, yv), fontsize=6,
-                        xytext=(3, 3), textcoords="offset points",
-                        color=color)
-    ax.set_xlabel("% super-net used")
-    ax.set_ylabel("mAP@50 (accumulated)")
-    ax.grid(alpha=0.3)
-    ax.legend(fontsize=8, loc="best", framealpha=0.9)
-    ax.set_xlim(-5, 105)
-    ax.set_title("trade-off vs %super-net used", fontsize=11)
+            if not name.startswith("random_p"): continue
+            try:
+                p = int(name[len("random_p"):])
+            except ValueError:
+                continue
+            rand_pts.append((_x_value(s, xkey), s["mAP@50"], p))
+        if rand_pts:
+            rand_pts.sort(key=lambda t: t[0])
+            rx = [p[0] for p in rand_pts]; ry = [p[1] for p in rand_pts]
+            ax.plot(rx, ry, "--s", color="black", lw=1.2, ms=4, alpha=0.85,
+                    zorder=3, label="random sweep (baseline)")
+        for feat, color, marker in FOCUS_FEATS:
+            pts = []
+            for name, s in overall.items():
+                parsed = _parse_rule_name(name)
+                if parsed is None: continue
+                f_, tt = parsed
+                if f_ != feat: continue
+                pts.append((_x_value(s, xkey), s["mAP@50"], tt))
+            if not pts: continue
+            pts.sort(key=lambda t: t[0])
+            xs = [p[0] for p in pts]; ys = [p[1] for p in pts]
+            tts = [p[2] for p in pts]
+            ax.plot(xs, ys, "-", color=color, lw=1.6, marker=marker, ms=5,
+                    alpha=0.9, label=f"{feat} (τ sweep)")
+            # mark each τ along the curve, but only on the %super panel
+            if xkey == "pct_super":
+                for xv, yv, tt in zip(xs, ys, tts):
+                    ax.annotate(f"{tt/100:.2f}", (xv, yv), fontsize=6,
+                                xytext=(3, 3), textcoords="offset points",
+                                color=color)
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel("mAP@50 (accumulated)")
+        ax.grid(alpha=0.3)
+        ax.legend(fontsize=8, loc="best", framealpha=0.9)
+    ax_p.set_xlim(-5, 105)
+    ax_l.set_title("trade-off vs latency", fontsize=11)
+    ax_p.set_title("trade-off vs %super-net used", fontsize=11)
     fig.suptitle("KITTI Tracking — confidence-based routing vs always-super/always-base",
                  fontsize=13, fontweight="bold")
     fig.tight_layout()
