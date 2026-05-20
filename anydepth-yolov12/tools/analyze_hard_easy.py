@@ -16,11 +16,11 @@ Outputs (into --outdir):
 
 Usage:
     python tools/analyze_hard_easy.py \
-        --csv ./analysis/bdd100k-AnyDepth/per_image_loss.csv \
+        --csv ./analysis/bdd100k-AnyDepth/per_image_loss_pr_conf.csv \
         --attr /media/data/bdd100k_yolo/val/attributes.json \
         --labels /media/data/bdd100k_yolo/val/labels \
-        --imgsz 1280 720 \
         --quantile 0.25 \
+        --component all \
         --outdir ./analysis/bdd100k-AnyDepth/easy-mid-hard
 """
 import argparse
@@ -32,6 +32,8 @@ import pandas as pd
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+
+from analyze_attrs_loss import COMPONENTS
 
 
 WEATHER = {0: "clear", 1: "rainy", 2: "snowy", 3: "overcast", 4: "foggy", 5: "partly cloudy", -1: "undefined"}
@@ -244,6 +246,10 @@ def main():
     ap.add_argument("--quantile", type=float, default=0.25,
                     help="bucket quantile: easy=bottom q, hard=top q")
     ap.add_argument("--outdir", default="runs/loss_analysis")
+    ap.add_argument("--component", default="all",
+                    choices=["all", "total", "box", "cls", "dfl"],
+                    help="which loss component drives the easy/mid/hard bucketing; "
+                         "'all' runs each component in turn")
     args = ap.parse_args()
 
     q = args.quantile
@@ -265,47 +271,59 @@ def main():
         df[[f"cls_{i}" for i in range(len(CLASS_NAMES))]].fillna(0).astype(int)
     df["n_gt_lbl"] = df["n_gt_lbl"].fillna(0).astype(int)
 
-    df["bucket_super"], lo_s, hi_s = assign_buckets(df["loss_super"], q)
-    df["bucket_base"],  lo_b, hi_b = assign_buckets(df["loss_base"],  q)
     n = len(df)
-    print(f"[*] n={n}, q={q}")
-    print(f"    Super-net thresholds: easy<={lo_s:.3f}, hard>={hi_s:.3f}")
-    print(f"    Base-net  thresholds: easy<={lo_b:.3f}, hard>={hi_b:.3f}")
-    for tag, col in [("Super", "bucket_super"), ("Base", "bucket_base")]:
-        vc = df[col].value_counts().reindex(BUCKETS)
-        print(f"    {tag} bucket sizes: " + ", ".join(f"{b}={int(vc[b])}" for b in BUCKETS))
+    comps = list(COMPONENTS.keys()) if args.component == "all" else [args.component]
+    print(f"[*] n={n}, q={q}, components={comps}")
 
-    # ===== Figure 1: hard_easy_attrs.png — Super (solid) vs Base (hatched) dodged =====
-    fig, axes = plt.subplots(1, 3, figsize=(22, 6))
-    for ci, attr in enumerate(ATTR_MAPS):
-        title = f"{attr}  (S: easy≤{lo_s:.2f}/hard≥{hi_s:.2f}, "\
-                f"B: easy≤{lo_b:.2f}/hard≥{hi_b:.2f})"
-        attr_dodge_stacked(axes[ci], df, attr, title)
-    fig.suptitle(f"Hard vs Easy bucket — attribute mix  (q={q}, n={n})  | "
-                 f"left bar = Super (solid), right bar = Base (hatched)",
-                 fontsize=12, fontweight="bold")
-    fig.tight_layout()
-    fig.savefig(outdir / f"hard_easy_attrs_{q_tag}.png", dpi=150)
-    plt.close(fig)
+    for comp in comps:
+        super_col, base_col, _, pretty = COMPONENTS[comp]
+        if super_col not in df.columns or base_col not in df.columns:
+            print(f"[!] skipping {comp}: columns missing ({super_col}/{base_col})")
+            continue
 
-    # ===== Figure 2: hard_easy_objects.png — Super (solid) vs Base (hatched) dodged =====
-    fig, axes = plt.subplots(1, 2, figsize=(16, 6))
-    dodge_stacked_bar(axes[0], df,
-                      [f"size_{s}" for s in SIZE_BINS], SIZE_BINS, SIZE_COLORS,
-                      title="object size  (small<32², large≥96²)",
-                      ylabel="share of all GT objects")
-    dodge_stacked_bar(axes[1], df,
-                      [f"cls_{i}" for i in range(len(CLASS_NAMES))], CLASS_NAMES, CLS_COLORS,
-                      title="class mix",
-                      ylabel="share of all GT objects")
-    fig.suptitle(f"Hard vs Easy bucket — object stats  (q={q}, n={n})  | "
-                 f"left bar = Super, right bar = Base",
-                 fontsize=12, fontweight="bold")
-    fig.tight_layout()
-    fig.savefig(outdir / f"hard_easy_objects_{q_tag}.png", dpi=150)
-    plt.close(fig)
+        df["bucket_super"], lo_s, hi_s = assign_buckets(df[super_col], q)
+        df["bucket_base"],  lo_b, hi_b = assign_buckets(df[base_col],  q)
 
-    print(f"[*] figures written to {outdir}")
+        print(f"\n[*] === component: {comp} ({pretty}) ===")
+        print(f"    Super-net thresholds: easy<={lo_s:.3f}, hard>={hi_s:.3f}")
+        print(f"    Base-net  thresholds: easy<={lo_b:.3f}, hard>={hi_b:.3f}")
+        for tag, col in [("Super", "bucket_super"), ("Base", "bucket_base")]:
+            vc = df[col].value_counts().reindex(BUCKETS)
+            print(f"    {tag} bucket sizes: " + ", ".join(f"{b}={int(vc[b])}" for b in BUCKETS))
+
+        suffix = "" if comp == "total" else f"_{comp}"
+
+        # ===== Figure 1: attribute mix =====
+        fig, axes = plt.subplots(1, 3, figsize=(22, 6))
+        for ci, attr in enumerate(ATTR_MAPS):
+            title = f"{attr}  (S: easy≤{lo_s:.2f}/hard≥{hi_s:.2f}, "\
+                    f"B: easy≤{lo_b:.2f}/hard≥{hi_b:.2f})"
+            attr_dodge_stacked(axes[ci], df, attr, title)
+        fig.suptitle(f"Hard vs Easy bucket — attribute mix  ({pretty}; q={q}, n={n})  | "
+                     f"left bar = Super (solid), right bar = Base (hatched)",
+                     fontsize=12, fontweight="bold")
+        fig.tight_layout()
+        fig.savefig(outdir / f"hard_easy_attrs_{q_tag}{suffix}.png", dpi=150)
+        plt.close(fig)
+
+        # ===== Figure 2: object stats =====
+        fig, axes = plt.subplots(1, 2, figsize=(16, 6))
+        dodge_stacked_bar(axes[0], df,
+                          [f"size_{s}" for s in SIZE_BINS], SIZE_BINS, SIZE_COLORS,
+                          title="object size  (small<32², large≥96²)",
+                          ylabel="share of all GT objects")
+        dodge_stacked_bar(axes[1], df,
+                          [f"cls_{i}" for i in range(len(CLASS_NAMES))], CLASS_NAMES, CLS_COLORS,
+                          title="class mix",
+                          ylabel="share of all GT objects")
+        fig.suptitle(f"Hard vs Easy bucket — object stats  ({pretty}; q={q}, n={n})  | "
+                     f"left bar = Super, right bar = Base",
+                     fontsize=12, fontweight="bold")
+        fig.tight_layout()
+        fig.savefig(outdir / f"hard_easy_objects_{q_tag}{suffix}.png", dpi=150)
+        plt.close(fig)
+
+    print(f"\n[*] figures written to {outdir}")
 
 
 if __name__ == "__main__":

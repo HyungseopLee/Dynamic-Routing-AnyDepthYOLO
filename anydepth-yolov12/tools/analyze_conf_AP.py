@@ -7,13 +7,14 @@ instead of loss. Expected sign: positive correlation (higher conf -> higher AP).
 Usage:
     # bdd100k
     python tools/analyze_conf_AP.py \
-        --csv ./analysis/bdd100k-AnyDepth/per_image_pr.csv \
-        --outdir ./analysis/bdd100k-AnyDepth/conf-ap
+        --csv ./analysis/bdd100k-AnyDepth/per_image_loss_pr_conf.csv \
+        --outdir ./analysis/bdd100k-AnyDepth/conf-AP
     
+    --all
     
     # kitti
     python tools/analyze_conf_AP.py \
-        --csv ./analysis/kitti-AnyDepth/per_image_kitti.csv \
+        --csv ./analysis/kitti-AnyDepth/per_image_loss_pr_conf.csv \
         --outdir ./analysis/kitti-AnyDepth/conf-ap
 """
 import argparse
@@ -27,8 +28,10 @@ import matplotlib.pyplot as plt
 from scipy.stats import pearsonr, spearmanr
 
 
-CONF_DEFS = ["mean_conf_all", "mean_conf_10", "mean_conf_25",
-             "mean_conf_50", "mean_conf_75", "top10_mean_conf"]
+CONF_DEFS = ["mean_conf_all",\
+            #  "mean_conf_01", "mean_conf_05",
+             "mean_conf_10", "mean_conf_25", "mean_conf_50", "mean_conf_75",
+             "top10_mean_conf", "top20_mean_conf", "top30_mean_conf"]
 
 
 def scatter_panel(ax, x, y, title, color):

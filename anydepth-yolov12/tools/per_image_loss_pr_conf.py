@@ -5,18 +5,28 @@ for Super-net and Base-net (AnyDepth) on BDD100K.
 For each image and for each of {Super-net (no skip), Base-net (skip all)}:
   - loss components from v8DetectionLoss: box / cls / dfl / total
   - post-NMS confidence stats (NMS at conf>=0.001, IoU=0.7):
-        n_pred_{10,25,50,75,all}, mean_conf_{10,25,50,75,all},
-        top10_mean_conf
+        n_pred_{01,05,10,25,50,75,all}, mean_conf_{01,05,10,25,50,75,all},
+        top{10,20,30}_mean_conf
   - PR at conf>=0.25, IoU>=0.5: tp / fp / fn / precision / recall
   - mAP@[0.5:0.95] threshold-free (10 IoUs averaged)
 
 Outputs a single wide CSV; all downstream analyze_* scripts read from it.
 
 Usage:
+    # bdd100k
     PYTHONPATH=$PWD python tools/per_image_loss_pr_conf.py \
         --weight ./finetuned_bdd100k/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.6_orig_mAP34.3_33.1.pt \
         --data bdd100k.yaml --imgsz 1280 \
         --out ./analysis/bdd100k-AnyDepth/per_image_loss_pr_conf.csv
+
+    # kitti object-detection split (image-level, NOT the tracking video split).
+    # Uses the KITTI-finetuned AnyDepth weight + kitti.yaml (7 classes).
+    # imgsz=1248 matches the value the KITTI weight was trained at.
+    PYTHONPATH=$PWD python tools/per_image_loss_pr_conf.py \
+        --weight ./runs/kitti/detect/anydepth-yolov12s/train/weights/best.pt \
+        --data kitti.yaml --imgsz 1248 \
+        --split all \
+        --out ./analysis/kitti-AnyDepth/per_image_loss_pr_conf.csv
 """
 import argparse
 import csv
@@ -36,8 +46,8 @@ from ultralytics.utils.loss import v8DetectionLoss
 import numpy as np
 
 
-THRESHOLDS = (0.10, 0.25, 0.50, 0.75)
-TOPK = 10
+THRESHOLDS = (0.01, 0.05, 0.10, 0.25, 0.50, 0.75)
+TOPKS = (10, 20, 30)
 NMS_BASE_CONF = 0.001
 NMS_IOU = 0.7
 PR_CONF = 0.25       # τ for precision/recall
@@ -50,7 +60,9 @@ def parse_args():
     p.add_argument("--weight", required=True)
     p.add_argument("--data", default="bdd100k.yaml")
     p.add_argument("--imgsz", type=int, default=1280)
-    p.add_argument("--split", default="val", choices=["val", "train"])
+    p.add_argument("--split", default="val", choices=["val", "train", "all"],
+                   help="'all' processes train and val sequentially and writes a "
+                        "single CSV with an extra 'split' column.")
     p.add_argument("--device", default="cuda:0")
     p.add_argument("--out", default="analysis/bdd100k-AnyDepth/per_image_loss_pr_conf.csv")
     p.add_argument("--limit", type=int, default=0)
@@ -69,10 +81,11 @@ def conf_stats(conf_tensor):
         n = int(mask.sum().item())
         m = float(conf_tensor[mask].mean().item()) if n > 0 else float("nan")
         out += [n, m]
-    if conf_tensor.numel() >= TOPK:
-        out.append(float(torch.topk(conf_tensor, k=TOPK).values.mean().item()))
-    else:
-        out.append(float("nan"))
+    for k in TOPKS:
+        if conf_tensor.numel() >= k:
+            out.append(float(torch.topk(conf_tensor, k=k).values.mean().item()))
+        else:
+            out.append(float("nan"))
     n_all = int(conf_tensor.numel())
     m_all = float(conf_tensor.mean().item()) if n_all > 0 else float("nan")
     out += [n_all, m_all]
@@ -189,12 +202,7 @@ def main():
         raise SystemExit("AnyDepth model required.")
 
     data = check_det_dataset(args.data)
-    img_path = data[args.split]
     cfg = get_cfg(DEFAULT_CFG_DICT, overrides={"imgsz": args.imgsz, "task": "detect", "mode": "val"})
-    dataset = build_yolo_dataset(cfg, img_path, batch=1, data=data, mode="val",
-                                 stride=int(max(model.stride)), rect=False)
-    loader = torch.utils.data.DataLoader(
-        dataset, batch_size=1, shuffle=False, num_workers=4, collate_fn=dataset.collate_fn)
 
     merged = dict(DEFAULT_CFG_DICT)
     ckpt_args = model.args if isinstance(model.args, dict) else vars(model.args)
@@ -210,74 +218,83 @@ def main():
     for t in THRESHOLDS:
         tag = f"{int(round(t*100)):02d}"
         conf_cols += [f"n_pred_{tag}", f"mean_conf_{tag}"]
-    conf_cols += ["top10_mean_conf", "n_pred_all", "mean_conf_all"]
+    conf_cols += [f"top{k}_mean_conf" for k in TOPKS]
+    conf_cols += ["n_pred_all", "mean_conf_all"]
     pr_cols = ["tp", "fp", "fn", "precision", "recall", "ap5095"]
 
-    header = ["stem",
+    header = ["stem", "split",
               "loss_super", "box_super", "cls_super", "dfl_super",
               "loss_base",  "box_base",  "cls_base",  "dfl_base",
-              "loss_diff", "n_gt"] \
+              "loss_diff", "box_diff", "cls_diff", "dfl_diff", "n_gt"] \
              + [c + "_super" for c in conf_cols] \
              + [c + "_base"  for c in conf_cols] \
              + [c + "_super" for c in pr_cols] \
              + [c + "_base"  for c in pr_cols]
 
+    splits = ["train", "val"] if args.split == "all" else [args.split]
     out_path = Path(args.out); out_path.parent.mkdir(parents=True, exist_ok=True)
     rows = []
-    n = len(dataset) if args.limit <= 0 else min(args.limit, len(dataset))
     with torch.no_grad():
-        pbar = tqdm(loader, total=n)
-        for i, batch in enumerate(pbar):
-            if args.limit and i >= args.limit: break
-            batch["img"] = batch["img"].to(device, non_blocking=True).float() / 255.0
-            for k in ("cls", "bboxes", "batch_idx"):
-                if k in batch and torch.is_tensor(batch[k]):
-                    batch[k] = batch[k].to(device, non_blocking=True)
-            img_h, img_w = batch["img"].shape[-2], batch["img"].shape[-1]
+        for split in splits:
+            img_path = data[split]
+            dataset = build_yolo_dataset(cfg, img_path, batch=1, data=data, mode="val",
+                                         stride=int(max(model.stride)), rect=False)
+            loader = torch.utils.data.DataLoader(
+                dataset, batch_size=1, shuffle=False, num_workers=4,
+                collate_fn=dataset.collate_fn)
+            n = len(dataset) if args.limit <= 0 else min(args.limit, len(dataset))
+            print(f"[*] split={split}  n={n}")
+            pbar = tqdm(loader, total=n, desc=split)
+            for i, batch in enumerate(pbar):
+                if args.limit and i >= args.limit: break
+                batch["img"] = batch["img"].to(device, non_blocking=True).float() / 255.0
+                for k in ("cls", "bboxes", "batch_idx"):
+                    if k in batch and torch.is_tensor(batch[k]):
+                        batch[k] = batch[k].to(device, non_blocking=True)
+                img_h, img_w = batch["img"].shape[-2], batch["img"].shape[-1]
 
-            # GT for PR (xywh normalized -> xyxy in pixel coords of resized img)
-            gt_xywh = batch["bboxes"].clone()
-            gt_xywh[:, 0] *= img_w; gt_xywh[:, 2] *= img_w
-            gt_xywh[:, 1] *= img_h; gt_xywh[:, 3] *= img_h
-            gt_xyxy = xywh2xyxy(gt_xywh)
-            gt_cls = batch["cls"].squeeze(-1).long() if batch["cls"].numel() else batch["cls"].long()
+                gt_xywh = batch["bboxes"].clone()
+                gt_xywh[:, 0] *= img_w; gt_xywh[:, 2] *= img_w
+                gt_xywh[:, 1] *= img_h; gt_xywh[:, 3] *= img_h
+                gt_xyxy = xywh2xyxy(gt_xywh)
+                gt_cls = batch["cls"].squeeze(-1).long() if batch["cls"].numel() else batch["cls"].long()
 
-            # --- Super ---
-            preds_super = model.predict(batch["img"], skip=skip_super)
-            _, items_super = criterion(preds_super, batch)
-            box_s, cls_s, dfl_s, total_s = loss_items_to_tuple(items_super)
-            raw_s = preds_super[0] if isinstance(preds_super, (list, tuple)) else preds_super
-            det_s = non_max_suppression(raw_s, conf_thres=NMS_BASE_CONF,
-                                        iou_thres=NMS_IOU, nc=nc)[0]
-            conf_s = det_s[:, 4] if det_s is not None and det_s.numel() else torch.empty(0, device=device)
-            stats_s = conf_stats(conf_s)
-            tp_s, fp_s, fn_s, p_s, r_s = pr_stats(det_s, gt_xyxy, gt_cls)
-            ap_s = per_image_ap5095(det_s, gt_xyxy, gt_cls)
+                # --- Super ---
+                preds_super = model.predict(batch["img"], skip=skip_super)
+                _, items_super = criterion(preds_super, batch)
+                box_s, cls_s, dfl_s, total_s = loss_items_to_tuple(items_super)
+                raw_s = preds_super[0] if isinstance(preds_super, (list, tuple)) else preds_super
+                det_s = non_max_suppression(raw_s, conf_thres=NMS_BASE_CONF,
+                                            iou_thres=NMS_IOU, nc=nc)[0]
+                conf_s = det_s[:, 4] if det_s is not None and det_s.numel() else torch.empty(0, device=device)
+                stats_s = conf_stats(conf_s)
+                tp_s, fp_s, fn_s, p_s, r_s = pr_stats(det_s, gt_xyxy, gt_cls)
+                ap_s = per_image_ap5095(det_s, gt_xyxy, gt_cls)
 
-            # --- Base ---
-            preds_base = model.predict(batch["img"], skip=skip_base)
-            _, items_base = criterion(preds_base, batch)
-            box_b, cls_b, dfl_b, total_b = loss_items_to_tuple(items_base)
-            raw_b = preds_base[0] if isinstance(preds_base, (list, tuple)) else preds_base
-            det_b = non_max_suppression(raw_b, conf_thres=NMS_BASE_CONF,
-                                        iou_thres=NMS_IOU, nc=nc)[0]
-            conf_b = det_b[:, 4] if det_b is not None and det_b.numel() else torch.empty(0, device=device)
-            stats_b = conf_stats(conf_b)
-            tp_b, fp_b, fn_b, p_b, r_b = pr_stats(det_b, gt_xyxy, gt_cls)
-            ap_b = per_image_ap5095(det_b, gt_xyxy, gt_cls)
+                # --- Base ---
+                preds_base = model.predict(batch["img"], skip=skip_base)
+                _, items_base = criterion(preds_base, batch)
+                box_b, cls_b, dfl_b, total_b = loss_items_to_tuple(items_base)
+                raw_b = preds_base[0] if isinstance(preds_base, (list, tuple)) else preds_base
+                det_b = non_max_suppression(raw_b, conf_thres=NMS_BASE_CONF,
+                                            iou_thres=NMS_IOU, nc=nc)[0]
+                conf_b = det_b[:, 4] if det_b is not None and det_b.numel() else torch.empty(0, device=device)
+                stats_b = conf_stats(conf_b)
+                tp_b, fp_b, fn_b, p_b, r_b = pr_stats(det_b, gt_xyxy, gt_cls)
+                ap_b = per_image_ap5095(det_b, gt_xyxy, gt_cls)
 
-            stem = Path(batch["im_file"][0]).stem
-            n_gt = int(batch["cls"].numel())
-            rows.append([stem,
-                         total_s, box_s, cls_s, dfl_s,
-                         total_b, box_b, cls_b, dfl_b,
-                         total_b - total_s, n_gt]
-                        + stats_s + stats_b
-                        + [tp_s, fp_s, fn_s, p_s, r_s, ap_s]
-                        + [tp_b, fp_b, fn_b, p_b, r_b, ap_b])
-            if i % 100 == 0:
-                pbar.set_postfix(s=f"{total_s:.2f}", b=f"{total_b:.2f}",
-                                 pS=f"{p_s:.2f}", rS=f"{r_s:.2f}")
+                stem = Path(batch["im_file"][0]).stem
+                n_gt = int(batch["cls"].numel())
+                rows.append([stem, split,
+                             total_s, box_s, cls_s, dfl_s,
+                             total_b, box_b, cls_b, dfl_b,
+                             total_b - total_s, box_b - box_s, cls_b - cls_s, dfl_b - dfl_s, n_gt]
+                            + stats_s + stats_b
+                            + [tp_s, fp_s, fn_s, p_s, r_s, ap_s]
+                            + [tp_b, fp_b, fn_b, p_b, r_b, ap_b])
+                if i % 100 == 0:
+                    pbar.set_postfix(s=f"{total_s:.2f}", b=f"{total_b:.2f}",
+                                     pS=f"{p_s:.2f}", rS=f"{r_s:.2f}")
 
     with open(out_path, "w", newline="") as f:
         w = csv.writer(f); w.writerow(header); w.writerows(rows)

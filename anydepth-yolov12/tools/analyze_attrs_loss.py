@@ -9,7 +9,7 @@ Complements analyze_loss_correlation.py with:
 
 Usage:
     python tools/analyze_attrs_loss.py \
-        --csv ./analysis/bdd100k-AnyDepth/per_image_loss.csv \
+        --csv ./analysis/bdd100k-AnyDepth/per_image_loss_pr_conf.csv \
         --attr /media/data/bdd100k_yolo/val/attributes.json \
         --outdir ./analysis/bdd100k-AnyDepth/attributes-loss
 """
@@ -62,7 +62,7 @@ def group_stats(df, attr, value_col):
     return pd.DataFrame(rows, columns=["label", "n", "mean", "median", "std"]), H, p, eps2
 
 
-def grouped_boxplot(ax, df, attr, ylim=None):
+def grouped_boxplot(ax, df, attr, super_col, base_col, ylabel="detection loss", ylim=None):
     """Side-by-side Super (blue) vs Base (red) boxplots for one attribute."""
     name_map = MAPS[attr]
     labels, data_s, data_b, ns = [], [], [], []
@@ -75,8 +75,8 @@ def grouped_boxplot(ax, df, attr, ylim=None):
         if n_k < MIN_GROUP_N:
             continue
         labels.append(lab)
-        data_s.append(df.loc[mask, "loss_super"].to_numpy())
-        data_b.append(df.loc[mask, "loss_base"].to_numpy())
+        data_s.append(df.loc[mask, super_col].to_numpy())
+        data_b.append(df.loc[mask, base_col].to_numpy())
         ns.append(n_k)
 
     k = len(labels)
@@ -119,7 +119,7 @@ def grouped_boxplot(ax, df, attr, ylim=None):
     ax.set_xticklabels(labels, fontsize=10)
     ax.set_xlim(-0.6, k - 0.4)
     ax.set_title(attr, fontsize=12, fontweight="bold")
-    ax.set_ylabel("detection loss")
+    ax.set_ylabel(ylabel)
     ax.grid(axis="y", alpha=0.25)
 
     # single legend handle per color (just for Super/Base, not duplicated)
@@ -129,53 +129,48 @@ def grouped_boxplot(ax, df, attr, ylim=None):
               loc="upper right", fontsize=9, framealpha=0.9)
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--csv", required=True)
-    ap.add_argument("--attr", required=True)
-    ap.add_argument("--outdir", default="runs/loss_analysis")
-    args = ap.parse_args()
+# (component_key, super_col, base_col, diff_col, pretty_label)
+COMPONENTS = {
+    "total": ("loss_super", "loss_base", "loss_diff", "total loss"),
+    "box":   ("box_super",  "box_base",  "box_diff",  "box (regression) loss"),
+    "cls":   ("cls_super",  "cls_base",  "cls_diff",  "cls (classification) loss"),
+    "dfl":   ("dfl_super",  "dfl_base",  "dfl_diff",  "dfl loss"),
+}
 
-    outdir = Path(args.outdir); outdir.mkdir(parents=True, exist_ok=True)
 
-    df = pd.read_csv(args.csv)
-    attrs = json.load(open(args.attr))
-    for a in ("weather", "scene", "timeofday"):
-        df[a] = df["stem"].map(lambda s, a=a: attrs.get(s, {}).get(a, -1))
-        df[a + "_name"] = df[a].map(MAPS[a])
+def run_for_component(df, n, comp_key, outdir):
+    super_col, base_col, diff_col, pretty = COMPONENTS[comp_key]
 
-    n = len(df)
-    print(f"[*] n={n}")
+    # If diff column missing (older CSV), derive on the fly.
+    if diff_col not in df.columns:
+        df = df.copy()
+        df[diff_col] = df[base_col] - df[super_col]
 
-    metrics = [("loss_super", "tab:blue"), ("loss_base", "tab:red"), ("loss_diff", "tab:green")]
+    metrics = [(super_col, "tab:blue"), (base_col, "tab:red"), (diff_col, "tab:green")]
 
-    # ===== K-W stats (printed only) =====
-    print("\n[*] Kruskal-Wallis (per attribute, per metric):")
+    print(f"\n[*] === component: {comp_key} ({pretty}) ===")
+    print("[*] Kruskal-Wallis (per attribute, per metric):")
     for mcol, _ in metrics:
         for attr in MAPS:
             _, H, p, eps2 = group_stats(df, attr, mcol)
-            print(f"  {mcol:11s} ~ {attr:10s}: H={H:8.2f}  p={p:.2e}  eps^2={eps2:.4f}")
+            print(f"  {mcol:14s} ~ {attr:10s}: H={H:8.2f}  p={p:.2e}  eps^2={eps2:.4f}")
 
     # ===== Combined figure: 2 rows x 3 attrs =====
-    #   row 0: Super vs Base boxplot (distribution)
-    #   row 1: loss_diff = base - super bar (Base-net penalty)
-    # x-axis categories identical between rows so columns line up.
-    all_vals = np.concatenate([df["loss_super"].to_numpy(), df["loss_base"].to_numpy()])
+    all_vals = np.concatenate([df[super_col].to_numpy(), df[base_col].to_numpy()])
     y_lo = float(np.percentile(all_vals, 1))
     y_hi = float(np.percentile(all_vals, 99))
 
     fig, axes = plt.subplots(2, len(MAPS), figsize=(20, 11),
                              gridspec_kw=dict(height_ratios=[2.2, 1.0]))
-    # top row: boxplots, shared y across the 3 attribute panels
     for j, attr in enumerate(MAPS):
-        grouped_boxplot(axes[0, j], df, attr, ylim=(y_lo, y_hi))
+        grouped_boxplot(axes[0, j], df, attr, super_col, base_col,
+                        ylabel=pretty, ylim=(y_lo, y_hi))
     for j in range(1, len(MAPS)):
         axes[0, j].sharey(axes[0, 0])
 
-    # bottom row: loss_diff bars in the SAME category order as the top boxplots
     for j, attr in enumerate(MAPS):
         ax = axes[1, j]
-        tbl, H, p, eps2 = group_stats(df, attr, "loss_diff")
+        tbl, H, p, eps2 = group_stats(df, attr, diff_col)
         # preserve MAP-defined order (matches grouped_boxplot's order)
         order_map = {MAPS[attr][k]: i for i, k in enumerate(sorted(MAPS[attr])) if k != -1}
         tbl = tbl.assign(_o=tbl["label"].map(order_map)).sort_values("_o").drop(columns="_o")
@@ -186,8 +181,8 @@ def main():
         ax.set_xticks(x)
         ax.set_xticklabels(tbl["label"], fontsize=10)
         ax.set_xlim(-0.6, len(tbl) - 0.4)
-        ax.set_ylabel("loss_base − loss_super (± SE)")
-        ax.set_title(f"Base-net penalty  |  K-W H={H:.1f}, p={p:.1e}, eps²={eps2:.3f}",
+        ax.set_ylabel(f"{base_col} − {super_col} (± SE)")
+        ax.set_title(f"Base-net penalty ({comp_key})  |  K-W H={H:.1f}, p={p:.1e}, eps²={eps2:.3f}",
                      fontsize=10)
         ax.grid(axis="y", alpha=0.25)
         for xi, (m, nn) in enumerate(zip(tbl["mean"], tbl["n"])):
@@ -197,11 +192,12 @@ def main():
     for j in range(1, len(MAPS)):
         axes[1, j].sharey(axes[1, 0])
 
-    fig.suptitle(f"Detection loss by attribute (n={n}; top: Super vs Base distribution, "
+    fig.suptitle(f"{pretty} by attribute (n={n}; top: Super vs Base distribution, "
                  f"bottom: Base-net penalty)",
                  fontsize=13, fontweight="bold")
     fig.tight_layout()
-    fig.savefig(outdir / "attr_loss_diff.png", dpi=150)
+    suffix = "" if comp_key == "total" else f"_{comp_key}"
+    fig.savefig(outdir / f"attr_loss_diff{suffix}.png", dpi=150)
     plt.close(fig)
 
     # ===== 4) Interaction plots: for each attr pair, lines = level of "hue" attr =====
@@ -230,8 +226,8 @@ def main():
                 if len(cell) < MIN_GROUP_N:
                     mean_s.append(np.nan); mean_b.append(np.nan); ns.append(len(cell))
                 else:
-                    mean_s.append(cell["loss_super"].mean())
-                    mean_b.append(cell["loss_base"].mean())
+                    mean_s.append(cell[super_col].mean())
+                    mean_b.append(cell[base_col].mean())
                     ns.append(len(cell))
             ax.plot(x_idx, mean_s, "-o",  color=color, lw=1.8, ms=6, label=f"{hlab} (Super)")
             ax.plot(x_idx, mean_b, "--s", color=color, lw=1.5, ms=5, alpha=0.85,
@@ -245,18 +241,44 @@ def main():
         ax.set_xticks(x_idx)
         ax.set_xticklabels(x_levels, rotation=20, ha="right", fontsize=9)
         ax.set_xlabel(a1)
-        ax.set_ylabel("mean detection loss")
+        ax.set_ylabel(f"mean {pretty}")
         ax.set_title(f"{a1} × {a2}\n(line color = {a2}; solid=Super, dashed=Base)",
                      fontsize=10)
         ax.grid(axis="y", alpha=0.3)
         ax.legend(fontsize=7, loc="best", ncol=1, framealpha=0.9, title=a2)
-    fig.suptitle("Interaction plots — parallel lines = independent effects; "
+    fig.suptitle(f"Interaction plots ({pretty}) — parallel lines = independent effects; "
                  "fanning/crossing = interaction "
                  f"(cells with n<{MIN_GROUP_N} skipped)",
                  fontsize=12, fontweight="bold")
     fig.tight_layout()
-    fig.savefig(outdir / "attr_interaction.png", dpi=150)
+    fig.savefig(outdir / f"attr_interaction{suffix}.png", dpi=150)
     plt.close(fig)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--csv", required=True)
+    ap.add_argument("--attr", required=True)
+    ap.add_argument("--outdir", default="runs/loss_analysis")
+    ap.add_argument("--component", default="all",
+                    choices=["all", "total", "box", "cls", "dfl"],
+                    help="which loss component to analyze; 'all' runs every component")
+    args = ap.parse_args()
+
+    outdir = Path(args.outdir); outdir.mkdir(parents=True, exist_ok=True)
+
+    df = pd.read_csv(args.csv)
+    attrs = json.load(open(args.attr))
+    for a in ("weather", "scene", "timeofday"):
+        df[a] = df["stem"].map(lambda s, a=a: attrs.get(s, {}).get(a, -1))
+        df[a + "_name"] = df[a].map(MAPS[a])
+
+    n = len(df)
+    print(f"[*] n={n}")
+
+    comps = list(COMPONENTS.keys()) if args.component == "all" else [args.component]
+    for c in comps:
+        run_for_component(df, n, c, outdir)
 
     print(f"\n[*] figures written to {outdir}")
 

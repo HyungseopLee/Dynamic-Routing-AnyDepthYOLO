@@ -2,7 +2,7 @@
 Loss vs post-NMS confidence correlation (Step 3).
 
 For each model (Super, Base) and each conf definition
-    mean_conf_25, mean_conf_50, mean_conf_75, top10_mean_conf
+    mean_conf_25, mean_conf_50, mean_conf_75, top{10,20,30}_mean_conf
 plots loss vs conf scatter with Pearson / Spearman.
 
 Output: conf_loss_corr.png  (2 rows = Super/Base, 4 cols = conf definitions)
@@ -10,7 +10,7 @@ Output: conf_loss_corr.png  (2 rows = Super/Base, 4 cols = conf definitions)
 Usage:
     mkdir -p ./analysis/bdd100k-AnyDepth/conf-loss
     python tools/analyze_conf_loss.py \
-        --csv ./analysis/bdd100k-AnyDepth/per_image_loss_conf.csv \
+        --csv ./analysis/bdd100k-AnyDepth/per_image_loss_pr_conf.csv \
         --outdir ./analysis/bdd100k-AnyDepth/conf-loss
 """
 import argparse
@@ -24,8 +24,9 @@ import matplotlib.pyplot as plt
 from scipy.stats import pearsonr, spearmanr
 
 
-CONF_DEFS = ["mean_conf_all", "mean_conf_10", "mean_conf_25",
-             "mean_conf_50", "mean_conf_75", "top10_mean_conf"]
+CONF_DEFS = ["mean_conf_all", "mean_conf_01", "mean_conf_05",
+             "mean_conf_10", "mean_conf_25", "mean_conf_50", "mean_conf_75",
+             "top10_mean_conf", "top20_mean_conf", "top30_mean_conf"]
 
 
 def scatter_panel(ax, x, y, title, color):

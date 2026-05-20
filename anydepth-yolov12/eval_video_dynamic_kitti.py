@@ -20,12 +20,13 @@ Outputs (project dir):
   - trade_off.png               mAP vs mean latency
   - per_frame_log.csv           per-frame chosen model per strategy (optional)
 
+
 Usage:
     python eval_video_dynamic_kitti.py \
-        --weight ./runs/kitti/detect/anydepth-yolov12s/train/weights/best.pt \
         --kitti_root /media/data/kitti-tracking \
         --imgsz 1242 375 \
         --conf 0.001 \
+        --weight ./runs/kitti/detect/anydepth-yolov12s/train/weights/best.pt \
         --project ./runs/kitti/tracking/dynamic
 """
 import argparse
@@ -62,14 +63,43 @@ BDD_NAMES = {0: "car", 1: "van", 2: "truck", 3: "pedestrian",
 EVAL_CLS = sorted(set(KITTI_TO_BDD.values()))   # [0, 1, 2, 3, 4, 5, 6]
 
 # Rule-based parameters
-# Confidence features used by rule strategies.
-#   - mean_conf_{T}   : mean of pred confidences >= T (T in 0.0..0.9 step 0.1)
-#   - top{K}_mean_conf: mean of top-K highest pred confidences (K in {10, 20, 30})
+# Confidence features used by rule strategies. Mirrors the offline analysis CSV
+# (tools/per_image_loss_pr_conf.py): same thresholds, same top-K's, so plot
+# tooling can pick any feature without having to re-run the eval.
+#   - top{K}_mean_conf  : mean of top-K highest post-NMS confidences
+#   - mean_conf_ge_{T}  : mean of post-NMS confidences >= T (T = 0.01 ... 0.75)
+#   - mean_conf_all     : mean of all post-NMS confidences (no threshold)
+CONF_THRESHOLDS = (0.01, 0.05, 0.10, 0.25, 0.50, 0.75)
+CONF_TOPKS = (10, 20, 30)
 RULE_CONF_FEATURES = (
-    [f"mean_conf_{int(round(t*100)):02d}" for t in [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]]
-    + ["top10_mean_conf", "top20_mean_conf", "top30_mean_conf"]
+    [f"top{k}_mean_conf" for k in CONF_TOPKS]
+    + [f"mean_conf_ge_{int(round(t*100)):02d}" for t in CONF_THRESHOLDS]
+    + ["mean_conf_all"]
 )
-RULE_TAU_GRID = [0.05, 0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 0.85, 0.95]
+RULE_TAU_GRID = [round(0.05 * i, 2) for i in range(1, 20)]
+
+# Learned router: tap layer indices in the AnyDepth-YOLO model that the
+# router was trained on (must match tools/dump_router_features.py).
+ROUTER_HOOK_LAYERS = (4, 6, 8, 14, 17, 20)
+# τ grid for the learned router's Δ̂ output (regression on cls_diff scale).
+ROUTER_TAU_GRID = [-0.20, -0.15, -0.10, -0.05, -0.02, 0.0, 0.02, 0.05, 0.10, 0.15, 0.20]
+
+
+import torch.nn as _nn
+class RouterMLP(_nn.Module):
+    """Mirror of tools/train_router.py:RouterMLP for inference."""
+    def __init__(self, in_dim, hidden=(256, 64), dropout=0.2):
+        super().__init__()
+        layers = [_nn.BatchNorm1d(in_dim)]
+        prev = in_dim
+        for h in hidden:
+            layers += [_nn.Linear(prev, h), _nn.BatchNorm1d(h),
+                       _nn.ReLU(inplace=True), _nn.Dropout(dropout)]
+            prev = h
+        layers += [_nn.Linear(prev, 1)]
+        self.net = _nn.Sequential(*layers)
+    def forward(self, x):
+        return self.net(x).squeeze(-1)
 RANDOM_SEED = 0
 
 
@@ -252,12 +282,17 @@ def conf_top_k_mean(conf_tensor, k):
 
 
 def compute_conf_features(conf_tensor):
-    """Return dict[feature_name] -> float for one frame's predicted confidences."""
+    """Return dict[feature_name] -> float for one frame's predicted confidences.
+
+    Keys mirror RULE_CONF_FEATURES (CONF_THRESHOLDS + CONF_TOPKS + mean_conf_all).
+    """
     feats = {}
-    for t in [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]:
-        feats[f"mean_conf_{int(round(t*100)):02d}"] = conf_mean_ge(conf_tensor, t)
-    for k in [10, 20, 30]:
+    for k in CONF_TOPKS:
         feats[f"top{k}_mean_conf"] = conf_top_k_mean(conf_tensor, k)
+    for t in CONF_THRESHOLDS:
+        feats[f"mean_conf_ge_{int(round(t*100)):02d}"] = conf_mean_ge(conf_tensor, t)
+    feats["mean_conf_all"] = (float(conf_tensor.mean().item())
+                              if conf_tensor.numel() > 0 else 0.0)
     return feats
 
 
@@ -333,15 +368,17 @@ def boxes_to_preds(r):
 
 
 # ---- strategies ----
-def build_strategies():
+def build_strategies(include_learned=False):
     """Return list of (name, feature, decide_fn).
 
     feature is the conf-feature key the rule reads from prev_feats (or None for
-    non-rule strategies). decide_fn(prev_choice, prev_value, frame_idx, rng).
+    non-rule strategies), or the literal string "learned" for the learned router
+    (its decide_fn reads prev_value = current-frame Δ̂ from the router output).
+    decide_fn(prev_choice, prev_value, frame_idx, rng).
     """
     strats = []
-    # random sweep: P(super) = p/100, in steps of 10. p=0 -> always_base, p=100 -> always_super.
-    for p in range(0, 101, 10):
+    # random sweep: P(super) = p/100, in steps of 5. p=0 -> always_base, p=100 -> always_super.
+    for p in range(0, 101, 5):
         p_super = p / 100.0
         def make_rand(p_super=p_super):
             def rand(prev_choice, prev_value, fi, rng):
@@ -356,6 +393,13 @@ def build_strategies():
                     return "base" if prev_value > tau else "super"
                 return rule
             strats.append((f"rule_{feat}_t{int(round(tau*100)):02d}", feat, make_rule(tau)))
+    if include_learned:
+        for tau in ROUTER_TAU_GRID:
+            def make_learned(tau=tau):
+                def learned(prev_choice, prev_value, fi, rng):
+                    return "super" if prev_value > tau else "base"
+                return learned
+            strats.append((f"learned_t{int(round(tau*100)):+03d}", "learned", make_learned(tau)))
     return strats
 
 
@@ -374,7 +418,8 @@ class StrategyState:
 
 
 # ---- main per-sequence loop ----
-def run_sequence(yolo, seq, kitti_root, args, strategies, rng, energy_monitor):
+def run_sequence(yolo, seq, kitti_root, args, strategies, rng, energy_monitor,
+                 router=None, router_captured=None):
     """Return dict[strategy_name] -> StrategyState filled for THIS sequence only."""
     img_dir = Path(kitti_root) / "training" / "image_02" / seq
     label_path = Path(kitti_root) / "training" / "label_02" / f"{seq}.txt"
@@ -404,11 +449,36 @@ def run_sequence(yolo, seq, kitti_root, args, strategies, rng, energy_monitor):
                                iou=0.7, skip=skip_super, verbose=False, device=args.device)[0]
         t1 = time.perf_counter()
         p1 = energy_monitor.power_mw()
+        # If a learned router is configured, grab GAP feature from super's
+        # hooked layers BEFORE the base forward overwrites them.
+        # Measure router overhead (GAP + concat) for the super path.
+        router_feat_super = None
+        router_oh_ms_super = 0.0
+        if router is not None and router_captured:
+            t_rs0 = time.perf_counter()
+            router_feat_super = torch.cat([
+                router_captured[idx].mean(dim=(2, 3)).squeeze(0).float()
+                for idx in ROUTER_HOOK_LAYERS
+            ], dim=0)
+            t_rs1 = time.perf_counter()
+            router_oh_ms_super = (t_rs1 - t_rs0) * 1000.0
+            router_captured.clear()
         # Base forward
         r_base = yolo.predict(source=bgr, imgsz=tuple(args.imgsz), conf=args.conf,
                               iou=0.7, skip=skip_base, verbose=False, device=args.device)[0]
         t2 = time.perf_counter()
         p2 = energy_monitor.power_mw()
+        router_feat_base = None
+        router_oh_ms_base = 0.0
+        if router is not None and router_captured:
+            t_rb0 = time.perf_counter()
+            router_feat_base = torch.cat([
+                router_captured[idx].mean(dim=(2, 3)).squeeze(0).float()
+                for idx in ROUTER_HOOK_LAYERS
+            ], dim=0)
+            t_rb1 = time.perf_counter()
+            router_oh_ms_base = (t_rb1 - t_rb0) * 1000.0
+            router_captured.clear()
         lat_super_ms = (t1 - t0) * 1000.0
         lat_base_ms  = (t2 - t1) * 1000.0
         # energy = P_avg * t  (mW * s = mJ)
@@ -421,8 +491,37 @@ def run_sequence(yolo, seq, kitti_root, args, strategies, rng, energy_monitor):
                         else torch.empty(0))
         conf_t_base  = (r_base.boxes.conf.cpu() if (r_base.boxes is not None and len(r_base.boxes))
                         else torch.empty(0))
+        # Measure routing overhead = wall-clock time of compute_conf_features().
+        # This is what a deployed dynamic-routing system would pay per frame on
+        # top of the chosen model's forward latency.
+        t_f0 = time.perf_counter()
         feats_super = compute_conf_features(conf_t_super)
+        t_f1 = time.perf_counter()
         feats_base  = compute_conf_features(conf_t_base)
+        t_f2 = time.perf_counter()
+        routing_overhead_ms_super = (t_f1 - t_f0) * 1000.0
+        routing_overhead_ms_base  = (t_f2 - t_f1) * 1000.0
+
+        # Learned router predictions for this frame.
+        # delta_super = router applied to super-path features (used if super chosen this frame)
+        # delta_base  = router applied to base-path features  (used if base chosen this frame)
+        # We profile the MLP forward separately so a deployed learned strategy can
+        # be charged (GAP + MLP) on top of the chosen network's forward latency.
+        delta_super = delta_base = 0.0
+        router_mlp_ms = 0.0
+        if router is not None and router_feat_super is not None and router_feat_base is not None:
+            with torch.no_grad():
+                t_m0 = time.perf_counter()
+                stacked = torch.stack([router_feat_super, router_feat_base], dim=0)
+                d = router(stacked)
+                if d.is_cuda: torch.cuda.synchronize()
+                t_m1 = time.perf_counter()
+                delta_super = float(d[0].item()); delta_base = float(d[1].item())
+            # Per-sample MLP cost (we ran 2 samples; deployment runs 1).
+            router_mlp_ms = (t_m1 - t_m0) * 1000.0 / 2.0
+        # Total learned-router overhead per frame = GAP(chosen_path) + MLP(1 sample).
+        learned_oh_ms_super = router_oh_ms_super + router_mlp_ms
+        learned_oh_ms_base  = router_oh_ms_base  + router_mlp_ms
 
         gts = gt_by_frame.get(frame_idx, [])
         dc_boxes = dontcare_by_frame.get(frame_idx, [])
@@ -436,13 +535,29 @@ def run_sequence(yolo, seq, kitti_root, args, strategies, rng, energy_monitor):
             choice = decide(st.prev_choice, prev_value, fi, rng)
             if choice == "super":
                 preds = preds_super; lat = lat_super_ms; eng = e_super_mj
-                this_feats = feats_super
+                this_feats = dict(feats_super)
+                this_feats["learned"] = delta_super
+                if feat == "learned":
+                    routing_oh = learned_oh_ms_super
+                elif feat:
+                    routing_oh = routing_overhead_ms_super
+                else:
+                    routing_oh = 0.0
                 st.n_super += 1
             else:
                 preds = preds_base;  lat = lat_base_ms;  eng = e_base_mj
-                this_feats = feats_base
+                this_feats = dict(feats_base)
+                this_feats["learned"] = delta_base
+                if feat == "learned":
+                    routing_oh = learned_oh_ms_base
+                elif feat:
+                    routing_oh = routing_overhead_ms_base
+                else:
+                    routing_oh = 0.0
                 st.n_base += 1
-            st.latency_ms.append(lat)
+            # Rule strategies pay conf-feature overhead; learned strategies pay
+            # GAP + MLP overhead; random/baseline strategies pay nothing.
+            st.latency_ms.append(lat + routing_oh)
             st.energy_mj.append(eng)
             m, gc = match_frame_multi_iou(preds, gts)
             st.matches_multi.extend(m)
@@ -489,6 +604,7 @@ def main():
     ap.add_argument("--device", default="cuda:0")
     ap.add_argument("--project", default="./runs/kitti/tracking/dynamic")
     ap.add_argument("--limit", type=int, default=0, help="cap frames per seq (debug)")
+    ap.add_argument("--router_ckpt", default="", help="path to learned router .pt; if set, add learned_tXX strategies")
     args = ap.parse_args()
 
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -507,9 +623,30 @@ def main():
     seqs = args.sequences or sorted(f.stem for f in label_dir.glob("*.txt"))
     print(f"[*] {len(seqs)} sequences")
 
-    strategies = build_strategies()
+    # Optional learned router
+    router = None
+    router_hooks = []
+    router_captured = {}
+    if args.router_ckpt:
+        print(f"[*] Loading router: {args.router_ckpt}")
+        ckpt = torch.load(args.router_ckpt, map_location=args.device, weights_only=True)
+        router = RouterMLP(in_dim=int(ckpt["in_dim"]),
+                           hidden=tuple(ckpt["hidden"]),
+                           dropout=float(ckpt["dropout"])).to(args.device).eval()
+        router.load_state_dict(ckpt["state_dict"])
+        # Install forward hooks on the AnyDepth model to capture features
+        # during the Base forward pass (matching dump_router_features.py).
+        def _make_hook(idx):
+            def hook(_m, _i, out):
+                router_captured[idx] = out
+            return hook
+        for idx in ROUTER_HOOK_LAYERS:
+            router_hooks.append(yolo.model.model[idx].register_forward_hook(_make_hook(idx)))
+        print(f"[*] Router loaded: in_dim={ckpt['in_dim']}  hidden={ckpt['hidden']}")
+
+    strategies = build_strategies(include_learned=router is not None)
     strat_names = [s[0] for s in strategies]
-    print(f"[*] {len(strategies)} strategies: {strat_names}")
+    print(f"[*] {len(strategies)} strategies")
     rng = __import__("random").Random(RANDOM_SEED)
 
     # GFLOPs profiling
@@ -529,7 +666,8 @@ def main():
     accum_states = {name: StrategyState(name) for name in strat_names}
 
     for seq in seqs:
-        seq_states = run_sequence(yolo, seq, args.kitti_root, args, strategies, rng, energy_monitor)
+        seq_states = run_sequence(yolo, seq, args.kitti_root, args, strategies, rng,
+                                  energy_monitor, router=router, router_captured=router_captured)
         per_seq_states[seq] = seq_states
         for name in strat_names:
             ss = seq_states[name]; acc = accum_states[name]
@@ -581,18 +719,41 @@ def main():
         try: return feat, int(tt)
         except ValueError: return None
 
-    def trade_off_panel(ax, strat_summary, title, show_legend=False):
-        feat_pts = {f: [] for f in RULE_CONF_FEATURES}
+    def _x_value(s, xkey):
+        if xkey == "pct_super": return 100.0 - s["pct_base"]
+        if xkey == "latency":   return s["mean_latency_ms"]
+        raise ValueError(xkey)
+
+    def trade_off_panel(ax, strat_summary, title, xkey="latency", show_legend=False):
+        feat_pts = {f: [] for f in RULE_CONF_FEATURES}  # feat -> [(x, y, tau)]
         rand_pts = []
+        learned_pts = []  # (x, y, tt)
+        ap_super = ap_base = None       # endpoint mAPs for reference lines
         for name, s in strat_summary.items():
-            x = 100.0 - s["pct_base"]   # %super
-            y = s["mAP@50"]
+            x = _x_value(s, xkey); y = s["mAP@50"]
             parsed = _parse_rule_name(name)
             if parsed is not None:
-                feat, _tt = parsed
-                if feat in feat_pts: feat_pts[feat].append((x, y))
+                feat, tt = parsed
+                if feat in feat_pts: feat_pts[feat].append((x, y, tt))
             elif name.startswith("random_p"):
-                rand_pts.append((x, y))
+                p = int(name[len("random_p"):])
+                rand_pts.append((x, y, p))
+                if p == 100: ap_super = y
+                elif p == 0: ap_base  = y
+            elif name.startswith("learned_t"):
+                try:
+                    tt = int(name[len("learned_t"):])
+                except ValueError:
+                    tt = 0
+                learned_pts.append((x, y, tt))
+        # Reference lines: always-super / always-base mAP@50.
+        # Drawn first so strategy curves stay on top.
+        if ap_super is not None:
+            ax.axhline(ap_super, color="tab:blue", ls=":", lw=1.0, alpha=0.8, zorder=2,
+                       label=f"always_super (mAP@50={ap_super:.3f})" if show_legend else None)
+        if ap_base is not None:
+            ax.axhline(ap_base, color="tab:red", ls=":", lw=1.0, alpha=0.8, zorder=2,
+                       label=f"always_base  (mAP@50={ap_base:.3f})" if show_legend else None)
         if rand_pts:
             rand_pts.sort(key=lambda t: t[0])
             rx = [p[0] for p in rand_pts]; ry = [p[1] for p in rand_pts]
@@ -602,8 +763,24 @@ def main():
             if not pts: continue
             pts.sort(key=lambda t: t[0])
             rl = [p[0] for p in pts]; rm = [p[1] for p in pts]
+            tt_list = [p[2] for p in pts]
             ax.plot(rl, rm, "-o", color=feat_color[feat], lw=1.0, ms=3, zorder=4,
                     label=feat if show_legend else None, alpha=0.85)
+            if xkey == "pct_super":
+                for xv, yv, tt in zip(rl, rm, tt_list):
+                    ax.annotate(f"τ={tt/100:.2f}", (xv, yv), fontsize=6,
+                                xytext=(3, 4), textcoords="offset points",
+                                color=feat_color[feat], zorder=7)
+        if learned_pts:
+            learned_pts.sort(key=lambda t: t[0])
+            lx = [p[0] for p in learned_pts]; ly = [p[1] for p in learned_pts]
+            ax.plot(lx, ly, "-D", color="crimson", lw=2.0, ms=6, zorder=8,
+                    label="learned router (τ sweep)" if show_legend else None)
+            if xkey == "pct_super":
+                for xv, yv, tt in zip(lx, ly, [p[2] for p in learned_pts]):
+                    ax.annotate(f"τ={tt/100:+.2f}", (xv, yv), fontsize=6,
+                                xytext=(3, -10), textcoords="offset points",
+                                color="crimson", zorder=9)
         ax.set_title(title, fontsize=9)
         ax.grid(alpha=0.3)
 
@@ -616,10 +793,10 @@ def main():
     for i, seq in enumerate(seqs):
         r, c = divmod(i, n_cols)
         trade_off_panel(axes[r, c], summary["per_sequence"][seq],
-                        title=f"seq {seq} ({per_seq_states[seq][strat_names[0]].n_super + per_seq_states[seq][strat_names[0]].n_base} frames)")
-        axes[r, c].set_xlabel("% super-net used", fontsize=7)
+                        title=f"seq {seq} ({per_seq_states[seq][strat_names[0]].n_super + per_seq_states[seq][strat_names[0]].n_base} frames)",
+                        xkey="latency")
+        axes[r, c].set_xlabel("latency (ms)", fontsize=7)
         axes[r, c].set_ylabel("mAP@50", fontsize=7)
-        axes[r, c].set_xlim(-5, 105)
     for j in range(n_seq, n_rows * n_cols):
         r, c = divmod(j, n_cols); axes[r, c].axis("off")
     fig.suptitle("KITTI Tracking — per-sequence trade-off  "
@@ -630,20 +807,88 @@ def main():
     plt.close(fig)
     print(f"[*] figure -> {project / 'trade_off_per_sequence.png'}")
 
-    # Figure 2: overall accumulated
-    fig, ax = plt.subplots(figsize=(11, 7))
+    # Figure 2: overall accumulated — right panel only (%super)
+    fig, ax = plt.subplots(1, 1, figsize=(8.5, 6))
     trade_off_panel(ax, summary["overall"],
-                    title="KITTI Tracking — accuracy vs %super (overall)",
-                    show_legend=True)
+                    title="accuracy vs %super", xkey="pct_super", show_legend=True)
     ax.set_xlabel("% super-net used  (0 = always base, 100 = always super)")
-    ax.set_ylabel("dataset mAP@50  (accumulated over all sequences)")
+    ax.set_ylabel("dataset mAP@50  (accumulated)")
     ax.set_xlim(-5, 105)
     ax.legend(fontsize=7, loc="center left", bbox_to_anchor=(1.01, 0.5),
               frameon=False)
+    fig.suptitle("KITTI Tracking — trade-off (overall accumulated, %super only)",
+                 fontsize=13, fontweight="bold")
     fig.tight_layout()
     fig.savefig(project / "trade_off_overall.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
     print(f"[*] figure -> {project / 'trade_off_overall.png'}")
+
+    # ===== Figure 3: focused comparison (all rule conf features + baselines) =====
+    # Every feature in RULE_CONF_FEATURES is plotted as its own τ-sweep curve so we
+    # don't need to re-run eval to compare different conf features.
+    _FOCUS_MARKERS = ["o", "s", "^", "D", "v", "P", "X", "*", "<", ">", "h"]
+    _focus_cmap = plt.get_cmap("tab10")
+    FOCUS_FEATS = [(f, _focus_cmap(i % 10), _FOCUS_MARKERS[i % len(_FOCUS_MARKERS)])
+                   for i, f in enumerate(RULE_CONF_FEATURES)]
+    overall = summary["overall"]
+    ap_super = overall.get("random_p100", {}).get("mAP@50")
+    ap_base  = overall.get("random_p000", {}).get("mAP@50")
+
+    fig, ax = plt.subplots(1, 1, figsize=(8.5, 6))
+    xkey = "pct_super"
+    if ap_super is not None:
+        ax.axhline(ap_super, color="tab:blue", ls=":", lw=1.2, alpha=0.9,
+                   label=f"always_super (mAP@50={ap_super:.3f})")
+    if ap_base is not None:
+        ax.axhline(ap_base, color="tab:red", ls=":", lw=1.2, alpha=0.9,
+                   label=f"always_base (mAP@50={ap_base:.3f})")
+    if ap_super is not None and ap_base is not None:
+        ax.plot([0.0, 100.0], [ap_base, ap_super], color="gray", ls="-",
+                lw=1.0, alpha=0.6, zorder=2, label="base–super linear interp")
+    # Random sweep baseline (random_p000 .. random_p100).
+    rand_pts = []
+    for name, s in overall.items():
+        if not name.startswith("random_p"): continue
+        try:
+            p = int(name[len("random_p"):])
+        except ValueError:
+            continue
+        rand_pts.append((_x_value(s, xkey), s["mAP@50"], p))
+    if rand_pts:
+        rand_pts.sort(key=lambda t: t[0])
+        rx = [p[0] for p in rand_pts]; ry = [p[1] for p in rand_pts]
+        ax.plot(rx, ry, "--s", color="black", lw=1.2, ms=4, alpha=0.85,
+                zorder=3, label="random sweep (baseline)")
+    for feat, color, marker in FOCUS_FEATS:
+        pts = []
+        for name, s in overall.items():
+            parsed = _parse_rule_name(name)
+            if parsed is None: continue
+            f_, tt = parsed
+            if f_ != feat: continue
+            pts.append((_x_value(s, xkey), s["mAP@50"], tt))
+        if not pts: continue
+        pts.sort(key=lambda t: t[0])
+        xs = [p[0] for p in pts]; ys = [p[1] for p in pts]
+        tts = [p[2] for p in pts]
+        ax.plot(xs, ys, "-", color=color, lw=1.6, marker=marker, ms=5,
+                alpha=0.9, label=f"{feat} (τ sweep)")
+        for xv, yv, tt in zip(xs, ys, tts):
+            ax.annotate(f"{tt/100:.2f}", (xv, yv), fontsize=6,
+                        xytext=(3, 3), textcoords="offset points",
+                        color=color)
+    ax.set_xlabel("% super-net used")
+    ax.set_ylabel("mAP@50 (accumulated)")
+    ax.grid(alpha=0.3)
+    ax.legend(fontsize=8, loc="best", framealpha=0.9)
+    ax.set_xlim(-5, 105)
+    ax.set_title("trade-off vs %super-net used", fontsize=11)
+    fig.suptitle("KITTI Tracking — confidence-based routing vs always-super/always-base",
+                 fontsize=13, fontweight="bold")
+    fig.tight_layout()
+    fig.savefig(project / "trade_off_focus.png", dpi=150, bbox_inches="tight")
+    plt.close(fig)
+    print(f"[*] figure -> {project / 'trade_off_focus.png'}")
 
     # Markdown table
     rows = []

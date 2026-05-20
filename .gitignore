@@ -5,3 +5,4 @@ summary*.json
 *latency*
 *energy*
 # *.csv
+*.npy
