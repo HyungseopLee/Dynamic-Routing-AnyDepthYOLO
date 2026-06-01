@@ -1,0 +1,173 @@
+"""Train the 2-level depth policy on cached features (method01, path B).
+
+Reads the offline cache (build_cache.py) so no detector forward happens here --
+each epoch is a cheap MLP pass over precomputed vectors.
+
+Per step (image i, batch B):
+  - sample prev_action ~ Uniform{0,1}  (simulates the path the previous frame
+    used at eval time; selects which cached feature vector feeds the policy and
+    sets path_id).
+  - p_super = policy(input_vec[prev], pred_vec[prev], path_id=prev)
+  - L = -mean(p_super * A) + lambda_flops*L_flops + lambda_uni*L_uni
+    with A = (loss_base - loss_super).detach()
+  - update policy only.
+
+Usage:
+    python method01_advantage_regress/train_policy.py \
+        --cache runs/kitti/policy/cache_train.pt \
+        --val_cache runs/kitti/policy/cache_val.pt \
+        --flops runs/kitti/policy/flops_table.json \
+        --epochs 50 \
+        --lambda_flops 1.0 \
+        ----lambda_uni 0.1 \
+        --out runs/kitti/policy/policy.pt \
+        2>&1 | tee ./runs/kitti/policy/train.log
+"""
+
+import argparse
+import json
+import sys
+from datetime import datetime
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+import torch
+from torch.utils.data import DataLoader, TensorDataset
+
+from method01_advantage_regress.loss import PolicyLoss
+from method01_advantage_regress.policy_net import PolicyNetwork
+
+
+def load_cache(path, device):
+    c = torch.load(path, map_location="cpu", weights_only=False)
+    return {
+        "input_base": c["input_base"].to(device),
+        "pred_base": c["pred_base"].to(device),
+        "input_super": c["input_super"].to(device),
+        "pred_super": c["pred_super"].to(device),
+        "loss_base": c["loss_base"].to(device),
+        "loss_super": c["loss_super"].to(device),
+    }
+
+
+def make_loader(cache, batch, shuffle):
+    idx = torch.arange(cache["loss_base"].shape[0])
+    return DataLoader(TensorDataset(idx), batch_size=batch, shuffle=shuffle)
+
+
+def gather(cache, idx, prev_action):
+    """Select per-sample feature vectors by prev_action path (0=base,1=super)."""
+    use_super = prev_action.bool()
+    inp = torch.where(use_super[:, None], cache["input_super"][idx], cache["input_base"][idx])
+    prd = torch.where(use_super[:, None], cache["pred_super"][idx], cache["pred_base"][idx])
+    return inp, prd
+
+
+def run_epoch(net, cache, loader, lossfn, opt=None):
+    train = opt is not None
+    net.train(train)
+    agg = {}
+    n = 0
+    for (idx,) in loader:
+        idx = idx.to(cache["loss_base"].device)
+        B = idx.shape[0]
+        prev = torch.randint(0, 2, (B,), device=idx.device)
+        inp, prd = gather(cache, idx, prev)
+        lb, ls = cache["loss_base"][idx], cache["loss_super"][idx]
+
+        with torch.set_grad_enabled(train):
+            # regress mode predicts advantage directly (linear logit); others use prob
+            out = net.logit(inp, prd, prev) if lossfn.mode == "regress" else net(inp, prd, prev)
+            total, comp = lossfn(out, lb, ls)
+        if train:
+            opt.zero_grad(); total.backward(); opt.step()
+        for k, v in comp.items():
+            agg[k] = agg.get(k, 0.0) + v * B
+        n += B
+    return {k: v / n for k, v in agg.items()}
+
+
+OUT = Path(__file__).resolve().parent / "outputs"
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--cache", default=str(OUT / "cache_train.pt"))
+    ap.add_argument("--val_cache", default=str(OUT / "cache_val.pt"))
+    ap.add_argument("--flops", default=str(OUT / "flops_table.json"))
+    ap.add_argument("--epochs", type=int, default=50)
+    ap.add_argument("--batch", type=int, default=256)
+    ap.add_argument("--lr", type=float, default=1e-3)
+    ap.add_argument("--lambda_flops", type=float, default=1.0)
+    ap.add_argument("--lambda_uni", type=float, default=0.1)
+    ap.add_argument("--hidden", type=int, default=64)
+    ap.add_argument("--group_dim", type=int, default=64)
+    ap.add_argument("--feat", default="both", choices=["input", "pred", "both"],
+                    help="which context feature(s) the policy uses")
+    ap.add_argument("--mode", default="advantage", choices=["advantage", "bce", "regress"])
+    ap.add_argument("--margin", type=float, default=0.0,
+                    help="bce mode: exclude |A|<margin images from L_acc")
+    ap.add_argument("--seed", type=int, default=0, help="random seed (weight init + prev_action sampling)")
+    ap.add_argument("--device", default="cuda:0")
+    ap.add_argument("--out", default=str(OUT / "policy.pt"))
+    ap.add_argument("--logdir", default=str(OUT / "logs"),
+                    help="directory for per-run training logs")
+    ap.add_argument("--tag", default="", help="optional run name suffix for the log file")
+    args = ap.parse_args()
+
+    torch.manual_seed(args.seed)
+    device = args.device if torch.cuda.is_available() else "cpu"
+    train_cache = load_cache(args.cache, device)
+    val_cache = load_cache(args.val_cache, device) if Path(args.val_cache).exists() else None
+
+    net = PolicyNetwork(group_dim=args.group_dim, hidden_dim=args.hidden, feat=args.feat).to(device)
+    # materialise LazyLinear shapes with a dummy forward
+    with torch.no_grad():
+        net(train_cache["input_base"][:2], train_cache["pred_base"][:2],
+            torch.zeros(2, dtype=torch.long, device=device))
+
+    lossfn = PolicyLoss(args.flops, lambda_flops=args.lambda_flops, lambda_uni=args.lambda_uni,
+                        mode=args.mode, margin=args.margin)
+    opt = torch.optim.Adam(net.parameters(), lr=args.lr)
+
+    train_loader = make_loader(train_cache, args.batch, shuffle=True)
+    val_loader = make_loader(val_cache, args.batch, shuffle=False) if val_cache else None
+
+    # per-run log file in method01/logs
+    logdir = Path(args.logdir); logdir.mkdir(parents=True, exist_ok=True)
+    stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    name = f"{stamp}_lf{args.lambda_flops}_lu{args.lambda_uni}" + (f"_{args.tag}" if args.tag else "")
+    logpath = logdir / f"{name}.log"
+    history = []
+    with open(logpath, "w") as f:
+        f.write(f"# {json.dumps(vars(args))}\n")
+        f.write("epoch\ttotal\tl_acc\tl_flops\tl_uni\tp_super\tval_p_super\tval_l_acc\n")
+
+    for ep in range(args.epochs):
+        tr = run_epoch(net, train_cache, train_loader, lossfn, opt)
+        msg = (f"ep {ep:3d} | train total {tr['total']:.4f} "
+               f"acc {tr['l_acc']:.4f} flops {tr['l_flops']:.4f} "
+               f"p_super {tr['p_super_mean']:.3f}")
+        va = run_epoch(net, val_cache, val_loader, lossfn, None) if val_loader else {}
+        if va:
+            msg += f" || val p_super {va['p_super_mean']:.3f} acc {va['l_acc']:.4f}"
+        print(msg)
+        history.append({"epoch": ep, **{f"tr_{k}": v for k, v in tr.items()},
+                        **{f"va_{k}": v for k, v in va.items()}})
+        with open(logpath, "a") as f:
+            f.write(f"{ep}\t{tr['total']:.5f}\t{tr['l_acc']:.5f}\t{tr['l_flops']:.5f}\t"
+                    f"{tr['l_uni']:.5f}\t{tr['p_super_mean']:.4f}\t"
+                    f"{va.get('p_super_mean', float('nan')):.4f}\t{va.get('l_acc', float('nan')):.5f}\n")
+    (logdir / f"{name}.json").write_text(json.dumps(history, indent=2))
+    print(f"[*] log -> {logpath}")
+
+    out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    torch.save({"state_dict": net.state_dict(),
+                "args": vars(args)}, out)
+    print(f"[*] saved policy -> {out}")
+
+
+if __name__ == "__main__":
+    main()
