@@ -82,8 +82,11 @@ def main():
     ap.add_argument("--imgsz", type=int, nargs=2, default=[384, 1248], help="H W")
     ap.add_argument("--batch", type=int, default=16)
     ap.add_argument("--device", default="cuda:0")
-    ap.add_argument("--out", default=str(Path(__file__).resolve().parent / "outputs" / "cache_train.pt"))
+    ap.add_argument("--dataset", default="kitti", help="output scope: outputs/<dataset>/")
+    ap.add_argument("--out", default=None)
     args = ap.parse_args()
+    if args.out is None:
+        args.out = str(Path(__file__).resolve().parent / "outputs" / args.dataset / f"cache_{args.split}.pt")
 
     device = args.device if torch.cuda.is_available() else "cpu"
     yolo = YOLO(args.weight, task="detect")

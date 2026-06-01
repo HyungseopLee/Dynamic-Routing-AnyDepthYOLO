@@ -71,8 +71,9 @@ def pixel_signals(bgr):
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--dataset", default="kitti", help="output scope: outputs/<dataset>/")
     ap.add_argument("--weight", default="runs/kitti/detect/anydepth-yolov12s/train/weights/best.pt")
-    ap.add_argument("--policy", default=str(Path(__file__).resolve().parent / "outputs" / "policy_regress.pt"))
+    ap.add_argument("--policy", default=None)
     ap.add_argument("--policies", default="", help="comma-sep tag=path list to compare "
                     "multiple policies in one pass, e.g. input=...pt,pred=...pt,both=...pt")
     ap.add_argument("--kitti_root", default="/media/data/kitti-tracking")
@@ -81,8 +82,11 @@ def main():
     ap.add_argument("--conf", type=float, default=0.001)
     ap.add_argument("--device", default="cuda:0")
     ap.add_argument("--limit", type=int, default=0)
-    ap.add_argument("--out", default=str(Path(__file__).resolve().parent / "outputs" / "eval" / "video_curve.json"))
+    ap.add_argument("--out", default=None)
     args = ap.parse_args()
+    _base = Path(__file__).resolve().parent / "outputs" / args.dataset
+    if args.policy is None: args.policy = str(_base / "policy_regress.pt")
+    if args.out is None:    args.out = str(_base / "eval" / "video_curve.json")
 
     device = args.device if torch.cuda.is_available() else "cpu"
     yolo = YOLO(args.weight, task="detect")

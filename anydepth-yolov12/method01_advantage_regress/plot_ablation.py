@@ -33,10 +33,14 @@ NAME_RE = re.compile(r"policy_(input|pred|both)_s(\d+)_t([+-]\d+)")
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--curve", default="method01_advantage_regress/outputs/eval/video_curve_featabl_seeds.json")
-    ap.add_argument("--out", default="method01_advantage_regress/outputs/eval/ablation_seeds")
+    ap.add_argument("--dataset", default="kitti", help="output scope: outputs/<dataset>/eval/")
+    ap.add_argument("--curve", default=None)
+    ap.add_argument("--out", default=None)
     ap.add_argument("--metric", default="map50", choices=["map50", "map"])
     args = ap.parse_args()
+    _ev = Path(__file__).resolve().parent / "outputs" / args.dataset / "eval"
+    if args.curve is None: args.curve = str(_ev / "video_curve_featabl_seeds.json")
+    if args.out is None:   args.out = str(_ev / "ablation_seeds")
 
     data = json.loads(Path(args.curve).read_text())
     rows = data["rows"]

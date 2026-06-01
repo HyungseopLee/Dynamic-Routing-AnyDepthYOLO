@@ -93,9 +93,10 @@ OUT = Path(__file__).resolve().parent / "outputs"
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--cache", default=str(OUT / "cache_train.pt"))
-    ap.add_argument("--val_cache", default=str(OUT / "cache_val.pt"))
-    ap.add_argument("--flops", default=str(OUT / "flops_table.json"))
+    ap.add_argument("--dataset", default="kitti", help="output scope: outputs/<dataset>/")
+    ap.add_argument("--cache", default=None)
+    ap.add_argument("--val_cache", default=None)
+    ap.add_argument("--flops", default=None)
     ap.add_argument("--epochs", type=int, default=50)
     ap.add_argument("--batch", type=int, default=256)
     ap.add_argument("--lr", type=float, default=1e-3)
@@ -110,11 +111,16 @@ def main():
                     help="bce mode: exclude |A|<margin images from L_acc")
     ap.add_argument("--seed", type=int, default=0, help="random seed (weight init + prev_action sampling)")
     ap.add_argument("--device", default="cuda:0")
-    ap.add_argument("--out", default=str(OUT / "policy.pt"))
-    ap.add_argument("--logdir", default=str(OUT / "logs"),
-                    help="directory for per-run training logs")
+    ap.add_argument("--out", default=None)
+    ap.add_argument("--logdir", default=None, help="directory for per-run training logs")
     ap.add_argument("--tag", default="", help="optional run name suffix for the log file")
     args = ap.parse_args()
+    base = OUT / args.dataset
+    if args.cache is None:     args.cache = str(base / "cache_train.pt")
+    if args.val_cache is None: args.val_cache = str(base / "cache_val.pt")
+    if args.flops is None:     args.flops = str(base / "flops_table.json")
+    if args.out is None:       args.out = str(base / "policy.pt")
+    if args.logdir is None:    args.logdir = str(base / "logs")
 
     torch.manual_seed(args.seed)
     device = args.device if torch.cuda.is_available() else "cpu"

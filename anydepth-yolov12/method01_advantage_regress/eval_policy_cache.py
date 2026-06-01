@@ -57,14 +57,19 @@ OUT = Path(__file__).resolve().parent / "outputs"
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--policy", default=str(OUT / "policy.pt"))
-    ap.add_argument("--val_cache", default=str(OUT / "cache_val.pt"))
-    ap.add_argument("--flops", default=str(OUT / "flops_table.json"))
+    ap.add_argument("--dataset", default="kitti", help="output scope: outputs/<dataset>/")
+    ap.add_argument("--policy", default=None)
+    ap.add_argument("--val_cache", default=None)
+    ap.add_argument("--flops", default=None)
     ap.add_argument("--device", default="cuda:0")
     ap.add_argument("--out", default="")
-    ap.add_argument("--plot", default=str(OUT / "eval" / "cache_curve.png"),
-                    help="path for loss-vs-FLOPs figure ('' to disable)")
+    ap.add_argument("--plot", default=None, help="path for loss-vs-FLOPs figure ('' to disable)")
     args = ap.parse_args()
+    base = OUT / args.dataset
+    if args.policy is None:    args.policy = str(base / "policy.pt")
+    if args.val_cache is None: args.val_cache = str(base / "cache_val.pt")
+    if args.flops is None:     args.flops = str(base / "flops_table.json")
+    if args.plot is None:      args.plot = str(base / "eval" / "cache_curve.png")
 
     device = args.device if torch.cuda.is_available() else "cpu"
     table = json.loads(Path(args.flops).read_text())

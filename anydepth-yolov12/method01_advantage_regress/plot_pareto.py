@@ -89,12 +89,15 @@ def draw(fams, endpoints, metric, title, out, annotate, gb, gs, drop=()):
 
 def main():
     ap = argparse.ArgumentParser()
-    _ev = Path(__file__).resolve().parent / "outputs" / "eval"
-    ap.add_argument("--curve", default=str(_ev / "video_curve.json"))
-    ap.add_argument("--out", default=str(_ev / "pareto"))
+    ap.add_argument("--dataset", default="kitti", help="output scope: outputs/<dataset>/eval/")
+    ap.add_argument("--curve", default=None)
+    ap.add_argument("--out", default=None)
     ap.add_argument("--metric", default="map50", choices=["map50", "map"])
     ap.add_argument("--no-annotate", dest="annotate", action="store_false", default=True)
     args = ap.parse_args()
+    _ev = Path(__file__).resolve().parent / "outputs" / args.dataset / "eval"
+    if args.curve is None: args.curve = str(_ev / "video_curve.json")
+    if args.out is None:   args.out = str(_ev / "pareto")
 
     data = json.loads(Path(args.curve).read_text())
     fams, endpoints = collect(data["rows"], args.metric)
