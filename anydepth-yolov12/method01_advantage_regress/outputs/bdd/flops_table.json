@@ -1,0 +1,36 @@
+{
+  "weight": "runs/bdd100k/detect/anydepth-yolov12s/50e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_orig/weights/best.pt",
+  "imgsz": [
+    736,
+    1280
+  ],
+  "num_skippable_layers": 8,
+  "actions": {
+    "0_base": {
+      "skip": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "gflops": 33.1771
+    },
+    "1_super": {
+      "skip": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "gflops": 51.722
+    }
+  }
+}
