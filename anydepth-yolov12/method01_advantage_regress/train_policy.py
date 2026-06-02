@@ -13,15 +13,18 @@ Per step (image i, batch B):
   - update policy only.
 
 Usage:
+    # kitti  (--dataset scopes all I/O under outputs/kitti/)
     python method01_advantage_regress/train_policy.py \
-        --cache runs/kitti/policy/cache_train.pt \
-        --val_cache runs/kitti/policy/cache_val.pt \
-        --flops runs/kitti/policy/flops_table.json \
-        --epochs 50 \
-        --lambda_flops 1.0 \
-        ----lambda_uni 0.1 \
-        --out runs/kitti/policy/policy.pt \
-        2>&1 | tee ./runs/kitti/policy/train.log
+        --dataset kitti --epochs 50 \
+        --lambda_flops 1.0 --lambda_uni 0.1 --mode regress --tag regress
+
+    # bdd100k  (reads outputs/bdd100k/cache_*.pt + flops_table.json from build_*)
+    # image size is independent here: the cache stores GAP feature vectors and
+    # per-image losses, so the policy MLP is identical to kitti regardless of
+    # the 720x1280 vs 384x1248 input. Only the flops_table.json values differ.
+    python method01_advantage_regress/train_policy.py \
+        --dataset bdd100k --epochs 50 \
+        --lambda_flops 1.0 --lambda_uni 0.1 --mode regress --tag regress
 """
 
 import argparse
@@ -150,6 +153,13 @@ def main():
         f.write(f"# {json.dumps(vars(args))}\n")
         f.write("epoch\ttotal\tl_acc\tl_flops\tl_uni\tp_super\tval_p_super\tval_l_acc\n")
 
+    out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+
+    best_val_loss = float("inf")
+    best_epoch = -1
+    best_state = None
+
     for ep in range(args.epochs):
         tr = run_epoch(net, train_cache, train_loader, lossfn, opt)
         msg = (f"ep {ep:3d} | train total {tr['total']:.4f} "
@@ -158,6 +168,11 @@ def main():
         va = run_epoch(net, val_cache, val_loader, lossfn, None) if val_loader else {}
         if va:
             msg += f" || val p_super {va['p_super_mean']:.3f} acc {va['l_acc']:.4f}"
+            if va["l_acc"] < best_val_loss:
+                best_val_loss = va["l_acc"]
+                best_epoch = ep
+                best_state = {k: v.cpu().clone() for k, v in net.state_dict().items()}
+                msg += "  [best]"
         print(msg)
         history.append({"epoch": ep, **{f"tr_{k}": v for k, v in tr.items()},
                         **{f"va_{k}": v for k, v in va.items()}})
@@ -168,11 +183,12 @@ def main():
     (logdir / f"{name}.json").write_text(json.dumps(history, indent=2))
     print(f"[*] log -> {logpath}")
 
-    out = Path(args.out)
-    out.parent.mkdir(parents=True, exist_ok=True)
-    torch.save({"state_dict": net.state_dict(),
-                "args": vars(args)}, out)
-    print(f"[*] saved policy -> {out}")
+    # save best-val checkpoint (falls back to last epoch if no val cache)
+    save_state = best_state if best_state is not None else net.state_dict()
+    save_epoch = best_epoch if best_epoch >= 0 else args.epochs - 1
+    torch.save({"state_dict": save_state, "args": vars(args),
+                "best_epoch": save_epoch, "best_val_loss": best_val_loss}, out)
+    print(f"[*] saved policy -> {out}  (best val ep={save_epoch}, val_loss={best_val_loss:.5f})")
 
 
 if __name__ == "__main__":

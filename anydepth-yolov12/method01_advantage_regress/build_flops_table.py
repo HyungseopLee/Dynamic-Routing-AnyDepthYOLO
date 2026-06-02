@@ -9,10 +9,17 @@ L_flops term (constant per action, no gradient).
 
 Usage:
     
+    # kitti  (input image size 384 x 1248)
     python ./method01_advantage_regress/build_flops_table.py \
         --weight runs/kitti/detect/anydepth-yolov12s/train/weights/best.pt \
         --imgsz 384 1280 \
-        --out runs/kitti/policy/flops_table.json
+        --out method01_advantage_regress/outputs/kitti/flops_table.json
+
+    # bdd100k  (input image size 720 x 1280; rounded to 736 internally by /32)
+    python ./method01_advantage_regress/build_flops_table.py \
+        --weight ./finetuned_bdd100k/AD-YOLOv12s_bdd100k_30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.6_orig_mAP34.3_33.1.pt \
+        --imgsz 720 1280 \
+        --out method01_advantage_regress/outputs/bdd100k/flops_table.json
 """
 
 import argparse

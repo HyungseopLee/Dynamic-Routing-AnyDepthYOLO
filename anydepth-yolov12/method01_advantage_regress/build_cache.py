@@ -12,11 +12,22 @@ Saved to a single .pt so policy training reads tensors only (no detector
 forward), making epochs trivially cheap and lambda sweeps fast.
 
 Usage:
+    # kitti  (input image size 384 x 1248)
     python method01_advantage_regress/build_cache.py \
         --weight runs/kitti/detect/anydepth-yolov12s/train/weights/best.pt \
-        --data ultralytics/cfg/datasets/kitti.yaml --split train \
-        --imgsz 384 1248 --batch 16 \
-        --out runs/kitti/policy/cache_train.pt
+        --data ultralytics/cfg/datasets/kitti.yaml --dataset kitti \
+        --split train --imgsz 384 1248 --batch 16
+
+    # bdd100k  (input image size 720 x 1280; rounded to 736 x 1280 by /32 stride)
+    # run once per split -> outputs/bdd100k/cache_{train,val}.pt
+    python method01_advantage_regress/build_cache.py \
+        --weight ./finetuned_bdd100k/AD-YOLOv12s_bdd100k_30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.6_orig_mAP34.3_33.1.pt \
+        --data ultralytics/cfg/datasets/bdd100k.yaml --dataset bdd100k \
+        --split train --imgsz 720 1280 --batch 16
+    python method01_advantage_regress/build_cache.py \
+        --weight ./finetuned_bdd100k/AD-YOLOv12s_bdd100k_30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.6_orig_mAP34.3_33.1.pt \
+        --data ultralytics/cfg/datasets/bdd100k.yaml --dataset bdd100k \
+        --split val --imgsz 720 1280 --batch 16
 """
 
 import argparse

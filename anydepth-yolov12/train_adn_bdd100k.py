@@ -12,6 +12,11 @@ parser.add_argument('--task', type=str, default='')
 parser.add_argument('--data', type=str, default='')
 parser.add_argument('--resume', action='store_true', help='Resume training from the provided weight')
 parser.add_argument('--seed', type=int, default=0, help='Random seed for reproducibility')
+parser.add_argument('--alpha_base', type=float, default=1.0,
+                    help='self-distillation loss weight for the base path; lower -> weaker base, '
+                         'widening the per-image base/super advantage (use ~0.2 for routing experiments)')
+parser.add_argument('--lr0', type=float, default=1e-3,
+                    help='initial LR (scratch: 1e-2, finetuning: 1e-3 or 1e-4)')
 
 args = parser.parse_args()
 IMG_SIZE = args.imgsz
@@ -55,7 +60,7 @@ else:
       momentum=0.900,  # default 0.937
       batch=32, #s:128, l:64, orig:256,
       nbs=256, # default 256,
-      lr0=1e-3, # initial lr: fromscratch=1e-2, finetuning:1e-3 or 1e-4
+      lr0=args.lr0, # initial lr: fromscratch=1e-2, finetuning:1e-3 or 1e-4
       lrf=1e-2, # lr0 ~ (lr0 * lrf)
       
       # image
@@ -73,7 +78,7 @@ else:
       flipud=0.0, # (float) image flip up-down (probability)rect=
       
       # self-distillation
-      alpha_base=1.0, # (float) loss weight for the base model
+      alpha_base=args.alpha_base, # (float) loss weight for the base model
 
       # reproducibility
       seed=args.seed,
@@ -135,6 +140,23 @@ python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
 
 
   --weight ./pretrained/yolo-ad-exp8_105_epoch539_0.539_0.520.pt \
+
+
+
+# From scratch
+
+mkdir -p ./runs/bdd100k/detect/anydepth-yolov12s-from-scratch
+export CUDA_VISIBLE_DEVICES=0,1
+python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
+  --task detect \
+  --config ./ultralytics/cfg/models/v12/yolo-ad-v12s-orig.yaml \
+  --data bdd100k.yaml \
+  --epoch 50 \
+  --imgsz 1280 \
+  --alpha 0.2 \
+  --project ./runs/bdd100k/detect/anydepth-yolov12s-from-scratch \
+  2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s-from-scratch/50e_SGD0900_bs32_nbs256_1e-2_1e-4_1280-720_singleScale_augNothing_alpha0.2_orig.log
+
 
 '''
 
