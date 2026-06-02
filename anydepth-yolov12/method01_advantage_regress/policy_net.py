@@ -34,38 +34,75 @@ def _as_tensor(v: Vec) -> torch.Tensor:
     return v if isinstance(v, torch.Tensor) else torch.cat(v, dim=1)
 
 
+class LazyLayerNorm(nn.Module):
+    """LayerNorm whose normalized_shape is inferred on the first forward.
+
+    Unlike BatchNorm, this normalises each sample over its own channels, so it is
+    independent of batch size / other frames -- a natural fit for batch-1 video
+    inference. Built lazily to mirror LazyBatchNorm1d (no channel count hardcoded).
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.ln = None
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        if self.ln is None:
+            self.ln = nn.LayerNorm(x.shape[1]).to(x.device, x.dtype)
+        return self.ln(x)
+
+
+def _norm(kind: str) -> nn.Module:
+    if kind == "batch":
+        return nn.LazyBatchNorm1d()
+    if kind == "layer":
+        return LazyLayerNorm()
+    if kind == "none":
+        return nn.Identity()  # feed raw GAP straight into the projection
+    raise ValueError(f"unknown norm: {kind}")
+
+
 class PolicyNetwork(nn.Module):
     def __init__(self, group_dim: int = 64, path_dim: int = 8, hidden_dim: int = 64,
-                 feat: str = "both"):
+                 feat: str = "both", norm: str = "batch", dropout: float = 0.0):
         super().__init__()
         assert feat in ("input", "pred", "both")
         self.feat = feat
-        # Normalise raw GAP vectors (per-channel) before projection -- GAP scales
-        # vary widely across layers and unnormalised inputs cripple learning.
-        # LazyBatchNorm1d / LazyLinear infer channel counts on first forward.
+        self.norm = norm
+        self.dropout = dropout
+        # Normalise raw GAP vectors before projection -- GAP scales vary widely
+        # across layers and unnormalised inputs cripple learning. norm="batch"
+        # uses per-channel BatchNorm (batch stats); norm="layer" normalises each
+        # sample over its channels (batch-size independent). LazyLinear infers
+        # channel counts on first forward.
         if feat in ("input", "both"):
             self.input_proj = nn.Sequential(
-                nn.LazyBatchNorm1d(), nn.LazyLinear(group_dim), nn.ReLU(inplace=True))
+                _norm(norm), nn.LazyLinear(group_dim), nn.ReLU(inplace=True))
         if feat in ("pred", "both"):
             self.pred_proj = nn.Sequential(
-                nn.LazyBatchNorm1d(), nn.LazyLinear(group_dim), nn.ReLU(inplace=True))
-        self.path_embed = nn.Embedding(2, path_dim)  # 0=BASE, 1=SUPER
+                _norm(norm), nn.LazyLinear(group_dim), nn.ReLU(inplace=True))
+        # prev-action (path) embedding. path_dim=0 -> no embedding (policy ignores
+        # which path produced the features); kept out of the graph so the head input
+        # shrinks accordingly.
+        self.path_dim = path_dim
+        self.path_embed = nn.Embedding(2, path_dim) if path_dim > 0 else None  # 0=BASE,1=SUPER
         n_groups = 2 if feat == "both" else 1
-        # [n*d + p] -> [h] -> [1]  (logit / predicted advantage)
-        self.head = nn.Sequential(
-            nn.Linear(n_groups * group_dim + path_dim, hidden_dim),
-            nn.ReLU(inplace=True),
-            nn.Linear(hidden_dim, 1),
-        )
+        # [n*d + p] -> [h] -> [1]  (logit / predicted advantage). Dropout module is
+        # only inserted when dropout>0 so old (no-dropout) checkpoints stay loadable.
+        layers = [nn.Linear(n_groups * group_dim + path_dim, hidden_dim), nn.ReLU(inplace=True)]
+        if dropout > 0:
+            layers.append(nn.Dropout(dropout))
+        layers.append(nn.Linear(hidden_dim, 1))
+        self.head = nn.Sequential(*layers)
 
     def logit(self, input_vec: Vec, pred_vec: Vec, path_id: torch.Tensor) -> torch.Tensor:
-        pid = self.path_embed(path_id)                 # [B, p]
         parts = []
         if self.feat in ("input", "both"):
             parts.append(self.input_proj(_as_tensor(input_vec)))   # [B, d]
         if self.feat in ("pred", "both"):
             parts.append(self.pred_proj(_as_tensor(pred_vec)))     # [B, d]
-        parts.append(pid)
+        if self.path_embed is not None:
+            parts.append(self.path_embed(path_id))                 # [B, p]
         return self.head(torch.cat(parts, dim=1))      # [B, 1]
 
     def forward(self, input_vec: Vec, pred_vec: Vec, path_id: torch.Tensor) -> torch.Tensor:
