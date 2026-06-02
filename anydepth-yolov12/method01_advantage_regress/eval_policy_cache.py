@@ -113,8 +113,9 @@ def main():
 
     ckpt = torch.load(args.policy, map_location=device, weights_only=False)
     a = ckpt.get("args", {})
-    net = PolicyNetwork(group_dim=a.get("group_dim", 64), hidden_dim=a.get("hidden", 64),
-                        feat=a.get("feat", "both")).to(device)
+    net = PolicyNetwork(group_dim=a.get("group_dim", 64), path_dim=a.get("path_dim", 8),
+                        hidden_dim=a.get("hidden", 64), feat=a.get("feat", "both"),
+                        norm=a.get("norm", "batch"), dropout=a.get("dropout", 0.0)).to(device)
     net.eval()
     with torch.no_grad():  # materialise LazyLinear (eval mode for BN with batch 2 ok)
         net(c["input_base"][:2].to(device), c["pred_base"][:2].to(device),

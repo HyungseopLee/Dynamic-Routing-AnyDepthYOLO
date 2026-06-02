@@ -29,6 +29,7 @@ import json
 import sys
 import time
 from collections import defaultdict
+from datetime import datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -47,8 +48,9 @@ from method01_advantage_regress.policy_net import PolicyNetwork
 def load_policy(path, device):
     ckpt = torch.load(path, map_location=device, weights_only=False)
     a = ckpt.get("args", {})
-    net = PolicyNetwork(group_dim=a.get("group_dim", 64), hidden_dim=a.get("hidden", 128),
-                        feat=a.get("feat", "both")).to(device)
+    net = PolicyNetwork(group_dim=a.get("group_dim", 64), path_dim=a.get("path_dim", 8),
+                        hidden_dim=a.get("hidden", 128), feat=a.get("feat", "both"),
+                        norm=a.get("norm", "batch"), dropout=a.get("dropout", 0.0)).to(device)
     return net, ckpt
 
 
@@ -82,6 +84,22 @@ def main():
     ap.add_argument("--conf", type=float, default=0.001)
     ap.add_argument("--device", default="cuda:0")
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--policy_only", action="store_true",
+                    help="only policy strategies + endpoints (skip conf/lum/edge/random) -- "
+                         "use for multi-policy ablation to cut strategy count / memory")
+    ap.add_argument("--no_conf", action="store_true",
+                    help="skip confidence-based routing baselines (conftop20/confge10) only; "
+                         "keep random/lum/edge. Lets --conf be set high (few boxes -> light) "
+                         "since conf-routing is the baseline that needs a low-conf box distribution")
+    ap.add_argument("--only_conf", action="store_true",
+                    help="evaluate ONLY the confidence-routing baselines (+ endpoints); skip "
+                         "policy/random/lum/edge. Use to run the heavy conf baseline separately "
+                         "(possibly at its own --conf) and merge into the main figure at plot time")
+    ap.add_argument("--policy_taus", type=int, default=21,
+                    help="number of policy threshold points (-0.4..+1.6)")
+    ap.add_argument("--conf_taus", type=int, default=19,
+                    help="number of confidence-routing threshold points per variant "
+                         "(spread over (0,1); lower = lighter / fewer strategies)")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
     _base = Path(__file__).resolve().parent / "outputs" / args.dataset
@@ -130,18 +148,19 @@ def main():
     # pre-pass: collect luminance / edge density over all frames to set percentile
     # thresholds (WACV sweeps percentiles of each pixel-statistics signal).
     lum_all, edge_all = [], []
-    for seq in seqs:
-        for fp in frames_of(seq):
-            bgr = cv2.imread(str(fp))
-            if bgr is None:
-                continue
-            l, e = pixel_signals(bgr)
-            lum_all.append(l); edge_all.append(e)
-    pcts = list(range(5, 100, 5))
-    lum_taus = np.percentile(lum_all, pcts)
-    edge_taus = np.percentile(edge_all, pcts)
-    print(f"[*] luminance range [{min(lum_all):.1f},{max(lum_all):.1f}], "
-          f"edge range [{min(edge_all):.1f},{max(edge_all):.1f}]")
+    if not args.policy_only and not args.only_conf:
+        for seq in seqs:
+            for fp in frames_of(seq):
+                bgr = cv2.imread(str(fp))
+                if bgr is None:
+                    continue
+                l, e = pixel_signals(bgr)
+                lum_all.append(l); edge_all.append(e)
+        pcts = list(range(5, 100, 5))
+        lum_taus = np.percentile(lum_all, pcts)
+        edge_taus = np.percentile(edge_all, pcts)
+        print(f"[*] luminance range [{min(lum_all):.1f},{max(lum_all):.1f}], "
+              f"edge range [{min(edge_all):.1f},{max(edge_all):.1f}]")
 
     # strategies: dict(name, kind, thres, decide). decide(pc, pv, fi).
     #   conftop20/confge10 -> prev-frame chosen-path confidence (recursive)
@@ -149,21 +168,26 @@ def main():
     #   lum/edge           -> CURRENT-frame pixel signal (causal, memoryless): super if < tau
     strategies = [dict(name="always_base", kind="const", thres=0, decide=lambda pc, pv, fi: "base"),
                   dict(name="always_super", kind="const", thres=0, decide=lambda pc, pv, fi: "super")]
-    for p in range(0, 101, 10):
-        ps = p / 100.0
-        strategies.append(dict(name=f"random_p{p:03d}", kind="random", thres=ps,
-                               decide=lambda pc, pv, fi, ps=ps: "super" if np.random.random() < ps else "base"))
-    for kind in ("conftop20", "confge10"):
-        for tau in [round(0.05 * i, 2) for i in range(1, 20)]:
-            strategies.append(dict(name=f"{kind}_t{int(tau*100):02d}", kind=kind, thres=tau,
-                                   decide=lambda pc, pv, fi, tau=tau: "base" if (fi == 0 or pv >= tau) else "super"))
-    for kind, taus in (("lum", lum_taus), ("edge", edge_taus)):
-        for pc, tau in zip(pcts, taus):
-            strategies.append(dict(name=f"{kind}_p{pc:02d}", kind=kind, thres=float(tau),
-                                   decide=lambda pc_, pv, fi, tau=tau: "super" if pv < tau else "base"))
-    for ptag in nets:
+    if not args.policy_only and not args.only_conf:
+        for p in range(0, 101, 10):
+            ps = p / 100.0
+            strategies.append(dict(name=f"random_p{p:03d}", kind="random", thres=ps,
+                                   decide=lambda pc, pv, fi, ps=ps: "super" if np.random.random() < ps else "base"))
+        for kind, taus in (("lum", lum_taus), ("edge", edge_taus)):
+            for pc, tau in zip(pcts, taus):
+                strategies.append(dict(name=f"{kind}_p{pc:02d}", kind=kind, thres=float(tau),
+                                       decide=lambda pc_, pv, fi, tau=tau: "super" if pv < tau else "base"))
+    # confidence-routing: included unless --no_conf; the ONLY families when --only_conf
+    if (not args.no_conf and not args.policy_only) or args.only_conf:
+        conf_taus = [round((i + 1) / (args.conf_taus + 1), 3) for i in range(args.conf_taus)]
+        for kind in ("conftop20", "confge10"):
+            for tau in conf_taus:
+                strategies.append(dict(name=f"{kind}_t{int(tau*100):02d}", kind=kind, thres=tau,
+                                       decide=lambda pc, pv, fi, tau=tau: "base" if (fi == 0 or pv >= tau) else "super"))
+    policy_taus = [round(-0.4 + (2.0 / (args.policy_taus - 1)) * i, 3) for i in range(args.policy_taus)]
+    for ptag in (nets if not args.only_conf else {}):
         pname = "policy" if ptag == "policy" else f"policy_{ptag}"
-        for tau in [round(-0.4 + 0.1 * i, 2) for i in range(0, 21)]:  # -0.4 .. +1.6
+        for tau in policy_taus:  # -0.4 .. +1.6
             strategies.append(dict(name=f"{pname}_t{int(tau*100):+04d}", kind="policy",
                                    ptag=ptag, thres=tau,
                                    decide=lambda pc, pv, fi, tau=tau: "super" if (fi > 0 and pv > tau) else "base"))
@@ -181,6 +205,7 @@ def main():
             yolo.predict(source=warm, imgsz=tuple(args.imgsz), conf=args.conf,
                          iou=0.7, skip=sk, verbose=False, device=device)
 
+    total_frames = 0
     for seq in seqs:
         img_dir = Path(args.kitti_root) / "training" / "image_02" / seq
         lpath = label_dir / f"{seq}.txt"
@@ -197,6 +222,7 @@ def main():
             bgr = cv2.imread(str(fpath))
             if bgr is None:
                 continue
+            total_frames += 1
             lum_cur, edge_cur = pixel_signals(bgr)  # current-frame pixel stats (causal)
 
             captured.clear()
@@ -289,14 +315,27 @@ def main():
                      "energy_mj": mean_e})
 
     rows.sort(key=lambda r: r["gflops"])
-    print(f"\n{'strategy':<18}{'super%':>8}{'GFLOPs':>9}{'mAP50':>9}{'mAP':>9}{'ms':>8}{'FPS':>7}{'mJ':>9}")
-    for r in rows:
-        print(f"{r['name']:<18}{r['super_rate']*100:>7.1f}%{r['gflops']:>9.2f}{r['map50']:>9.4f}"
-              f"{r['map']:>9.4f}{r['latency_ms']:>8.2f}{r['fps']:>7.1f}{r['energy_mj']:>9.1f}")
+    # build the per-strategy table as text, then both print AND log it (persistent
+    # evidence: a .log next to the output json with the full config + results).
+    hdr = f"{'strategy':<22}{'super%':>8}{'GFLOPs':>9}{'mAP50':>9}{'mAP':>9}{'ms':>8}{'FPS':>7}{'mJ':>9}"
+    lines = [hdr] + [
+        f"{r['name']:<22}{r['super_rate']*100:>7.1f}%{r['gflops']:>9.2f}{r['map50']:>9.4f}"
+        f"{r['map']:>9.4f}{r['latency_ms']:>8.2f}{r['fps']:>7.1f}{r['energy_mj']:>9.1f}"
+        for r in rows]
+    print("\n" + "\n".join(lines))
 
     out = Path(args.out); out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps({"gflops_super": gs, "gflops_base": gb, "rows": rows}, indent=2))
     print(f"[*] saved -> {out}")
+
+    logpath = out.with_suffix(".log")
+    with open(logpath, "w") as f:
+        f.write(f"# eval_video.py run {datetime.now().isoformat(timespec='seconds')}\n")
+        f.write(f"# args: {json.dumps(vars(args))}\n")
+        f.write(f"# sequences={len(seqs)} total_frames={total_frames} "
+                f"strategies={len(strategies)} gflops_base={gb:.2f} gflops_super={gs:.2f}\n\n")
+        f.write("\n".join(lines) + "\n")
+    print(f"[*] log  -> {logpath}")
 
     # table: strategies matching or exceeding always-super accuracy (mAP50)
     sup = next((r for r in rows if r["name"] == "always_super"), None)
@@ -319,6 +358,41 @@ def main():
         tbl_path.write_text("\n".join(md))
         print(f"\n[*] {len(qual)} strategies >= always-super mAP50 -> {tbl_path}")
         print("\n".join(md))
+
+        # concise auto-summary: best (lowest-GFLOPs) policy point that matches/exceeds
+        # always-SUPER, reported per metric (mAP50 and mAP).
+        bas = next((r for r in rows if r["name"] == "always_base"), None)
+        sm = ["# Eval summary",
+              f"run: {datetime.now().isoformat(timespec='seconds')}  |  "
+              f"sequences={len(seqs)} frames={total_frames} strategies={len(strategies)} "
+              f"conf={args.conf}",
+              f"detector: BASE {gb:.2f} / SUPER {gs:.2f} GFLOPs\n",
+              "| reference | mAP50 | mAP | GFLOPs | latency(ms) | FPS | energy(mJ) |",
+              "|---|---|---|---|---|---|---|",
+              f"| always-SUPER | {sup['map50']:.4f} | {sup['map']:.4f} | {sup['gflops']:.2f} | "
+              f"{sup['latency_ms']:.2f} | {sup['fps']:.1f} | {sup['energy_mj']:.1f} |"]
+        if bas:
+            sm.append(f"| always-BASE | {bas['map50']:.4f} | {bas['map']:.4f} | {bas['gflops']:.2f} | "
+                      f"{bas['latency_ms']:.2f} | {bas['fps']:.1f} | {bas['energy_mj']:.1f} |")
+        sm.append("\nBest policy point matching/exceeding always-SUPER (lowest GFLOPs):")
+        sm.append("| metric | strategy | super% | GFLOPs | value | Δvalue | FPS | ΔFLOPs% | ΔFPS% | Δenergy% |")
+        sm.append("|---|---|---|---|---|---|---|---|---|---|")
+        for metric in ("map50", "map"):
+            cand = [r for r in rows if r["name"] not in ("always_super", "always_base")
+                    and (r.get("family") or r.get("kind", "")).startswith("policy")
+                    and r[metric] >= sup[metric] - 1e-9]
+            if not cand:
+                continue
+            b = min(cand, key=lambda r: r["gflops"])
+            dfl = (b["gflops"] - sup["gflops"]) / sup["gflops"] * 100
+            dfp = (b["fps"] - sup["fps"]) / sup["fps"] * 100
+            den = (b["energy_mj"] - sup["energy_mj"]) / sup["energy_mj"] * 100
+            sm.append(f"| {metric.upper()} | {b['name']} | {b['super_rate']*100:.1f} | "
+                      f"{b['gflops']:.2f} | {b[metric]:.4f} | {b[metric]-sup[metric]:+.4f} | "
+                      f"{b['fps']:.1f} | {dfl:+.1f} | {dfp:+.1f} | {den:+.1f} |")
+        sum_path = out.with_name(out.stem + "_summary.md")
+        sum_path.write_text("\n".join(sm))
+        print(f"[*] summary -> {sum_path}")
 
 
 if __name__ == "__main__":

@@ -67,6 +67,19 @@ def gather(cache, idx, prev_action):
     return inp, prd
 
 
+@torch.no_grad()
+def val_corr(net, cache):
+    """Pearson corr between predicted A-hat and true advantage A on the val set,
+    using prev_action=BASE (path_id=0) -- matches how eval thresholds A-hat. This
+    is scale-invariant, so it tracks routing/ranking quality rather than MSE."""
+    net.eval()
+    A = (cache["loss_base"].view(-1) - cache["loss_super"].view(-1))
+    pid = torch.zeros(A.shape[0], dtype=torch.long, device=A.device)
+    ah = net.logit(cache["input_base"], cache["pred_base"], pid).view(-1)
+    a = ah - ah.mean(); b = A - A.mean()
+    return float((a * b).sum() / (a.norm() * b.norm() + 1e-8))
+
+
 def run_epoch(net, cache, loader, lossfn, opt=None):
     train = opt is not None
     net.train(train)
@@ -107,8 +120,18 @@ def main():
     ap.add_argument("--lambda_uni", type=float, default=0.1)
     ap.add_argument("--hidden", type=int, default=64)
     ap.add_argument("--group_dim", type=int, default=64)
+    ap.add_argument("--path_dim", type=int, default=8,
+                    help="prev-action embedding dim (0 = no path embedding)")
     ap.add_argument("--feat", default="both", choices=["input", "pred", "both"],
                     help="which context feature(s) the policy uses")
+    ap.add_argument("--norm", default="batch", choices=["batch", "layer", "none"],
+                    help="GAP normalisation before projection (batch=BatchNorm1d, layer=LayerNorm, none=Identity)")
+    ap.add_argument("--dropout", type=float, default=0.0, help="dropout in the head (regularisation)")
+    ap.add_argument("--weight_decay", type=float, default=0.0, help="Adam weight decay (L2 regularisation)")
+    ap.add_argument("--select", default="val_mse", choices=["val_mse", "val_corr", "last"],
+                    help="checkpoint selection: val_mse=min val MSE(A-hat,A); "
+                         "val_corr=max val corr(A-hat,A) (ranking, matches eval thresholding); "
+                         "last=final epoch (no early stop)")
     ap.add_argument("--mode", default="advantage", choices=["advantage", "bce", "regress"])
     ap.add_argument("--margin", type=float, default=0.0,
                     help="bce mode: exclude |A|<margin images from L_acc")
@@ -130,7 +153,8 @@ def main():
     train_cache = load_cache(args.cache, device)
     val_cache = load_cache(args.val_cache, device) if Path(args.val_cache).exists() else None
 
-    net = PolicyNetwork(group_dim=args.group_dim, hidden_dim=args.hidden, feat=args.feat).to(device)
+    net = PolicyNetwork(group_dim=args.group_dim, path_dim=args.path_dim, hidden_dim=args.hidden,
+                        feat=args.feat, norm=args.norm, dropout=args.dropout).to(device)
     # materialise LazyLinear shapes with a dummy forward
     with torch.no_grad():
         net(train_cache["input_base"][:2], train_cache["pred_base"][:2],
@@ -138,7 +162,7 @@ def main():
 
     lossfn = PolicyLoss(args.flops, lambda_flops=args.lambda_flops, lambda_uni=args.lambda_uni,
                         mode=args.mode, margin=args.margin)
-    opt = torch.optim.Adam(net.parameters(), lr=args.lr)
+    opt = torch.optim.Adam(net.parameters(), lr=args.lr, weight_decay=args.weight_decay)
 
     train_loader = make_loader(train_cache, args.batch, shuffle=True)
     val_loader = make_loader(val_cache, args.batch, shuffle=False) if val_cache else None
@@ -153,12 +177,15 @@ def main():
         f.write(f"# {json.dumps(vars(args))}\n")
         f.write("epoch\ttotal\tl_acc\tl_flops\tl_uni\tp_super\tval_p_super\tval_l_acc\n")
 
-    out = Path(args.out)
-    out.parent.mkdir(parents=True, exist_ok=True)
-
-    best_val_loss = float("inf")
+    # track the val-best checkpoint (lowest val l_acc); falls back to train l_acc
+    # if no val cache. Saving the best -- not the last epoch -- guards against any
+    # late-epoch overfitting on the held-out images.
+    import copy
+    best_obj = float("inf")          # objective to MINIMISE (sign-flipped where needed)
+    best_metric = float("nan")        # human-readable value of the selection metric
+    best_state = copy.deepcopy(net.state_dict())
     best_epoch = -1
-    best_state = None
+    sel = args.select if val_loader or args.select == "last" else "train_l_acc"
 
     for ep in range(args.epochs):
         tr = run_epoch(net, train_cache, train_loader, lossfn, opt)
@@ -168,11 +195,19 @@ def main():
         va = run_epoch(net, val_cache, val_loader, lossfn, None) if val_loader else {}
         if va:
             msg += f" || val p_super {va['p_super_mean']:.3f} acc {va['l_acc']:.4f}"
-            if va["l_acc"] < best_val_loss:
-                best_val_loss = va["l_acc"]
-                best_epoch = ep
-                best_state = {k: v.cpu().clone() for k, v in net.state_dict().items()}
-                msg += "  [best]"
+        # selection objective (lower=better)
+        if args.select == "last":
+            obj, metric = -ep, float(ep)
+        elif args.select == "val_corr" and val_loader:
+            c = val_corr(net, val_cache); obj, metric = -c, c
+            msg += f" corr {c:.3f}"
+        else:  # val_mse (or no val -> train mse)
+            metric = va["l_acc"] if val_loader else tr["l_acc"]
+            obj = metric
+        if obj < best_obj:
+            best_obj = obj; best_metric = metric; best_epoch = ep
+            best_state = copy.deepcopy(net.state_dict())
+            msg += "  *best*"
         print(msg)
         history.append({"epoch": ep, **{f"tr_{k}": v for k, v in tr.items()},
                         **{f"va_{k}": v for k, v in va.items()}})
@@ -182,13 +217,14 @@ def main():
                     f"{va.get('p_super_mean', float('nan')):.4f}\t{va.get('l_acc', float('nan')):.5f}\n")
     (logdir / f"{name}.json").write_text(json.dumps(history, indent=2))
     print(f"[*] log -> {logpath}")
+    print(f"[*] best {sel}={best_metric:.5f} @ epoch {best_epoch} (of {args.epochs})")
 
-    # save best-val checkpoint (falls back to last epoch if no val cache)
-    save_state = best_state if best_state is not None else net.state_dict()
-    save_epoch = best_epoch if best_epoch >= 0 else args.epochs - 1
-    torch.save({"state_dict": save_state, "args": vars(args),
-                "best_epoch": save_epoch, "best_val_loss": best_val_loss}, out)
-    print(f"[*] saved policy -> {out}  (best val ep={save_epoch}, val_loss={best_val_loss:.5f})")
+    out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    torch.save({"state_dict": best_state,
+                "args": vars(args),
+                "best_epoch": best_epoch, "best_metric": best_metric, "select_on": sel}, out)
+    print(f"[*] saved policy (val-best) -> {out}")
 
 
 if __name__ == "__main__":
