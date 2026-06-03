@@ -9,9 +9,9 @@ plots the per-tau mean curve (x = mean SUPER usage %, y = mean metric) with a
 +/- std band, so overlapping bands => the feat difference is not significant.
 
 Usage:
-    python method01_advantage_regress/plot_ablation.py \
-        --curve ./method01_advantage_regress/outputs/kitti/eval/video_curve_featabl_seeds.json \
-        --out   method01_advantage_regress/outputs/kitti/eval/
+    python method03_advantage_rank/plot_ablation.py \
+        --curve ./method03_advantage_rank/outputs/kitti/eval/video_curve_featabl_seeds.json \
+        --out   method03_advantage_rank/outputs/kitti/eval/
 """
 
 import argparse
@@ -58,9 +58,6 @@ def main():
                     help="separate eval json to read confidence-routing baselines from "
                          "(lets the heavy conf baseline be evaluated independently and merged "
                          "here). Defaults to --curve when omitted.")
-    ap.add_argument("--extra_policy", default=None,
-                    help="overlay another method's backbone policy curve as 'label:path' "
-                         "(reads policy_input_s*_t* rows, 5-seed mean+/-std). e.g. GAP-MLP comparison.")
     args = ap.parse_args()
     _ev = Path(__file__).resolve().parent / "outputs" / args.dataset / "eval"
     if args.curve is None: args.curve = str(_ev / "video_curve_featabl_seeds.json")
@@ -137,22 +134,6 @@ def main():
             if thr is not None:
                 ax.annotate(f"{thr:g}", (x, y), textcoords="offset points", xytext=(0, 5),
                             fontsize=6, color=color, ha="center")
-
-    # optional: overlay another method's backbone policy curve (e.g. GAP-MLP)
-    if args.extra_policy:
-        lbl, path = args.extra_policy.split(":", 1)
-        ex = defaultdict(list)
-        for r in json.loads(Path(path).read_text())["rows"]:
-            m = NAME_RE.match(r["name"])
-            if m and m.group(1) == "input":
-                ex[m.group(3)].append((r["super_rate"] * 100, r[args.metric]))
-        pts = sorted((np.mean([s[0] for s in v]), np.mean([s[1] for s in v]),
-                      np.std([s[1] for s in v]), len(v)) for v in ex.values())
-        xs = [p[0] for p in pts]; ym = [p[1] for p in pts]; ys = [p[2] for p in pts]
-        ax.plot(xs, ym, "D-", color="tab:brown", markersize=4,
-                label=f"{lbl} (n={pts[0][3]})")
-        ax.fill_between(xs, np.array(ym) - np.array(ys), np.array(ym) + np.array(ys),
-                        color="tab:brown", alpha=0.12)
 
     for nm, (x, y) in endpoints.items():
         ax.scatter([x], [y], marker="*", s=220, zorder=5,

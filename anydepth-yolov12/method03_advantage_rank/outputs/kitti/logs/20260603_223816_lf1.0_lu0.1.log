@@ -1,0 +1,22 @@
+# {"dataset": "kitti", "cache": "method02_advantage_regress_tinyConv/outputs/kitti/cache_train_g2.pt", "val_cache": "method02_advantage_regress_tinyConv/outputs/kitti/cache_val_g2.pt", "flops": "/home/hslee/Desktop/Embedded_AI/context-anydepth-det/anydepth-yolov12/method03_advantage_rank/outputs/kitti/flops_table.json", "epochs": 20, "batch": 256, "lr": 0.001, "lambda_flops": 1.0, "lambda_uni": 0.1, "hidden": 128, "group_dim": 64, "path_dim": 8, "feat": "input", "norm": "batch", "dropout": 0.0, "weight_decay": 0.0, "select": "val_corr", "mode": "regress", "regress_loss": "rank", "margin": 0.05, "prev_p": 0.5, "seed": 0, "device": "cuda:0", "out": "/tmp/smoke_rank.pt", "logdir": "/home/hslee/Desktop/Embedded_AI/context-anydepth-det/anydepth-yolov12/method03_advantage_rank/outputs/kitti/logs", "tag": "", "keep_layers": ""}
+epoch	total	l_acc	l_flops	l_uni	p_super	val_p_super	val_l_acc
+0	0.04822	0.04822	0.00000	0.00000	0.0079	-0.0203	0.04899
+1	0.04500	0.04500	0.00000	0.00000	-0.0058	-0.0060	0.04715
+2	0.04340	0.04340	0.00000	0.00000	0.0132	0.0223	0.04609
+3	0.04290	0.04290	0.00000	0.00000	0.0279	0.0287	0.04500
+4	0.04146	0.04146	0.00000	0.00000	0.0327	0.0397	0.04560
+5	0.04011	0.04011	0.00000	0.00000	0.0506	0.0524	0.04474
+6	0.03949	0.03949	0.00000	0.00000	0.0578	0.0715	0.04508
+7	0.03864	0.03864	0.00000	0.00000	0.0642	0.0764	0.04563
+8	0.03783	0.03783	0.00000	0.00000	0.0832	0.0757	0.04498
+9	0.03732	0.03732	0.00000	0.00000	0.0861	0.0901	0.04525
+10	0.03700	0.03700	0.00000	0.00000	0.0805	0.0833	0.04545
+11	0.03575	0.03575	0.00000	0.00000	0.0863	0.0867	0.04504
+12	0.03596	0.03596	0.00000	0.00000	0.0945	0.0844	0.04484
+13	0.03411	0.03411	0.00000	0.00000	0.0904	0.0937	0.04515
+14	0.03376	0.03376	0.00000	0.00000	0.1129	0.1196	0.04652
+15	0.03366	0.03366	0.00000	0.00000	0.1178	0.1135	0.04556
+16	0.03276	0.03276	0.00000	0.00000	0.1090	0.1196	0.04659
+17	0.03215	0.03215	0.00000	0.00000	0.1252	0.1185	0.04652
+18	0.03192	0.03192	0.00000	0.00000	0.1272	0.1241	0.04602
+19	0.03133	0.03133	0.00000	0.00000	0.1240	0.1312	0.04699
