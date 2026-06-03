@@ -52,6 +52,8 @@ def main():
     ap.add_argument("--metric", default="map50", choices=["map50", "map"])
     ap.add_argument("--with_conf", action="store_true",
                     help="also draw confidence-routing baselines (main result figure)")
+    ap.add_argument("--feats", default="input,pred,both",
+                    help="comma-sep subset of policy feats to draw (e.g. 'input' for main result)")
     ap.add_argument("--conf_curve", default=None,
                     help="separate eval json to read confidence-routing baselines from "
                          "(lets the heavy conf baseline be evaluated independently and merged "
@@ -110,7 +112,10 @@ def main():
         xs = [p[0] for p in pts]; ys = [p[1] for p in pts]
         ax.plot(xs, ys, fmt, color=color, label=lbl, markersize=4, linewidth=1.2, alpha=0.85)
 
+    keep_feats = set(args.feats.split(","))
     for feat, taus in agg.items():
+        if feat not in keep_feats:
+            continue
         color, lbl = FEAT_STYLE[feat]
         pts = []
         for tau, seeds in taus.items():
@@ -145,7 +150,7 @@ def main():
              else "Feature ablation (mean +/- std over seeds)")
     ax.set_title(title, pad=28)
     ax.legend(); ax.grid(alpha=0.3)
-    out = f"{args.out}_{args.metric}.png"
+    out = f"{args.out}_{ {'map50': 'ap50', 'map': 'ap5095'}[args.metric] }.png"
     Path(out).parent.mkdir(parents=True, exist_ok=True)
     fig.tight_layout(); fig.savefig(out, dpi=150)
     print(f"[*] saved -> {out}")

@@ -97,6 +97,14 @@ def main():
                          "(possibly at its own --conf) and merge into the main figure at plot time")
     ap.add_argument("--policy_taus", type=int, default=21,
                     help="number of policy threshold points (-0.4..+1.6)")
+    ap.add_argument("--val_taus_json", default=None,
+                    help="thresholds precomputed on val by get_thresholds.py "
+                         "(honest pipeline: tau fixed on val, only applied on video). Preferred.")
+    ap.add_argument("--val_cache", default=None,
+                    help="fallback: derive thresholds inline from this val cache "
+                         "(quantile of A-hat per target budget). Prefer --val_taus_json.")
+    ap.add_argument("--budgets", default="10,20,30,40,50,60,70,80,90",
+                    help="comma-sep target SUPER-rate %% for --val_cache mode")
     ap.add_argument("--conf_taus", type=int, default=19,
                     help="number of confidence-routing threshold points per variant "
                          "(spread over (0,1); lower = lighter / fewer strategies)")
@@ -184,13 +192,38 @@ def main():
             for tau in conf_taus:
                 strategies.append(dict(name=f"{kind}_t{int(tau*100):02d}", kind=kind, thres=tau,
                                        decide=lambda pc, pv, fi, tau=tau: "base" if (fi == 0 or pv >= tau) else "super"))
+    # per-policy thresholds: either a global sweep (ablation) OR val-derived budgets
+    # (honest pipeline -- tau fixed on val, only applied here on video).
+    val_taus = None
+    if args.val_taus_json:
+        td = json.loads(Path(args.val_taus_json).read_text())["thresholds"]
+        val_taus = {ptag: {int(b): float(t) for b, t in bt.items()} for ptag, bt in td.items()}
+        print(f"[*] loaded val thresholds from {Path(args.val_taus_json).name}")
+    elif args.val_cache:
+        budgets = [int(b) for b in args.budgets.split(",")]
+        vc = torch.load(args.val_cache, map_location="cpu", weights_only=False)
+        v_in, v_pr = vc["input_base"].to(device), vc["pred_base"].to(device)
+        v_pid = torch.zeros(v_in.shape[0], dtype=torch.long, device=device)
+        val_taus = {}
+        with torch.no_grad():
+            for ptag, net in nets.items():
+                ah = net.logit(v_in, v_pr, v_pid).view(-1).cpu().numpy()
+                val_taus[ptag] = {b: float(np.quantile(ah, 1.0 - b / 100.0)) for b in budgets}
+        print(f"[*] val-derived thresholds (budgets={budgets}) from {Path(args.val_cache).name}")
+
     policy_taus = [round(-0.4 + (2.0 / (args.policy_taus - 1)) * i, 3) for i in range(args.policy_taus)]
     for ptag in (nets if not args.only_conf else {}):
         pname = "policy" if ptag == "policy" else f"policy_{ptag}"
-        for tau in policy_taus:  # -0.4 .. +1.6
-            strategies.append(dict(name=f"{pname}_t{int(tau*100):+04d}", kind="policy",
-                                   ptag=ptag, thres=tau,
-                                   decide=lambda pc, pv, fi, tau=tau: "super" if (fi > 0 and pv > tau) else "base"))
+        if val_taus is not None:
+            for b, tau in val_taus[ptag].items():
+                strategies.append(dict(name=f"{pname}_b{b:02d}", kind="policy",
+                                       ptag=ptag, thres=tau, budget=b,
+                                       decide=lambda pc, pv, fi, tau=tau: "super" if (fi > 0 and pv > tau) else "base"))
+        else:
+            for tau in policy_taus:  # -0.4 .. +1.6
+                strategies.append(dict(name=f"{pname}_t{int(tau*100):+04d}", kind="policy",
+                                       ptag=ptag, thres=tau,
+                                       decide=lambda pc, pv, fi, tau=tau: "super" if (fi > 0 and pv > tau) else "base"))
 
     print(f"[*] {len(seqs)} sequences, {len(strategies)} strategies")
 
@@ -307,8 +340,14 @@ def main():
         mean_lat = float(np.mean(s.latency_ms)) if s.latency_ms else 0.0
         mean_e = float(np.mean(s.energy_mj)) if s.energy_mj else 0.0
         # family = curve grouping (policy_input/pred/both stay distinct)
-        family = name.rsplit("_t", 1)[0] if "_t" in name else st["kind"]
+        if "_t" in name:
+            family = name.rsplit("_t", 1)[0]
+        elif "_b" in name:
+            family = name.rsplit("_b", 1)[0]
+        else:
+            family = st["kind"]
         rows.append({"name": name, "kind": st["kind"], "family": family, "thres": st["thres"],
+                     "budget": st.get("budget"),
                      "map50": map50, "map": map5095,
                      "super_rate": super_rate, "gflops": gflops,
                      "latency_ms": mean_lat, "fps": (1000.0 / mean_lat if mean_lat else 0.0),

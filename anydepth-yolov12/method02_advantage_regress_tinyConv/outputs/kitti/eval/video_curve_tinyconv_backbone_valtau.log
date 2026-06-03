@@ -1,0 +1,52 @@
+# eval_video.py run 2026-06-03T15:14:57
+# args: {"dataset": "kitti", "weight": "runs/kitti/detect/anydepth-yolov12s/train/weights/best.pt", "policy": "/home/hslee/Desktop/Embedded_AI/context-anydepth-det/anydepth-yolov12/method02_advantage_regress_tinyConv/outputs/kitti/policy_regress.pt", "policies": "input_s0=method02_advantage_regress_tinyConv/outputs/kitti/ablation/policy_input_s0.pt,input_s1=method02_advantage_regress_tinyConv/outputs/kitti/ablation/policy_input_s1.pt,input_s2=method02_advantage_regress_tinyConv/outputs/kitti/ablation/policy_input_s2.pt,input_s3=method02_advantage_regress_tinyConv/outputs/kitti/ablation/policy_input_s3.pt,input_s4=method02_advantage_regress_tinyConv/outputs/kitti/ablation/policy_input_s4.pt", "kitti_root": "/media/data/kitti-tracking", "sequences": null, "imgsz": [384, 1248], "conf": 0.001, "device": "cuda:0", "limit": 0, "policy_only": true, "no_conf": false, "only_conf": false, "grid": 4, "policy_taus": 21, "val_taus_json": "method02_advantage_regress_tinyConv/outputs/kitti/eval/val_thresholds_tinyconv_backbone.json", "val_cache": null, "budgets": "10,20,30,40,50,60,70,80,90", "conf_taus": 19, "out": "method02_advantage_regress_tinyConv/outputs/kitti/eval/video_curve_tinyconv_backbone_valtau.json"}
+# sequences=21 total_frames=8008 strategies=47 gflops_base=16.87 gflops_super=26.30
+
+strategy                super%   GFLOPs    mAP50      mAP      ms    FPS       mJ
+always_base               0.0%    16.87   0.6725   0.4370   13.66   73.2   2305.4
+policy_input_s1_b10      20.6%    18.82   0.6991   0.4519   15.09   66.3   2544.4
+policy_input_s3_b10      21.4%    18.89   0.6997   0.4520   15.14   66.1   2558.6
+policy_input_s4_b10      21.5%    18.90   0.7010   0.4523   15.15   66.0   2551.7
+policy_input_s0_b10      23.1%    19.05   0.7004   0.4514   15.25   65.6   2580.0
+policy_input_s2_b10      24.9%    19.21   0.6993   0.4522   15.38   65.0   2595.9
+policy_input_s3_b20      33.2%    20.00   0.7014   0.4523   15.96   62.7   2699.1
+policy_input_s4_b20      34.0%    20.08   0.7031   0.4544   16.03   62.4   2699.3
+policy_input_s1_b20      36.0%    20.26   0.7021   0.4530   16.15   61.9   2724.4
+policy_input_s0_b20      37.5%    20.41   0.7012   0.4525   16.25   61.5   2749.8
+policy_input_s3_b30      41.9%    20.82   0.7033   0.4538   16.56   60.4   2802.7
+policy_input_s2_b20      42.4%    20.87   0.7020   0.4540   16.59   60.3   2800.1
+policy_input_s4_b30      43.1%    20.94   0.7039   0.4550   16.66   60.0   2806.0
+policy_input_s1_b30      46.8%    21.29   0.7022   0.4534   16.90   59.2   2851.1
+policy_input_s0_b30      49.2%    21.51   0.7012   0.4528   17.06   58.6   2883.6
+policy_input_s4_b40      50.7%    21.65   0.7043   0.4548   17.19   58.2   2896.0
+policy_input_s3_b40      51.9%    21.77   0.7031   0.4539   17.27   57.9   2919.3
+policy_input_s2_b30      52.3%    21.81   0.7031   0.4551   17.29   57.9   2916.4
+policy_input_s1_b40      56.8%    22.23   0.7024   0.4539   17.60   56.8   2966.4
+policy_input_s0_b40      57.9%    22.34   0.7023   0.4540   17.68   56.6   2986.0
+policy_input_s4_b50      58.4%    22.38   0.7046   0.4555   17.72   56.4   2986.1
+policy_input_s3_b50      60.1%    22.53   0.7046   0.4548   17.83   56.1   3012.5
+policy_input_s2_b40      60.6%    22.59   0.7027   0.4549   17.86   56.0   3013.1
+policy_input_s0_b50      66.0%    23.10   0.7030   0.4547   18.25   54.8   3078.2
+policy_input_s4_b60      66.5%    23.14   0.7041   0.4554   18.44   54.2   3106.1
+policy_input_s1_b50      67.1%    23.20   0.7036   0.4552   18.32   54.6   3088.2
+policy_input_s2_b50      67.3%    23.22   0.7037   0.4557   18.33   54.5   3091.1
+policy_input_s3_b60      68.3%    23.32   0.7050   0.4558   18.41   54.3   3109.0
+policy_input_s2_b60      73.1%    23.76   0.7038   0.4558   18.73   53.4   3158.7
+policy_input_s4_b70      74.1%    23.86   0.7046   0.4558   18.96   52.7   3194.1
+policy_input_s0_b60      74.5%    23.89   0.7033   0.4556   18.84   53.1   3175.5
+policy_input_s1_b60      75.0%    23.94   0.7046   0.4560   18.88   53.0   3180.2
+policy_input_s3_b70      75.9%    24.03   0.7048   0.4564   19.08   52.4   3222.3
+policy_input_s2_b70      79.6%    24.38   0.7036   0.4558   19.33   51.7   3258.7
+policy_input_s1_b70      81.7%    24.58   0.7052   0.4564   19.35   51.7   3259.0
+policy_input_s4_b80      81.8%    24.58   0.7044   0.4558   19.50   51.3   3285.5
+policy_input_s0_b70      82.1%    24.61   0.7032   0.4556   19.38   51.6   3264.1
+policy_input_s3_b80      85.4%    24.92   0.7045   0.4564   19.75   50.6   3331.9
+policy_input_s2_b80      86.0%    24.98   0.7035   0.4559   19.78   50.6   3335.2
+policy_input_s1_b80      89.1%    25.28   0.7051   0.4563   19.87   50.3   3347.9
+policy_input_s0_b80      89.2%    25.28   0.7036   0.4555   20.01   50.0   3371.6
+policy_input_s4_b90      89.9%    25.35   0.7038   0.4555   20.06   49.8   3381.1
+policy_input_s3_b90      92.9%    25.63   0.7045   0.4563   20.27   49.3   3419.4
+policy_input_s2_b90      93.1%    25.65   0.7039   0.4558   20.28   49.3   3419.9
+policy_input_s0_b90      94.9%    25.83   0.7036   0.4554   20.41   49.0   3441.3
+policy_input_s1_b90      95.3%    25.86   0.7042   0.4560   20.30   49.3   3423.8
+always_super            100.0%    26.30   0.7032   0.4549   20.76   48.2   3502.7

@@ -80,7 +80,7 @@ def val_corr(net, cache):
     return float((a * b).sum() / (a.norm() * b.norm() + 1e-8))
 
 
-def run_epoch(net, cache, loader, lossfn, opt=None):
+def run_epoch(net, cache, loader, lossfn, opt=None, prev_p=0.5):
     train = opt is not None
     net.train(train)
     agg = {}
@@ -88,7 +88,9 @@ def run_epoch(net, cache, loader, lossfn, opt=None):
     for (idx,) in loader:
         idx = idx.to(cache["loss_base"].device)
         B = idx.shape[0]
-        prev = torch.randint(0, 2, (B,), device=idx.device)
+        # prev_action ~ Bernoulli(prev_p): fraction of samples whose context comes
+        # from the SUPER path (path_id=1). prev_p=0.5 -> 1:1 (default).
+        prev = (torch.rand(B, device=idx.device) < prev_p).long()
         inp, prd = gather(cache, idx, prev)
         lb, ls = cache["loss_base"][idx], cache["loss_super"][idx]
 
@@ -133,8 +135,12 @@ def main():
                          "val_corr=max val corr(A-hat,A) (ranking, matches eval thresholding); "
                          "last=final epoch (no early stop)")
     ap.add_argument("--mode", default="advantage", choices=["advantage", "bce", "regress"])
+    ap.add_argument("--regress_loss", default="mse", choices=["mse", "mae", "huber", "corr"],
+                    help="regression loss form (regress mode): mse/mae/huber (magnitude) or corr (ranking)")
     ap.add_argument("--margin", type=float, default=0.0,
                     help="bce mode: exclude |A|<margin images from L_acc")
+    ap.add_argument("--prev_p", type=float, default=0.5,
+                    help="Bernoulli prob that prev_action=SUPER during training (0.5 = 1:1 default)")
     ap.add_argument("--seed", type=int, default=0, help="random seed (weight init + prev_action sampling)")
     ap.add_argument("--device", default="cuda:0")
     ap.add_argument("--out", default=None)
@@ -161,7 +167,7 @@ def main():
             torch.zeros(2, dtype=torch.long, device=device))
 
     lossfn = PolicyLoss(args.flops, lambda_flops=args.lambda_flops, lambda_uni=args.lambda_uni,
-                        mode=args.mode, margin=args.margin)
+                        mode=args.mode, margin=args.margin, regress_loss=args.regress_loss)
     opt = torch.optim.Adam(net.parameters(), lr=args.lr, weight_decay=args.weight_decay)
 
     train_loader = make_loader(train_cache, args.batch, shuffle=True)
@@ -188,7 +194,7 @@ def main():
     sel = args.select if val_loader or args.select == "last" else "train_l_acc"
 
     for ep in range(args.epochs):
-        tr = run_epoch(net, train_cache, train_loader, lossfn, opt)
+        tr = run_epoch(net, train_cache, train_loader, lossfn, opt, prev_p=args.prev_p)
         msg = (f"ep {ep:3d} | train total {tr['total']:.4f} "
                f"acc {tr['l_acc']:.4f} flops {tr['l_flops']:.4f} "
                f"p_super {tr['p_super_mean']:.3f}")

@@ -1,0 +1,39 @@
+{
+  "config": {
+    "group_dim": 64,
+    "hidden": 128,
+    "grid": 4,
+    "path_dim": 8,
+    "norm": "batch",
+    "input_vec_dim": 768,
+    "pred_vec_dim": 640
+  },
+  "detector": {
+    "base_gflops": 17.3021,
+    "super_gflops": 26.9776
+  },
+  "router": {
+    "input": {
+      "params": 60881,
+      "macs": 804992,
+      "flops_per_frame": 1609984,
+      "gflops": 0.001609984,
+      "pct_of_super": 0.005967854812881799
+    },
+    "pred": {
+      "params": 52433,
+      "macs": 673920,
+      "flops_per_frame": 1347840,
+      "gflops": 0.00134784,
+      "pct_of_super": 0.004996144949884349
+    },
+    "both": {
+      "params": 112017,
+      "macs": 1477760,
+      "flops_per_frame": 2955520,
+      "gflops": 0.00295552,
+      "pct_of_super": 0.010955459344048396
+    }
+  },
+  "note": "FLOPs = 2*MACs over Conv2d + Linear layers (tiny-conv router); per frame (batch=1) on GxG feature grids. Feature-grid pooling is free (reuses detector forward). Router cost is NOT added to the reported AP-vs-FLOPs curves because it is <0.01% of detector."
+}

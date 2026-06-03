@@ -57,6 +57,7 @@ def main():
     ap.add_argument("--band", action="store_true", help="draw +/- std bands")
     ap.add_argument("--feats", default="input,pred,both",
                     help="comma-sep subset of feats to draw (e.g. 'input')")
+    ap.add_argument("--title", default=None, help="plot title prefix (default 'Ablation')")
     args = ap.parse_args()
     keep = set(args.feats.split(","))
     ev = Path(__file__).resolve().parent / "outputs" / args.dataset / "eval"
@@ -66,17 +67,18 @@ def main():
     if args.out is None: args.out = str(ev / "norm_compare")
 
     specs = [c.split(":", 1) for c in args.curves.split(",")]
-    FMTS = ["o-", "s--", "^:", "D-."]
+    FMTS = ["o-", "s--", "^:", "D-.", "v-", "P--", "X:", "*-."]
     stores = []
     endpoints = {}
-    for (tag, path), fmt in zip(specs, FMTS):
+    for i, (tag, path) in enumerate(specs):
         st, ep = aggregate(path, args.metric)
-        stores.append((st, fmt, tag))
+        stores.append((st, FMTS[i % len(FMTS)], tag))
         endpoints = endpoints or ep
 
     # one distinct colour per curve (tag); comparisons are usually same-feat so
     # colouring by feat would make every curve identical -> colour by tag instead.
-    TAG_COLORS = ["tab:red", "tab:blue", "tab:green", "tab:orange", "tab:purple"]
+    TAG_COLORS = ["tab:red", "tab:blue", "tab:green", "tab:orange", "tab:purple",
+                  "tab:brown", "tab:cyan", "tab:olive"]
     multi_feat = len(keep) > 1
     fig, ax = plt.subplots(figsize=(9, 6))
     for ti, (store, fmt, tag) in enumerate(stores):
@@ -104,9 +106,10 @@ def main():
     g2s = lambda g: (g - gb) / (gs - gb) * 100.0
     ax.secondary_xaxis("top", functions=(s2g, g2s)).set_xlabel("GFLOPs (per frame)")
     ax.set_xlabel("SUPER usage (%)"); ax.set_ylabel(args.metric.upper())
-    ax.set_title("Norm ablation: " + " vs ".join(t for _, _, t in stores), pad=28)
+    ax.set_title((args.title or "Ablation") + ": " + " vs ".join(t for _, _, t in stores),
+                 pad=28, fontsize=10)
     ax.legend(ncol=2, fontsize=8); ax.grid(alpha=0.3)
-    out = f"{args.out}_{args.metric}.png"
+    out = f"{args.out}_{ {'map50': 'ap50', 'map': 'ap5095'}[args.metric] }.png"
     fig.tight_layout(); fig.savefig(out, dpi=150)
     print(f"[*] saved -> {out}")
 

@@ -57,7 +57,7 @@ video (21 seq, 8008 frames, 384x1248, conf=0.25). Detector BASE 16.87 / SUPER 26
 ## F. Temporal routing (eval-time)
 | id | axis | options | default | status |
 |----|------|---------|---------|--------|
-| F1 | prev-action source | **recursive (t-1 chosen path)** / always-base feat | **recursive** | ☐ (could ablate) |
+| F1 | prev-action source | **recursive (t-1 chosen path)** / always-base feat | **recursive** | ✗ skipped |
 | F2 | decision smoothing | none / hysteresis / EMA on A-hat | **none** | ☐ |
 
 ## (not ablation, just curve resolution)
