@@ -100,8 +100,9 @@ def main():
                     help="evaluate ONLY the confidence-routing baselines (+ endpoints); skip "
                          "policy/random/lum/edge. Use to run the heavy conf baseline separately "
                          "(possibly at its own --conf) and merge into the main figure at plot time")
-    ap.add_argument("--grid", type=int, default=4,
-                    help="spatial grid size for the tiny-conv policy input (match build_cache --grid)")
+    ap.add_argument("--grid", default="4",
+                    help="spatial grid for the tiny-conv policy input: 'G' (square) or 'HxW' "
+                         "(rectangular, e.g. '2x6'). Must match build_cache --grid.")
     ap.add_argument("--keep_layers", default="", help="comma-sep subset of backbone tapped "
                     "layers (e.g. '4'); empty = all. Must match the policy's training --keep_layers.")
     ap.add_argument("--policy_taus", type=int, default=21,
@@ -119,6 +120,9 @@ def main():
                          "(spread over (0,1); lower = lighter / fewer strategies)")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
+    # grid: 'G' (square) or 'HxW' (rectangular) -> (Gh, Gw) tuple for adaptive pool
+    args.grid = (lambda s: tuple(int(x) for x in s.split("x")) if "x" in s
+                 else (int(s), int(s)))(str(args.grid))
     _base = Path(__file__).resolve().parent / "outputs" / args.dataset
     if args.policy is None: args.policy = str(_base / "policy_regress.pt")
     if args.out is None:    args.out = str(_base / "eval" / "video_curve.json")
@@ -140,8 +144,8 @@ def main():
     keep = [int(x) for x in args.keep_layers.split(",")] if args.keep_layers else []
     input_layers = [L for L in INPUT_LEVEL_LAYERS if (not keep or L in keep)]
     in_c = (768 // len(INPUT_LEVEL_LAYERS)) * len(input_layers)
-    dummy_in = torch.zeros(2, in_c, args.grid, args.grid, device=device)
-    dummy_pr = torch.zeros(2, 640, args.grid, args.grid, device=device)
+    dummy_in = torch.zeros(2, in_c, args.grid[0], args.grid[1], device=device)
+    dummy_pr = torch.zeros(2, 640, args.grid[0], args.grid[1], device=device)
     for tag, path in pol_specs:
         net, _ = load_policy(path, device)
         net.eval()  # BN eval mode -> batch size 1 ok
@@ -309,10 +313,22 @@ def main():
             sig_super, sig_base = sig(conf_s), sig(conf_b)
             one = torch.ones(1, dtype=torch.long, device=device)
             zero = torch.zeros(1, dtype=torch.long, device=device)
+            # time the router forward(s) so its overhead is charged to the policy's
+            # latency/energy. Deploy runs ONE router forward per frame (on the chosen
+            # path), so per-frame overhead = total / (2 logits * n_nets).
+            if torch.cuda.is_available():
+                torch.cuda.synchronize()
+            pr0 = energy_monitor.power_mw(); tr0 = time.perf_counter()
             with torch.no_grad():
                 av = {tag: {"super": float(n.logit(in_s, pr_s, one).view(-1)),
                             "base": float(n.logit(in_b, pr_b, zero).view(-1))}
                       for tag, n in nets.items()}
+            if torch.cuda.is_available():
+                torch.cuda.synchronize()
+            tr1 = time.perf_counter(); pr1 = energy_monitor.power_mw()
+            _nf = max(1, 2 * len(nets))
+            router_lat_ms = (tr1 - tr0) * 1000.0 / _nf
+            router_ener_mj = 0.5 * (pr0 + pr1) * (tr1 - tr0) / _nf
 
             gts = gt_by_frame.get(frame_idx, [])
             dc = dc_by_frame.get(frame_idx, [])
@@ -334,7 +350,11 @@ def main():
                 choice = decide(s.prev_choice, pv, fi)
                 s.prev_choice = choice
                 s.n_super += (choice == "super"); s.n_base += (choice == "base")
-                s.latency_ms.append(lat[choice]); s.energy_mj.append(ener[choice])
+                # charge the router's own forward cost to policy strategies only
+                # (lum/edge/conf/random use cheap pixel/conf stats, no learned net)
+                rl = router_lat_ms if kind == "policy" else 0.0
+                re = router_ener_mj if kind == "policy" else 0.0
+                s.latency_ms.append(lat[choice] + rl); s.energy_mj.append(ener[choice] + re)
 
                 p = B.filter_dontcare(preds[choice], dc) if dc else preds[choice]
                 m, gtc = B.match_frame_multi_iou(p, gts)

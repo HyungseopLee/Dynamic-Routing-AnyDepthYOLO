@@ -73,8 +73,16 @@ def forward_path(model, img, skip, detect):
     return out["pred"]
 
 
+def parse_grid(s):
+    """'G' -> (G,G) square; 'HxW' -> (H,W) rectangular (aspect-preserving)."""
+    if "x" in str(s):
+        h, w = str(s).split("x"); return (int(h), int(w))
+    return (int(s), int(s))
+
+
 def grids(captured, layers, G):
-    """Concat adaptive-pooled (GxG) spatial maps of `layers` along channels -> [B,sumC,G,G]."""
+    """Concat adaptive-pooled (G=(Gh,Gw)) spatial maps of `layers` along channels
+    -> [B,sumC,Gh,Gw]."""
     return torch.cat([F.adaptive_avg_pool2d(captured[l].float(), G) for l in layers], dim=1)
 
 
@@ -104,7 +112,8 @@ def main():
     ap.add_argument("--batch", type=int, default=16)
     ap.add_argument("--device", default="cuda:0")
     ap.add_argument("--dataset", default="kitti", help="output scope: outputs/<dataset>/")
-    ap.add_argument("--grid", type=int, default=4, help="spatial grid size G (adaptive-pool each layer to GxG)")
+    ap.add_argument("--grid", default="4", help="spatial grid: 'G' (square GxG) or 'HxW' "
+                    "(rectangular, e.g. '2x6' to preserve KITTI aspect ratio)")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
     if args.out is None:
@@ -133,7 +142,7 @@ def main():
 
     skip_base = [True] * N
     skip_super = [False] * N
-    G = args.grid
+    G = parse_grid(args.grid)
 
     # forward hooks capture raw spatial maps [B,C,H,W] for the tapped layers
     captured = {}

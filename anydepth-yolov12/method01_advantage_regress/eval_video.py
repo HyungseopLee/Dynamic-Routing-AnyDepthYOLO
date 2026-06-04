@@ -295,10 +295,22 @@ def main():
             sig_super, sig_base = sig(conf_s), sig(conf_b)
             one = torch.ones(1, dtype=torch.long, device=device)
             zero = torch.zeros(1, dtype=torch.long, device=device)
+            # time the router forward(s) so its overhead is charged to the policy's
+            # latency/energy. Deploy runs ONE router forward per frame (on the chosen
+            # path), so per-frame overhead = total / (2 logits * n_nets).
+            if torch.cuda.is_available():
+                torch.cuda.synchronize()
+            pr0 = energy_monitor.power_mw(); tr0 = time.perf_counter()
             with torch.no_grad():
                 av = {tag: {"super": float(n.logit(in_s, pr_s, one).view(-1)),
                             "base": float(n.logit(in_b, pr_b, zero).view(-1))}
                       for tag, n in nets.items()}
+            if torch.cuda.is_available():
+                torch.cuda.synchronize()
+            tr1 = time.perf_counter(); pr1 = energy_monitor.power_mw()
+            _nf = max(1, 2 * len(nets))
+            router_lat_ms = (tr1 - tr0) * 1000.0 / _nf
+            router_ener_mj = 0.5 * (pr0 + pr1) * (tr1 - tr0) / _nf
 
             gts = gt_by_frame.get(frame_idx, [])
             dc = dc_by_frame.get(frame_idx, [])
@@ -320,7 +332,11 @@ def main():
                 choice = decide(s.prev_choice, pv, fi)
                 s.prev_choice = choice
                 s.n_super += (choice == "super"); s.n_base += (choice == "base")
-                s.latency_ms.append(lat[choice]); s.energy_mj.append(ener[choice])
+                # charge the router's own forward cost to policy strategies only
+                # (lum/edge/conf/random use cheap pixel/conf stats, no learned net)
+                rl = router_lat_ms if kind == "policy" else 0.0
+                re = router_ener_mj if kind == "policy" else 0.0
+                s.latency_ms.append(lat[choice] + rl); s.energy_mj.append(ener[choice] + re)
 
                 p = B.filter_dontcare(preds[choice], dc) if dc else preds[choice]
                 m, gtc = B.match_frame_multi_iou(p, gts)
