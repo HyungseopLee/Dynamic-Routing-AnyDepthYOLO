@@ -1,0 +1,351 @@
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:829: UserWarning: Can't initialize NVML
+  warnings.warn("Can't initialize NVML")
+
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels...:   0%|          | 0/70000 [00:00<?, ?it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 355 images, 0 backgrounds, 0 corrupt:   1%|          | 355/70000 [00:00<00:19, 3533.98it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 946 images, 0 backgrounds, 0 corrupt:   1%|▏         | 946/70000 [00:00<00:14, 4922.26it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 1600 images, 0 backgrounds, 0 corrupt:   2%|▏         | 1600/70000 [00:00<00:12, 5651.24it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 2166 images, 0 backgrounds, 0 corrupt:   3%|▎         | 2166/70000 [00:00<00:12, 5330.08it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 2780 images, 0 backgrounds, 0 corrupt:   4%|▍         | 2780/70000 [00:00<00:12, 5597.83it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 3508 images, 0 backgrounds, 0 corrupt:   5%|▌         | 3508/70000 [00:00<00:10, 6146.95it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 4183 images, 0 backgrounds, 0 corrupt:   6%|▌         | 4183/70000 [00:00<00:10, 6331.81it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 4819 images, 0 backgrounds, 0 corrupt:   7%|▋         | 4819/70000 [00:00<00:11, 5534.93it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 5391 images, 0 backgrounds, 0 corrupt:   8%|▊         | 5391/70000 [00:00<00:12, 5291.68it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 5934 images, 0 backgrounds, 0 corrupt:   8%|▊         | 5934/70000 [00:01<00:12, 4978.10it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 6443 images, 0 backgrounds, 0 corrupt:   9%|▉         | 6443/70000 [00:01<00:12, 5002.51it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 7041 images, 1 backgrounds, 0 corrupt:  10%|█         | 7041/70000 [00:01<00:11, 5269.85it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 7619 images, 1 backgrounds, 0 corrupt:  11%|█         | 7619/70000 [00:01<00:11, 5413.35it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 8228 images, 1 backgrounds, 0 corrupt:  12%|█▏        | 8228/70000 [00:01<00:11, 5605.88it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 8944 images, 1 backgrounds, 0 corrupt:  13%|█▎        | 8944/70000 [00:01<00:10, 6054.45it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 9633 images, 1 backgrounds, 0 corrupt:  14%|█▍        | 9633/70000 [00:01<00:09, 6298.69it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 10268 images, 1 backgrounds, 0 corrupt:  15%|█▍        | 10268/70000 [00:01<00:09, 6222.75it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 10894 images, 1 backgrounds, 0 corrupt:  16%|█▌        | 10894/70000 [00:01<00:10, 5493.39it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 11461 images, 1 backgrounds, 0 corrupt:  16%|█▋        | 11461/70000 [00:02<00:11, 5284.44it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 12024 images, 1 backgrounds, 0 corrupt:  17%|█▋        | 12024/70000 [00:02<00:10, 5367.47it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 12571 images, 1 backgrounds, 0 corrupt:  18%|█▊        | 12571/70000 [00:02<00:10, 5293.35it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 13107 images, 1 backgrounds, 0 corrupt:  19%|█▊        | 13107/70000 [00:02<00:10, 5186.70it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 13793 images, 1 backgrounds, 0 corrupt:  20%|█▉        | 13793/70000 [00:02<00:09, 5647.45it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 14521 images, 1 backgrounds, 0 corrupt:  21%|██        | 14521/70000 [00:02<00:09, 6103.55it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 15138 images, 1 backgrounds, 0 corrupt:  22%|██▏       | 15138/70000 [00:02<00:10, 5461.76it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 15746 images, 2 backgrounds, 0 corrupt:  22%|██▏       | 15746/70000 [00:02<00:09, 5623.59it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 16419 images, 3 backgrounds, 0 corrupt:  23%|██▎       | 16419/70000 [00:02<00:09, 5928.53it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 17102 images, 3 backgrounds, 0 corrupt:  24%|██▍       | 17102/70000 [00:03<00:08, 6171.24it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 17790 images, 3 backgrounds, 0 corrupt:  25%|██▌       | 17790/70000 [00:03<00:08, 6366.37it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 18434 images, 3 backgrounds, 0 corrupt:  26%|██▋       | 18434/70000 [00:03<00:08, 5837.42it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 19031 images, 3 backgrounds, 0 corrupt:  27%|██▋       | 19031/70000 [00:03<00:09, 5506.08it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 19612 images, 4 backgrounds, 0 corrupt:  28%|██▊       | 19612/70000 [00:03<00:09, 5583.24it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 20180 images, 5 backgrounds, 0 corrupt:  29%|██▉       | 20180/70000 [00:03<00:09, 5464.85it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 20733 images, 5 backgrounds, 0 corrupt:  30%|██▉       | 20733/70000 [00:03<00:09, 5246.61it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 21263 images, 5 backgrounds, 0 corrupt:  30%|███       | 21263/70000 [00:03<00:09, 4909.89it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 21760 images, 5 backgrounds, 0 corrupt:  31%|███       | 21760/70000 [00:03<00:10, 4765.28it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 22241 images, 5 backgrounds, 0 corrupt:  32%|███▏      | 22241/70000 [00:04<00:10, 4596.38it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 22771 images, 5 backgrounds, 0 corrupt:  33%|███▎      | 22771/70000 [00:04<00:09, 4768.42it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 23360 images, 5 backgrounds, 0 corrupt:  33%|███▎      | 23360/70000 [00:04<00:09, 5076.34it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 23916 images, 5 backgrounds, 0 corrupt:  34%|███▍      | 23916/70000 [00:04<00:08, 5196.85it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 24440 images, 5 backgrounds, 0 corrupt:  35%|███▍      | 24440/70000 [00:04<00:09, 4898.95it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 24936 images, 5 backgrounds, 0 corrupt:  36%|███▌      | 24936/70000 [00:04<00:09, 4767.48it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 25418 images, 5 backgrounds, 0 corrupt:  36%|███▋      | 25418/70000 [00:04<00:09, 4772.80it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 25899 images, 5 backgrounds, 0 corrupt:  37%|███▋      | 25899/70000 [00:04<00:09, 4773.83it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 26379 images, 5 backgrounds, 0 corrupt:  38%|███▊      | 26379/70000 [00:04<00:09, 4586.92it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 26870 images, 5 backgrounds, 0 corrupt:  38%|███▊      | 26870/70000 [00:05<00:09, 4660.04it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 27339 images, 5 backgrounds, 0 corrupt:  39%|███▉      | 27339/70000 [00:05<00:09, 4613.32it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 27802 images, 5 backgrounds, 0 corrupt:  40%|███▉      | 27802/70000 [00:05<00:09, 4545.53it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 28258 images, 5 backgrounds, 0 corrupt:  40%|████      | 28258/70000 [00:05<00:09, 4458.35it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 28710 images, 6 backgrounds, 0 corrupt:  41%|████      | 28710/70000 [00:05<00:09, 4471.63it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 29371 images, 7 backgrounds, 0 corrupt:  42%|████▏     | 29371/70000 [00:05<00:07, 5092.31it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 30031 images, 7 backgrounds, 0 corrupt:  43%|████▎     | 30031/70000 [00:05<00:07, 5519.11it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 30662 images, 7 backgrounds, 0 corrupt:  44%|████▍     | 30662/70000 [00:05<00:06, 5743.36it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 31398 images, 7 backgrounds, 0 corrupt:  45%|████▍     | 31398/70000 [00:05<00:06, 6211.62it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 32115 images, 8 backgrounds, 0 corrupt:  46%|████▌     | 32115/70000 [00:05<00:05, 6493.54it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 32803 images, 8 backgrounds, 0 corrupt:  47%|████▋     | 32803/70000 [00:06<00:05, 6597.79it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 33511 images, 9 backgrounds, 0 corrupt:  48%|████▊     | 33512/70000 [00:06<00:05, 6735.07it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 34184 images, 11 backgrounds, 0 corrupt:  49%|████▉     | 34187/70000 [00:06<00:05, 6481.13it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 34830 images, 17 backgrounds, 0 corrupt:  50%|████▉     | 34838/70000 [00:06<00:06, 5847.89it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 35428 images, 17 backgrounds, 0 corrupt:  51%|█████     | 35436/70000 [00:06<00:06, 5609.27it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 36011 images, 22 backgrounds, 0 corrupt:  51%|█████▏    | 36024/70000 [00:06<00:05, 5673.73it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 36678 images, 31 backgrounds, 0 corrupt:  52%|█████▏    | 36700/70000 [00:06<00:05, 5957.29it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 37274 images, 38 backgrounds, 0 corrupt:  53%|█████▎    | 37303/70000 [00:06<00:05, 5505.04it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 37829 images, 44 backgrounds, 0 corrupt:  54%|█████▍    | 37864/70000 [00:06<00:06, 5309.97it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 38360 images, 52 backgrounds, 0 corrupt:  55%|█████▍    | 38403/70000 [00:07<00:06, 5123.24it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 38959 images, 55 backgrounds, 0 corrupt:  56%|█████▌    | 39005/70000 [00:07<00:05, 5361.14it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 39673 images, 63 backgrounds, 0 corrupt:  57%|█████▋    | 39727/70000 [00:07<00:05, 5878.92it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 40271 images, 70 backgrounds, 0 corrupt:  58%|█████▊    | 40331/70000 [00:07<00:05, 5923.33it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 40861 images, 79 backgrounds, 0 corrupt:  58%|█████▊    | 40930/70000 [00:07<00:05, 5667.27it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 41545 images, 86 backgrounds, 0 corrupt:  59%|█████▉    | 41621/70000 [00:07<00:04, 6014.34it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 42206 images, 91 backgrounds, 0 corrupt:  60%|██████    | 42287/70000 [00:07<00:04, 6185.48it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 42874 images, 94 backgrounds, 0 corrupt:  61%|██████▏   | 42958/70000 [00:07<00:04, 6337.15it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 43509 images, 97 backgrounds, 0 corrupt:  62%|██████▏   | 43596/70000 [00:07<00:04, 6339.43it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 44140 images, 103 backgrounds, 0 corrupt:  63%|██████▎   | 44233/70000 [00:08<00:04, 6028.75it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 44745 images, 106 backgrounds, 0 corrupt:  64%|██████▍   | 44841/70000 [00:08<00:04, 5771.04it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 45323 images, 110 backgrounds, 0 corrupt:  65%|██████▍   | 45423/70000 [00:08<00:04, 5639.32it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 45887 images, 114 backgrounds, 0 corrupt:  66%|██████▌   | 45991/70000 [00:08<00:04, 5336.15it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 46420 images, 119 backgrounds, 0 corrupt:  66%|██████▋   | 46529/70000 [00:08<00:04, 5215.62it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 47098 images, 128 backgrounds, 0 corrupt:  67%|██████▋   | 47216/70000 [00:08<00:04, 5673.49it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 47667 images, 133 backgrounds, 0 corrupt:  68%|██████▊   | 47790/70000 [00:08<00:04, 5378.74it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 48216 images, 141 backgrounds, 0 corrupt:  69%|██████▉   | 48347/70000 [00:08<00:03, 5421.58it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 48992 images, 144 backgrounds, 0 corrupt:  70%|███████   | 49126/70000 [00:08<00:03, 6088.34it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 49635 images, 147 backgrounds, 0 corrupt:  71%|███████   | 49772/70000 [00:08<00:03, 6189.06it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 50260 images, 147 backgrounds, 0 corrupt:  72%|███████▏  | 50397/70000 [00:09<00:03, 5918.14it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 50982 images, 147 backgrounds, 0 corrupt:  73%|███████▎  | 51119/70000 [00:09<00:03, 6278.57it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 51616 images, 147 backgrounds, 0 corrupt:  74%|███████▍  | 51753/70000 [00:09<00:02, 6143.27it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 52235 images, 147 backgrounds, 0 corrupt:  75%|███████▍  | 52372/70000 [00:09<00:03, 5466.49it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 52798 images, 147 backgrounds, 0 corrupt:  76%|███████▌  | 52935/70000 [00:09<00:03, 5231.35it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 53333 images, 147 backgrounds, 0 corrupt:  76%|███████▋  | 53470/70000 [00:09<00:03, 5131.20it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 53854 images, 147 backgrounds, 0 corrupt:  77%|███████▋  | 53991/70000 [00:09<00:03, 5092.72it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 54368 images, 147 backgrounds, 0 corrupt:  78%|███████▊  | 54505/70000 [00:09<00:03, 5049.19it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 54876 images, 147 backgrounds, 0 corrupt:  79%|███████▊  | 55013/70000 [00:10<00:02, 5028.40it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 55547 images, 147 backgrounds, 0 corrupt:  80%|███████▉  | 55684/70000 [00:10<00:02, 5501.84it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 56101 images, 147 backgrounds, 0 corrupt:  80%|████████  | 56238/70000 [00:10<00:02, 5202.29it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 56649 images, 147 backgrounds, 0 corrupt:  81%|████████  | 56786/70000 [00:10<00:02, 5265.43it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 57180 images, 147 backgrounds, 0 corrupt:  82%|████████▏ | 57317/70000 [00:10<00:02, 5141.15it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 57738 images, 147 backgrounds, 0 corrupt:  83%|████████▎ | 57875/70000 [00:10<00:02, 5251.26it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 58266 images, 147 backgrounds, 0 corrupt:  83%|████████▎ | 58403/70000 [00:10<00:02, 5011.42it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 58771 images, 147 backgrounds, 0 corrupt:  84%|████████▍ | 58908/70000 [00:10<00:02, 4836.46it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 59258 images, 147 backgrounds, 0 corrupt:  85%|████████▍ | 59395/70000 [00:10<00:02, 4762.15it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 59814 images, 147 backgrounds, 0 corrupt:  86%|████████▌ | 59951/70000 [00:10<00:02, 4984.89it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 60497 images, 147 backgrounds, 0 corrupt:  87%|████████▋ | 60634/70000 [00:11<00:01, 5511.62it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 61053 images, 147 backgrounds, 0 corrupt:  87%|████████▋ | 61190/70000 [00:11<00:01, 5313.82it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 61589 images, 147 backgrounds, 0 corrupt:  88%|████████▊ | 61726/70000 [00:11<00:01, 5258.76it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 62196 images, 147 backgrounds, 0 corrupt:  89%|████████▉ | 62333/70000 [00:11<00:01, 5480.02it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 62804 images, 147 backgrounds, 0 corrupt:  90%|████████▉ | 62941/70000 [00:11<00:01, 5637.55it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 63371 images, 147 backgrounds, 0 corrupt:  91%|█████████ | 63508/70000 [00:11<00:01, 5177.20it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 63898 images, 147 backgrounds, 0 corrupt:  91%|█████████▏| 64035/70000 [00:11<00:01, 4953.00it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 64455 images, 147 backgrounds, 0 corrupt:  92%|█████████▏| 64592/70000 [00:11<00:01, 5104.38it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 65140 images, 147 backgrounds, 0 corrupt:  93%|█████████▎| 65277/70000 [00:11<00:00, 5589.67it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 65707 images, 147 backgrounds, 0 corrupt:  94%|█████████▍| 65844/70000 [00:12<00:00, 5227.54it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 66239 images, 147 backgrounds, 0 corrupt:  95%|█████████▍| 66376/70000 [00:12<00:00, 4885.81it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 66737 images, 147 backgrounds, 0 corrupt:  96%|█████████▌| 66874/70000 [00:12<00:00, 4887.76it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 67241 images, 147 backgrounds, 0 corrupt:  96%|█████████▋| 67378/70000 [00:12<00:00, 4925.26it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 67739 images, 147 backgrounds, 0 corrupt:  97%|█████████▋| 67876/70000 [00:12<00:00, 4699.56it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 68227 images, 147 backgrounds, 0 corrupt:  98%|█████████▊| 68364/70000 [00:12<00:00, 4748.36it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 68744 images, 147 backgrounds, 0 corrupt:  98%|█████████▊| 68881/70000 [00:12<00:00, 4864.46it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 69243 images, 147 backgrounds, 0 corrupt:  99%|█████████▉| 69380/70000 [00:12<00:00, 4900.62it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 69736 images, 147 backgrounds, 0 corrupt: 100%|█████████▉| 69873/70000 [00:12<00:00, 4729.98it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels... 69863 images, 147 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:12<00:00, 5401.57it/s]
+
+task: detect
+Detected YOLOv12AnyDepth model from weights, switching to AnyDepth task_map
+[34m[1mval: [0mNew cache created: /media/data/bdd100k_yolo/train/labels.cache
+[0] cached 16 images
+[20] cached 336 images
+[40] cached 656 images
+[60] cached 976 images
+[80] cached 1296 images
+[100] cached 1616 images
+[120] cached 1936 images
+[140] cached 2256 images
+[160] cached 2576 images
+[180] cached 2896 images
+[200] cached 3216 images
+[220] cached 3536 images
+[240] cached 3856 images
+[260] cached 4176 images
+[280] cached 4496 images
+[300] cached 4816 images
+[320] cached 5136 images
+[340] cached 5456 images
+[360] cached 5776 images
+[380] cached 6096 images
+[400] cached 6416 images
+[420] cached 6736 images
+[440] cached 7056 images
+[460] cached 7376 images
+[480] cached 7696 images
+[500] cached 8016 images
+[520] cached 8336 images
+[540] cached 8656 images
+[560] cached 8976 images
+[580] cached 9296 images
+[600] cached 9616 images
+[620] cached 9936 images
+[640] cached 10256 images
+[660] cached 10576 images
+[680] cached 10896 images
+[700] cached 11216 images
+[720] cached 11536 images
+[740] cached 11856 images
+[760] cached 12176 images
+[780] cached 12496 images
+[800] cached 12816 images
+[820] cached 13136 images
+[840] cached 13456 images
+[860] cached 13776 images
+[880] cached 14096 images
+[900] cached 14416 images
+[920] cached 14736 images
+[940] cached 15056 images
+[960] cached 15376 images
+[980] cached 15696 images
+[1000] cached 16016 images
+[1020] cached 16336 images
+[1040] cached 16656 images
+[1060] cached 16976 images
+[1080] cached 17296 images
+[1100] cached 17616 images
+[1120] cached 17936 images
+[1140] cached 18256 images
+[1160] cached 18576 images
+[1180] cached 18896 images
+[1200] cached 19216 images
+[1220] cached 19536 images
+[1240] cached 19856 images
+[1260] cached 20176 images
+[1280] cached 20496 images
+[1300] cached 20816 images
+[1320] cached 21136 images
+[1340] cached 21456 images
+[1360] cached 21776 images
+[1380] cached 22096 images
+[1400] cached 22416 images
+[1420] cached 22736 images
+[1440] cached 23056 images
+[1460] cached 23376 images
+[1480] cached 23696 images
+[1500] cached 24016 images
+[1520] cached 24336 images
+[1540] cached 24656 images
+[1560] cached 24976 images
+[1580] cached 25296 images
+[1600] cached 25616 images
+[1620] cached 25936 images
+[1640] cached 26256 images
+[1660] cached 26576 images
+[1680] cached 26896 images
+[1700] cached 27216 images
+[1720] cached 27536 images
+[1740] cached 27856 images
+[1760] cached 28176 images
+[1780] cached 28496 images
+[1800] cached 28816 images
+[1820] cached 29136 images
+[1840] cached 29456 images
+[1860] cached 29776 images
+[1880] cached 30096 images
+[1900] cached 30416 images
+[1920] cached 30736 images
+[1940] cached 31056 images
+[1960] cached 31376 images
+[1980] cached 31696 images
+[2000] cached 32016 images
+[2020] cached 32336 images
+[2040] cached 32656 images
+[2060] cached 32976 images
+[2080] cached 33296 images
+[2100] cached 33616 images
+[2120] cached 33936 images
+[2140] cached 34256 images
+[2160] cached 34576 images
+[2180] cached 34896 images
+[2200] cached 35216 images
+[2220] cached 35536 images
+[2240] cached 35856 images
+[2260] cached 36176 images
+[2280] cached 36496 images
+[2300] cached 36816 images
+[2320] cached 37136 images
+[2340] cached 37456 images
+[2360] cached 37776 images
+[2380] cached 38096 images
+[2400] cached 38416 images
+[2420] cached 38736 images
+[2440] cached 39056 images
+[2460] cached 39376 images
+[2480] cached 39696 images
+[2500] cached 40016 images
+[2520] cached 40336 images
+[2540] cached 40656 images
+[2560] cached 40976 images
+[2580] cached 41296 images
+[2600] cached 41616 images
+[2620] cached 41936 images
+[2640] cached 42256 images
+[2660] cached 42576 images
+[2680] cached 42896 images
+[2700] cached 43216 images
+[2720] cached 43536 images
+[2740] cached 43856 images
+[2760] cached 44176 images
+[2780] cached 44496 images
+[2800] cached 44816 images
+[2820] cached 45136 images
+[2840] cached 45456 images
+[2860] cached 45776 images
+[2880] cached 46096 images
+[2900] cached 46416 images
+[2920] cached 46736 images
+[2940] cached 47056 images
+[2960] cached 47376 images
+[2980] cached 47696 images
+[3000] cached 48016 images
+[3020] cached 48336 images
+[3040] cached 48656 images
+[3060] cached 48976 images
+[3080] cached 49296 images
+[3100] cached 49616 images
+[3120] cached 49936 images
+[3140] cached 50256 images
+[3160] cached 50576 images
+[3180] cached 50896 images
+[3200] cached 51216 images
+[3220] cached 51536 images
+[3240] cached 51856 images
+[3260] cached 52176 images
+[3280] cached 52496 images
+[3300] cached 52816 images
+[3320] cached 53136 images
+[3340] cached 53456 images
+[3360] cached 53776 images
+[3380] cached 54096 images
+[3400] cached 54416 images
+[3420] cached 54736 images
+[3440] cached 55056 images
+[3460] cached 55376 images
+[3480] cached 55696 images
+[3500] cached 56016 images
+[3520] cached 56336 images
+[3540] cached 56656 images
+[3560] cached 56976 images
+[3580] cached 57296 images
+[3600] cached 57616 images
+[3620] cached 57936 images
+[3640] cached 58256 images
+[3660] cached 58576 images
+[3680] cached 58896 images
+[3700] cached 59216 images
+[3720] cached 59536 images
+[3740] cached 59856 images
+[3760] cached 60176 images
+[3780] cached 60496 images
+[3800] cached 60816 images
+[3820] cached 61136 images
+[3840] cached 61456 images
+[3860] cached 61776 images
+[3880] cached 62096 images
+[3900] cached 62416 images
+[3920] cached 62736 images
+[3940] cached 63056 images
+[3960] cached 63376 images
+[3980] cached 63696 images
+[4000] cached 64016 images
+[4020] cached 64336 images
+[4040] cached 64656 images
+[4060] cached 64976 images
+[4080] cached 65296 images
+[4100] cached 65616 images
+[4120] cached 65936 images
+[4140] cached 66256 images
+[4160] cached 66576 images
+[4180] cached 66896 images
+[4200] cached 67216 images
+[4220] cached 67536 images
+[4240] cached 67856 images
+[4260] cached 68176 images
+[4280] cached 68496 images
+[4300] cached 68816 images
+[4320] cached 69136 images
+[4340] cached 69456 images
+[4360] cached 69776 images
+[*] cached 70000 images (feat=input) -> /home/hslee/context-anydepth-det/anydepth-yolov12/method02_advantage_regress_tinyConv/outputs/bdd100k/cache_train.pt
+[*] input grid=(768, 2, 2)
+[*] mean L_base=3.246, mean L_super=3.189, mean A=0.0573
+

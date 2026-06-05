@@ -65,14 +65,18 @@ def slice_levels(cache, keep):
 
 def load_cache(path, device):
     c = torch.load(path, map_location="cpu", weights_only=False)
-    return {
+    out = {
         "input_base": c["input_base"].to(device),
-        "pred_base": c["pred_base"].to(device),
         "input_super": c["input_super"].to(device),
-        "pred_super": c["pred_super"].to(device),
         "loss_base": c["loss_base"].to(device),
         "loss_super": c["loss_super"].to(device),
     }
+    # pred (neck) grids are optional: backbone-only caches (build_cache --feat input)
+    # omit them. Present for KITTI/both caches -> loaded unchanged.
+    if "pred_base" in c:
+        out["pred_base"] = c["pred_base"].to(device)
+        out["pred_super"] = c["pred_super"].to(device)
+    return out
 
 
 def make_loader(cache, batch, shuffle):
@@ -86,7 +90,9 @@ def gather(cache, idx, prev_action):
     inp_b = cache["input_base"][idx]
     m = prev_action.bool().view(-1, *([1] * (inp_b.dim() - 1)))   # [B,1,1,1]
     inp = torch.where(m, cache["input_super"][idx], inp_b)
-    prd = torch.where(m, cache["pred_super"][idx], cache["pred_base"][idx])
+    # pred is optional (backbone-only cache); policy_net ignores it when feat=='input'
+    prd = (torch.where(m, cache["pred_super"][idx], cache["pred_base"][idx])
+           if "pred_base" in cache else None)
     return inp, prd
 
 
@@ -98,7 +104,7 @@ def val_corr(net, cache):
     net.eval()
     A = (cache["loss_base"].view(-1) - cache["loss_super"].view(-1))
     pid = torch.zeros(A.shape[0], dtype=torch.long, device=A.device)
-    ah = net.logit(cache["input_base"], cache["pred_base"], pid).view(-1)
+    ah = net.logit(cache["input_base"], cache.get("pred_base"), pid).view(-1)
     a = ah - ah.mean(); b = A - A.mean()
     return float((a * b).sum() / (a.norm() * b.norm() + 1e-8))
 
@@ -192,11 +198,17 @@ def main():
             val_cache = slice_levels(val_cache, keep)
         print(f"[*] keep_layers={keep} -> input channels {train_cache['input_base'].shape[1]}")
 
+    if args.feat in ("pred", "both") and "pred_base" not in train_cache:
+        raise ValueError(f"--feat {args.feat} needs pred (neck) features, but the cache is "
+                         f"backbone-only (built with build_cache --feat input). "
+                         f"Use --feat input or rebuild the cache with --feat both.")
     net = PolicyNetwork(group_dim=args.group_dim, path_dim=args.path_dim, hidden_dim=args.hidden,
                         feat=args.feat, norm=args.norm, dropout=args.dropout).to(device)
-    # materialise LazyLinear shapes with a dummy forward
+    # materialise LazyLinear shapes with a dummy forward (pred optional for
+    # backbone-only caches; net ignores it when feat=='input')
+    dummy_pred = train_cache["pred_base"][:2] if "pred_base" in train_cache else None
     with torch.no_grad():
-        net(train_cache["input_base"][:2], train_cache["pred_base"][:2],
+        net(train_cache["input_base"][:2], dummy_pred,
             torch.zeros(2, dtype=torch.long, device=device))
 
     lossfn = PolicyLoss(args.flops, lambda_flops=args.lambda_flops, lambda_uni=args.lambda_uni,

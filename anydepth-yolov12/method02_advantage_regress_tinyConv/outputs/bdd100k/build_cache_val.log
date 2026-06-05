@@ -1,0 +1,60 @@
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:829: UserWarning: Can't initialize NVML
+  warnings.warn("Can't initialize NVML")
+
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels...:   0%|          | 0/10000 [00:00<?, ?it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels... 491 images, 0 backgrounds, 0 corrupt:   5%|▍         | 491/10000 [00:00<00:01, 4886.53it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels... 1020 images, 0 backgrounds, 0 corrupt:  10%|█         | 1020/10000 [00:00<00:01, 5120.99it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels... 1699 images, 0 backgrounds, 0 corrupt:  17%|█▋        | 1699/10000 [00:00<00:01, 5871.90it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels... 2469 images, 0 backgrounds, 0 corrupt:  25%|██▍       | 2469/10000 [00:00<00:01, 6589.87it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels... 3129 images, 0 backgrounds, 0 corrupt:  31%|███▏      | 3129/10000 [00:00<00:01, 5899.99it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels... 3730 images, 0 backgrounds, 0 corrupt:  37%|███▋      | 3730/10000 [00:00<00:01, 5560.73it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels... 4295 images, 0 backgrounds, 0 corrupt:  43%|████▎     | 4295/10000 [00:00<00:01, 5453.58it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels... 4941 images, 0 backgrounds, 0 corrupt:  49%|████▉     | 4941/10000 [00:00<00:00, 5743.89it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels... 5698 images, 0 backgrounds, 0 corrupt:  57%|█████▋    | 5698/10000 [00:00<00:00, 6280.60it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels... 6334 images, 0 backgrounds, 0 corrupt:  63%|██████▎   | 6334/10000 [00:01<00:00, 6213.05it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels... 6961 images, 0 backgrounds, 0 corrupt:  70%|██████▉   | 6961/10000 [00:01<00:00, 5971.07it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels... 7702 images, 0 backgrounds, 0 corrupt:  77%|███████▋  | 7702/10000 [00:01<00:00, 6367.72it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels... 8399 images, 0 backgrounds, 0 corrupt:  84%|████████▍ | 8399/10000 [00:01<00:00, 6541.92it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels... 9058 images, 0 backgrounds, 0 corrupt:  91%|█████████ | 9058/10000 [00:01<00:00, 6124.62it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels... 9748 images, 0 backgrounds, 0 corrupt:  97%|█████████▋| 9748/10000 [00:01<00:00, 6336.19it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:01<00:00, 6091.64it/s]
+
+task: detect
+Detected YOLOv12AnyDepth model from weights, switching to AnyDepth task_map
+[34m[1mval: [0mNew cache created: /media/data/bdd100k_yolo/val/labels.cache
+[0] cached 16 images
+[20] cached 336 images
+[40] cached 656 images
+[60] cached 976 images
+[80] cached 1296 images
+[100] cached 1616 images
+[120] cached 1936 images
+[140] cached 2256 images
+[160] cached 2576 images
+[180] cached 2896 images
+[200] cached 3216 images
+[220] cached 3536 images
+[240] cached 3856 images
+[260] cached 4176 images
+[280] cached 4496 images
+[300] cached 4816 images
+[320] cached 5136 images
+[340] cached 5456 images
+[360] cached 5776 images
+[380] cached 6096 images
+[400] cached 6416 images
+[420] cached 6736 images
+[440] cached 7056 images
+[460] cached 7376 images
+[480] cached 7696 images
+[500] cached 8016 images
+[520] cached 8336 images
+[540] cached 8656 images
+[560] cached 8976 images
+[580] cached 9296 images
+[600] cached 9616 images
+[620] cached 9936 images
+[*] cached 10000 images (feat=input) -> /home/hslee/context-anydepth-det/anydepth-yolov12/method02_advantage_regress_tinyConv/outputs/bdd100k/cache_val.pt
+[*] input grid=(768, 2, 2)
+[*] mean L_base=3.202, mean L_super=3.150, mean A=0.0518
+

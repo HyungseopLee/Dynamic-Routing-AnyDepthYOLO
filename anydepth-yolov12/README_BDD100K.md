@@ -113,12 +113,9 @@ substantially heavier than a small image set. Start with a subset
 ## Data Preparation
 
 Treat the original download as read-only; write all outputs elsewhere.
-
-```bash
-export BDD_SRC=/path/to/bdd100k            # read-only original download
-export BDD_OUT=/path/to/output_root        # writable, prefer SSD
-```
-
+Below, `$BDD_SRC` is the read-only original download and `$BDD_OUT` is a writable
+output root.
+ㄱ
 ### 1. Detection → YOLO format (for policy training)
 
 `det_20` is Scalabel JSON (13 categories); ultralytics expects normalized YOLO txt.
@@ -129,8 +126,6 @@ python tools/bdd_det20_to_yolo.py \
     --img_root  "$BDD_SRC/images/100k" \
     --label_dir "$BDD_SRC/labels/det_20" \
     --out       "$BDD_OUT/bdd100k_yolo"
-# Images are symlinked to the source (no copy); only label txt is generated.
-# --copy-images to copy instead.
 ```
 
 10-class mapping (det_20 category → `bdd100k.yaml` index):
@@ -146,8 +141,62 @@ All images are 1280×720, so
 
 Output `$BDD_OUT/bdd100k_yolo/` (point `path:` in `bdd100k.yaml` here):
 ```
-train/images (69,863 symlinks) + train/labels (txt)   # 1,273,707 boxes
-val/images   (10,000 symlinks) + val/labels   (txt)   #   185,945 boxes
+train/images + train/labels (txt)   # 1,273,707 boxes
+val/images   + val/labels   (txt)   #   185,945 boxes
+```
+
+### Label provenance & re-preparation
+
+The YOLO detection labels were **re-generated from the official `det_20` labels**
+and replace an earlier set converted from the Kaggle `bdd100k-yolo` mirror.
+
+**Why the change.** The Kaggle mirror is slightly incomplete: it has 367 fewer
+boxes on val (185,578 vs the official **185,945**) and does not exactly match the
+official 10-class taxonomy. The official `det_20` conversion is the correct
+reference and is what the detector mAP numbers are measured against.
+
+There are two ways to obtain the correct labels:
+
+**A. Regenerate from source (canonical).** If you have the original `det_20`
+Scalabel JSON on your machine, just run the converter — this is the source of
+truth and needs no downloads:
+
+```bash
+python tools/bdd_det20_to_yolo.py \
+    --img_root  "$BDD_SRC/images/100k" \
+    --label_dir "$BDD_SRC/labels/det_20" \
+    --out       "$BDD_OUT/bdd100k_yolo"
+```
+
+**B. Download the converted labels (shortcut).** On servers that do **not** have
+the `det_20` JSON (only the YOLO dataset), grab the prepared label tarball
+instead — it carries `train/labels` + `val/labels` only (no images, ~tens of MB):
+
+> Drive: [`bdd100k_official_labels.tar.gz`](https://drive.google.com/file/d/1IAhUtk3F0vpfsZrMDSyshTHWE6D9OpNp/view?usp=drive_link)
+
+```bash
+cd /path/to/bdd100k_yolo
+
+# 1) back up the existing (Kaggle) labels — do NOT delete them
+mv train/labels train/labels_kaggle_bak
+mv val/labels   val/labels_kaggle_bak
+
+# 2) extract the official labels in their place
+tar xzf bdd100k_official_labels.tar.gz        # restores train/labels, val/labels
+
+# 3) invalidate the ultralytics label cache (regenerated on next run)
+rm -f train/labels.cache val/labels.cache
+```
+
+> ⚠️ Removing `labels.cache` is mandatory. ultralytics caches parsed labels, so
+> leaving a stale cache silently trains on the OLD labels.
+
+To produce the tarball yourself (from a machine that already has the official
+labels in place):
+
+```bash
+cd /path/to/bdd100k_yolo
+tar czf bdd100k_official_labels.tar.gz train/labels val/labels
 ```
 
 ### 2. MOT val video (for evaluation)

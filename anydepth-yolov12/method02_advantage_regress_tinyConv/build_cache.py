@@ -114,6 +114,9 @@ def main():
     ap.add_argument("--dataset", default="kitti", help="output scope: outputs/<dataset>/")
     ap.add_argument("--grid", default="4", help="spatial grid: 'G' (square GxG) or 'HxW' "
                     "(rectangular, e.g. '2x6' to preserve KITTI aspect ratio)")
+    ap.add_argument("--feat", default="both", choices=["input", "pred", "both"],
+                    help="which feature group(s) to cache; 'input' (backbone-only) skips "
+                         "caching the neck/pred grids to roughly halve cache size")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
     if args.out is None:
@@ -149,8 +152,12 @@ def main():
     handles = [model.model[l].register_forward_hook(
         lambda m, i, o, l=l: captured.__setitem__(l, o)) for l in STATE_LAYERS]
 
-    rows = {"input_base": [], "pred_base": [], "input_super": [], "pred_super": [],
-            "loss_base": [], "loss_super": [], "im_file": []}
+    cache_input = args.feat in ("input", "both")
+    cache_pred = args.feat in ("pred", "both")
+    rows = {"loss_base": [], "loss_super": [], "im_file": []}
+    for tag in ("base", "super"):
+        if cache_input: rows[f"input_{tag}"] = []
+        if cache_pred: rows[f"pred_{tag}"] = []
 
     for bi, batch in enumerate(loader):
         img = batch["img"].to(device).float() / 255.0
@@ -160,8 +167,10 @@ def main():
         for skip, tag in ((skip_base, "base"), (skip_super, "super")):
             captured.clear()
             preds = forward_path(model, img, skip, detect)
-            rows[f"input_{tag}"].append(grids(captured, INPUT_LEVEL_LAYERS, G).cpu())
-            rows[f"pred_{tag}"].append(grids(captured, PRED_LEVEL_LAYERS, G).cpu())
+            if cache_input:
+                rows[f"input_{tag}"].append(grids(captured, INPUT_LEVEL_LAYERS, G).cpu())
+            if cache_pred:
+                rows[f"pred_{tag}"].append(grids(captured, PRED_LEVEL_LAYERS, G).cpu())
             rows[f"loss_{tag}"].append(per_image_losses(criterion, preds, batch).cpu())
 
         rows["im_file"].extend(batch["im_file"])
@@ -172,13 +181,17 @@ def main():
         h.remove()
     cache = {k: (torch.cat(v) if torch.is_tensor(v[0]) else v) for k, v in rows.items()}
     cache["meta"] = {"weight": str(args.weight), "split": args.split,
-                     "imgsz": list(args.imgsz), "num_skippable": N, "grid": G}
+                     "imgsz": list(args.imgsz), "num_skippable": N, "grid": G,
+                     "feat": args.feat}
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     torch.save(cache, out)
     n = cache["loss_base"].shape[0]
-    print(f"[*] cached {n} images -> {out}")
-    print(f"[*] input grid={tuple(cache['input_base'].shape[1:])}, pred grid={tuple(cache['pred_base'].shape[1:])}")
+    print(f"[*] cached {n} images (feat={args.feat}) -> {out}")
+    if cache_input:
+        print(f"[*] input grid={tuple(cache['input_base'].shape[1:])}")
+    if cache_pred:
+        print(f"[*] pred grid={tuple(cache['pred_base'].shape[1:])}")
     print(f"[*] mean L_base={cache['loss_base'].mean():.3f}, mean L_super={cache['loss_super'].mean():.3f}, "
           f"mean A={(cache['loss_base']-cache['loss_super']).mean():.4f}")
 

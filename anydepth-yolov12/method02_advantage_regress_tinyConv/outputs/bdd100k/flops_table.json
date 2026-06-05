@@ -1,7 +1,7 @@
 {
-  "weight": "runs/bdd100k/detect/anydepth-yolov12s/50e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_orig/weights/best.pt",
+  "weight": "finetuned_bdd100k/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.2_orig_mAP35.1_33.8.pt",
   "imgsz": [
-    736,
+    720,
     1280
   ],
   "num_skippable_layers": 8,
