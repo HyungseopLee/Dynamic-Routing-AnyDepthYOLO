@@ -77,9 +77,9 @@ python val_adn_bdd100k.py \
 mkdir -p ./runs/bdd100k/detect_wst/anydepth-yolov12l
 python val_adn_bdd100k.py \
     --imgsz 1280 \
-    --weight ./runs/bdd100k/detect/anydepth-yolov12s/train/weights/best.pt \
-    --project ./runs/bdd100k/detect/anydepth-yolov12s/train \
-    2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s/train/val_1280.log
+    --weight ./runs/bdd100k/detect/anydepth-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.2_orig/weights/best.pt \
+    --project ./runs/bdd100k/detect/anydepth-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.2_orig \
+    2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.2_orig/val_1280.log
 
 
 

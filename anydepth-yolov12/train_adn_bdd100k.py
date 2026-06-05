@@ -133,9 +133,11 @@ python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
   --data bdd100k.yaml \
   --epoch 30 \
   --imgsz 1280 \
-  --weight ./pretrained/yolo-ad-small_0.479_0.451.pt \
+  --alpha_base 0.2 \
+  --lr0 1e-3 \
+  --weight ./pretrained_coco/yolo-ad-v12-orig_small_0.479_0.451.pt \
   --project ./runs/bdd100k/detect/anydepth-yolov12s \
-  2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha1.0_orig.log
+  2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.2_orig.log
 
 
 
@@ -153,7 +155,7 @@ python -m torch.distributed.run --nproc_per_node 2 train_adn_bdd100k.py \
   --data bdd100k.yaml \
   --epoch 50 \
   --imgsz 1280 \
-  --alpha 0.2 \
+  --alpha_base 0.2 \
   --project ./runs/bdd100k/detect/anydepth-yolov12s-from-scratch \
   2>&1 | tee ./runs/bdd100k/detect/anydepth-yolov12s-from-scratch/50e_SGD0900_bs32_nbs256_1e-2_1e-4_1280-720_singleScale_augNothing_alpha0.2_orig.log
 
