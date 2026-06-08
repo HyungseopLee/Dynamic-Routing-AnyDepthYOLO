@@ -6,3 +6,5 @@ summary*.json
 *energy*
 *.csv
 *.npy
+# paper
+_extracted
