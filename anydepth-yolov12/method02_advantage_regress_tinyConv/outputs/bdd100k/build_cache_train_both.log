@@ -220,6 +220,7 @@ Detected YOLOv12AnyDepth model from weights, switching to AnyDepth task_map
 [4320] cached 69136 images
 [4340] cached 69456 images
 [4360] cached 69776 images
-[*] cached 70000 images (feat=input) -> method02_advantage_regress_tinyConv/outputs/bdd100k/cache_train.pt
+[*] cached 70000 images (feat=both) -> method02_advantage_regress_tinyConv/outputs/bdd100k/cache_train_both.pt
 [*] input grid=(768, 2, 2)
+[*] pred grid=(640, 2, 2)
 [*] mean L_base=3.246, mean L_super=3.189, mean A=0.0573

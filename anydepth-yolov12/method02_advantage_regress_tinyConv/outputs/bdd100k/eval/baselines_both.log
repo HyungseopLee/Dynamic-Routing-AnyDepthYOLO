@@ -1,0 +1,15 @@
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/nn/modules/lazy.py:181: UserWarning: Lazy modules are a new feature under heavy development so changes to the API or functionality can happen at any moment.
+  warnings.warn('Lazy modules are a new feature under heavy development '
+
+[*] saved -> method02_advantage_regress_tinyConv/outputs/bdd100k/eval/baselines_both.json
+
+method           GFLOPs     loss       AP  (@ super-rate 0.50)
+oracle            42.45   3.1358   0.4794
+policy            42.45   3.1696   0.4773
+confidence        42.45   3.1732   0.4766
+edge              42.45   3.1731   0.4775
+luminance         42.45   3.1777   0.4764
+random            42.45   3.1756   0.4773
+[*] plot -> method02_advantage_regress_tinyConv/outputs/bdd100k/eval/baselines_both_ap_ap.png
+[*] plot -> method02_advantage_regress_tinyConv/outputs/bdd100k/eval/baselines_both_ap_loss.png
+

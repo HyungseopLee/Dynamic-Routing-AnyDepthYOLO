@@ -85,13 +85,55 @@ def pixel_signals(bgr):
     return float(y.mean()), float(np.sqrt(gx * gx + gy * gy).mean())
 
 
+_ANGLE_TO_ROT = {90: cv2.ROTATE_90_CLOCKWISE, 180: cv2.ROTATE_180,
+                 270: cv2.ROTATE_90_COUNTERCLOCKWISE}
+
+
+def open_upright(mov_path):
+    """Open a .mov and return (cap, meta_angle) so that decoded frames are upright
+    regardless of the opencv version.
+
+    BDD MOT clips carry a rotation in their container metadata (e.g. 270°). Newer
+    opencv auto-applies it (returns landscape 720x1280); older opencv does NOT
+    (returns the raw portrait 1280x720). Relying on a fixed shape->ROTATE_90_CW
+    rule is therefore version-dependent and silently flips frames upside down on
+    the env that already auto-rotates. We instead (1) explicitly request
+    auto-orientation and (2) keep the metadata angle as a fallback for builds that
+    ignore the flag (see decode_upright)."""
+    cap = cv2.VideoCapture(str(mov_path))
+    cap.set(cv2.CAP_PROP_ORIENTATION_AUTO, 1.0)       # honour rotation metadata
+    meta = int(round(cap.get(cv2.CAP_PROP_ORIENTATION_META) or 0)) % 360
+    return cap, meta
+
+
+def decode_upright(frame, meta_angle):
+    """Straighten a frame if the build did not auto-apply the rotation metadata."""
+    if frame.shape[0] > frame.shape[1] and meta_angle in _ANGLE_TO_ROT:   # still portrait
+        return cv2.rotate(frame, _ANGLE_TO_ROT[meta_angle])
+    return frame
+
+
+def decoded_frame_for_label(fi, step):
+    """Decoded-frame index for a 5fps box_track label `fi`, the SINGLE source of
+    truth for label<->frame alignment (used by both labeled_frames and the
+    probe_align.py regression test -- never duplicate this formula).
+
+    box_track_20 labels are 0-based at 5fps; the .mov runs at ~30fps so a label
+    step spans `step = fps/5 ~= 6` decoded frames. The naive round(fi*step),
+    however, lands ONE label step AHEAD of the actual annotated frame (verified by
+    probe_align.py: AP peaks at offset -round(step), recovering mAP50 0.47 -> 0.62).
+    We therefore subtract one step. The offset is derived from fps (not hardcoded)
+    so clips at other frame rates stay aligned."""
+    return max(0, int(round(fi * step)) - int(round(step)))
+
+
 def labeled_frames(mov_path, gt, fps_label=5.0):
     """Yield (frameIndex, bgr) for each labeled frame, by decoding the .mov and
-    sampling the decoded frame nearest to each 5fps label position."""
-    cap = cv2.VideoCapture(str(mov_path))
+    sampling the decoded frame aligned to each 5fps label position."""
+    cap, meta = open_upright(mov_path)
     fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
     step = fps / fps_label                       # decoded frames per label step
-    targets = {int(round(fi * step)): fi for fi in sorted(gt)}
+    targets = {decoded_frame_for_label(fi, step): fi for fi in sorted(gt)}
     di, got = 0, 0
     need = len(targets)
     while got < need:
@@ -99,9 +141,7 @@ def labeled_frames(mov_path, gt, fps_label=5.0):
         if not ok:
             break
         if di in targets:
-            if frame.shape[0] == 1280 and frame.shape[1] == 720:   # rotated portrait
-                frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
-            yield targets[di], frame
+            yield targets[di], decode_upright(frame, meta)
             got += 1
         di += 1
     cap.release()
@@ -131,6 +171,9 @@ def main():
     ap.add_argument("--conf", type=float, default=0.001)
     ap.add_argument("--device", default="cuda:0")
     ap.add_argument("--limit", type=int, default=0, help="cap on number of videos (0=all)")
+    ap.add_argument("--thresh_clips", type=int, default=25, help="number of (prefix) clips "
+                    "used to estimate lum/edge percentile thresholds; 0 = all. Subset keeps "
+                    "thresholds consistent across shards while cutting pre-pass decode.")
     ap.add_argument("--num_shards", type=int, default=1, help="split videos across N tasks "
                     "(round-robin); 1 = single-GPU full run")
     ap.add_argument("--shard_id", type=int, default=0, help="this task's shard index [0,N)")
@@ -177,7 +220,8 @@ def main():
         net.load_state_dict(ckpt["state_dict"])
         net.eval()
         nets[tag] = net; feats[tag] = feat
-    print(f"[*] policies: {list(nets)}")
+    need_pred = any(f != "input" for f in feats.values())  # tap PRED grid only when a policy needs it
+    print(f"[*] policies: {list(nets)} (need_pred={need_pred})")
 
     captured = {}
     for idx in STATE_LAYERS:
@@ -199,13 +243,20 @@ def main():
     pcts = list(range(5, 100, 5))
     if not args.policy_only:
         lum_all, edge_all = [], []
-        for seq in seqs:
+        # lum/edge percentile thresholds are scene statistics that are stable from a
+        # subset, so we estimate them from the first `thresh_clips` videos instead of
+        # decoding all of them. The subset is the deterministic global prefix seqs[:N]
+        # (identical in every shard) so the lum/edge baseline taus stay consistent and
+        # mergeable across shards -- while cutting the pre-pass decode by ~num_clips/N.
+        thr_seqs = seqs if args.thresh_clips <= 0 else seqs[:args.thresh_clips]
+        for seq in thr_seqs:
             gt = parse_box_track(label_dir / f"{seq}.json")
             for _, bgr in labeled_frames(video_dir / f"{seq}.mov", gt):
                 l, e = pixel_signals(bgr); lum_all.append(l); edge_all.append(e)
         lum_taus = np.percentile(lum_all, pcts); edge_taus = np.percentile(edge_all, pcts)
         print(f"[*] luminance [{min(lum_all):.1f},{max(lum_all):.1f}] "
-              f"edge [{min(edge_all):.1f},{max(edge_all):.1f}] over {len(lum_all)} frames")
+              f"edge [{min(edge_all):.1f},{max(edge_all):.1f}] over {len(lum_all)} frames "
+              f"from {len(thr_seqs)} clips")
 
     # val-derived policy thresholds (honest: tau fixed on val images, applied on video)
     val_taus = None
@@ -235,8 +286,12 @@ def main():
                 strategies.append(dict(name=f"{kind}_p{pc:02d}", kind=kind, thres=float(tau),
                                        decide=lambda pc_, pv, fi, tau=tau: "super" if pv < tau else "base"))
         if not args.no_conf:
-            conf_taus = [round((i + 1) / 20.0, 3) for i in range(19)]
-            for kind in ("conftop20", "confge10"):
+            # conftop20 only (drop confge10) on a coarser tau grid: the confidence
+            # baseline is just a reference curve, so 9 thresholds trace it fine while
+            # cutting the per-frame matches_multi accumulation that drives the OOM at
+            # conf=0.001 (38 conf strategies -> 9).
+            conf_taus = [round((i + 1) / 10.0, 2) for i in range(9)]  # 0.1..0.9
+            for kind in ("conftop20",):
                 for tau in conf_taus:
                     strategies.append(dict(name=f"{kind}_t{int(tau*100):02d}", kind=kind, thres=tau,
                                            decide=lambda pc, pv, fi, tau=tau: "base" if (fi == 0 or pv >= tau) else "super"))
@@ -275,10 +330,12 @@ def main():
             r_super = yolo.predict(source=bgr, imgsz=tuple(args.imgsz), conf=args.conf,
                                    iou=0.7, skip=skip_super, verbose=False, device=device)[0]
             in_s = grid_vec(captured, INPUT_LEVEL_LAYERS, args.grid).unsqueeze(0)
+            pr_s = grid_vec(captured, PRED_LEVEL_LAYERS, args.grid).unsqueeze(0) if need_pred else None
             captured.clear()
             r_base = yolo.predict(source=bgr, imgsz=tuple(args.imgsz), conf=args.conf,
                                   iou=0.7, skip=skip_base, verbose=False, device=device)[0]
             in_b = grid_vec(captured, INPUT_LEVEL_LAYERS, args.grid).unsqueeze(0)
+            pr_b = grid_vec(captured, PRED_LEVEL_LAYERS, args.grid).unsqueeze(0) if need_pred else None
 
             preds = {"super": B.boxes_to_preds(r_super), "base": B.boxes_to_preds(r_base)}
             conf_s = r_super.boxes.conf.cpu() if (r_super.boxes is not None and len(r_super.boxes)) else torch.empty(0)
@@ -289,8 +346,8 @@ def main():
                         "confge10": B.conf_mean_ge(conf, 0.1) if conf.numel() else 0.0}
             sig_super, sig_base = sig(conf_s), sig(conf_b)
             with torch.no_grad():
-                av = {tag: {"super": float(n.logit(in_s, None, one)),
-                            "base": float(n.logit(in_b, None, zero))}
+                av = {tag: {"super": float(n.logit(in_s, None if feats[tag] == "input" else pr_s, one)),
+                            "base": float(n.logit(in_b, None if feats[tag] == "input" else pr_b, zero))}
                       for tag, n in nets.items()}
 
             gts = gt.get(fidx, [])

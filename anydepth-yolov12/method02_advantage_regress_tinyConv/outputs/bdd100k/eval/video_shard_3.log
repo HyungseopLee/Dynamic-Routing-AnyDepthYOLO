@@ -1,0 +1,66 @@
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/nn/modules/lazy.py:181: UserWarning: Lazy modules are a new feature under heavy development so changes to the API or functionality can happen at any moment.
+  warnings.warn('Lazy modules are a new feature under heavy development '
+
+Error decoding JSON from /home/hslee/.config/yolov12/settings.json. Starting with an empty dictionary.
+Creating new Ultralytics Settings v0.0.6 file ✅ 
+View Ultralytics Settings with 'yolo settings' or at '/home/hslee/.config/yolov12/settings.json'
+Update Settings with 'yolo settings key=value', i.e. 'yolo settings runs_dir=path/to/dir'. For help see https://docs.ultralytics.com/quickstart/#ultralytics-settings.
+task: detect
+Detected YOLOv12AnyDepth model from weights, switching to AnyDepth task_map
+[*] GFLOPs super=51.72 base=33.18  EVAL_CLS=[0, 1, 2, 3, 4, 5, 6, 9]
+[*] policies: ['bb0', 'bb1', 'bb2', 'bb3', 'bb4', 'bn0', 'bn1', 'bn2', 'bn3', 'bn4'] (need_pred=True)
+[*] luminance [9.8,155.7] edge [8.3,70.6] over 4933 frames from 25 clips
+[*] val thresholds (budgets=[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+[*] shard 3/4: 50 of 200 videos, 170 strategies
+[1/50 b1c9c847-3bda4659] 202 labeled frames
+[2/50 b1ceb32e-3f481b43] 201 labeled frames
+[3/50 b1d0091f-f2c2d2ae] 201 labeled frames
+[4/50 b1d0a191-2ed2269e] 202 labeled frames
+[5/50 b1d10d08-5b108225] 201 labeled frames
+[6/50 b1d10d08-ec660956] 201 labeled frames
+[7/50 b1d3907b-2278601b] 201 labeled frames
+[8/50 b1d7b3ac-36f2d3b7] 201 labeled frames
+[9/50 b1d7b3ac-afa57f22] 201 labeled frames
+[10/50 b1d9e136-6c94ea3f] 201 labeled frames
+[11/50 b1dce572-c6a8cb5e] 201 labeled frames
+[12/50 b1e0c01d-dd9e6e2f] 201 labeled frames
+[13/50 b1e1a7b8-b397c445] 201 labeled frames
+[14/50 b1e6efc0-2552cc5d] 202 labeled frames
+[15/50 b1ea0ae4-4f770228] 201 labeled frames
+[16/50 b1ee702d-0ae1fc10] 202 labeled frames
+[17/50 b1f0efd9-e900c6e5] 201 labeled frames
+[18/50 b1f25ff6-1ddb7e43] 201 labeled frames
+[19/50 b1f4491b-33824f31] 201 labeled frames
+[20/50 b1f4491b-bf7d513f] 202 labeled frames
+[21/50 b1f6c103-5ce1f3c6] 201 labeled frames
+[22/50 b1fbaab8-68db7df7] 201 labeled frames
+[23/50 b1ff4656-0435391e] 201 labeled frames
+[24/50 b200e97a-bf074435] 201 labeled frames
+[25/50 b2036451-aa924fd1] 201 labeled frames
+[26/50 b205eb4d-f84aaa1a] 201 labeled frames
+[27/50 b20841f9-cef732d5] 202 labeled frames
+[28/50 b20b69d2-7767e6b6] 202 labeled frames
+[29/50 b20b69d2-ffc1d6af] 202 labeled frames
+[30/50 b20e291a-6012d836] 202 labeled frames
+[31/50 b20ff95c-b9444127] 101 labeled frames
+[32/50 b213e4eb-09c01a17] 201 labeled frames
+[33/50 b2156f8e-72e1547c] 201 labeled frames
+[34/50 b2169b74-fa197951] 202 labeled frames
+[35/50 b21bfb83-ea32f716] 201 labeled frames
+[36/50 b21c86ac-71205084] 201 labeled frames
+[37/50 b22a4d9f-48b2e986] 202 labeled frames
+[38/50 b230132b-ff8f2719] 202 labeled frames
+[39/50 b2331b83-648e56ca] 201 labeled frames
+[40/50 b23a79d1-43dfeecd] 202 labeled frames
+[41/50 b23b2649-1a78948d] 201 labeled frames
+[42/50 b23c9e00-b425de1b] 201 labeled frames
+[43/50 b24071b8-b3ee1196] 201 labeled frames
+[44/50 b242f6b2-99d2f2c1] 202 labeled frames
+[45/50 b24380ab-6dbeb908] 201 labeled frames
+[46/50 b24f03f7-ff66eaca] 201 labeled frames
+[47/50 b2505382-2905b23c] 201 labeled frames
+[48/50 b251064f-30002542] 201 labeled frames
+[49/50 b251064f-e7a165fd] 201 labeled frames
+[50/50 b255cd6c-5ccba454] 201 labeled frames
+[*] shard 3 raw -> method02_advantage_regress_tinyConv/outputs/bdd100k/eval/shard_3.pt
+

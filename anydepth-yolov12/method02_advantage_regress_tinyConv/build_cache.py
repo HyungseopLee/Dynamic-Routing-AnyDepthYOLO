@@ -21,11 +21,11 @@ Usage:
     # bdd100k  (input image size 720 x 1280; rounded to 736 x 1280 by /32 stride)
     # run once per split -> outputs/bdd100k/cache_{train,val}.pt
     python method02_advantage_regress_tinyConv/build_cache.py \
-        --weight ./finetuned_bdd100k/AD-YOLOv12s_bdd100k_30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.6_orig_mAP34.3_33.1.pt \
+        --weight ./finetuned_bdd100k/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.2_orig_mAP35.1_33.8.pt \
         --data ultralytics/cfg/datasets/bdd100k.yaml --dataset bdd100k \
         --split train --imgsz 720 1280 --batch 16
     python method02_advantage_regress_tinyConv/build_cache.py \
-        --weight ./finetuned_bdd100k/AD-YOLOv12s_bdd100k_30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.6_orig_mAP34.3_33.1.pt \
+        --weight ./finetuned_bdd100k/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.2_orig_mAP35.1_33.8.pt \
         --data ultralytics/cfg/datasets/bdd100k.yaml --dataset bdd100k \
         --split val --imgsz 720 1280 --batch 16
 """
@@ -109,6 +109,10 @@ def main():
     ap.add_argument("--data", default="ultralytics/cfg/datasets/kitti.yaml")
     ap.add_argument("--split", default="train", choices=["train", "val"])
     ap.add_argument("--imgsz", type=int, nargs=2, default=[384, 1248], help="H W")
+    ap.add_argument("--base_imgsz", type=int, nargs=2, default=None,
+                    help="H W for the BASE path only (resolution routing). If set, the base "
+                         "path runs on a bilinearly-downsampled image (must be stride-32 mult); "
+                         "the super path keeps --imgsz. Default: same as --imgsz (depth-only).")
     ap.add_argument("--batch", type=int, default=16)
     ap.add_argument("--device", default="cuda:0")
     ap.add_argument("--dataset", default="kitti", help="output scope: outputs/<dataset>/")
@@ -166,12 +170,19 @@ def main():
 
         for skip, tag in ((skip_base, "base"), (skip_super, "super")):
             captured.clear()
-            preds = forward_path(model, img, skip, detect)
+            # resolution routing: run the base path on a downsampled image. GT boxes are
+            # normalized so the per-image loss stays comparable across input sizes.
+            if tag == "base" and args.base_imgsz is not None:
+                img_t = F.interpolate(img, size=tuple(args.base_imgsz), mode="bilinear", align_corners=False)
+                batch_t = {**batch, "img": img_t}
+            else:
+                img_t, batch_t = img, batch
+            preds = forward_path(model, img_t, skip, detect)
             if cache_input:
                 rows[f"input_{tag}"].append(grids(captured, INPUT_LEVEL_LAYERS, G).cpu())
             if cache_pred:
                 rows[f"pred_{tag}"].append(grids(captured, PRED_LEVEL_LAYERS, G).cpu())
-            rows[f"loss_{tag}"].append(per_image_losses(criterion, preds, batch).cpu())
+            rows[f"loss_{tag}"].append(per_image_losses(criterion, preds, batch_t).cpu())
 
         rows["im_file"].extend(batch["im_file"])
         if bi % 20 == 0:
@@ -182,7 +193,7 @@ def main():
     cache = {k: (torch.cat(v) if torch.is_tensor(v[0]) else v) for k, v in rows.items()}
     cache["meta"] = {"weight": str(args.weight), "split": args.split,
                      "imgsz": list(args.imgsz), "num_skippable": N, "grid": G,
-                     "feat": args.feat}
+                     "feat": args.feat, "base_imgsz": args.base_imgsz}
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     torch.save(cache, out)

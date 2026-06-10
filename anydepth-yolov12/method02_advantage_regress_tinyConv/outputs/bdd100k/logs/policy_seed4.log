@@ -1,0 +1,55 @@
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/nn/modules/lazy.py:181: UserWarning: Lazy modules are a new feature under heavy development so changes to the API or functionality can happen at any moment.
+  warnings.warn('Lazy modules are a new feature under heavy development '
+ep   0 | train total 0.0550 acc 0.0550 flops 0.0000 p_super 0.057 || val p_super 0.028 acc 0.0141 corr 0.122  *best*
+ep   1 | train total 0.0544 acc 0.0544 flops 0.0000 p_super 0.057 || val p_super 0.048 acc 0.0134 corr 0.155  *best*
+ep   2 | train total 0.0542 acc 0.0542 flops 0.0000 p_super 0.057 || val p_super 0.061 acc 0.0136 corr 0.138
+ep   3 | train total 0.0541 acc 0.0541 flops 0.0000 p_super 0.057 || val p_super 0.046 acc 0.0136 corr 0.156  *best*
+ep   4 | train total 0.0539 acc 0.0539 flops 0.0000 p_super 0.058 || val p_super 0.027 acc 0.0141 corr 0.139
+ep   5 | train total 0.0537 acc 0.0537 flops 0.0000 p_super 0.057 || val p_super 0.027 acc 0.0142 corr 0.120
+ep   6 | train total 0.0533 acc 0.0533 flops 0.0000 p_super 0.057 || val p_super 0.028 acc 0.0149 corr 0.073
+ep   7 | train total 0.0527 acc 0.0527 flops 0.0000 p_super 0.057 || val p_super 0.049 acc 0.0163 corr 0.079
+ep   8 | train total 0.0518 acc 0.0518 flops 0.0000 p_super 0.057 || val p_super -0.018 acc 0.0308 corr 0.024
+ep   9 | train total 0.0491 acc 0.0491 flops 0.0000 p_super 0.057 || val p_super -0.028 acc 0.0550 corr 0.032
+ep  10 | train total 0.0460 acc 0.0460 flops 0.0000 p_super 0.058 || val p_super -0.036 acc 0.1115 corr 0.026
+ep  11 | train total 0.0393 acc 0.0393 flops 0.0000 p_super 0.057 || val p_super -0.144 acc 0.3221 corr 0.013
+ep  12 | train total 0.0328 acc 0.0328 flops 0.0000 p_super 0.057 || val p_super -0.099 acc 0.2983 corr 0.022
+ep  13 | train total 0.0295 acc 0.0295 flops 0.0000 p_super 0.057 || val p_super -0.188 acc 0.5607 corr 0.000
+ep  14 | train total 0.0284 acc 0.0284 flops 0.0000 p_super 0.057 || val p_super -0.422 acc 1.3140 corr 0.008
+ep  15 | train total 0.0278 acc 0.0278 flops 0.0000 p_super 0.057 || val p_super -0.161 acc 0.4029 corr 0.022
+ep  16 | train total 0.0275 acc 0.0275 flops 0.0000 p_super 0.057 || val p_super -0.349 acc 1.0648 corr 0.003
+ep  17 | train total 0.0266 acc 0.0266 flops 0.0000 p_super 0.057 || val p_super -0.253 acc 0.6950 corr 0.015
+ep  18 | train total 0.0263 acc 0.0263 flops 0.0000 p_super 0.057 || val p_super -0.290 acc 0.8420 corr 0.020
+ep  19 | train total 0.0257 acc 0.0257 flops 0.0000 p_super 0.057 || val p_super -0.478 acc 1.3528 corr 0.020
+ep  20 | train total 0.0251 acc 0.0251 flops 0.0000 p_super 0.057 || val p_super -0.325 acc 0.9493 corr 0.011
+ep  21 | train total 0.0248 acc 0.0248 flops 0.0000 p_super 0.057 || val p_super -0.473 acc 1.3915 corr 0.011
+ep  22 | train total 0.0254 acc 0.0254 flops 0.0000 p_super 0.058 || val p_super -0.435 acc 1.2678 corr 0.007
+ep  23 | train total 0.0247 acc 0.0247 flops 0.0000 p_super 0.057 || val p_super -0.326 acc 0.8933 corr 0.011
+ep  24 | train total 0.0247 acc 0.0247 flops 0.0000 p_super 0.058 || val p_super -0.227 acc 0.6555 corr 0.014
+ep  25 | train total 0.0247 acc 0.0247 flops 0.0000 p_super 0.057 || val p_super -0.101 acc 0.3317 corr 0.018
+ep  26 | train total 0.0249 acc 0.0249 flops 0.0000 p_super 0.057 || val p_super -0.341 acc 0.9929 corr 0.002
+ep  27 | train total 0.0251 acc 0.0251 flops 0.0000 p_super 0.057 || val p_super -0.117 acc 0.3113 corr 0.015
+ep  28 | train total 0.0247 acc 0.0247 flops 0.0000 p_super 0.057 || val p_super -0.393 acc 1.2128 corr 0.010
+ep  29 | train total 0.0238 acc 0.0238 flops 0.0000 p_super 0.057 || val p_super -0.386 acc 1.0415 corr 0.007
+ep  30 | train total 0.0235 acc 0.0235 flops 0.0000 p_super 0.057 || val p_super -0.313 acc 0.9720 corr 0.006
+ep  31 | train total 0.0231 acc 0.0231 flops 0.0000 p_super 0.057 || val p_super -0.435 acc 1.2351 corr 0.014
+ep  32 | train total 0.0232 acc 0.0232 flops 0.0000 p_super 0.057 || val p_super -0.261 acc 0.6930 corr 0.009
+ep  33 | train total 0.0223 acc 0.0223 flops 0.0000 p_super 0.057 || val p_super -0.324 acc 0.9563 corr 0.010
+ep  34 | train total 0.0229 acc 0.0229 flops 0.0000 p_super 0.058 || val p_super -0.251 acc 0.7119 corr 0.014
+ep  35 | train total 0.0221 acc 0.0221 flops 0.0000 p_super 0.057 || val p_super -0.282 acc 0.7944 corr 0.008
+ep  36 | train total 0.0221 acc 0.0221 flops 0.0000 p_super 0.057 || val p_super -0.407 acc 1.1350 corr 0.006
+ep  37 | train total 0.0225 acc 0.0225 flops 0.0000 p_super 0.057 || val p_super -0.265 acc 0.6909 corr -0.003
+ep  38 | train total 0.0217 acc 0.0217 flops 0.0000 p_super 0.057 || val p_super -0.436 acc 1.1861 corr 0.003
+ep  39 | train total 0.0208 acc 0.0208 flops 0.0000 p_super 0.058 || val p_super -0.303 acc 0.8299 corr 0.009
+ep  40 | train total 0.0206 acc 0.0206 flops 0.0000 p_super 0.057 || val p_super -0.439 acc 1.1736 corr 0.007
+ep  41 | train total 0.0203 acc 0.0203 flops 0.0000 p_super 0.057 || val p_super -0.572 acc 1.7082 corr 0.008
+ep  42 | train total 0.0206 acc 0.0206 flops 0.0000 p_super 0.058 || val p_super -0.410 acc 1.1761 corr 0.012
+ep  43 | train total 0.0208 acc 0.0208 flops 0.0000 p_super 0.057 || val p_super -0.245 acc 0.6071 corr 0.004
+ep  44 | train total 0.0213 acc 0.0213 flops 0.0000 p_super 0.057 || val p_super -0.239 acc 0.6604 corr 0.010
+ep  45 | train total 0.0208 acc 0.0208 flops 0.0000 p_super 0.057 || val p_super -0.401 acc 1.1563 corr 0.004
+ep  46 | train total 0.0202 acc 0.0202 flops 0.0000 p_super 0.058 || val p_super -0.356 acc 1.0618 corr 0.009
+ep  47 | train total 0.0199 acc 0.0199 flops 0.0000 p_super 0.057 || val p_super -0.305 acc 0.8623 corr 0.010
+ep  48 | train total 0.0201 acc 0.0201 flops 0.0000 p_super 0.057 || val p_super -0.587 acc 1.9211 corr 0.014
+ep  49 | train total 0.0198 acc 0.0198 flops 0.0000 p_super 0.057 || val p_super -0.330 acc 0.8917 corr 0.017
+[*] log -> /home/hslee/context-anydepth-det/anydepth-yolov12/method02_advantage_regress_tinyConv/outputs/bdd100k/logs/20260608_102343_lf1.0_lu0.1_seed4.log
+[*] best val_corr=0.15558 @ epoch 3 (of 50)
+[*] saved policy (val-best) -> method02_advantage_regress_tinyConv/outputs/bdd100k/policy_4.pt

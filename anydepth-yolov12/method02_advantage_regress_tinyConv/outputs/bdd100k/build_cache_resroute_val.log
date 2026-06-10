@@ -1,6 +1,9 @@
+
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
+
 task: detect
 Detected YOLOv12AnyDepth model from weights, switching to AnyDepth task_map
-[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s][34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
 [0] cached 16 images
 [20] cached 336 images
 [40] cached 656 images
@@ -33,6 +36,8 @@ Detected YOLOv12AnyDepth model from weights, switching to AnyDepth task_map
 [580] cached 9296 images
 [600] cached 9616 images
 [620] cached 9936 images
-[*] cached 10000 images (feat=input) -> method02_advantage_regress_tinyConv/outputs/bdd100k/cache_val.pt
-[*] input grid=(768, 2, 2)
-[*] mean L_base=3.202, mean L_super=3.150, mean A=0.0518
+[*] cached 10000 images (feat=both) -> method02_advantage_regress_tinyConv/outputs/bdd100k/cache_val_resroute_2x4.pt
+[*] input grid=(768, 2, 4)
+[*] pred grid=(640, 2, 4)
+[*] mean L_base=3.034, mean L_super=3.150, mean A=-0.1155
+
