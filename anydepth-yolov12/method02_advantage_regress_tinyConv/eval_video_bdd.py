@@ -148,12 +148,20 @@ def labeled_frames(mov_path, gt, fps_label=5.0):
 
 
 def load_policy(path, device):
+    """Load a router checkpoint, auto-selecting the architecture: tinyConv (conv on
+    a 2x2 grid; proj weights are 4D) vs GAP-MLP (MLP on a GAP vector; proj weights
+    are 2D). Returns (net, ckpt, feat, is_gap). GAP-MLP routers consume the spatial
+    mean of the grid features, so callers must pool to [B,C] when is_gap is True."""
+    from method01_advantage_regress.policy_net import PolicyNetwork as GapMlpNet
     ckpt = torch.load(path, map_location=device, weights_only=False)
     a = ckpt.get("args", {})
-    net = PolicyNetwork(group_dim=a.get("group_dim", 64), path_dim=a.get("path_dim", 8),
-                        hidden_dim=a.get("hidden", 64), feat=a.get("feat", "both"),
-                        norm=a.get("norm", "batch"), dropout=a.get("dropout", 0.0)).to(device)
-    return net, ckpt, a.get("feat", "both")
+    sd = ckpt["state_dict"]
+    is_gap = not any(k.endswith("weight") and v.dim() == 4 for k, v in sd.items())
+    cls = GapMlpNet if is_gap else PolicyNetwork
+    net = cls(group_dim=a.get("group_dim", 64), path_dim=a.get("path_dim", 8),
+              hidden_dim=a.get("hidden", 64), feat=a.get("feat", "both"),
+              norm=a.get("norm", "batch"), dropout=a.get("dropout", 0.0)).to(device)
+    return net, ckpt, a.get("feat", "both"), is_gap
 
 
 def main():
@@ -207,19 +215,21 @@ def main():
         pol_specs = [("policy", args.policy)]
     else:
         pol_specs = []
-    nets, feats = {}, {}
+    nets, feats, gaps = {}, {}, {}
     in_c = 768
     dummy_in = torch.zeros(2, in_c, args.grid[0], args.grid[1], device=device)
     dummy_pr = torch.zeros(2, 640, args.grid[0], args.grid[1], device=device)
+    zpid = torch.zeros(2, dtype=torch.long, device=device)
     for tag, path in pol_specs:
-        net, ckpt, feat = load_policy(path, device)
+        net, ckpt, feat, is_gap = load_policy(path, device)
         net.eval()
+        di = dummy_in.mean(dim=(2, 3)) if is_gap else dummy_in   # GAP-MLP wants [B,C]
+        dp = dummy_pr.mean(dim=(2, 3)) if is_gap else dummy_pr
         with torch.no_grad():
-            net(dummy_in, None if feat == "input" else dummy_pr,
-                torch.zeros(2, dtype=torch.long, device=device))
+            net(di, None if feat == "input" else dp, zpid)        # materialise lazy shapes
         net.load_state_dict(ckpt["state_dict"])
         net.eval()
-        nets[tag] = net; feats[tag] = feat
+        nets[tag] = net; feats[tag] = feat; gaps[tag] = is_gap
     need_pred = any(f != "input" for f in feats.values())  # tap PRED grid only when a policy needs it
     print(f"[*] policies: {list(nets)} (need_pred={need_pred})")
 
@@ -263,13 +273,14 @@ def main():
     if args.val_cache:
         budgets = [int(b) for b in args.budgets.split(",")]
         vc = torch.load(args.val_cache, map_location="cpu", weights_only=False)
-        v_in = vc["input_base"].to(device)
+        v_in = vc["input_base"].to(device); v_pr = vc["pred_base"].to(device)
         v_pid = torch.zeros(v_in.shape[0], dtype=torch.long, device=device)
         val_taus = {}
         with torch.no_grad():
             for tag, net in nets.items():
-                pr = None if feats[tag] == "input" else vc["pred_base"].to(device)
-                ah = net.logit(v_in, pr, v_pid).view(-1).cpu().numpy()
+                xi = v_in.mean(dim=(2, 3)) if gaps[tag] else v_in     # GAP-MLP wants [B,C]
+                pr = None if feats[tag] == "input" else (v_pr.mean(dim=(2, 3)) if gaps[tag] else v_pr)
+                ah = net.logit(xi, pr, v_pid).view(-1).cpu().numpy()
                 val_taus[tag] = {b: float(np.quantile(ah, 1.0 - b / 100.0)) for b in budgets}
         print(f"[*] val thresholds (budgets={budgets})")
 
@@ -346,9 +357,16 @@ def main():
                         "confge10": B.conf_mean_ge(conf, 0.1) if conf.numel() else 0.0}
             sig_super, sig_base = sig(conf_s), sig(conf_b)
             with torch.no_grad():
-                av = {tag: {"super": float(n.logit(in_s, None if feats[tag] == "input" else pr_s, one)),
-                            "base": float(n.logit(in_b, None if feats[tag] == "input" else pr_b, zero))}
-                      for tag, n in nets.items()}
+                av = {}
+                for tag, n in nets.items():
+                    # GAP-MLP routers consume the spatial mean of the grid features
+                    xs_i, xb_i = (in_s.mean(dim=(2, 3)), in_b.mean(dim=(2, 3))) if gaps[tag] else (in_s, in_b)
+                    if feats[tag] == "input":
+                        ps_i = pb_i = None
+                    else:
+                        ps_i, pb_i = (pr_s.mean(dim=(2, 3)), pr_b.mean(dim=(2, 3))) if gaps[tag] else (pr_s, pr_b)
+                    av[tag] = {"super": float(n.logit(xs_i, ps_i, one)),
+                               "base": float(n.logit(xb_i, pb_i, zero))}
 
             gts = gt.get(fidx, [])
             for st in strategies:

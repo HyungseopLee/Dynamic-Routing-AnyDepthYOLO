@@ -184,7 +184,8 @@ def main():
     if args.val_cache is None: args.val_cache = str(base / "cache_val.pt")
     if args.flops is None:     args.flops = str(base / "flops_table.json")
     if args.out is None:       args.out = str(base / "policy.pt")
-    if args.logdir is None:    args.logdir = str(base / "logs")
+    # per-run .log/.json are opt-in: only written when --logdir is given (avoids
+    # littering outputs/ with regenerable training-history files by default).
 
     torch.manual_seed(args.seed)
     device = args.device if torch.cuda.is_available() else "cpu"
@@ -218,15 +219,18 @@ def main():
     train_loader = make_loader(train_cache, args.batch, shuffle=True)
     val_loader = make_loader(val_cache, args.batch, shuffle=False) if val_cache else None
 
-    # per-run log file in method01/logs
-    logdir = Path(args.logdir); logdir.mkdir(parents=True, exist_ok=True)
-    stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    name = f"{stamp}_lf{args.lambda_flops}_lu{args.lambda_uni}" + (f"_{args.tag}" if args.tag else "")
-    logpath = logdir / f"{name}.log"
+    # per-run log file: opt-in via --logdir (None -> stdout only, no files written)
+    log_on = bool(args.logdir)
+    logpath = None
+    if log_on:
+        logdir = Path(args.logdir); logdir.mkdir(parents=True, exist_ok=True)
+        stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        name = f"{stamp}_lf{args.lambda_flops}_lu{args.lambda_uni}" + (f"_{args.tag}" if args.tag else "")
+        logpath = logdir / f"{name}.log"
+        with open(logpath, "w") as f:
+            f.write(f"# {json.dumps(vars(args))}\n")
+            f.write("epoch\ttotal\tl_acc\tl_flops\tl_uni\tp_super\tval_p_super\tval_l_acc\n")
     history = []
-    with open(logpath, "w") as f:
-        f.write(f"# {json.dumps(vars(args))}\n")
-        f.write("epoch\ttotal\tl_acc\tl_flops\tl_uni\tp_super\tval_p_super\tval_l_acc\n")
 
     # track the val-best checkpoint (lowest val l_acc); falls back to train l_acc
     # if no val cache. Saving the best -- not the last epoch -- guards against any
@@ -262,12 +266,14 @@ def main():
         print(msg)
         history.append({"epoch": ep, **{f"tr_{k}": v for k, v in tr.items()},
                         **{f"va_{k}": v for k, v in va.items()}})
-        with open(logpath, "a") as f:
-            f.write(f"{ep}\t{tr['total']:.5f}\t{tr['l_acc']:.5f}\t{tr['l_flops']:.5f}\t"
-                    f"{tr['l_uni']:.5f}\t{tr['p_super_mean']:.4f}\t"
-                    f"{va.get('p_super_mean', float('nan')):.4f}\t{va.get('l_acc', float('nan')):.5f}\n")
-    (logdir / f"{name}.json").write_text(json.dumps(history, indent=2))
-    print(f"[*] log -> {logpath}")
+        if log_on:
+            with open(logpath, "a") as f:
+                f.write(f"{ep}\t{tr['total']:.5f}\t{tr['l_acc']:.5f}\t{tr['l_flops']:.5f}\t"
+                        f"{tr['l_uni']:.5f}\t{tr['p_super_mean']:.4f}\t"
+                        f"{va.get('p_super_mean', float('nan')):.4f}\t{va.get('l_acc', float('nan')):.5f}\n")
+    if log_on:
+        (logdir / f"{name}.json").write_text(json.dumps(history, indent=2))
+        print(f"[*] log -> {logpath}")
     print(f"[*] best {sel}={best_metric:.5f} @ epoch {best_epoch} (of {args.epochs})")
 
     out = Path(args.out)

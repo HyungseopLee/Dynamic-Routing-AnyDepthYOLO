@@ -41,23 +41,30 @@ def main():
     ap.add_argument("--curve", required=True)
     ap.add_argument("--out", required=True, help="output path stem (_<metric>.png appended)")
     ap.add_argument("--metric", default="map50", choices=["map50", "map"])
+    ap.add_argument("--title", default="BDD100K MOT depth routing: backbone / backbone+neck / neck router")
     args = ap.parse_args()
 
     data = json.loads(Path(args.curve).read_text())
     rows = data["rows"]
 
-    bases = defaultdict(list)                          # family -> [(gflops, metric)]
-    pol = {fam: defaultdict(list) for fam in FAM_STYLE}        # fam -> budget -> [(gflops, metric)]
+    # x-axis = SUPER usage (%); the top axis shows GFLOPs/frame, which is an exact
+    # linear function of super-rate (base path at 0 %, super path at 100 %).
+    bases = defaultdict(list)                          # family -> [(super%, metric)]
+    pol = {fam: defaultdict(list) for fam in FAM_STYLE}        # fam -> budget -> [(super%, metric)]
     anchors = {}
+    g_base = g_super = None
     for r in rows:
+        x = r["super_rate"] * 100.0
+        if r["name"] == "always_base":  g_base = r["gflops"]
+        if r["name"] == "always_super": g_super = r["gflops"]
         if r["name"] in ("always_base", "always_super"):
-            anchors[r["name"]] = (r["gflops"], r[args.metric]); continue
+            anchors[r["name"]] = (x, r[args.metric]); continue
         m = POLICY_RE.match(r["name"])
         if m:
-            pol[m.group(1)][int(m.group(3))].append((r["gflops"], r[args.metric])); continue
+            pol[m.group(1)][int(m.group(3))].append((x, r[args.metric])); continue
         fam = r.get("family") or r.get("kind")
         if fam in BASE_STYLE:
-            bases[fam].append((r["gflops"], r[args.metric]))
+            bases[fam].append((x, r[args.metric]))
 
     fig, ax = plt.subplots(figsize=(9, 6))
 
@@ -102,10 +109,17 @@ def main():
     if "always_super" in anchors:
         ax.axhline(anchors["always_super"][1], color="black", ls=":", alpha=0.4)
 
-    ax.set_xlabel("GFLOPs (per frame)")
+    ax.set_xlabel("SUPER usage (%)")
     ax.set_ylabel(args.metric.upper())
-    ax.set_title("BDD100K MOT depth routing: backbone-only vs backbone+neck router", pad=12)
+    ax.set_title(args.title, pad=24)
     ax.legend(); ax.grid(alpha=0.3)
+
+    # top axis: GFLOPs/frame = g_base + (super%/100)*(g_super - g_base)
+    if g_base is not None and g_super is not None:
+        pct2gf = lambda p: g_base + (p / 100.0) * (g_super - g_base)
+        gf2pct = lambda g: (g - g_base) / (g_super - g_base) * 100.0
+        secax = ax.secondary_xaxis("top", functions=(pct2gf, gf2pct))
+        secax.set_xlabel("GFLOPs (per frame)")
     out = f"{args.out}_{ {'map50': 'ap50', 'map': 'ap5095'}[args.metric] }.png"
     Path(out).parent.mkdir(parents=True, exist_ok=True)
     fig.tight_layout(); fig.savefig(out, dpi=150)
