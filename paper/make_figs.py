@@ -102,12 +102,54 @@ def _decorate(ax, gb, gs, metric, endpoints):
     ax.set_ylabel(YLABEL[metric], fontsize=8.0)
     ax.tick_params(axis="both", which="major", labelsize=7.6, length=2.5, width=0.7)
     sec.tick_params(axis="x", which="major", labelsize=7.2, length=2.5, width=0.7)
-    for nm, (x, y) in endpoints.items():
-        ax.scatter([x], [y], marker="*", s=140, zorder=6,
-                   color="black" if nm == "always_super" else "darkgreen")
+    # endpoints are just the ends of the "ours" curve, so no markers are needed;
+    # keep only a subtle dotted line at the always-super accuracy ceiling.
     if "always_super" in endpoints:
         ax.axhline(endpoints["always_super"][1], color="black", ls=":", alpha=0.4, lw=1)
     ax.grid(alpha=0.22, linestyle="--")
+
+
+BDD_RE = re.compile(r"policy_(bb|bn|pn)(\d+)_b(\d+)")
+
+
+def aggregate_bdd(path, metric, feat="bb"):
+    """BDD curve JSON (naming policy_{bb,bn,pn}{seed}_b{budget}); aggregate over
+    seeds at each budget index -> (sorted [(x_mean,y_mean,y_std)], endpoints)."""
+    data = json.loads(Path(path).read_text())
+    rows = data["rows"]
+    bud = defaultdict(list)
+    endpoints = {}
+    for r in rows:
+        if r["name"] in ("always_base", "always_super"):
+            endpoints[r["name"]] = (r["super_rate"] * 100, r[metric])
+            continue
+        m = BDD_RE.match(r["name"])
+        if m and m.group(1) == feat:
+            bud[m.group(3)].append((r["super_rate"] * 100, r[metric]))
+    pts = []
+    for _b, seeds in bud.items():
+        a = np.array(seeds)
+        pts.append((a[:, 0].mean(), a[:, 1].mean(), a[:, 1].std()))
+    return sorted(pts), endpoints, data["gflops_base"], data["gflops_super"]
+
+
+def plot_main_bdd(name, src):
+    metric = "map"  # AP@[.50:.95] only for the cross-dataset panel
+    pts, ep, gb, gs = aggregate_bdd(src, metric)
+    fig, ax = plt.subplots(figsize=FIGSIZE)
+    for fam, pl in baselines(src, metric).items():
+        pl = sorted(pl)
+        mk, c, lbl = BASE_STYLE[fam]
+        ax.plot([p[0] for p in pl], [p[1] for p in pl], mk + "--", color=c,
+                label=lbl, lw=1.2, ms=4, alpha=0.85)
+    xs = [p[0] for p in pts]; ym = [p[1] for p in pts]; ys = [p[2] for p in pts]
+    ax.plot(xs, ym, "o-", color="tab:red", label="ours", zorder=5)
+    ax.fill_between(xs, np.array(ym) - np.array(ys), np.array(ym) + np.array(ys),
+                    color="tab:red", alpha=0.18)
+    _decorate(ax, gb, gs, metric, ep)
+    ax.legend(loc="lower right", handlelength=1.4, borderaxespad=0.25,
+              frameon=False, fontsize=7.0)
+    _save(fig, f"{name}_{METRICS[metric]}")
 
 
 def plot_main(name, src):
@@ -157,6 +199,7 @@ def _save(fig, stem):
 
 
 MAIN = {"fig_main": M2 / "video_curve_main_g2_merged.json"}
+MAIN_BDD = {"fig_main_bdd": ROOT / "method02_advantage_regress_tinyConv/outputs/bdd100k/eval/video_curve_full3_aligned.json"}
 
 COMPARE = {
     "fig_abl_feat": [("backbone", M2 / "video_curve_tinyconv_g2.json"),
@@ -164,7 +207,6 @@ COMPARE = {
                      ("both", M2 / "video_curve_both_g2.json")],
     "fig_abl_router_grid": [("GAP-MLP", M1 / "video_curve_selcorr.json"),
                              ("TinyConv 2$\\times$2", M2 / "video_curve_tinyconv_g2.json"),
-                             ("TinyConv 4$\\times$4", M2 / "video_curve_tinyconv_backbone.json"),
                              ("TinyConv 8$\\times$8", M2 / "video_curve_tinyconv_g8.json")],
     "fig_abl_gridshape": [("2$\\times$2 (square)", M2 / "video_curve_tinyconv_g2.json"),
                           ("1$\\times$4 (rect)", M2 / "video_curve_g1x4.json")],
@@ -173,11 +215,9 @@ COMPARE = {
     "fig_abl_norm": [("BatchNorm", M1 / "video_curve_selcorr.json"),
                      ("none", M1 / "video_curve_A3none.json"),
                      ("LayerNorm", M1 / "video_curve_A3layer.json")],
-    "fig_abl_prevp": [("0.0", M1 / "video_curve_Gprevp00.json"),
-                      ("0.25", M1 / "video_curve_Gprevp025.json"),
-                      ("0.5", M1 / "video_curve_selcorr.json"),
-                      ("0.75", M1 / "video_curve_Gprevp075.json"),
-                      ("1.0", M1 / "video_curve_Gprevp10.json")],
+    "fig_abl_prevp": [("$p=0.0$", M1 / "video_curve_Gprevp00.json"),
+                      ("$p=0.5$", M1 / "video_curve_selcorr.json"),
+                      ("$p=1.0$", M1 / "video_curve_Gprevp10.json")],
 }
 
 
@@ -185,6 +225,11 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     for name, src in MAIN.items():
         plot_main(name, src)
+    for name, src in MAIN_BDD.items():
+        if Path(src).exists():
+            plot_main_bdd(name, src)
+        else:
+            print(f"[!] skip {name}: missing {src}")
     for name, curves in COMPARE.items():
         missing = [str(p) for _, p in curves if not Path(p).exists()]
         if missing:

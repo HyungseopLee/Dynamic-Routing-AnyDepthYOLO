@@ -1,0 +1,55 @@
+\section{Related Work}
+\label{sec:related}
+
+\subsection{Dynamic and Adaptive Inference}
+\label{sec:related_dynamic}
+Adaptive inference reduces redundant computation by spending compute as a function
+of the input. Early-exit networks such as
+MSDNet~\cite{huang2018msdnet}, RANet~\cite{yang2020ranet}, and
+EENet~\cite{ilhan2024eenet} attach intermediate classifiers and terminate once a
+confidence criterion is met. A complementary line equips a single backbone with
+multiple execution widths or depths, such as slimmable~\cite{yu2019slimmable} and
+Once-for-All~\cite{cai2020ofa} networks, and layer- or block-skipping methods that
+drop residual units at inference~\cite{wang2018skipnet,wu2018blockdrop}. These
+approaches share a common goal: deciding \emph{how much} compute to spend per
+input. Our work adopts the same dynamic-depth backbone (a shared base/super pair)
+but focuses on the orthogonal question of \emph{how the routing decision itself is
+learned}.
+
+
+\subsection{Learned Routing with Efficiency Objectives}
+\label{sec:related_routing}
+A large body of work makes the routing decision \emph{learnable} and trains it
+jointly with an efficiency penalty. Gumbel-Softmax--based
+routers such as AR-Net~\cite{meng2020ar} sample discrete execution choices
+through a continuous relaxation~\cite{jang2017gumbel}; gating and
+cosine-similarity controllers, NAS-style methods with cost-aware terms (e.g.,
+DA-NAS~\cite{dai2020danas}), and channel-selection approaches with
+activation/sparsity losses~\cite{herrmann2020channel} follow the same template.
+These methods are almost universally trained with a combined objective
+$\lambda_{\mathrm{acc}}L_{\mathrm{acc}} + \lambda_{\mathrm{flops}}L_{\mathrm{flops}}
+(+\,\lambda_{\mathrm{uni}}L_{\mathrm{uni}})$, which has three documented
+limitations.
+\emph{(1) Objective conflict}: the accuracy and efficiency terms pull in opposite
+directions, and their balance is fragile.
+\emph{(2) Collapse}: a discrete, sampled policy tends to converge to a single
+action, requiring an entropy or uniformity term (and additional hyperparameters)
+to keep both paths alive.
+\emph{(3) Single operating point}: the weight $\lambda$ fixes one
+accuracy--efficiency trade-off in the trained weights, so serving a different
+compute budget requires retraining.
+Our regression formulation removes the efficiency weight and the anti-collapse
+term entirely: because the decision is recovered by thresholding a regressed
+scalar at deployment, a single model spans the whole trade-off family. 
+
+
+
+\subsection{Efficient Object Detection}
+\label{sec:related_detection}
+Efficient object detection has been pursued through lightweight backbones,
+quantization, and pruning, but these yield a static accuracy--efficiency point. 
+We instead build on an AnyDepth-YOLO~\cite{kang2026anydepth} whose backbone
+can be executed at two depths sharing the same weights, exposing a per-input depth
+choice at no extra storage cost. 
+Detection is a particularly favorable setting for per-frame routing: in driving video the scene difficulty varies sharply over time (dense urban intersections versus empty highways, day versus night), so the value of the deep path is highly input-dependent~\cite{pixels2027}, and a router can recover most of the deep path's accuracy while running the shallow path on the majority of frames. 
+This motivates evaluating routing not on still images but on tracking video, as we do on KITTI~\cite{geiger2012kitti} and BDD100K~\cite{yu2020bdd}.

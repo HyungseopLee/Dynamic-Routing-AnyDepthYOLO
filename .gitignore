@@ -7,7 +7,7 @@ summary*.json
 *.csv
 *.npy
 # paper
-_extracted
+# _extracted
 # regenerable training-history logs (train_policy --logdir is opt-in)
 **/outputs/**/logs/
 **/outputs/**/logs_*/

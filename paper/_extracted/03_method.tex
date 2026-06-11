@@ -1,0 +1,248 @@
+\section{Method}
+\label{sec:method}
+
+\subsection{Problem Formulation}
+\label{sec:method_formulation}
+
+\noindent\textbf{AnyDepth-YOLO detector.}
+We build on an AnyDepth-YOLO~\cite{kang2026anydepth}, a YOLOv12-style detector that
+is trained so that its depth can be reduced at inference while reusing the same
+weights. Each stage---in \emph{both} the backbone and the detection neck---is split
+into an \emph{essential} path that always runs and a \emph{skippable} refinement
+path that can be dropped; skipping a stage's refinement path therefore shortens the
+network end to end, not just in the backbone. This exposes, from a single set of
+parameters and with no extra storage, a family of execution depths. Following the
+detector's design we use its two extreme configurations: a \emph{super} path that
+executes every refinement path (highest accuracy, most compute) and a \emph{base}
+path that skips all of them, keeping only the essential stages (shallowest,
+cheapest). Concretely, if the network has $N$ skippable refinement paths across the
+backbone and neck, the super path uses the skip mask $[\textsc{false}]^N$ and the
+base path $[\textsc{true}]^N$; the detection head is shared and unchanged.
+The detector is trained once and then kept \emph{frozen} in our work---we never
+modify its weights---so the only inference-time decision is which depth to run on
+each frame.
+
+\begin{figure*}[!ht]
+\centering
+\includegraphics[width=0.75\textwidth]{fig_train.pdf}
+\caption{Training pipeline. The AnyDepth-YOLO detector is frozen; both paths are
+run once per image to obtain the true advantage $A=L_{\text{base}}-L_{\text{super}}$,
+and only the router is updated. The router predicts $\hat{A}$ from the multi-scale
+backbone features and is trained with $\text{MSE}(\hat{A},A)$ (blue: forward,
+red: backward).}
+\label{fig:train}
+\end{figure*}
+
+\medskip
+\noindent\textbf{Routing problem.}
+We thus view the detector as having two execution paths: a deep \emph{super}
+configuration $\delta_{\text{sup}}$ and a shallow \emph{base} configuration
+$\delta_{\text{base}}$. For each input image, we define the \emph{super
+advantage} as the reduction in detection loss obtained by using the deep path:
+\begin{equation}
+A = L_{\text{base}} - L_{\text{super}},
+\label{eq:advantage}
+\end{equation}
+where $L_{\text{base}}$ and $L_{\text{super}}$ are the per-image detection
+losses of the two paths. At deployment, the predicted advantage $\hat{A}$
+selects the execution configuration by a single threshold $\tau$:
+\begin{equation}
+\text{config} =
+\begin{cases}
+\delta_{\text{super}}, & \hat{A} > \tau,\\[2pt]
+\delta_{\text{base}},  & \text{otherwise.}
+\end{cases}
+\label{eq:route}
+\end{equation}
+
+
+\subsection{Router Training}
+\label{sec:method_training}
+The router is trained entirely offline against the frozen detector
+(Fig.~\ref{fig:train}). We first cache,
+once, the features and the true advantage of every training image
+(Sec.~\ref{sec:method_caching}), then fit a lightweight head
+(Sec.~\ref{sec:method_router}) to regress that advantage
+(Sec.~\ref{sec:method_loss}); the detector is never updated.
+
+\subsubsection{Offline Feature and Loss Caching}
+\label{sec:method_caching}
+The detector is kept \emph{frozen} throughout: the router never changes the
+backbone, so for every training image the advantage in Eq.~\eqref{eq:advantage} is
+a fixed scalar that can be precomputed once. We exploit this by caching, offline,
+everything the router needs, which both decouples router training from the
+detector and makes each training epoch a cheap pass over precomputed tensors (no
+detector forward, so trade-off and hyperparameter sweeps are fast).
+ 
+Concretely, for every image and for \emph{each} of the two paths
+($p \in \{\text{base},\text{super}\}$) we run the frozen detector once and
+store: (i) multi-scale backbone features and (ii) the per-image detection loss.
+The features are tapped at the three backbone pyramid levels that feed the
+detection neck (the P3/P4/P5 stages, denoted $\{S_2, S_3, S_4\}$). For the GAP-MLP
+router we apply global average pooling to each level and concatenate, giving a
+single 768-d descriptor per image and path; for the TinyConv router we instead
+apply adaptive average pooling to a small $G \times G$ spatial grid (default
+$2 \times 2$) per level and concatenate along channels, giving a
+$768 \times G \times G$ tensor that preserves coarse spatial layout. We optionally
+also tap the neck (prediction) levels for the feature-source ablation. The cached
+loss is the standard detector training loss (classification plus box and
+distribution-focal regression) evaluated per image against the ground-truth boxes;
+it correlates strongly with AP and serves as the supervision target through the
+advantage $A = L_{\text{base}} - L_{\text{super}}$. The result is a compact
+cache (train/val splits) of per-image, per-path feature tensors and losses on
+which the router is trained.
+
+
+\subsubsection{Router Architecture}
+\label{sec:method_router}
+The router takes the cached multi-scale features and outputs the scalar advantage
+prediction $\hat{A}$. 
+How this head consumes the features is a design choice
+rather than a contribution of this work; we consider two variants and compare them
+as an ablation (Sec.~\ref{sec:abl_router}).
+ 
+\noindent\textbf{GAP-MLP.} The 768-d global-average-pooled descriptor is normalized
+by a batch-normalization layer, projected by a linear layer with ReLU, and mapped
+to $\hat{A}$ by a small multilayer perceptron head. This is simple but discards
+all spatial layout.
+ 
+\noindent\textbf{TinyConv.} To retain ``where in the frame the hard content is,''
+the router consumes the $G \times G$ feature grids instead of a pooled vector. Each
+feature group is processed by a tiny spatial projection: a 2D batch-normalization
+layer that equalizes the differing magnitudes of the multi-scale features before
+they are aggregated, a $1 \times 1$ convolution that reduces the concatenated
+channels to a small width with ReLU, a $3 \times 3$ depthwise
+convolution (stride 1, padding 1) with ReLU that mixes the coarse spatial cells,
+and finally global average pooling to a $d$-dimensional vector. The group vectors
+are concatenated and mapped to $\hat{A}$ by a two-layer head (hidden width 128).
+The depthwise convolution and the small channel width keep the router extremely
+cheap (Table~\ref{tab:overhead}) while the 2D normalization makes the multi-scale
+aggregation well-conditioned.
+
+ 
+\begin{figure*}[!ht]
+\centering
+\includegraphics[width=0.75\textwidth]{fig_eval.pdf}
+\caption{Deployment on video. At each frame the detector runs the chosen path and
+the router predicts $\hat{A}$ from its backbone features; the decision
+$\hat{A}>\tau$ selects the path (\textsc{base} or \textsc{super}) for the next
+frame. Routing is causal and recursive across frames $t,t{+}1,\dots,T$, adding only
+the lightweight router forward.}
+\label{fig:eval}
+\end{figure*}
+
+
+\subsubsection{Training Objective}
+\label{sec:method_loss}
+We train the router with a single regression objective on the cached advantages
+(Fig.~\ref{fig:train}):
+\begin{equation}
+L_{\text{acc}} = \text{MSE}(\hat{A}, A).
+\label{eq:loss}
+\end{equation}
+Unlike efficiency-aware routing objectives of the form
+$\lambda_{\text{acc}}L_{\text{acc}} + \lambda_{\text{flops}}L_{\text{flops}}
+(+\,\lambda_{\text{uni}}L_{\text{uni}})$, our objective contains no efficiency
+weight $\lambda$ and no anti-collapse term, so the deployment operating point is
+not fixed during training. The advantage is optionally standardized (z-scored)
+across each mini-batch so that a few high-loss images do not dominate the gradient.
+Because at deployment the router reads the features of whichever path ran on the
+previous frame (Sec.~\ref{sec:method_deploy}), training must expose it to both
+feature distributions: for each image we sample the assumed previous action as
+\textsc{super} with probability $p$ (and \textsc{base} otherwise) and feed the
+corresponding cached features together with that action's identity. A balanced
+$p{=}0.5$ keeps the prediction calibrated regardless of which path executed
+upstream; we ablate $p$ in Sec.~\ref{sec:abl_prevaction}.
+Because the target $A$ is a fixed property of each image under the frozen detector,
+the regression is a well-posed supervised problem rather than a non-stationary
+policy-learning one: there is no sampled action, hence no estimator variance and no
+risk of collapse, and no efficiency term that would tie the model to one budget.
+The router instead learns to \emph{rank} images by how much the deep path helps.
+This ranking is what makes a single trained model span the whole trade-off family:
+sweeping the decision threshold over the range of predicted advantages moves the
+operating point continuously from all-base (largest threshold) to all-super
+(smallest threshold).
+
+
+
+
+\subsection{Router Deployment}
+\label{sec:method_deploy}
+Once trained, the router is deployed as a causal per-frame controller on top of the
+frozen detector. We first describe the basic threshold-based routing loop that
+serves a \emph{fixed} operating point (Sec.~\ref{sec:method_deploy_route}), and then
+an optional online extension that adapts the threshold to track a \emph{time-varying}
+latency budget (Sec.~\ref{sec:method_deploy_budget}).
+
+\subsubsection{Threshold-Based Routing}
+\label{sec:method_deploy_route}
+At deployment the routing rule of Eq.~\eqref{eq:route} is applied with a single
+scalar threshold $\tau$.
+Because the router was trained only to predict the
+advantage, $\tau$ is a free parameter chosen at serving time: raising $\tau$ sends
+fewer images to the deep path (cheaper, lower accuracy) and lowering it sends more,
+so sweeping $\tau$ produces the continuous Pareto family from one model. A target
+compute budget is met simply by picking the corresponding $\tau$; in practice
+$\tau$ can be fixed on a held-out set so that no video labels are needed at serving
+time.
+
+For video, routing is causal and per-frame (Fig.~\ref{fig:eval}): the path for
+frame $t$ is decided from features that are available before the heavy forward,
+namely the features produced by the path actually executed on frame $t{-}1$.
+Exploiting temporal continuity (adjacent frames have similar difficulty), this lets
+the router commit to a path at the start of each frame without any extra detector
+pass, so the only added cost is the lightweight router forward itself.
+Algorithm~\ref{alg:routing} states this loop: only the chosen path is run, and a
+fixed $\tau$ holds the system at one operating point on the Pareto front.
+
+
+
+\subsubsection{Online Latency-Budget Control}
+\label{sec:method_deploy_budget}
+The fixed-$\tau$ loop serves one operating point. When the target latency budget
+itself varies over time---e.g.\ under thermal or battery constraints---the same
+router supports tracking it online by adapting $\tau$ in closed loop, without any
+retraining. Algorithm~\ref{alg:budget} wraps a proportional--integral (PI)
+controller around the routing loop: it maintains an exponential moving average
+$\bar{L}$ of the realized per-frame latency, forms the error $e=L^\star(t)-\bar{L}$
+against the budget, and nudges $\tau$ by $-k_p e - k_i I$. Since lowering $\tau$
+routes more frames to the deep path (raising latency) and raising it does the
+opposite, the controller drives the realized latency toward $L^\star(t)$ at every
+frame. This optional layer reuses Algorithm~\ref{alg:routing} unchanged as its
+inner step; we evaluate its tracking behavior in Sec.~\ref{sec:results_budget}.
+
+\begin{algorithm}[t]
+\caption{Causal budget-adaptive depth routing (deployment)}
+\label{alg:routing}
+\small
+\begin{tabular}{@{}r@{\hspace{5pt}}l@{}}
+\multicolumn{2}{@{}l}{\textbf{Input:} frozen AnyDepth detector $D$ with \textsc{base}/\textsc{super} paths,}\\
+\multicolumn{2}{@{}l}{\hphantom{\textbf{Input:} }router $R$, threshold $\tau$, frames $x_1,\dots,x_T$}\\
+\multicolumn{2}{@{}l}{\textbf{Output:} streaming per-frame detections $y_t$}\\[1pt]
+$1$ & $\mathit{prev}\leftarrow\textsc{base}$ \hfill{\footnotesize\itshape $\triangleright$ first frame defaults to base}\\
+$2$ & \textbf{for} $t=1$ \textbf{to} $T$ \textbf{do}\\
+$3$ & \quad $(y,f)\leftarrow$ run path $\mathit{prev}$ on $x_t$ \hfill{\footnotesize\itshape $\triangleright$ detections + tapped features}\\
+$4$ & \quad $\hat{A}\leftarrow R(f,\mathit{prev})$ \hfill{\footnotesize\itshape $\triangleright$ predicted advantage $L_{\mathrm{base}}{-}L_{\mathrm{super}}$}\\
+$5$ & \quad $a\leftarrow\textsc{super}$ \textbf{if} $\hat{A}>\tau$ \textbf{else} \textsc{base} \hfill{\footnotesize\itshape $\triangleright$ Eq.~\eqref{eq:route}}\\
+$6$ & \quad \textbf{if} $a\neq\mathit{prev}$ \textbf{then} $(y,\cdot)\leftarrow$ run path $a$ on $x_t$\\
+$7$ & \quad \textbf{emit} $y$ as the detection of frame $t$\\
+$8$ & \quad $\mathit{prev}\leftarrow a$\\
+\end{tabular}
+\end{algorithm}
+
+\begin{algorithm}[t]
+\caption{PI latency-budget control of the threshold $\tau$}
+\label{alg:budget}
+\small
+\begin{tabular}{@{}r@{\hspace{5pt}}l@{}}
+\multicolumn{2}{@{}l}{\textbf{Input:} target $L^\star(t)$, path latencies $\ell_{\mathrm{base}},\ell_{\mathrm{super}},\ell_{\mathrm{rtr}}$,}\\
+\multicolumn{2}{@{}l}{\hphantom{\textbf{Input:} }gains $k_p,k_i$, EMA factor $\beta$}\\[1pt]
+$1$ & $\tau\leftarrow\tau_0$;\;\, $I\leftarrow0$;\;\, $\bar{L}\leftarrow\tfrac12(\ell_{\mathrm{base}}{+}\ell_{\mathrm{super}})$\\
+$2$ & \textbf{for} $t=1$ \textbf{to} $T$ \textbf{do}\\
+$3$ & \quad $a_t\leftarrow$ route $x_t$ with threshold $\tau$ \hfill{\footnotesize\itshape $\triangleright$ Alg.~\ref{alg:routing}, lines 3--6}\\
+$4$ & \quad $\ell\leftarrow\ell_{a_t}+\ell_{\mathrm{rtr}}$ \hfill{\footnotesize\itshape $\triangleright$ realized per-frame latency}\\
+$5$ & \quad $\bar{L}\leftarrow\beta\bar{L}+(1{-}\beta)\,\ell$ \hfill{\footnotesize\itshape $\triangleright$ EMA of realized latency}\\
+$6$ & \quad $e\leftarrow L^\star(t)-\bar{L}$;\quad $I\leftarrow I+e$\\
+$7$ & \quad $\tau\leftarrow\mathrm{clip}(\tau-k_p\,e-k_i\,I)$ \hfill{\footnotesize\itshape $\triangleright$ lower $\tau\Rightarrow$ more \textsc{super}}\\
+\end{tabular}
+\end{algorithm}
