@@ -164,6 +164,45 @@ def load_policy(path, device):
     return net, ckpt, a.get("feat", "both"), is_gap
 
 
+class PIController:
+    """Online latency-budget control of the routing threshold tau (Alg. 2 of the
+    paper, ported from KITTI to BDD video). The fixed-tau loop serves one operating
+    point; this PI layer instead holds a target latency L*(t) and adapts tau in
+    closed loop every frame -- no retraining, no val-derived threshold -- so the
+    realized latency tracks the budget under a val->video / domain shift (the whole
+    BDD problem, where the val-derived oracle tau transfers poorly).
+
+    Latency is normalized to the fraction between the base and super paths,
+        ell = 1 if super else 0          (the constant router cost ell_rtr drops out),
+    so the target L* is just the desired SUPER-usage fraction in [0,1] and the
+    gains kp,ki stay O(0.1-1). Per the paper:
+        Lbar <- beta*Lbar + (1-beta)*ell        # EMA of realized latency
+        e    <- L* - Lbar ;  I <- I + e
+        tau  <- clip(tau0 - kp*e - ki*I)         # lower tau => more super => higher latency
+        super if (frame>0 and Ahat > tau)
+    Self-contained state, reset per clip; matches decide(prev_choice, prev_value,
+    frame_idx)."""
+
+    def __init__(self, target, kp, ki, beta, tau0, tau_lo=-2.0, tau_hi=2.0):
+        self.Lstar, self.kp, self.ki, self.beta, self.tau0 = target, kp, ki, beta, tau0
+        self.tau_lo, self.tau_hi = tau_lo, tau_hi
+        self.reset()
+
+    def reset(self):
+        self.I = 0.0
+        self.Lbar = 0.5          # EMA init at midpoint (1/2)(ell_base+ell_super)
+        self.tau = self.tau0
+
+    def __call__(self, prev_choice, prev_value, frame_idx):
+        choice = "super" if (frame_idx > 0 and prev_value > self.tau) else "base"
+        ell = 1.0 if choice == "super" else 0.0
+        self.Lbar = self.beta * self.Lbar + (1.0 - self.beta) * ell
+        e = self.Lstar - self.Lbar
+        self.I += e
+        self.tau = min(max(self.tau0 - self.kp * e - self.ki * self.I, self.tau_lo), self.tau_hi)
+        return choice
+
+
 def main():
     B.EVAL_CLS = BDD_MOT_EVAL_CLS   # override KITTI taxonomy for matching / mAP
 
@@ -192,6 +231,15 @@ def main():
     ap.add_argument("--policy_taus", type=int, default=21)
     ap.add_argument("--val_cache", default=None, help="derive budget thresholds on val (honest)")
     ap.add_argument("--budgets", default="10,20,30,40,50,60,70,80,90")
+    ap.add_argument("--pi", action="store_true", help="add PI latency-budget control "
+                    "strategies (Alg. 2): one closed-loop tracker per --pi_targets, no "
+                    "val cache needed (online tau adaptation).")
+    ap.add_argument("--pi_targets", default=None, help="target SUPER-usage %% setpoints "
+                    "for PI control (comma-sep); defaults to --budgets")
+    ap.add_argument("--pi_kp", type=float, default=2.0, help="PI proportional gain")
+    ap.add_argument("--pi_ki", type=float, default=0.2, help="PI integral gain")
+    ap.add_argument("--pi_beta", type=float, default=0.9, help="EMA factor for realized latency")
+    ap.add_argument("--pi_tau0", type=float, default=0.0, help="initial routing threshold tau0")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
     args.grid = (lambda s: tuple(int(x) for x in s.split("x")) if "x" in s
@@ -319,6 +367,13 @@ def main():
                 strategies.append(dict(name=f"{pname}_t{int(tau*100):+04d}", kind="policy", ptag=tag,
                                        thres=tau,
                                        decide=lambda pc, pv, fi, tau=tau: "super" if (fi > 0 and pv > tau) else "base"))
+        if args.pi:
+            pi_targets = [int(t) for t in (args.pi_targets or args.budgets).split(",")]
+            for t in pi_targets:
+                ctrl = PIController(target=t / 100.0, kp=args.pi_kp, ki=args.pi_ki,
+                                    beta=args.pi_beta, tau0=args.pi_tau0)
+                strategies.append(dict(name=f"{pname}_pi{t:02d}", kind="policy", ptag=tag,
+                                       thres=args.pi_tau0, budget=t, ctrl=ctrl, decide=ctrl))
     print(f"[*] shard {args.shard_id}/{args.num_shards}: {len(eval_seqs)} of {len(seqs)} videos, "
           f"{len(strategies)} strategies")
 
@@ -332,6 +387,9 @@ def main():
         gt = parse_box_track(label_dir / f"{seq}.json")
         for s in state.values():
             s.prev_choice = None
+        for st in strategies:                 # reset PI controller integral/EMA per clip
+            if "ctrl" in st:
+                st["ctrl"].reset()
         nfr = 0
         for fi_pos, (fidx, bgr) in enumerate(labeled_frames(video_dir / f"{seq}.mov", gt)):
             total_frames += 1; nfr += 1
@@ -415,7 +473,9 @@ def main():
         n = s.n_super + s.n_base
         super_rate = s.n_super / max(n, 1)
         gflops = super_rate * gs + (1 - super_rate) * gb
-        if "_t" in st["name"]:
+        if "_pi" in st["name"]:
+            family = st["name"].rsplit("_pi", 1)[0] + "_pi"
+        elif "_t" in st["name"]:
             family = st["name"].rsplit("_t", 1)[0]
         elif "_b" in st["name"]:
             family = st["name"].rsplit("_b", 1)[0]

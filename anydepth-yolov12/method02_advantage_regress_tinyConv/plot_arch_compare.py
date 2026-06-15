@@ -35,6 +35,7 @@ def main():
     ap.add_argument("--curve", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--metric", default="map50", choices=["map50", "map"])
+    ap.add_argument("--title", default="BDD100K image-val depth routing: tinyConv vs GAP-MLP")
     args = ap.parse_args()
     rows = json.loads(Path(args.curve).read_text())["rows"]
 
@@ -94,7 +95,7 @@ def main():
                 lambda g: (g - g_base) / (g_super - g_base) * 100))
             sec.set_xlabel("GFLOPs (per frame)")
     axes[0].set_ylabel(args.metric.upper())
-    fig.suptitle("BDD100K image-val depth routing: tinyConv vs GAP-MLP", y=1.0, fontsize=13)
+    fig.suptitle(args.title, y=1.0, fontsize=13)
     out = f"{args.out}_{ {'map50':'ap50','map':'ap5095'}[args.metric] }.png"
     Path(out).parent.mkdir(parents=True, exist_ok=True)
     fig.tight_layout(); fig.savefig(out, dpi=150)

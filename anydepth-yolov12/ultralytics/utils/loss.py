@@ -830,7 +830,7 @@ class DetectionLossAnyDepth:
 
         # 3. VLR is (Anchors in expanded box) MINUS (Anchors already in FG)
         # in_vlr shape: [Batch, M, Num_Anchors] -> any(1) -> [Batch, Num_Anchors]
-        vlr_mask = in_vlr.any(dim=1) & (~fg_mask)
+        vlr_mask = in_vlr.any(dim=1) & (~fg_mask.bool())  # bool guard: ~ undefined for Half under AMP
         return vlr_mask
         
     def __call__(self, preds_base_dict, preds_super_dict, batch):
@@ -891,6 +891,12 @@ class DetectionLossAnyDepth:
             gt_bboxes,
             mask_gt,
         )
+
+        # Under AMP autocast the assigner can return fg masks as Half, for which the
+        # bitwise ops below (&, ~) are undefined; pin them to bool at the source so
+        # every downstream mask (conflict_mask, per-loss fg_mask, ...) stays boolean.
+        fg_mask_super = fg_mask_super.bool()
+        fg_mask_base = fg_mask_base.bool()
 
         # BG anchors may have arbitrary target_gt_idx values,
         # so we only consider anchors that are FG in both teacher and student for conflict detection

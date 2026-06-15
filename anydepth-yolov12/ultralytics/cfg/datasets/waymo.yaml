@@ -1,0 +1,14 @@
+# Waymo Open Dataset v2 (FRONT camera) converted to YOLO, kept in Waymo's own
+# class taxonomy (NOT remapped onto BDD). Waymo 2D camera boxes only label three
+# types -- VEHICLE, PEDESTRIAN, CYCLIST (SIGN is not a 2D detection class and is
+# absent from the data) -- so the head is 3-class. Image lists are built by
+# tools/build_waymo_det.py; native 1920x1280 is kept by imgsz=1920 rect=True.
+path: /media/data/waymo_yolo
+train: train_det.txt
+val: val_det.txt
+
+nc: 3
+names:
+  0: vehicle
+  1: pedestrian
+  2: cyclist
