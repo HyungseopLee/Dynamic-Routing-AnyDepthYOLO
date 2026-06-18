@@ -64,7 +64,7 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-A}1}Datasets}{5}{}\protected@file@percent }
 \newlabel{sec:setup_baselines}{{\mbox  {IV-A}2}{5}{}{}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-A}2}Baselines}{5}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces  Pareto-front evaluation of depth routing on (a) KITTI-Tracking, (b) BDD100K MOT, and (c) Waymo Open (FRONT camera). Each point on the proposed curve corresponds to a different routing threshold $\tau $. We compare the advantage-regression router against random, luminance-, edge-density-, and confidence-based routing baselines in terms of AP@[.50:.95] versus SUPER-path usage. A single trained router traces a continuous accuracy--efficiency Pareto frontier that consistently dominates all baselines across all three benchmarks, with the largest gains observed in the low-compute regime where SUPER-path execution is limited. }}{6}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces  Pareto-front evaluation of depth routing on (a) KITTI-Tracking, (b) BDD100K MOT, and (c) Waymo Open. Each point on the proposed curve corresponds to a different routing threshold $\tau $. We compare the advantage-regression router against random, luminance-, edge-density-, and confidence-based routing baselines in terms of AP@[.50:.95] versus SUPER-path usage. A single trained router traces a continuous accuracy--efficiency Pareto frontier that consistently dominates all baselines across all three benchmarks, with the largest gains observed in the low-compute regime where SUPER-path execution is limited. }}{6}{}\protected@file@percent }
 \newlabel{fig:main}{{5}{6}{}{}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces  Efficiency of threshold-based depth routing across the operating points in Figure~\ref {fig:main}. AP denotes AP@[.50:.95] (\%). Latency, FPS, and energy are measured on an RTX~3090 and include router overhead. always-super and always-base represent the static single-path baselines corresponding to the two endpoints of the Pareto frontier. }}{6}{}\protected@file@percent }
 \newlabel{tab:main}{{III}{6}{}{}{}}
@@ -76,7 +76,7 @@
 \newlabel{sec:results}{{\mbox  {IV-B}}{6}{}{}{}}
 \newlabel{sec:results_main}{{\mbox  {IV-B}1}{6}{}{}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-B}1}Main Result: Pareto Dominance}{6}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces  Router ranking reliability. Validation images are grouped into deciles based on the predicted advantage $\hat  {A}$ ($5$-seed ensemble). Each point represents the mean true advantage $A=L_{\mathrm  {base}}-L_{\mathrm  {super}}$ within that decile (error bars denote standard error of the mean). The mean true advantage increases consistently with the predicted decile across both datasets, demonstrating that a higher router score reliably identifies frames that benefit more from the deep path. }}{7}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces  Router ranking reliability. Validation images are grouped into deciles based on the predicted advantage $\hat  {A}$ ($5$-seed ensemble). Each point represents the mean true advantage $A=L_{\mathrm  {base}}-L_{\mathrm  {super}}$ within that decile (error bars denote standard error of the mean). The mean true advantage increases consistently with the predicted decile across all three datasets, demonstrating that a higher router score reliably identifies frames that benefit more from the deep path. }}{7}{}\protected@file@percent }
 \newlabel{fig:calibration}{{6}{7}{}{}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Per-image advantage $A=L_{\mathrm  {base}}-L_{\mathrm  {super}}$ distribution on the validation sets. Both are concentrated near zero with a long positive tail---most frames gain little from the deep path while a minority gain a lot. The tail is wider on KITTI ($\sigma {=}0.21$) than on BDD100K ($\sigma {=}0.10$).}}{7}{}\protected@file@percent }
 \newlabel{fig:adv_dist}{{7}{7}{}{}{}}
@@ -86,20 +86,20 @@
 \newlabel{fig:budget}{{8}{8}{}{}{}}
 \newlabel{sec:results_budget}{{\mbox  {IV-B}3}{8}{}{}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-B}3}Runtime Latency-Budget Tracking}{8}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Feature-source ablation on BDD100K (AP@[.50:.95] vs.\ SUPER usage; mean $\pm $ std over $5$ seeds). The three sources are close, but the both-feature router attains the best-or-tied mean with the tightest seed band, whereas backbone-only has the widest variance.}}{9}{}\protected@file@percent }
-\newlabel{fig:abl_feat_source}{{9}{9}{}{}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces  TensorRT FP16 engine-switching overhead on BDD100K (RTX~3090, pure GPU inference, CUDA-event timed). \textsc  {alternating} forces a BASE$\leftrightarrow $SUPER engine switch every frame (worst case); its latency is within $1\%$ of the mean of the two static single-path engines, so routing between two resident engines is effectively free. }}{9}{}\protected@file@percent }
+\newlabel{tab:trt}{{IV}{9}{}{}{}}
+\newlabel{sec:results_trt}{{\mbox  {IV-B}4}{9}{}{}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-B}4}TensorRT Deployment}{9}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Ablation Studies}{9}{}\protected@file@percent }
 \newlabel{sec:ablation}{{\mbox  {IV-C}}{9}{}{}{}}
 \newlabel{sec:abl_feature}{{\mbox  {IV-C}1}{9}{}{}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}1}Input Feature: Backbone vs. Neck vs. Both}{9}{}\protected@file@percent }
-\newlabel{sec:abl_router}{{\mbox  {IV-C}2}{9}{}{}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}2}Router Design and Grid Resolution}{9}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Feature-source ablation on BDD100K (AP@[.50:.95] vs.\ SUPER usage; mean $\pm $ std over $5$ seeds). The three sources are close, but the both-feature router attains the best-or-tied mean with the tightest seed band, whereas backbone-only has the widest variance.}}{9}{}\protected@file@percent }
+\newlabel{fig:abl_feat_source}{{9}{9}{}{}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Router design and grid resolution on KITTI. GAP-MLP is compared with TinyConv at $2\times 2$ and $8\times 8$ grids in AP@.50:.95.}}{9}{}\protected@file@percent }
 \newlabel{fig:abl_router_grid}{{10}{9}{}{}{}}
-\newlabel{sec:abl_prevaction}{{\mbox  {IV-C}3}{9}{}{}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}3}Previous-Action Sampling Ratio $p(\mathrm  {super})$}{9}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {V}Conclusion}{9}{}\protected@file@percent }
-\newlabel{sec:conclusion}{{V}{9}{}{}{}}
+\newlabel{sec:abl_router}{{\mbox  {IV-C}2}{9}{}{}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}2}Router Design and Grid Resolution}{9}{}\protected@file@percent }
 \bibstyle{IEEEtran}
 \bibdata{access}
 \bibcite{kang2026anydepth}{1}
@@ -112,6 +112,13 @@
 \bibcite{huang2018multiscale}{8}
 \bibcite{yang2020ranet}{9}
 \bibcite{ilhan2024eenet}{10}
+\newlabel{sec:abl_prevaction}{{\mbox  {IV-C}3}{10}{}{}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}3}Previous-Action Sampling Ratio $p(\mathrm  {super})$}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {V}Conclusion}{10}{}\protected@file@percent }
+\newlabel{sec:conclusion}{{V}{10}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Previous-action sampling ratio $p(\mathrm  {super})$ during training (AP@.50:.95) on KITTI. }}{10}{}\protected@file@percent }
+\newlabel{fig:abl_prevaction}{{11}{10}{}{}{}}
+\@writefile{toc}{\contentsline {section}{References}{10}{}\protected@file@percent }
 \bibcite{figurnov2017spatially}{11}
 \bibcite{yu2018slimmable}{12}
 \bibcite{yu2019universally}{13}
@@ -128,7 +135,4 @@
 \bibcite{geiger2012kitti}{24}
 \bibcite{yu2020bdd}{25}
 \bibcite{sun2020waymo}{26}
-\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Previous-action sampling ratio $p(\mathrm  {super})$ during training (AP@.50:.95) on KITTI. }}{10}{}\protected@file@percent }
-\newlabel{fig:abl_prevaction}{{11}{10}{}{}{}}
-\@writefile{toc}{\contentsline {section}{References}{10}{}\protected@file@percent }
-\gdef \@abspage@last{10}
+\gdef \@abspage@last{11}

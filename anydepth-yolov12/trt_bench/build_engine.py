@@ -39,10 +39,12 @@ def main():
     ap.add_argument("--engine", default=None)
     ap.add_argument("--fp16", action="store_true")
     ap.add_argument("--fp32", action="store_true", help="force FP32 (overrides --fp16)")
+    ap.add_argument("--workspace_gb", type=int, default=8,
+                    help="TRT workspace memory pool (GB); lower for memory-limited Jetson")
     args = ap.parse_args()
     engine = args.engine or str(Path(args.onnx).with_suffix(
         ".fp32.engine" if args.fp32 else ".fp16.engine"))
-    build(args.onnx, engine, fp16=not args.fp32)
+    build(args.onnx, engine, fp16=not args.fp32, workspace_gb=args.workspace_gb)
 
 
 if __name__ == "__main__":

@@ -37,7 +37,35 @@ def main():
                     help="regex matching the policy family; group(1) = seed id")
     ap.add_argument("--metric", default="map", choices=["map", "map50"])
     ap.add_argument("--out", required=True)
+    ap.add_argument("--no_legend", action="store_true",
+                    help="omit the per-panel legend (use with a shared --legend_only strip)")
+    ap.add_argument("--legend_only", action="store_true",
+                    help="render ONLY a shared horizontal legend strip to --out and exit")
     args = ap.parse_args()
+
+    # larger fonts: panels are packed 3-up in the figure*, so default to readable sizes
+    plt.rcParams.update({"pdf.fonttype": 42, "ps.fonttype": 42,
+                         "font.family": "serif",
+                         "font.serif": ["Times New Roman", "Times", "DejaVu Serif"],
+                         "mathtext.fontset": "stix",
+                         "axes.grid": True, "grid.alpha": 0.25, "grid.linestyle": "--",
+                         "axes.labelsize": 14, "xtick.labelsize": 12, "ytick.labelsize": 12})
+
+    if args.legend_only:
+        from matplotlib.lines import Line2D
+        handles = [Line2D([0], [0], color="tab:red", marker="o", ls="-", lw=1.9,
+                          markersize=5, label="ours")]
+        for fam in ("random", "lum", "edge", "conftop20"):
+            c, mk, ls, lbl = BASE_STYLE[fam]
+            handles.append(Line2D([0], [0], color=c, marker=mk, ls=ls, lw=1.3,
+                                  markersize=5, label=lbl))
+        figL = plt.figure(figsize=(9.0, 0.5))
+        figL.legend(handles=handles, loc="center", ncol=len(handles),
+                    frameon=False, fontsize=13, handlelength=2.2, columnspacing=1.6)
+        Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+        figL.savefig(args.out, bbox_inches="tight", pad_inches=0.02)
+        print(f"[*] shared legend -> {args.out}")
+        return
 
     data = json.loads(Path(args.curve).read_text())
     rows = data["rows"]
@@ -59,9 +87,6 @@ def main():
         if fam in BASE_STYLE:
             bases[fam].append((r["super_rate"], AP(r)))
 
-    plt.rcParams.update({"pdf.fonttype": 42, "ps.fonttype": 42,
-                         "axes.grid": True, "grid.alpha": 0.25,
-                         "grid.linestyle": "--"})
     fig, ax = plt.subplots(figsize=(5.0, 3.7))
 
     # baselines (under the policy)
@@ -102,7 +127,8 @@ def main():
                   else "SUPER usage (%)")
     ax.set_ylabel(r"AP$_{50:95}$")
     ax.set_xlim(-3, 103)
-    ax.legend(frameon=False, fontsize=8, loc="lower right")
+    if not args.no_legend:
+        ax.legend(frameon=False, fontsize=11, loc="lower right")
 
     # twin top axis: GFLOPs/frame (linear in SUPER usage)
     def s2g(s):  # super% -> gflops

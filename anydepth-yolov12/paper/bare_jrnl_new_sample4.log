@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.5.28)  18 JUN 2026 13:50
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.5.28)  18 JUN 2026 19:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -403,97 +403,109 @@ Underfull \hbox (badness 3138) in paragraph at lines 10--13
 tion
  []
 
-<fig_main_kitti_ap5095.pdf, id=250, 340.55022pt x 247.05237pt>
+<fig_main_legend.pdf, id=250, 532.01445pt x 25.28697pt>
+File: fig_main_legend.pdf Graphic file (type pdf)
+<use fig_main_legend.pdf>
+Package pdftex.def Info: fig_main_legend.pdf  used on input line 32.
+(pdftex.def)             Requested size: 443.76031pt x 21.09235pt.
+<fig_main_kitti_ap5095.pdf, id=251, 340.49474pt x 246.75626pt>
 File: fig_main_kitti_ap5095.pdf Graphic file (type pdf)
 <use fig_main_kitti_ap5095.pdf>
-Package pdftex.def Info: fig_main_kitti_ap5095.pdf  used on input line 30.
-(pdftex.def)             Requested size: 165.12378pt x 119.78632pt.
-<fig_main_bdd_ap5095.pdf, id=251, 340.46242pt x 247.05237pt>
+Package pdftex.def Info: fig_main_kitti_ap5095.pdf  used on input line 35.
+(pdftex.def)             Requested size: 165.12378pt x 119.66533pt.
+<fig_main_bdd_ap5095.pdf, id=252, 340.67029pt x 246.75626pt>
 File: fig_main_bdd_ap5095.pdf Graphic file (type pdf)
 <use fig_main_bdd_ap5095.pdf>
-Package pdftex.def Info: fig_main_bdd_ap5095.pdf  used on input line 36.
-(pdftex.def)             Requested size: 165.12378pt x 119.82025pt.
-<fig_main_waymo_ap5095.pdf, id=252, 340.46242pt x 247.05237pt>
+Package pdftex.def Info: fig_main_bdd_ap5095.pdf  used on input line 41.
+(pdftex.def)             Requested size: 165.12378pt x 119.60509pt.
+<fig_main_waymo_ap5095.pdf, id=253, 340.58253pt x 246.75626pt>
 File: fig_main_waymo_ap5095.pdf Graphic file (type pdf)
 <use fig_main_waymo_ap5095.pdf>
-Package pdftex.def Info: fig_main_waymo_ap5095.pdf  used on input line 42.
-(pdftex.def)             Requested size: 165.12378pt x 119.82025pt.
+Package pdftex.def Info: fig_main_waymo_ap5095.pdf  used on input line 47.
+(pdftex.def)             Requested size: 165.12378pt x 119.63521pt.
 
-Overfull \hbox (6.47551pt too wide) in paragraph at lines 71--89
+Overfull \hbox (6.47551pt too wide) in paragraph at lines 76--93
  [][] 
  []
 
 
-Overfull \hbox (6.47551pt too wide) in paragraph at lines 94--111
+Overfull \hbox (6.47551pt too wide) in paragraph at lines 98--115
  [][] 
  []
 
 
-Overfull \hbox (6.47551pt too wide) in paragraph at lines 119--136
+Overfull \hbox (6.47551pt too wide) in paragraph at lines 123--140
  [][] 
  []
 
-[5 <./fig_PI_controller.pdf>]
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-<fig_calibration_kitti.pdf, id=307, 230.91269pt x 189.10838pt>
+ [5 <./fig_PI_controller.pdf>]
+Underfull \vbox (badness 5260) has occurred while \output is active []
+
+<fig_calibration_kitti.pdf, id=308, 173.09668pt x 189.10838pt>
 File: fig_calibration_kitti.pdf Graphic file (type pdf)
 <use fig_calibration_kitti.pdf>
-Package pdftex.def Info: fig_calibration_kitti.pdf  used on input line 184.
-(pdftex.def)             Requested size: 216.71906pt x 177.48776pt.
-<fig_calibration_bdd.pdf, id=308, 230.91269pt x 189.10838pt>
+Package pdftex.def Info: fig_calibration_kitti.pdf  used on input line 239.
+(pdftex.def)             Requested size: 165.12378pt x 180.39929pt.
+<fig_calibration_bdd.pdf, id=309, 173.09668pt x 189.10838pt>
 File: fig_calibration_bdd.pdf Graphic file (type pdf)
 <use fig_calibration_bdd.pdf>
-Package pdftex.def Info: fig_calibration_bdd.pdf  used on input line 190.
-(pdftex.def)             Requested size: 216.71906pt x 177.48776pt.
-<fig_advantage_dist.pdf, id=309, 269.2095pt x 194.0531pt>
+Package pdftex.def Info: fig_calibration_bdd.pdf  used on input line 245.
+(pdftex.def)             Requested size: 165.12378pt x 180.39929pt.
+<fig_calibration_waymo.pdf, id=310, 173.00635pt x 189.10838pt>
+File: fig_calibration_waymo.pdf Graphic file (type pdf)
+<use fig_calibration_waymo.pdf>
+Package pdftex.def Info: fig_calibration_waymo.pdf  used on input line 251.
+(pdftex.def)             Requested size: 165.12378pt x 180.49739pt.
+<fig_advantage_dist.pdf, id=311, 269.2095pt x 194.0531pt>
 File: fig_advantage_dist.pdf Graphic file (type pdf)
 <use fig_advantage_dist.pdf>
-Package pdftex.def Info: fig_advantage_dist.pdf  used on input line 204.
+Package pdftex.def Info: fig_advantage_dist.pdf  used on input line 265.
 (pdftex.def)             Requested size: 226.79846pt x 163.48315pt.
- [6 <./fig_main_kitti_ap5095.pdf> <./fig_main_bdd_ap5095.pdf> <./fig_main_waymo
-_ap5095.pdf>]
-Underfull \vbox (badness 4013) has occurred while \output is active []
-
- [7 <./fig_calibration_kitti.pdf> <./fig_calibration_bdd.pdf> <./fig_advantage_
-dist.pdf>]
-<fig_scenario_budget.pdf, id=428, 512.58353pt x 414.55678pt>
+ [6 <./fig_main_legend.pdf> <./fig_main_kitti_ap5095.pdf> <./fig_main_bdd_ap509
+5.pdf> <./fig_main_waymo_ap5095.pdf>] [7 <./fig_calibration_kitti.pdf> <./fig_c
+alibration_bdd.pdf> <./fig_calibration_waymo.pdf> <./fig_advantage_dist.pdf>]
+<fig_scenario_budget.pdf, id=485, 512.58353pt x 414.55678pt>
 File: fig_scenario_budget.pdf Graphic file (type pdf)
 <use fig_scenario_budget.pdf>
-Package pdftex.def Info: fig_scenario_budget.pdf  used on input line 255.
+Package pdftex.def Info: fig_scenario_budget.pdf  used on input line 316.
 (pdftex.def)             Requested size: 438.60315pt x 354.73438pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-<fig_abl_feat_ap5095.pdf, id=429, 340.46242pt x 247.05237pt>
-File: fig_abl_feat_ap5095.pdf Graphic file (type pdf)
-<use fig_abl_feat_ap5095.pdf>
-Package pdftex.def Info: fig_abl_feat_ap5095.pdf  used on input line 292.
-(pdftex.def)             Requested size: 226.79846pt x 164.57425pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [8 <./fig_scenario_budget.pdf>]
-<fig_abl_router_grid_ap5095.pdf, id=456, 249.05496pt x 191.29907pt>
+<fig_abl_feat_ap5095.pdf, id=511, 340.46242pt x 247.05237pt>
+File: fig_abl_feat_ap5095.pdf Graphic file (type pdf)
+<use fig_abl_feat_ap5095.pdf>
+Package pdftex.def Info: fig_abl_feat_ap5095.pdf  used on input line 390.
+(pdftex.def)             Requested size: 226.79846pt x 164.57425pt.
+<fig_abl_router_grid_ap5095.pdf, id=512, 249.05496pt x 191.29907pt>
 File: fig_abl_router_grid_ap5095.pdf Graphic file (type pdf)
 <use fig_abl_router_grid_ap5095.pdf>
-Package pdftex.def Info: fig_abl_router_grid_ap5095.pdf  used on input line 316
+Package pdftex.def Info: fig_abl_router_grid_ap5095.pdf  used on input line 414
 .
 (pdftex.def)             Requested size: 226.79846pt x 174.20792pt.
-<fig_abl_prevp_ap5095.pdf, id=457, 249.05496pt x 191.29907pt>
+ [9 <./fig_abl_feat_ap5095.pdf> <./fig_abl_router_grid_ap5095.pdf>]
+<fig_abl_prevp_ap5095.pdf, id=545, 249.05496pt x 191.29907pt>
 File: fig_abl_prevp_ap5095.pdf Graphic file (type pdf)
 <use fig_abl_prevp_ap5095.pdf>
-Package pdftex.def Info: fig_abl_prevp_ap5095.pdf  used on input line 343.
+Package pdftex.def Info: fig_abl_prevp_ap5095.pdf  used on input line 441.
 (pdftex.def)             Requested size: 226.79846pt x 174.20792pt.
 
-Underfull \hbox (badness 5316) in paragraph at lines 346--346
+Underfull \hbox (badness 5316) in paragraph at lines 444--444
 \OT1/ptm/m/n/8 Fig. 11.  Previous-action sam-pling ra-tio $\OML/cmm/m/it/8 p\OT
 1/cmr/m/n/8 ([])$ \OT1/ptm/m/n/8 dur-ing train-ing
  []
 
-) (./05_conclusion.tex) [9 <./fig_abl_feat_ap5095.pdf> <./fig_abl_router_grid_a
-p5095.pdf>] (./bare_jrnl_new_sample4.bbl) [10 <./fig_abl_prevp_ap5095.pdf>]
-(./bare_jrnl_new_sample4.aux)
+) (./05_conclusion.tex) (./bare_jrnl_new_sample4.bbl [10 <./fig_abl_prevp_ap509
+5.pdf>]) [11
+
+] (./bare_jrnl_new_sample4.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
@@ -504,11 +516,11 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 4276 strings out of 476182
- 69211 string characters out of 5795595
- 1957975 words of memory out of 5000000
- 26177 multiletter control sequences out of 15000+600000
- 609279 words of font info for 139 fonts, out of 8000000 for 9000
+ 4295 strings out of 476182
+ 69720 string characters out of 5795595
+ 1956975 words of memory out of 5000000
+ 26195 multiletter control sequences out of 15000+600000
+ 611003 words of font info for 141 fonts, out of 8000000 for 9000
  18 hyphenation exceptions out of 8191
  57i,15n,65p,840b,318s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></us
@@ -530,10 +542,10 @@ onts/type1/public/amsfonts/cm/cmti9.pfb></usr/share/texlive/texmf-dist/fonts/ty
 pe1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/u
 tmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on bare_jrnl_new_sample4.pdf (10 pages, 2691685 bytes).
+Output written on bare_jrnl_new_sample4.pdf (11 pages, 2769827 bytes).
 PDF statistics:
- 607 PDF objects out of 1000 (max. 8388607)
- 304 compressed objects within 4 object streams
+ 666 PDF objects out of 1000 (max. 8388607)
+ 336 compressed objects within 4 object streams
  0 named destinations out of 1000 (max. 500000)
- 71 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 81 words of extra memory for PDF output out of 10000 (max. 10000000)
 

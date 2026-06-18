@@ -15,7 +15,7 @@ Frames are processed at a resolution of $384\times1248$.
 To evaluate cross-dataset generalization, we train the router on BDD100K detection images~\cite{yu2020bdd} (70K train, 10K val) and evaluate on the BDD100K MOT validation split comprising 200 video sequences. 
 Frames are processed at $720\times1280$ resolution.
 
-\noindent\textbf{Waymo Open.}
+\noindent\textbf{Waymo.}
 To further evaluate generalization on a large-scale, high-resolution benchmark, we use the FRONT camera of the Waymo Open Perception dataset~\cite{sun2020waymo} (v2.0.1, modular/parquet release). 
 As this benchmark provides no separate detection and tracking splits, we partition it by official split: the router is trained on the 798 training-split segments treated as static detection images (158.1K frames), and evaluated on the 202 validation-split segments as continuous video (39.1K labeled frames).
 Frames are processed at $1280\times1920$ resolution.
@@ -23,8 +23,13 @@ Frames are processed at $1280\times1920$ resolution.
 % Following the official Waymo 2D camera-image detection task, AP is computed (with 2D IoU matching) over the \texttt{vehicle}, \texttt{pedestrian}, and \texttt{cyclist} classes.
 
 
+% NOTE: Figure 5 and Table 3 both report DIRECTLY-MEASURED operating points --
+% each is the router run on the streaming video at a fixed tau (no interpolation).
+% An alternative unified-grid {0,...,100}% version of Table 3 (tau/AP interpolated
+% along the measured curve) is preserved, commented, at the end of the tab:main block.
 \begin{figure*}[!t]
 \centering
+\includegraphics[width=0.86\textwidth]{fig_main_legend.pdf}\\[2pt]
 \begin{minipage}[t]{0.32\textwidth}
 \centering
 \includegraphics[width=\linewidth]{fig_main_kitti_ap5095.pdf}
@@ -41,10 +46,10 @@ Frames are processed at $1280\times1920$ resolution.
 \centering
 \includegraphics[width=\linewidth]{fig_main_waymo_ap5095.pdf}
 \vspace{2pt}
-{\small (c) Waymo Open}
+{\small (c) Waymo}
 \end{minipage}
 \caption{
-    Pareto-front evaluation of depth routing on (a) KITTI-Tracking, (b) BDD100K MOT, and (c) Waymo Open (FRONT camera).
+    Pareto-front evaluation of depth routing on (a) KITTI-Tracking, (b) BDD100K MOT, and (c) Waymo Open.
     Each point on the proposed curve corresponds to a different routing threshold $\tau$.
     We compare the advantage-regression router against random, luminance-, edge-density-, and confidence-based routing baselines in terms of AP@[.50:.95] versus SUPER-path usage.
     A single trained router traces a continuous accuracy--efficiency Pareto frontier that consistently dominates all baselines across all three benchmarks, with the largest gains observed in the low-compute regime where SUPER-path execution is limited.
@@ -72,7 +77,7 @@ Frames are processed at $1280\times1920$ resolution.
 \toprule
 $\tau$ & SUPER\% & GFLOPs & AP & Latency (ms) & FPS & Energy (mJ)\\
 \midrule
-\textsc{always-base} & 0.0 & 16.87 & 39.3 & 13.43 & 74.5 & 2099\\
+\textsc{always-base} & 0 & 16.87 & 39.3 & 13.43 & 74.5 & 2099\\
 $+0.70$ & 2.9 & 17.14 & 39.5 & 13.91 & 71.9 & 2133\\
 $+0.50$ & 8.2 & 17.64 & 39.9 & 14.26 & 70.1 & 2196\\
 $+0.40$ & 14.3 & 18.22 & 40.3 & 14.66 & 68.2 & 2268\\
@@ -81,9 +86,8 @@ $+0.20$ & 42.7 & 20.89 & 41.2 & 16.54 & 60.5 & 2604\\
 $+0.10$ & 67.1 & 23.20 & 41.4 & 18.15 & 55.1 & 2893\\
 $+0.00$ & 88.1 & 25.18 & 41.5 & 19.54 & 51.2 & 3142\\
 $-0.10$ & 96.7 & 25.99 & 41.5 & 20.11 & 49.7 & 3244\\
-$-0.20$ & 98.9 & 26.20 & 41.5 & 20.25 & 49.4 & 3270\\
 $-0.40$ & 99.6 & 26.27 & 41.5 & 20.30 & 49.3 & 3278\\
-\textsc{always-super} & 100.0 & 26.30 & 41.5 & 20.03 & 49.9 & 3283\\
+\textsc{always-super} & 100 & 26.30 & 41.5 & 20.03 & 49.9 & 3283\\
 \bottomrule
 \end{tabular}
 \end{minipage}\hfill
@@ -95,7 +99,7 @@ $-0.40$ & 99.6 & 26.27 & 41.5 & 20.30 & 49.3 & 3278\\
 \toprule
 $\tau$ & SUPER\% & GFLOPs & AP & Latency (ms) & FPS & Energy (mJ)\\
 \midrule
-\textsc{always-base} & 0.0 & 33.18 & 21.3 & 25.41 & 39.4 & 8312\\
+\textsc{always-base} & 0 & 33.18 & 21.3 & 25.41 & 39.4 & 8312\\
 $+0.086$ & 14.8 & 35.92 & 21.8 & 27.86 & 35.9 & 9043\\
 $+0.072$ & 26.1 & 38.02 & 22.0 & 29.52 & 33.9 & 9601\\
 $+0.064$ & 36.3 & 39.91 & 22.1 & 31.01 & 32.2 & 10105\\
@@ -105,7 +109,7 @@ $+0.049$ & 64.5 & 45.14 & 22.3 & 35.15 & 28.5 & 11497\\
 $+0.045$ & 73.0 & 46.72 & 22.4 & 36.39 & 27.5 & 11917\\
 $+0.040$ & 81.1 & 48.21 & 22.4 & 37.58 & 26.6 & 12317\\
 $+0.033$ & 89.4 & 49.76 & 22.5 & 38.79 & 25.8 & 12727\\
-\textsc{always-super} & 100.0 & 51.72 & 22.5 & 40.06 & 25.0 & 13250\\
+\textsc{always-super} & 100 & 51.72 & 22.5 & 40.06 & 25.0 & 13250\\
 \bottomrule
 \end{tabular}
 \end{minipage}
@@ -114,13 +118,13 @@ $+0.033$ & 89.4 & 49.76 & 22.5 & 38.79 & 25.8 & 12727\\
 
 \begin{minipage}[t]{0.49\textwidth}
 \centering
-{\small (c) Waymo Open}\\[2pt]
+{\small (c) Waymo}\\[2pt]
 \footnotesize
 \begin{tabular}{lrrrrrr}
 \toprule
 $\tau$ & SUPER\% & GFLOPs & AP & Latency (ms) & FPS & Energy (mJ)\\
 \midrule
-\textsc{always-base} & 0.0 & 86.46 & 38.3 & 47.77 & 20.9 & 14606\\
+\textsc{always-base} & 0 & 86.46 & 38.3 & 47.77 & 20.9 & 14606\\
 $+0.152$ & 13.2 & 92.84 & 38.5 & 52.77 & 18.9 & 16248\\
 $+0.116$ & 24.4 & 98.25 & 38.6 & 56.78 & 17.6 & 17640\\
 $+0.098$ & 34.6 & 103.21 & 38.7 & 60.43 & 16.5 & 18909\\
@@ -130,10 +134,61 @@ $+0.066$ & 64.0 & 117.43 & 38.8 & 70.95 & 14.1 & 22564\\
 $+0.057$ & 73.4 & 121.96 & 38.9 & 74.31 & 13.5 & 23733\\
 $+0.048$ & 82.3 & 126.27 & 38.9 & 77.49 & 12.9 & 24840\\
 $+0.039$ & 90.4 & 130.19 & 38.9 & 80.39 & 12.4 & 25847\\
-\textsc{always-super} & 100.0 & 134.84 & 38.9 & 83.54 & 12.0 & 27041\\
+\textsc{always-super} & 100 & 134.84 & 38.9 & 83.54 & 12.0 & 27041\\
 \bottomrule
 \end{tabular}
 \end{minipage}
+%
+% ===================================================================
+% INTERPOLATED (unified-grid) version of Table 3, preserved for record.
+% The active table above reports the DIRECTLY-MEASURED operating points
+% (each row = router run on the streaming video at a fixed tau; tau, SUPER%,
+% and AP are all measured). For a uniform 11-row layout, KITTI's clustered
+% 98.9% point was dropped so every dataset shows 9 interior + 2 anchors.
+% The rows below instead place every dataset on a UNIFIED SUPER-usage grid
+% {0,10,...,100}%, with tau/AP/GFLOPs interpolated along each measured Pareto
+% curve at those targets (tau clamped to the measured range). Generated by
+% unify_device_table.py; swap these in for a clean 0..100 grid presentation.
+%
+% ---- (a) KITTI (interpolated) ----
+% \textsc{always-base} & 0 & 16.87 & 39.3 & 13.43 & 74.5 & 2099
+% $+0.471$ & 10 & 17.81 & 40.0 & 14.38 & 69.5 & 2217
+% $+0.348$ & 20 & 18.76 & 40.6 & 15.04 & 66.5 & 2335
+% $+0.272$ & 30 & 19.70 & 40.9 & 15.70 & 63.7 & 2454
+% $+0.215$ & 40 & 20.64 & 41.2 & 16.36 & 61.1 & 2572
+% $+0.170$ & 50 & 21.59 & 41.3 & 17.02 & 58.7 & 2691
+% $+0.129$ & 60 & 22.53 & 41.4 & 17.68 & 56.6 & 2809
+% $+0.086$ & 70 & 23.47 & 41.4 & 18.34 & 54.5 & 2928
+% $+0.038$ & 80 & 24.42 & 41.5 & 19.00 & 52.6 & 3046
+% $-0.022$ & 90 & 25.36 & 41.5 & 19.66 & 50.9 & 3164
+% \textsc{always-super} & 100 & 26.30 & 41.5 & 20.03 & 49.9 & 3283
+%
+% ---- (b) BDD100K (interpolated) ----
+% \textsc{always-base} & 0 & 33.18 & 21.3 & 25.41 & 39.4 & 8312
+% $+0.086$ & 10 & 35.03 & 21.6 & 27.16 & 36.8 & 8806
+% $+0.079$ & 20 & 36.89 & 21.9 & 28.63 & 34.9 & 9300
+% $+0.069$ & 30 & 38.74 & 22.1 & 30.09 & 33.2 & 9794
+% $+0.062$ & 40 & 40.60 & 22.2 & 31.56 & 31.7 & 10287
+% $+0.056$ & 50 & 42.45 & 22.2 & 33.02 & 30.3 & 10781
+% $+0.051$ & 60 & 44.30 & 22.3 & 34.49 & 29.0 & 11275
+% $+0.046$ & 70 & 46.16 & 22.4 & 35.95 & 27.8 & 11769
+% $+0.040$ & 80 & 48.01 & 22.4 & 37.42 & 26.7 & 12263
+% $+0.033$ & 90 & 49.87 & 22.5 & 38.88 & 25.7 & 12757
+% \textsc{always-super} & 100 & 51.72 & 22.5 & 40.06 & 25.0 & 13250
+%
+% ---- (c) Waymo (interpolated) ----
+% \textsc{always-base} & 0 & 86.46 & 38.3 & 47.77 & 20.9 & 14606
+% $+0.152$ & 10 & 91.30 & 38.4 & 51.63 & 19.4 & 15850
+% $+0.130$ & 20 & 96.14 & 38.5 & 55.21 & 18.1 & 17093
+% $+0.106$ & 30 & 100.97 & 38.6 & 58.78 & 17.0 & 18337
+% $+0.091$ & 40 & 105.81 & 38.7 & 62.36 & 16.0 & 19580
+% $+0.079$ & 50 & 110.64 & 38.8 & 65.94 & 15.2 & 20824
+% $+0.069$ & 60 & 115.48 & 38.8 & 69.51 & 14.4 & 22067
+% $+0.060$ & 70 & 120.32 & 38.9 & 73.09 & 13.7 & 23310
+% $+0.051$ & 80 & 125.16 & 38.9 & 76.67 & 13.0 & 24554
+% $+0.039$ & 90 & 130.00 & 38.9 & 80.25 & 12.5 & 25797
+% \textsc{always-super} & 100 & 134.84 & 38.9 & 83.54 & 12.0 & 27041
+% ===================================================================
 \end{table*}
 
 
@@ -179,22 +234,28 @@ We additionally report latency, FPS, and energy consumption measured on an NVIDI
  
 \begin{figure*}[t]
 \centering
-\begin{minipage}[t]{0.42\textwidth}
+\begin{minipage}[t]{0.32\textwidth}
 \centering
 \includegraphics[width=\linewidth]{fig_calibration_kitti.pdf}
 \vspace{2pt}
 {\small (a) KITTI}
 \end{minipage}\hfill
-\begin{minipage}[t]{0.42\textwidth}
+\begin{minipage}[t]{0.32\textwidth}
 \centering
 \includegraphics[width=\linewidth]{fig_calibration_bdd.pdf}
 \vspace{2pt}
 {\small (b) BDD100K}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.32\textwidth}
+\centering
+\includegraphics[width=\linewidth]{fig_calibration_waymo.pdf}
+\vspace{2pt}
+{\small (c) Waymo}
 \end{minipage}
 \caption{
-    Router ranking reliability. Validation images are grouped into deciles based on the predicted advantage $\hat{A}$ ($5$-seed ensemble). 
-    Each point represents the mean true advantage $A=L_{\mathrm{base}}-L_{\mathrm{super}}$ within that decile (error bars denote standard error of the mean). 
-    The mean true advantage increases consistently with the predicted decile across both datasets, demonstrating that a higher router score reliably identifies frames that benefit more from the deep path.
+    Router ranking reliability. Validation images are grouped into deciles based on the predicted advantage $\hat{A}$ ($5$-seed ensemble).
+    Each point represents the mean true advantage $A=L_{\mathrm{base}}-L_{\mathrm{super}}$ within that decile (error bars denote standard error of the mean).
+    The mean true advantage increases consistently with the predicted decile across all three datasets, demonstrating that a higher router score reliably identifies frames that benefit more from the deep path.
 }
 \label{fig:calibration}
 \end{figure*}
@@ -238,7 +299,7 @@ Notably, the advantage-regression router remains the only strategy that improves
 
 Because deployment routes by thresholding the predicted advantage $\hat{A}$, the router need not predict the exact advantage magnitude; instead, it must correctly rank frames according to how much they benefit from the deep path. 
 Figure~\ref{fig:calibration} evaluates this property by grouping validation images into deciles based on $\hat{A}$ and reporting the mean true advantage $A = L_{\text{base}} - L_{\text{super}}$ within each group. 
-On both datasets, the mean true advantage increases consistently with the predicted decile, indicating that frames assigned higher scores indeed benefit more from deeper execution. 
+On all three datasets, the mean true advantage increases consistently with the predicted decile, indicating that frames assigned higher scores indeed benefit more from deeper execution.
 This confirms that the router successfully captures the relative utility of the deep path, which is the key requirement for threshold-based routing. 
 We emphasize ranking rather than per-image regression accuracy because the single-image target is inherently noisy, making robust ordering a more meaningful indicator of deployment performance.
 
@@ -278,6 +339,43 @@ To visualize the tracked mean without the artificial phase delay inherently intr
 This purely offline visualization accurately reflects the controller's tracking quality without smoothing-induced lag, while the underlying closed loop remains unchanged. 
 The realized mean latency tracks both step and sawtooth target budgets with exceptional precision across all condition drifts, achieving a mean absolute error of only $0.18$--$0.30$\,ms. 
 Ultimately, a single trained router successfully turns a static Pareto front into a robust, runtime-adjustable system that seamlessly adapts to dynamic environments.
+
+
+\subsubsection{TensorRT Deployment}
+\label{sec:results_trt}
+A natural concern is whether depth routing remains practical on a production inference stack: TensorRT compiles a \emph{static} graph and cannot conditionally skip layers inside a single engine.
+We therefore realize routing by exporting the BASE and SUPER paths as two separate FP16 engines and keeping both resident in GPU memory; the router simply selects which engine to execute per frame.
+The only routing-specific concern is then the cost of \emph{switching} between the two resident engines every time the chosen path changes.
+We measure this on BDD100K (RTX~3090) by comparing each single-path engine run in isolation against an \textsc{alternating} schedule that forces an engine switch on every frame---a worst case far more frequent than any realistic routing trace (Table~\ref{tab:trt}).
+The alternating schedule costs only $+1.0\%$ over the mean of the two single-path runs, confirming that engine switching is effectively free and that the two-engine design adds no meaningful deployment overhead.
+
+One deployment caveat concerns the operating threshold itself.
+FP16 quantization slightly perturbs the router's predicted advantage $\hat{A}$, so a threshold $\tau$ calibrated in FP32 realizes a different SUPER usage once the engines run in FP16 (e.g., on BDD100K, $\tau{=}0.086$ routes $14.8\%$ of frames to the deep path in FP32 but $5.9\%$ in FP16).
+Crucially, quantization shifts only the \emph{calibration} of $\tau$, not the ranking it induces: $\hat{A}$ remains monotone, so the same accuracy--efficiency frontier is reachable, merely at different threshold values.
+Recovering a target operating point therefore requires no retraining---only a one-pass recalibration of the $\tau$-to-budget map on a small held-out clip evaluated through the FP16 engines.
+In the budget-tracking deployment (Sec.~\ref{sec:results_budget}) even this step is unnecessary: the PI controller adjusts $\tau$ online from the realized latency, absorbing the FP16 shift automatically.
+
+\begin{table}[!t]
+\caption{
+    TensorRT FP16 engine-switching overhead on BDD100K (RTX~3090, pure GPU inference, CUDA-event timed). \textsc{alternating} forces a BASE$\leftrightarrow$SUPER engine switch every frame (worst case); its latency is within $1\%$ of the mean of the two static single-path engines, so routing between two resident engines is effectively free.
+}
+\label{tab:trt}
+\small
+\setlength{\tabcolsep}{6pt}
+\centering
+\begin{tabular}{lrr}
+\toprule
+Engine schedule & Latency (ms) & FPS\\
+\midrule
+\textsc{base} (always-base) & 6.09 & 164.3\\
+\textsc{super} (always-super) & 9.70 & 103.0\\
+\textsc{alternating} (switch every frame) & 7.97 & 125.5\\
+\midrule
+mean(base,\,super) & 7.89 & ---\\
+switch overhead & \multicolumn{2}{l}{$+0.08$\,ms\ \ ($+1.0\%$)}\\
+\bottomrule
+\end{tabular}
+\end{table}
 
 
 %% =====================================================================

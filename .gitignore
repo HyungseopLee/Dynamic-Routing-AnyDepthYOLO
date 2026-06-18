@@ -13,3 +13,6 @@ summary*.json
 **/outputs/**/logs_*/
 **/outputs/**/sweep_*/logs/
 **/outputs/**/*.log
+
+*.onnx
+*.engine

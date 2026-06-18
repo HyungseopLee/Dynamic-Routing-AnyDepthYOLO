@@ -73,6 +73,7 @@ def main():
     datasets = [
         ("KITTI", f"{B}/kitti/policy.pt", f"{B}/kitti/cache_val_g2.pt"),
         ("BDD100K", f"{B}/bdd100k/policy_scenario_s0.pt", f"{B}/bdd100k/cache_val_g2.pt"),
+        ("Waymo", f"{B}/waymo/policy_both_4.pt", f"{B}/waymo/cache_val_both.pt"),
     ]
 
     import matplotlib
@@ -84,7 +85,7 @@ def main():
                          "font.family": "serif", "font.serif": ["Times New Roman", "Times", "DejaVu Serif"],
                          "mathtext.fontset": "stix",
                          "axes.grid": True, "grid.alpha": 0.25, "grid.linestyle": "--"})
-    tag = {"KITTI": "kitti", "BDD100K": "bdd"}
+    tag = {"KITTI": "kitti", "BDD100K": "bdd", "Waymo": "waymo"}
     advs = {}
     for name, pol, cache_p in datasets:
         cache = torch.load(cache_p, map_location=dev, weights_only=False)
@@ -96,7 +97,7 @@ def main():
         bins = np.array_split(order, args.nbins)
         ym = [A[b].mean() for b in bins]
         ys = [A[b].std() / np.sqrt(len(b)) for b in bins]
-        fig, ax = plt.subplots(figsize=(3.5, 2.9))
+        fig, ax = plt.subplots(figsize=(2.7, 2.9))
         ax.axhline(0, color="0.6", lw=0.8, ls=":")
         # discrete deciles: markers only, no connecting line (x is categorical)
         ax.errorbar(range(1, args.nbins + 1), ym, yerr=ys, fmt="o", color="tab:red",
@@ -115,7 +116,7 @@ def main():
 
     # advantage distribution (same serif style); x = true advantage A
     fig, ax = plt.subplots(figsize=(4.0, 3.0))
-    colors = {"KITTI": "tab:red", "BDD100K": "tab:blue"}
+    colors = {"KITTI": "tab:red", "BDD100K": "tab:blue", "Waymo": "tab:green"}
     for name, A in advs.items():
         ax.hist(A, bins=80, range=(-0.6, 0.7), density=True, histtype="stepfilled",
                 color=colors[name], alpha=0.35, edgecolor=colors[name], linewidth=1.2,

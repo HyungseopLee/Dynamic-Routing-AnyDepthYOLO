@@ -243,6 +243,11 @@ INPUT /usr/share/texlive/texmf-dist/fonts/vf/adobe/times/ptmr7t.vf
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmti10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmti7.tfm
+INPUT ./fig_main_legend.pdf
+INPUT ./fig_main_legend.pdf
+INPUT ./fig_main_legend.pdf
+INPUT ./fig_main_legend.pdf
+INPUT ./fig_main_legend.pdf
 INPUT ./fig_main_kitti_ap5095.pdf
 INPUT ./fig_main_kitti_ap5095.pdf
 INPUT ./fig_main_kitti_ap5095.pdf
@@ -270,6 +275,11 @@ INPUT ./fig_calibration_bdd.pdf
 INPUT ./fig_calibration_bdd.pdf
 INPUT ./fig_calibration_bdd.pdf
 INPUT ./fig_calibration_bdd.pdf
+INPUT ./fig_calibration_waymo.pdf
+INPUT ./fig_calibration_waymo.pdf
+INPUT ./fig_calibration_waymo.pdf
+INPUT ./fig_calibration_waymo.pdf
+INPUT ./fig_calibration_waymo.pdf
 INPUT ./fig_advantage_dist.pdf
 INPUT ./fig_advantage_dist.pdf
 INPUT ./fig_advantage_dist.pdf
@@ -280,6 +290,7 @@ INPUT ./fig_scenario_budget.pdf
 INPUT ./fig_scenario_budget.pdf
 INPUT ./fig_scenario_budget.pdf
 INPUT ./fig_scenario_budget.pdf
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/adobe/times/ptmrc7t.tfm
 INPUT ./fig_abl_feat_ap5095.pdf
 INPUT ./fig_abl_feat_ap5095.pdf
 INPUT ./fig_abl_feat_ap5095.pdf
@@ -290,6 +301,8 @@ INPUT ./fig_abl_router_grid_ap5095.pdf
 INPUT ./fig_abl_router_grid_ap5095.pdf
 INPUT ./fig_abl_router_grid_ap5095.pdf
 INPUT ./fig_abl_router_grid_ap5095.pdf
+INPUT /usr/share/texlive/texmf-dist/fonts/vf/adobe/times/ptmrc7t.vf
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm
 INPUT ./fig_abl_prevp_ap5095.pdf
 INPUT ./fig_abl_prevp_ap5095.pdf
 INPUT ./fig_abl_prevp_ap5095.pdf

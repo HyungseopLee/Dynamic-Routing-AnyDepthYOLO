@@ -87,6 +87,14 @@ def main():
 
     eb = Engine(args.base, dev); es = Engine(args.super, dev)
     print(f"[*] base in  {tuple(eb.buffers[eb.inp].shape)} | super in {tuple(es.buffers[es.inp].shape)}")
+    # memory footprint of holding BOTH engines resident -- the key constraint on
+    # memory-limited devices (e.g. Jetson). device_memory_size is the per-context
+    # activation scratch; weights + I/O buffers add on top (reported via torch).
+    mb = lambda b: b / (1024 ** 2)
+    dm = mb(eb.engine.device_memory_size + es.engine.device_memory_size)
+    print(f"[*] resident GPU memory: two-engine activation scratch {dm:.0f} MB; "
+          f"torch reserved {mb(torch.cuda.memory_reserved(dev)):.0f} MB "
+          f"(allocated {mb(torch.cuda.memory_allocated(dev)):.0f} MB)")
 
     lb, fb, enb = timed(lambda s: eb.run(s), args.iters, args.warmup, power)
     ls, fs, ens = timed(lambda s: es.run(s), args.iters, args.warmup, power)
@@ -97,7 +105,8 @@ def main():
         (eb if flip["v"] else es).run(s)
     la, fa, ena = timed(alt, args.iters, args.warmup, power)
 
-    print("\n==== TensorRT engine latency (RTX 3090, pure GPU inference) ====")
+    dev_name = torch.cuda.get_device_name(dev) if torch.cuda.is_available() else "CPU"
+    print(f"\n==== TensorRT engine latency ({dev_name}, pure GPU inference) ====")
     print(f" BASE       : {lb:6.2f} ms   {fb:6.1f} fps   {enb:8.1f} mJ")
     print(f" SUPER      : {ls:6.2f} ms   {fs:6.1f} fps   {ens:8.1f} mJ")
     print(f" ALTERNATING: {la:6.2f} ms   {fa:6.1f} fps   {ena:8.1f} mJ   (mean(base,super)={ (lb+ls)/2:.2f} ms)")
