@@ -6,9 +6,9 @@
 \citation{guo2019spottune,meng2020ar}
 \citation{wu2018blockdrop}
 \@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{}\protected@file@percent }
-\newlabel{sec:intro}{{I}{1}}
+\newlabel{sec:intro}{{I}{1}{}{}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Condition-stratified AP@[.50:.95] on the BDD100K validation set for the frozen AnyDepth-YOLOv12s. The benefit of deeper execution varies across inputs but is not well explained by broad semantic scene categories.}}{1}{}\protected@file@percent }
-\newlabel{tab:condition_stratified}{{I}{1}}
+\newlabel{tab:condition_stratified}{{I}{1}{}{}{}}
 \citation{teera2016branchynet,huang2018multiscale,yang2020ranet,ilhan2024eenet}
 \citation{figurnov2017spatially}
 \citation{yu2018slimmable,yu2019universally,cai2020ofa,wang2018skipnet,wu2018blockdrop,kang2024adaptive}
@@ -17,12 +17,12 @@
 \citation{soyyigit2024valo}
 \citation{lin2023dynamicdet}
 \citation{kang2026anydepth}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  The per-image benefit of the deep path is not predictable from how hard a scene looks to a human. \textbf  {Left:} a cluttered daytime intersection; \textbf  {Right:} a busy night scene---both look clearly difficult, yet the base path (dashed red) detects exactly as many objects as the super path (solid blue), with the boxes nearly coinciding ($29$ vs.\ $29$ and $16$ vs.\ $16$). In these visually hard scenes the extra depth is wasted---so semantic appearance (clutter, crowding, lighting) is a poor predictor of where the deep path actually pays off, motivating a learned per-image estimate of its benefit. Detections are from AnyDepth-YOLOv12s\nobreakspace  {}\cite  {kang2026anydepth} on BDD100K. }}{2}{}\protected@file@percent }
-\newlabel{fig:teaser}{{1}{2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces  The per-image benefit of the deep path is not predictable from how hard a scene looks to a human. \textbf  {Left:} a cluttered daytime intersection; \textbf  {Right:} a busy night scene---both look clearly difficult, yet the base path (dashed red) detects exactly as many objects as the super path (solid blue), with the boxes nearly coinciding ($29$ vs.\ $29$ and $16$ vs.\ $16$). In these visually hard scenes the extra depth is wasted---so semantic appearance (clutter, crowding, lighting) is a poor predictor of where the deep path actually pays off, motivating a learned per-image estimate of its benefit. Detections are from AnyDepth-YOLOv12s~\cite  {kang2026anydepth} on BDD100K. }}{2}{}\protected@file@percent }
+\newlabel{fig:teaser}{{1}{2}{}{}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {II}Related Work}{2}{}\protected@file@percent }
-\newlabel{sec:related}{{II}{2}}
+\newlabel{sec:related}{{II}{2}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-A}}Dynamic Inference in Object Detection}{2}{}\protected@file@percent }
-\newlabel{sec:related_dynamic}{{\mbox  {II-A}}{2}}
+\newlabel{sec:related_dynamic}{{\mbox  {II-A}}{2}{}{}{}}
 \citation{wang2018skipnet}
 \citation{wu2018blockdrop}
 \citation{meng2020ar}
@@ -31,75 +31,75 @@
 \citation{lin2023dynamicdet}
 \citation{kang2026anydepth}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-B}}Learned Routing for Dynamic Inference}{3}{}\protected@file@percent }
-\newlabel{sec:related_routing}{{\mbox  {II-B}}{3}}
+\newlabel{sec:related_routing}{{\mbox  {II-B}}{3}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-C}}Threshold-based Decision}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {III}Method}{3}{}\protected@file@percent }
-\newlabel{sec:method}{{III}{3}}
+\newlabel{sec:method}{{III}{3}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-A}}Problem Formulation}{3}{}\protected@file@percent }
-\newlabel{sec:method_formulation}{{\mbox  {III-A}}{3}}
-\newlabel{eq:advantage}{{1}{3}}
+\newlabel{sec:method_formulation}{{\mbox  {III-A}}{3}{}{}{}}
+\newlabel{eq:advantage}{{1}{3}{}{}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Router overhead (per frame, batch $1$). Every variant adds negligible cost relative to the SUPER path ($26.30$ GFLOPs); the deployed router is TinyConv on both feature sources.}}{3}{}\protected@file@percent }
-\newlabel{tab:overhead}{{II}{3}}
-\newlabel{eq:route}{{2}{3}}
+\newlabel{tab:overhead}{{II}{3}{}{}{}}
+\newlabel{eq:route}{{2}{3}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-B}}Router Training}{3}{}\protected@file@percent }
-\newlabel{sec:method_training}{{\mbox  {III-B}}{3}}
-\newlabel{eq:loss}{{3}{3}}
+\newlabel{sec:method_training}{{\mbox  {III-B}}{3}{}{}{}}
+\newlabel{eq:loss}{{3}{3}{}{}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces  Training pipeline. The AnyDepth-YOLO detector is frozen; both paths are run once per image to obtain the true advantage $A=L_{\text  {base}}-L_{\text  {super}}$, and only the router is updated. The router predicts $\hat  {A}$ from the multi-scale intermediate features and is trained with $\text  {MSE}(\hat  {A},A)$ (blue: forward, red: backward). }}{4}{}\protected@file@percent }
-\newlabel{fig:train}{{2}{4}}
+\newlabel{fig:train}{{2}{4}{}{}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces  Causal routing mechanism for video streams. At each frame the detector runs the chosen path and the router predicts $\hat  {A}$ from its intermediate features; the decision $\hat  {A}>\tau $ selects the path (base or super) for the next frame. Routing is causal and recursive across frames $t,t{+}1,\dots  ,T$, adding only the lightweight router forward. }}{4}{}\protected@file@percent }
-\newlabel{fig:eval}{{3}{4}}
+\newlabel{fig:eval}{{3}{4}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-C}}Router Deployment}{4}{}\protected@file@percent }
-\newlabel{sec:method_deploy}{{\mbox  {III-C}}{4}}
+\newlabel{sec:method_deploy}{{\mbox  {III-C}}{4}{}{}{}}
 \citation{geiger2012kitti}
 \citation{yu2020bdd}
 \citation{sun2020waymo}
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces PI control of the routing threshold $\tau $. The error between the latency budget $L^\star (t)$ and an EMA $\bar  {L}$ of the realized per-frame latency is fed through proportional ($k_p$) and integral ($k_i$) terms that nudge $\tau $; a lower $\tau $ sends more frames to the super path (higher latency) and vice versa, closing the loop so the realized latency tracks the budget.}}{5}{}\protected@file@percent }
-\newlabel{fig:pi_controller}{{4}{5}}
+\newlabel{fig:pi_controller}{{4}{5}{}{}{}}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Causal budget-adaptive depth routing (deployment)}}{5}{}\protected@file@percent }
-\newlabel{alg:routing}{{1}{5}}
+\newlabel{alg:routing}{{1}{5}{}{}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {IV}Experiment}{5}{}\protected@file@percent }
-\newlabel{sec:exp}{{IV}{5}}
+\newlabel{sec:exp}{{IV}{5}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Experimental Setup}{5}{}\protected@file@percent }
-\newlabel{sec:setup_data}{{\mbox  {IV-A}1}{5}}
+\newlabel{sec:setup_data}{{\mbox  {IV-A}1}{5}{}{}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-A}1}Datasets}{5}{}\protected@file@percent }
-\newlabel{sec:setup_baselines}{{\mbox  {IV-A}2}{5}}
+\newlabel{sec:setup_baselines}{{\mbox  {IV-A}2}{5}{}{}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-A}2}Baselines}{5}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces  Pareto-front evaluation of depth routing on (a) KITTI-Tracking, (b) BDD100K MOT, and (c) Waymo Open (FRONT camera). Each point on the proposed curve corresponds to a different routing threshold $\tau $. We compare the advantage-regression router against random, luminance-, edge-density-, and confidence-based routing baselines in terms of AP@[.50:.95] versus SUPER-path usage. A single trained router traces a continuous accuracy--efficiency Pareto frontier that consistently dominates all baselines across all three benchmarks, with the largest gains observed in the low-compute regime where SUPER-path execution is limited. }}{6}{}\protected@file@percent }
-\newlabel{fig:main}{{5}{6}}
-\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces  Efficiency of threshold-based depth routing across the operating points in Figure\nobreakspace  {}5\hbox {}. AP denotes AP@[.50:.95] (\%). Latency, FPS, and energy are measured on an RTX\nobreakspace  {}3090 and include router overhead. always-super and always-base represent the static single-path baselines corresponding to the two endpoints of the Pareto frontier. }}{6}{}\protected@file@percent }
-\newlabel{tab:main}{{III}{6}}
-\newlabel{sec:setup_impl}{{\mbox  {IV-A}3}{6}}
+\newlabel{fig:main}{{5}{6}{}{}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces  Efficiency of threshold-based depth routing across the operating points in Figure~\ref {fig:main}. AP denotes AP@[.50:.95] (\%). Latency, FPS, and energy are measured on an RTX~3090 and include router overhead. always-super and always-base represent the static single-path baselines corresponding to the two endpoints of the Pareto frontier. }}{6}{}\protected@file@percent }
+\newlabel{tab:main}{{III}{6}{}{}{}}
+\newlabel{sec:setup_impl}{{\mbox  {IV-A}3}{6}{}{}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-A}3}Implementation Details}{6}{}\protected@file@percent }
-\newlabel{sec:setup_metrics}{{\mbox  {IV-A}4}{6}}
+\newlabel{sec:setup_metrics}{{\mbox  {IV-A}4}{6}{}{}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-A}4}Evaluation Metrics}{6}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Results}{6}{}\protected@file@percent }
-\newlabel{sec:results}{{\mbox  {IV-B}}{6}}
-\newlabel{sec:results_main}{{\mbox  {IV-B}1}{6}}
+\newlabel{sec:results}{{\mbox  {IV-B}}{6}{}{}{}}
+\newlabel{sec:results_main}{{\mbox  {IV-B}1}{6}{}{}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-B}1}Main Result: Pareto Dominance}{6}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces  Router ranking reliability. Validation images are grouped into deciles based on the predicted advantage $\hat  {A}$ ($5$-seed ensemble). Each point represents the mean true advantage $A=L_{\mathrm  {base}}-L_{\mathrm  {super}}$ within that decile (error bars denote standard error of the mean). The mean true advantage increases consistently with the predicted decile across both datasets, demonstrating that a higher router score reliably identifies frames that benefit more from the deep path. }}{7}{}\protected@file@percent }
-\newlabel{fig:calibration}{{6}{7}}
+\newlabel{fig:calibration}{{6}{7}{}{}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Per-image advantage $A=L_{\mathrm  {base}}-L_{\mathrm  {super}}$ distribution on the validation sets. Both are concentrated near zero with a long positive tail---most frames gain little from the deep path while a minority gain a lot. The tail is wider on KITTI ($\sigma {=}0.21$) than on BDD100K ($\sigma {=}0.10$).}}{7}{}\protected@file@percent }
-\newlabel{fig:adv_dist}{{7}{7}}
-\newlabel{sec:results_calibration}{{\mbox  {IV-B}2}{7}}
+\newlabel{fig:adv_dist}{{7}{7}{}{}{}}
+\newlabel{sec:results_calibration}{{\mbox  {IV-B}2}{7}{}{}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-B}2}Advantage Regression Quality}{7}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces  Runtime latency-budget tracking under realistic scene-condition drift on BDD100K MOT, run as a live on-device closed loop. Sequences are concatenated in alternating condition order (night$\leftrightarrow $daytime, city$\leftrightarrow $highway, clear$\leftrightarrow $rainy; rows), with shaded bands marking each segment's condition. A PI controller adjusts the router threshold $\tau $ to hold a step (left) and a sawtooth (right) latency budget $L^\star (t)$ (black dashed); the realized mean latency (red) tracks it with MAE $0.18$--$0.30$\,ms across all condition drifts. }}{8}{}\protected@file@percent }
-\newlabel{fig:budget}{{8}{8}}
-\newlabel{sec:results_budget}{{\mbox  {IV-B}3}{8}}
+\newlabel{fig:budget}{{8}{8}{}{}{}}
+\newlabel{sec:results_budget}{{\mbox  {IV-B}3}{8}{}{}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-B}3}Runtime Latency-Budget Tracking}{8}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Feature-source ablation on BDD100K (AP@[.50:.95] vs.\ SUPER usage; mean $\pm $ std over $5$ seeds). The three sources are close, but the both-feature router attains the best-or-tied mean with the tightest seed band, whereas backbone-only has the widest variance.}}{9}{}\protected@file@percent }
-\newlabel{fig:abl_feat_source}{{9}{9}}
+\newlabel{fig:abl_feat_source}{{9}{9}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Ablation Studies}{9}{}\protected@file@percent }
-\newlabel{sec:ablation}{{\mbox  {IV-C}}{9}}
-\newlabel{sec:abl_feature}{{\mbox  {IV-C}1}{9}}
+\newlabel{sec:ablation}{{\mbox  {IV-C}}{9}{}{}{}}
+\newlabel{sec:abl_feature}{{\mbox  {IV-C}1}{9}{}{}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}1}Input Feature: Backbone vs. Neck vs. Both}{9}{}\protected@file@percent }
-\newlabel{sec:abl_router}{{\mbox  {IV-C}2}{9}}
+\newlabel{sec:abl_router}{{\mbox  {IV-C}2}{9}{}{}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}2}Router Design and Grid Resolution}{9}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Router design and grid resolution on KITTI. GAP-MLP is compared with TinyConv at $2\times 2$ and $8\times 8$ grids in AP@.50:.95.}}{9}{}\protected@file@percent }
-\newlabel{fig:abl_router_grid}{{10}{9}}
-\newlabel{sec:abl_prevaction}{{\mbox  {IV-C}3}{9}}
+\newlabel{fig:abl_router_grid}{{10}{9}{}{}{}}
+\newlabel{sec:abl_prevaction}{{\mbox  {IV-C}3}{9}{}{}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {IV-C}3}Previous-Action Sampling Ratio $p(\mathrm  {super})$}{9}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {V}Conclusion}{9}{}\protected@file@percent }
-\newlabel{sec:conclusion}{{V}{9}}
+\newlabel{sec:conclusion}{{V}{9}{}{}{}}
 \bibstyle{IEEEtran}
 \bibdata{access}
 \bibcite{kang2026anydepth}{1}
@@ -129,6 +129,6 @@
 \bibcite{yu2020bdd}{25}
 \bibcite{sun2020waymo}{26}
 \@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Previous-action sampling ratio $p(\mathrm  {super})$ during training (AP@.50:.95) on KITTI. }}{10}{}\protected@file@percent }
-\newlabel{fig:abl_prevaction}{{11}{10}}
+\newlabel{fig:abl_prevaction}{{11}{10}{}{}{}}
 \@writefile{toc}{\contentsline {section}{References}{10}{}\protected@file@percent }
 \gdef \@abspage@last{10}

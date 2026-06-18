@@ -1,0 +1,68 @@
+{
+  "night_dawn": [
+    {
+      "seq": "b1ca2e5d-84cf9134",
+      "cond": "night"
+    },
+    {
+      "seq": "b1c66a42-6f7d68ca",
+      "cond": "daytime"
+    },
+    {
+      "seq": "b1ceb32e-3f481b43",
+      "cond": "night"
+    },
+    {
+      "seq": "b1d10d08-c35503b8",
+      "cond": "daytime"
+    },
+    {
+      "seq": "b1d10d08-743fd86c",
+      "cond": "night"
+    }
+  ],
+  "city_highway": [
+    {
+      "seq": "b1c66a42-6f7d68ca",
+      "cond": "city street"
+    },
+    {
+      "seq": "b1cebfb7-284f5117",
+      "cond": "highway"
+    },
+    {
+      "seq": "b1c9c847-3bda4659",
+      "cond": "city street"
+    },
+    {
+      "seq": "b1d0091f-75824d0d",
+      "cond": "highway"
+    },
+    {
+      "seq": "b1cac6a7-04e33135",
+      "cond": "city street"
+    }
+  ],
+  "clear_rainy": [
+    {
+      "seq": "b1ceb32e-3f481b43",
+      "cond": "clear"
+    },
+    {
+      "seq": "b1e1a7b8-0aec80e8",
+      "cond": "rainy"
+    },
+    {
+      "seq": "b1d10d08-743fd86c",
+      "cond": "clear"
+    },
+    {
+      "seq": "b1e1a7b8-65ec7612",
+      "cond": "rainy"
+    },
+    {
+      "seq": "b1d10d08-c35503b8",
+      "cond": "clear"
+    }
+  ]
+}

@@ -52,6 +52,7 @@ def main():
 
     data = json.loads(Path(args.curve).read_text())
     rows = data["rows"]
+    AP = lambda r: r[args.metric] * 100.0   # AP reported in percent (e.g. 22.4, not 0.224)
 
     bases = defaultdict(list)              # family -> [(super%, metric)]
     pol = defaultdict(list)                # budget -> [(super%, metric) over seeds]
@@ -62,13 +63,13 @@ def main():
         if r["name"] == "always_base":  g_base = r["gflops"]
         if r["name"] == "always_super": g_super = r["gflops"]
         if r["name"] in ("always_base", "always_super"):
-            anchors[r["name"]] = (x, r[args.metric]); continue
+            anchors[r["name"]] = (x, AP(r)); continue
         m = POLICY_RE.match(r["name"])
         if m:
-            pol[int(m.group(2))].append((x, r[args.metric])); continue
+            pol[int(m.group(2))].append((x, AP(r))); continue
         fam = r.get("family") or r.get("kind")
         if fam in BASE_STYLE:
-            bases[fam].append((x, r[args.metric]))
+            bases[fam].append((x, AP(r)))
 
     fig, ax = plt.subplots(figsize=(7.2, 5.2))
     fig.patch.set_facecolor("white"); ax.set_facecolor("white")
