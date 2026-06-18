@@ -1,0 +1,19 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+We reformulated dynamic-depth routing as advantage regression, decoupling the
+training objective from the deployment operating point. A single lightweight router
+predicts the per-image super advantage from the detector's intermediate features, and a
+threshold sweep recovers an entire continuous accuracy--efficiency Pareto curve with
+no trade-off weight and no anti-collapse term. On KITTI-tracking the router
+Pareto-dominates random, luminance, edge-density, and confidence baselines and
+comes within $0.1$~AP of super-only accuracy at a $12\%$ FLOPs (and $10\%$ energy)
+reduction, at negligible overhead. A limitation is that the regression view targets the two-path
+(super/base) decision; extending it to multi-level or per-layer ($2^N$) routing,
+where the decision space is no longer enumerable and sampling- or
+marginalization-based estimators become necessary, is left to future work.
+A further limitation is that, with a binary per-frame actuator, what we regulate is
+the \emph{average} latency (throughput/energy/thermal budgets); hard per-frame
+real-time deadlines are guaranteed only when the super path itself meets the
+deadline, and tighter per-frame guarantees would require finer-grained multi-level
+depths, also left to future work.

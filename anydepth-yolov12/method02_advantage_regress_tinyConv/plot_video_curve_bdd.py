@@ -38,6 +38,8 @@ def main():
     ap.add_argument("--curve", required=True)
     ap.add_argument("--out", required=True, help="output path stem (_<metric>.png appended)")
     ap.add_argument("--metric", default="map50", choices=["map50", "map"])
+    ap.add_argument("--title", default="BDD100K MOT depth routing: learned policy vs no-train baselines",
+                    help="plot title (set to the dataset being evaluated)")
     args = ap.parse_args()
 
     data = json.loads(Path(args.curve).read_text())
@@ -74,8 +76,17 @@ def main():
     pts.sort()
     xs = [p[0] for p in pts]; ym = [p[1] for p in pts]; ys = [p[2] for p in pts]
     nseed = pts[0][3] if pts else 0
-    ax.plot(xs, ym, "o-", color="tab:red", label=f"learned policy (n={nseed})",
-            markersize=5, linewidth=1.8, zorder=4)
+    # Extend the policy line to the base/super anchors so the pareto runs
+    # continuously from base to super (budgets only span 10..90%, so without
+    # this the curve floats unconnected between the two anchor stars).
+    lx, ly = list(xs), list(ym)
+    if "always_base" in anchors:
+        lx = [anchors["always_base"][0]] + lx; ly = [anchors["always_base"][1]] + ly
+    if "always_super" in anchors:
+        lx = lx + [anchors["always_super"][0]]; ly = ly + [anchors["always_super"][1]]
+    ax.plot(lx, ly, "-", color="tab:red", linewidth=1.8, zorder=3)
+    ax.plot(xs, ym, "o", color="tab:red", label=f"learned policy (n={nseed})",
+            markersize=5, zorder=4)
     ax.fill_between(xs, np.array(ym) - np.array(ys), np.array(ym) + np.array(ys),
                     color="tab:red", alpha=0.18)
     for x, y, _s, _n, b in pts:
@@ -93,7 +104,7 @@ def main():
 
     ax.set_xlabel("GFLOPs (per frame)")
     ax.set_ylabel(args.metric.upper())
-    ax.set_title("BDD100K MOT depth routing: learned policy vs no-train baselines", pad=12)
+    ax.set_title(args.title, pad=12)
     ax.legend(); ax.grid(alpha=0.3)
     out = f"{args.out}_{ {'map50': 'ap50', 'map': 'ap5095'}[args.metric] }.png"
     Path(out).parent.mkdir(parents=True, exist_ok=True)
