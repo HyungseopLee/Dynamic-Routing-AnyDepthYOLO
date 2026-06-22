@@ -18,17 +18,39 @@ import torch.nn as nn
 from ultralytics import YOLO
 
 
+class Adaptive2x2(nn.Module):
+    """Exact F.adaptive_avg_pool2d(x, 2) expressed as 4 quadrant means.
+
+    PyTorch's adaptive pool can't ONNX-export for non-factor outputs (e.g. width 39
+    -> 2), and its eager kernel is also surprisingly slow on Jetson (~2.4 ms for the
+    six tap maps, dwarfing the router MLP). Rewriting the 2x2 adaptive pool as four
+    overlapping-quadrant means reproduces it bit-exactly (bins [0:ceil(N/2)] and
+    [floor(N/2):N]) while compiling to Slice+ReduceMean, which TensorRT runs inside
+    the engine for ~free -- so the host only ever sees pre-pooled (C,2,2) vectors."""
+
+    def forward(self, x):
+        H, W = x.shape[-2], x.shape[-1]
+        h0, h1 = (H + 1) // 2, H // 2
+        w0, w1 = (W + 1) // 2, W // 2
+        tl = x[..., :h0, :w0].mean((-2, -1)); tr = x[..., :h0, w1:].mean((-2, -1))
+        bl = x[..., h1:, :w0].mean((-2, -1)); br = x[..., h1:, w1:].mean((-2, -1))
+        return torch.stack([tl, tr, bl, br], -1).reshape(x.shape[0], x.shape[1], 2, 2)
+
+
 class PathModel(nn.Module):
     """Wraps the detector to run ONE fixed depth path (skip baked in). Returns the
     standard inference-format detection output and -- so the router can run on-device --
-    the pooled router feature (adaptive-avg-pool of INPUT_LEVEL_LAYERS to GxG, exactly
-    matching grid_vec used during router training). Traces to a static ONNX graph."""
+    the router feature taps. With pool=False the RAW tap maps are emitted and the host
+    does the GxG adaptive pool; with pool=True the 2x2 adaptive pool is BAKED into the
+    graph (Adaptive2x2) so the engine outputs pre-pooled (C,2,2) vectors and the host
+    only runs cat + the tiny router MLP. Traces to a static ONNX graph."""
 
-    def __init__(self, model, skip, tap_layers=(4, 6, 8, 14, 17, 20), grid=2):
+    def __init__(self, model, skip, tap_layers=(4, 6, 8, 14, 17, 20), grid=2, pool=False):
         super().__init__()
         self.model = model
         self.skip = skip
         self.tap_layers = tap_layers
+        self.pool = Adaptive2x2() if pool else None
         self._cap = {}
         for l in tap_layers:
             model.model[l].register_forward_hook(
@@ -37,12 +59,12 @@ class PathModel(nn.Module):
         self.model.model[-1].format = "onnx"
 
     def forward(self, x):
-        # Output detection + the RAW INPUT_LEVEL feature maps. The (2x2) adaptive pool
-        # that forms the router input is ONNX-unfriendly (non-factor output), so we do
-        # it on the host with the exact training op -- keeping router input identical.
         self._cap.clear()
         det = self.model._predict_once(x, skip=self.skip, return_features=False)
-        return (det, *[self._cap[l] for l in self.tap_layers])
+        taps = [self._cap[l] for l in self.tap_layers]
+        if self.pool is not None:
+            taps = [self.pool(t) for t in taps]
+        return (det, *taps)
 
 
 def main():
@@ -56,6 +78,9 @@ def main():
     ap.add_argument("--tap", type=int, nargs="+", default=[4, 6, 8, 14, 17, 20],
                     help="layers to emit as raw feature outputs (input-level 4,6,8 and, for "
                          "feat=both policies, pred-level 14,17,20)")
+    ap.add_argument("--pool", action="store_true",
+                    help="bake the 2x2 adaptive pool into the engine; emit pre-pooled "
+                         "(C,2,2) taps so the host skips the (slow on Jetson) pooling")
     args = ap.parse_args()
     dev = args.device if torch.cuda.is_available() else "cpu"
 
@@ -72,7 +97,8 @@ def main():
 
     feat_names = [f"feat{l}" for l in args.tap]
     for name, skip in [("base", [True] * N), ("super", [False] * N)]:
-        wrapper = PathModel(m, skip, tap_layers=tuple(args.tap), grid=args.grid).eval()
+        wrapper = PathModel(m, skip, tap_layers=tuple(args.tap), grid=args.grid,
+                            pool=args.pool).eval()
         out = out_dir / f"{name}.onnx"
         with torch.no_grad():
             torch.onnx.export(

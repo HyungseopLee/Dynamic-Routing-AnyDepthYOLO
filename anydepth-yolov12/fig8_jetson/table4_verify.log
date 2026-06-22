@@ -1,0 +1,13 @@
+##### BDD rerun #####
+ BASE        :  24.88 ms     40.2 fps      485.1 mJ
+ SUPER       :  41.67 ms     24.0 fps      842.6 mJ
+ ALTERNATING :  33.33 ms     30.0 fps      666.9 mJ   (mean(base,super)=33.27 ms)
+ switch overhead : +0.052 ms (+0.16% of mean)
+[summary] switching +0.052 ms and routing 0.000 ms are both negligible vs detector 24.9-41.7 ms.
+##### KITTI control #####
+ BASE        :  12.74 ms     78.5 fps      218.7 mJ
+ SUPER       :  21.10 ms     47.4 fps      381.4 mJ
+ ALTERNATING :  16.93 ms     59.1 fps      300.4 mJ   (mean(base,super)=16.92 ms)
+ switch overhead : +0.009 ms (+0.05% of mean)
+[summary] switching +0.009 ms and routing 0.000 ms are both negligible vs detector 12.7-21.1 ms.
+##### VERIFY DONE #####

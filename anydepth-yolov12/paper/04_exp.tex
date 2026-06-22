@@ -346,8 +346,15 @@ Ultimately, a single trained router successfully turns a static Pareto front int
 A natural concern is whether depth routing remains practical on a production inference stack: TensorRT compiles a \emph{static} graph and cannot conditionally skip layers inside a single engine.
 We therefore realize routing by exporting the BASE and SUPER paths as two separate FP16 engines and keeping both resident in GPU memory; the router simply selects which engine to execute per frame.
 The only routing-specific concern is then the cost of \emph{switching} between the two resident engines every time the chosen path changes.
-We measure this on BDD100K (RTX~3090) by comparing each single-path engine run in isolation against an \textsc{alternating} schedule that forces an engine switch on every frame---a worst case far more frequent than any realistic routing trace (Table~\ref{tab:trt}).
-The alternating schedule costs only $+1.0\%$ over the mean of the two single-path runs, confirming that engine switching is effectively free and that the two-engine design adds no meaningful deployment overhead.
+We isolate this cost on an embedded NVIDIA Jetson Orin Nano (8\,GB unified memory, FP16, clocks pinned with \texttt{jetson\_clocks}) by comparing each single-path engine run against an \textsc{alternating} schedule that forces a BASE$\leftrightarrow$SUPER engine switch on \emph{every} frame---a pathological worst case far more frequent than any realistic routing trace, in which the chosen path typically persists for many consecutive frames.
+The switching overhead is then isolated as the latency of the alternating schedule minus the mean of the two static single-path runs.
+To verify that this holds across compute scales, we report it at two input resolutions---$384\times1248$ and $736\times1280$ (the KITTI and BDD100K evaluation resolutions, respectively)---since it is the input resolution, not the dataset, that sets the per-engine cost (Table~\ref{tab:trt}).
+Even under this per-frame worst case, switching costs only $+0.05\%$ at $384\times1248$ and $+0.16\%$ at $736\times1280$ over the single-path mean, confirming that engine switching is effectively free: because both FP16 engines are held resident in GPU memory, a switch merely selects which execution context to launch and incurs no weight reload or memory transfer.
+
+Keeping all three engines (BASE, SUPER, and the router) co-resident is cheap on the embedded budget.
+At the higher $736\times1280$ resolution the full routed deployment occupies $214$\,MB of GPU memory---$33$\,MB of FP16 engine weights plus $181$\,MB of activation scratch---of which the advantage-regression router is a negligible $1.3$\,MB; this is under $3\%$ of the Orin Nano's $8$\,GB.
+The weights are resolution-independent (they are the detector parameters), whereas the activation scratch scales with input resolution, dropping to $97$\,MB total ($130$\,MB including weights) at $384\times1248$.
+The router head adds essentially nothing, since it consumes only the small grid-pooled feature taps the detector already produces.
 
 One deployment caveat concerns the operating threshold itself.
 FP16 quantization slightly perturbs the router's predicted advantage $\hat{A}$, so a threshold $\tau$ calibrated in FP32 realizes a different SUPER usage once the engines run in FP16 (e.g., on BDD100K, $\tau{=}0.086$ routes $14.8\%$ of frames to the deep path in FP32 but $5.9\%$ in FP16).
@@ -357,22 +364,30 @@ In the budget-tracking deployment (Sec.~\ref{sec:results_budget}) even this step
 
 \begin{table}[!t]
 \caption{
-    TensorRT FP16 engine-switching overhead on BDD100K (RTX~3090, pure GPU inference, CUDA-event timed). \textsc{alternating} forces a BASE$\leftrightarrow$SUPER engine switch every frame (worst case); its latency is within $1\%$ of the mean of the two static single-path engines, so routing between two resident engines is effectively free.
+    TensorRT FP16 engine-switching overhead on the embedded Jetson Orin Nano (pure GPU inference, CUDA-event timed, $1000$ iterations after warm-up), reported at two input resolutions to span compute scales. \textsc{alternating} forces a BASE$\leftrightarrow$SUPER engine switch on every frame (per-frame worst case); at both resolutions its latency stays within $0.2\%$ of the mean of the two static single-path engines, so routing between two resident engines is effectively free. Resident GPU memory (FP16 weights $+$ activation scratch) is reported per engine; the router is negligible.
 }
 \label{tab:trt}
 \small
-\setlength{\tabcolsep}{6pt}
+\setlength{\tabcolsep}{5pt}
 \centering
-\begin{tabular}{lrr}
+\begin{tabular}{lrrrr}
 \toprule
-Engine schedule & Latency (ms) & FPS\\
+Engine schedule & Lat.\,(ms) & FPS & Energy\,(mJ) & Mem\,(MB)\\
 \midrule
-\textsc{base} (always-base) & 6.09 & 164.3\\
-\textsc{super} (always-super) & 9.70 & 103.0\\
-\textsc{alternating} (switch every frame) & 7.97 & 125.5\\
+\multicolumn{5}{l}{\emph{(a) $384\times1248$ (KITTI resolution)}}\\
+\textsc{base} (always-base) & 12.74 & 78.5 & 218.7 & 61.7\\
+\textsc{super} (always-super) & 21.10 & 47.4 & 381.4 & 68.3\\
+\textsc{alternating} (switch/frame) & 16.93 & 59.1 & 300.4 & ---\\
+mean(base,\,super) & 16.92 & --- & --- & \textbf{130.0}\\
+switch overhead & \multicolumn{4}{l}{$+0.009$\,ms\ \ ($+0.05\%$)}\\
 \midrule
-mean(base,\,super) & 7.89 & ---\\
-switch overhead & \multicolumn{2}{l}{$+0.08$\,ms\ \ ($+1.0\%$)}\\
+\multicolumn{5}{l}{\emph{(b) $736\times1280$ (BDD100K resolution)}}\\
+\textsc{base} (always-base) & 24.88 & 40.2 & 485.1 & 102.8\\
+\textsc{super} (always-super) & 41.67 & 24.0 & 842.6 & 110.0\\
+\textsc{router} & \multicolumn{3}{r}{(advantage head)} & 1.3\\
+\textsc{alternating} (switch/frame) & 33.33 & 30.0 & 666.9 & ---\\
+mean(base,\,super) & 33.27 & --- & --- & \textbf{214.1}\\
+switch overhead & \multicolumn{4}{l}{$+0.052$\,ms\ \ ($+0.16\%$)}\\
 \bottomrule
 \end{tabular}
 \end{table}

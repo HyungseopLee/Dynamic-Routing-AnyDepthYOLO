@@ -1,0 +1,29 @@
+=== [1/4] waiting for base/super engines ===
+base/super engines present:
+-rw-rw-r-- 1 hslee hslee 14162756  6월 21 20:50 trt_bench/onnx/bdd_pooled/base.fp16.engine
+-rw-rw-r-- 1 hslee hslee 19038692  6월 21 20:59 trt_bench/onnx/bdd_pooled/super.fp16.engine
+=== [2/4] export + build TRT router engine ===
+FlashAttention is not available on this device. Using scaled_dot_product_attention instead.
+[*] router (both, pid=1) -> trt_bench/onnx/bdd_pooled/router.onnx  iv=(768,2,2) pv=(640,2,2)
+[*] trt_bench/onnx/bdd_pooled/router.onnx -> trt_bench/onnx/bdd_pooled/router.fp16.engine  (fp16=True)
+-rw-rw-r-- 1 hslee hslee 1345116  6월 21 20:59 trt_bench/onnx/bdd_pooled/router.fp16.engine
+=== [3/4] gpu clock check ===
+1020000000
+=== [3/4] run streaming TRT budget-tracking demo ===
+FlashAttention is not available on this device. Using scaled_dot_product_attention instead.
+[*] TRT backend: trt_bench/onnx/bdd_pooled/base.fp16.engine / trt_bench/onnx/bdd_pooled/super.fp16.engine + router trt_bench/onnx/bdd_pooled/router.fp16.engine  feat=both
+[*] night_dawn: 1011 frames, 5 segments
+[*] city_highway: 915 frames, 5 segments
+[*] clear_rainy: 1011 frames, 5 segments
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/home/hslee/context-anydepth-det/anydepth-yolov12/method02_advantage_regress_tinyConv/online_budget_demo_stream.py", line 217, in <module>
+    main()
+  File "/home/hslee/context-anydepth-det/anydepth-yolov12/method02_advantage_regress_tinyConv/online_budget_demo_stream.py", line 160, in main
+    ls, as_ = run_frame(bgr, "super"); ws.append(ls); wa.append(as_)
+  File "/home/hslee/context-anydepth-det/anydepth-yolov12/method02_advantage_regress_tinyConv/online_budget_demo_stream.py", line 92, in run_frame
+    img = lb(image=bgr)
+TypeError: 'float' object is not callable

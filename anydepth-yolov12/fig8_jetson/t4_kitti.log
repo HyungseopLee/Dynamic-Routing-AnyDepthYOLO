@@ -1,0 +1,4 @@
+BASE        :  12.86 ms    77.8 fps
+SUPER       :  21.30 ms    46.9 fps
+ALTERNATING :  17.12 ms    58.4 fps   (mean(base,super)=17.08)
+switch overhead : +0.041 ms (+0.24%)

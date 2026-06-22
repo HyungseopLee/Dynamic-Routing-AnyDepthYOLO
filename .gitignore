@@ -16,3 +16,4 @@ summary*.json
 
 *.onnx
 *.engine
+*.mov
