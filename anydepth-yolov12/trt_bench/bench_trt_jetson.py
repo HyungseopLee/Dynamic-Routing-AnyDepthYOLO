@@ -15,13 +15,17 @@ so the switch overhead is isolated as ALTERNATING - mean(BASE, SUPER).
 With --policy, we additionally time the router head (grid-pool the engine's tap maps
 + tiny MLP) to report routing overhead as a fraction of the detector latency.
 
+With --router_engine, we time the TRT router engine (iv+pv -> logit) combined with
+the detector to get L_base+router and L_super+router for Table 3 interpolation.
+Detector engines must output pooled 2x2 feat maps (the default _pooled engines).
+
 Energy: Jetson exposes no NVML power, so we read the on-board INA3221 rails via hwmon
 (VDD_IN = total module, VDD_CPU_GPU_CV = compute); power_mW = volt_mV * curr_mA / 1000.
 
     python trt_bench/bench_trt_jetson.py \
-        --base  trt_bench/onnx/kitti/base.fp16.engine \
-        --super trt_bench/onnx/kitti/super.fp16.engine \
-        --policy method02_advantage_regress_tinyConv/outputs/kitti/ablation/policy_both_g2_s0.pt \
+        --base  trt_bench/onnx/kitti_pooled/base.fp16.engine \
+        --super trt_bench/onnx/kitti_pooled/super.fp16.engine \
+        --router_engine trt_bench/onnx/kitti/router.fp16.engine \
         --iters 1000 --warmup 100
 """
 import argparse
@@ -123,11 +127,45 @@ def timed(run_fn, iters, warmup, power, power_every=25):
     return mean_lat, 1000.0 / mean_lat, mean_pw * mean_lat / 1000.0
 
 
+def build_router_combined(det_engine, router_engine, dev):
+    """Return a run_fn that executes detector + TRT router in one call.
+
+    Detector must output pooled 2x2 feat maps (feat4/6/8 -> iv, feat14/17/20 -> pv).
+    iv and pv are pre-allocated contiguous buffers; cat is done via copy_ in-place.
+    """
+    iv_buf = router_engine.buffers["iv"]   # (1, 768, 2, 2)
+    pv_buf = router_engine.buffers["pv"]   # (1, 640, 2, 2)
+
+    # pre-compute slice offsets for in-place cat
+    in_layers = INPUT_LEVEL_LAYERS   # (4, 6, 8)
+    pr_layers = PRED_LEVEL_LAYERS    # (14, 17, 20)
+
+    def run_fn(stream):
+        det_engine.run(stream)
+        # cat feat tensors into router input buffers (all already on GPU, 2x2)
+        offset = 0
+        for l in in_layers:
+            t = det_engine.buffers[f"feat{l}"]
+            c = t.shape[1]
+            iv_buf[:, offset:offset+c].copy_(t)
+            offset += c
+        offset = 0
+        for l in pr_layers:
+            t = det_engine.buffers[f"feat{l}"]
+            c = t.shape[1]
+            pv_buf[:, offset:offset+c].copy_(t)
+            offset += c
+        router_engine.run(stream)
+
+    return run_fn
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--base", required=True)
     ap.add_argument("--super", required=True)
     ap.add_argument("--policy", default=None, help="router .pt; if set, also time routing overhead")
+    ap.add_argument("--router_engine", default=None, help="TRT router .fp16.engine; times detector+router combined")
     ap.add_argument("--grid", type=int, default=2)
     ap.add_argument("--iters", type=int, default=1000)
     ap.add_argument("--warmup", type=int, default=100)
@@ -199,6 +237,15 @@ def main():
             net.logit(iv, pv, pid)
         router_ms, _, _ = timed(router_step, args.iters, args.warmup, power)
 
+    # ---- TRT router engine: detector + router combined latency ----
+    lb_r = ls_r = fb_r = fs_r = enb_r = ens_r = None
+    if args.router_engine:
+        er = Engine(args.router_engine, dev)
+        base_router_fn = build_router_combined(eb, er, dev)
+        super_router_fn = build_router_combined(es, er, dev)
+        lb_r, fb_r, enb_r = timed(base_router_fn, args.iters, args.warmup, power)
+        ls_r, fs_r, ens_r = timed(super_router_fn, args.iters, args.warmup, power)
+
     # ---- report ----
     dev_name = torch.cuda.get_device_name(dev) if torch.cuda.is_available() else "CPU"
     mean_bs = (lb + ls) / 2
@@ -211,6 +258,10 @@ def main():
     if router_ms is not None:
         print(f" router overhead : {router_ms:.3f} ms "
               f"({router_ms / lb * 100:.2f}% of BASE, {router_ms / ls * 100:.2f}% of SUPER)")
+    if lb_r is not None:
+        print(f"\n==== detector + TRT router combined ====")
+        print(f" BASE  + router : {lb_r:6.2f} ms   {fb_r:6.1f} fps   {enb_r:8.1f} mJ")
+        print(f" SUPER + router : {ls_r:6.2f} ms   {fs_r:6.1f} fps   {ens_r:8.1f} mJ")
     print(f"\n[summary] switching {sw:+.3f} ms and routing "
           f"{(router_ms if router_ms else 0):.3f} ms are both negligible vs detector "
           f"{lb:.1f}-{ls:.1f} ms.")
