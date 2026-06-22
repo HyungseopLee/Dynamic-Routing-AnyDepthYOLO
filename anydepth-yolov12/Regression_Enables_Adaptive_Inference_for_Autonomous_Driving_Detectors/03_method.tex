@@ -14,7 +14,7 @@ We consider two extreme configurations: a \emph{super} path, which executes both
 
 \begin{figure*}[!ht]
 \centering
-\includegraphics[width=0.85\textwidth]{fig_train.pdf}
+\includegraphics[width=0.9\textwidth]{fig_train.pdf}
 \caption{
     Training pipeline. 
     The AnyDepth-YOLO detector is frozen; both paths are run once per image to obtain the true advantage $A=L_{\text{base}}-L_{\text{super}}$, and only the router is updated. 
@@ -37,8 +37,9 @@ We consider two extreme configurations: a \emph{super} path, which executes both
 
 \medskip
 \noindent\textbf{Routing problem.}
-We thus formulate the decision space as a binary selection between two execution paths: a deep super configuration $\delta_{\text{}}$ and a shallow base configuration $\delta_{\text{base}}$. 
-For each input image, we define the \emph{super advantage} as the reduction in detection loss obtained by using the deep path:
+We formulate the routing decision as a binary selection between a deep configuration $\delta_{\text{super}}$ and a shallow configuration $\delta_{\text{base}}$. Although this yields discrete per-frame latencies, practical deployment constraints are typically imposed on average resource usage over time rather than on individual frames. Consequently, regulating the fraction of frames routed to $\delta_{\text{super}}$ enables continuous control of the detector's average operating point under varying resource budgets.
+
+Specifically, for each input image, we define the \emph{super advantage} as the reduction in detection loss obtained by using the deep path:
 \begin{equation}
 A = L_{\text{base}} - L_{\text{super}},
 \label{eq:advantage}
@@ -58,15 +59,21 @@ At deployment, the router exploits the strong temporal correlation between adjac
 
 \subsection{Router Training}
 \label{sec:method_training}
-Figure~\ref{fig:train} illustrates the conceptual training framework.
-To ensure training efficiency, we run both execution paths once per training image offline to extract the multi-scale intermediate features (from the P3, P4, and P5 stages) along with their corresponding detection losses.
-By precomputing and caching these values, the router can be trained extensively without the need for repeated detector forward passes.
-Furthermore, because the underlying detector parameters remain strictly fixed, the true advantage $A$ serves as a stationary regression target throughout this process.
+Figure~\ref{fig:train} illustrates the router training pipeline.
+We formulate routing as a supervised regression problem, where the input consists of multi-scale intermediate features extracted from the frozen detector and the target is the corresponding super advantage $A$ defined in Eq.~\ref{eq:advantage}. 
+Intuitively, the router learns to predict how much an input would benefit from executing the deep path instead of the shallow path.
+
+For each training image, we run both the SUPER and BASE execution paths once to obtain the ground-truth advantage together with the associated intermediate features.
+Since the detector remains completely frozen, the advantage serves as a stationary supervision signal throughout training. 
+To improve efficiency, all features and targets are precomputed and cached offline, allowing the router to be trained without repeated detector forward passes.
 
 
 \begin{table}[t]
-\caption{Router overhead (per frame, batch $1$). Every variant adds negligible cost
-relative to the SUPER path ($26.30$ GFLOPs); the deployed router is TinyConv on both feature sources.}
+\caption{
+    Router overhead (per frame, batch $1$, input resolution $384\times1248$ for the KITTI dataset). 
+    Every variant adds negligible cost relative to the SUPER path ($26.30$ GFLOPs). 
+    % the deployed router is TinyConv on both feature sources.
+}
 \label{tab:overhead}
 \centering
 \begin{tabular}{llrrr}
@@ -74,13 +81,14 @@ relative to the SUPER path ($26.30$ GFLOPs); the deployed router is TinyConv on 
 Router & Feature & \#Params & GFLOPs & \% of SUPER\\
 \midrule
 GAP-MLP & backbone & 60{,}241 & $1.17\times10^{-4}$ & $0.0004$\\
-TinyConv & backbone & 60{,}881 & $4.17\times10^{-4}$ & $0.0015$\\
-TinyConv & neck & 52{,}433 & $3.51\times10^{-4}$ & $0.0013$\\
-TinyConv & both & 112{,}017 & $7.65\times10^{-4}$ & $0.0028$\\
+\midrule
+\multirow{3}{*}{TinyConv-MLP} 
+ & backbone & 60{,}881 & $4.17\times10^{-4}$ & $0.0015$\\
+ & neck & 52{,}433 & $3.51\times10^{-4}$ & $0.0013$\\
+ & both & 112{,}017 & $7.65\times10^{-4}$ & $0.0028$\\
 \bottomrule
 \end{tabular}
 \end{table}
-
 
 \medskip
 \noindent\textbf{Router Architecture.}
@@ -115,7 +123,7 @@ To ensure robust deployment, the router must remain well-calibrated to the featu
 To prevent router training from favoring a single distribution, we simulate the prior frame's routing decision using a balanced action-sampling strategy. 
 Specifically, for each training sample, we feed the router the features corresponding to the super path with probability $p$, and the base path features otherwise. 
 This balanced exposure explicitly models the conditional execution loop of deployment, ensuring that the advantage predictor stays calibrated regardless of upstream routing choices.
-The complete training procedure is summarized in Algorithm~\ref{alg:training}.
+% The complete training procedure is summarized in Algorithm~\ref{alg:training}.
 
 
 

@@ -5,7 +5,9 @@
 
 \subsubsection{Datasets}
 \label{sec:setup_data}
-We evaluate our approach on three driving benchmarks. For all datasets, the router is trained exclusively on static detection images and tested on continuous video sequences, without any temporal or tracking supervision at any stage.
+We evaluate our approach on three representative driving benchmarks. 
+For all datasets, the router is trained on static detection images and tested on continuous video sequences, without any temporal or tracking supervision at any stage.
+We assume no significant train-deployment distribution shift; the primary difference lies in the temporal structure of the deployment videos.
 
 \noindent\textbf{KITTI.} 
 We train the router on the KITTI Detection dataset~\cite{geiger2012kitti} using an 80:20 split of 5,985 training and 1,496 validation images, and evaluate it on the KITTI Multi-Object Tracking benchmark consisting of 21 video sequences (8,008 frames). 
@@ -16,7 +18,7 @@ To evaluate cross-dataset generalization, we train the router on BDD100K detecti
 Frames are processed at $720\times1280$ resolution.
 
 \noindent\textbf{Waymo.}
-To further evaluate generalization on a large-scale, high-resolution benchmark, we use the FRONT camera of the Waymo Open Perception dataset~\cite{sun2020waymo} (v2.0.1, modular/parquet release). 
+To further evaluate generalization on a large-scale, high-resolution benchmark, we use the front camera of the Waymo Open Perception dataset~\cite{sun2020waymo} (v2.0.1). 
 As this benchmark provides no separate detection and tracking splits, we partition it by official split: the router is trained on the 798 training-split segments treated as static detection images (158.1K frames), and evaluated on the 202 validation-split segments as continuous video (39.1K labeled frames).
 Frames are processed at $1280\times1920$ resolution.
 % Consequently, unlike KITTI and BDD100K---where the image-level router analysis and the final video evaluation use distinct detection and tracking sets---both the image-level calibration (Sec.~\ref{sec:results_calibration}) and the video evaluation here are performed on the same validation split; the training split remains fully disjoint, so no router ever observes its evaluation data.
@@ -195,10 +197,11 @@ $+0.039$ & 90.4 & 130.19 & 38.9 & 80.39 & 12.4 & 25847\\
 \subsubsection{Baselines}
 \label{sec:setup_baselines}
 
-To the best of our knowledge, no prior work has explored depth routing for AnyDepth-style detectors in the image-to-video setting considered here. 
+To the best of our knowledge, no prior work has explored depth routing for AnyDepth-style detectors on continuous video streams. 
 In the absence of established routing strategies, a natural starting point is to rely on human-interpretable notions of scene difficulty. 
 One might reasonably expect deeper execution to be more beneficial for visually challenging inputs, such as poorly illuminated scenes, cluttered environments, or frames where the detector exhibits low confidence. 
-To benchmark our proposed advantage-regression router against these intuitive cues, we establish the following heuristic baselines:
+Furthermore, many of these proxies can be computed directly from simple image statistics without additional network inference or GPU computation, enabling extremely lightweight routing baselines.
+To benchmark our proposed advantage-regression router against these intuitive and lightweight cues, we establish the following heuristic baselines:
 \begin{itemize}
     \item \textbf{Random Routing:} Selects the execution path randomly based on a target probability, serving as a lower-bound baseline.
     \item \textbf{Luminance-based Routing:} Uses the mean pixel intensity of the input image as the routing signal, operating under the assumption that poorly lit scenes might require deeper execution.
@@ -212,18 +215,16 @@ To benchmark our proposed advantage-regression router against these intuitive cu
 \label{sec:setup_impl}
 The router is trained for 30 epochs (batch 256, Adam, lr $10^{-3}$) over seeds 0--4
 and reported as mean$\pm$std. 
-We do not use weight decay or dropout. 
-Furthermore, to maximize training efficiency, the router is trained entirely on precomputed, frozen detector features rather than raw images; therefore, image-space data augmentation is not applied.
+For training efficiency, the router is trained on precomputed, frozen features without image-space augmentation. 
+Given its minimal parameter count, regularization (e.g., weight decay, dropout) is omitted.
 Detection uses confidence threshold $0.25$ and NMS IoU $0.7$.
 
 
 \subsubsection{Evaluation Metrics}
 \label{sec:setup_metrics}
-We report AP@[.50:.95], the average SUPER-path usage rate, and average GFLOPs per frame over the evaluated video sequences.
-We additionally report latency, FPS, and energy consumption measured on an NVIDIA RTX 3090 GPU, including the router forward pass.
-% On-device measurements (latency, FPS, energy) include the router forward and are reported against the super-only reference. 
-
-
+We report AP@[.50:.95], the average SUPER-path usage rate, and the average GFLOPs per frame over the evaluated video sequences. 
+While detection accuracy (AP) is evaluated on an NVIDIA RTX 3090, all efficiency-related metrics, including latency, FPS, and energy consumption, are measured on an NVIDIA Jetson Orin Nano to validate the proposed budget-adaptive control framework under realistic edge deployment conditions. 
+For this deployment-oriented evaluation, all models are converted to TensorRT~\cite{nvidia_tensorrt_1012} FP16 engines prior to benchmarking.
 
  
 %% =====================================================================
@@ -231,27 +232,27 @@ We additionally report latency, FPS, and energy consumption measured on an NVIDI
 \label{sec:results}
 
 
- 
 \begin{figure*}[t]
 \centering
-\begin{minipage}[t]{0.32\textwidth}
+
+\begin{minipage}[b]{0.30\textwidth}
 \centering
-\includegraphics[width=\linewidth]{fig_calibration_kitti.pdf}
-\vspace{2pt}
+\includegraphics[width=\linewidth]{fig_calibration_kitti.pdf}\\[4pt]
 {\small (a) KITTI}
 \end{minipage}\hfill
-\begin{minipage}[t]{0.32\textwidth}
+%
+\begin{minipage}[b]{0.30\textwidth}
 \centering
-\includegraphics[width=\linewidth]{fig_calibration_bdd.pdf}
-\vspace{2pt}
+\includegraphics[width=\linewidth]{fig_calibration_bdd.pdf}\\[4pt]
 {\small (b) BDD100K}
 \end{minipage}\hfill
-\begin{minipage}[t]{0.32\textwidth}
+%
+\begin{minipage}[b]{0.30\textwidth}
 \centering
-\includegraphics[width=\linewidth]{fig_calibration_waymo.pdf}
-\vspace{2pt}
+\includegraphics[width=\linewidth]{fig_calibration_waymo.pdf}\\[4pt]
 {\small (c) Waymo}
 \end{minipage}
+
 \caption{
     Router ranking reliability. Validation images are grouped into deciles based on the predicted advantage $\hat{A}$ ($5$-seed ensemble).
     Each point represents the mean true advantage $A=L_{\mathrm{base}}-L_{\mathrm{super}}$ within that decile (error bars denote standard error of the mean).
@@ -259,6 +260,7 @@ We additionally report latency, FPS, and energy consumption measured on an NVIDI
 }
 \label{fig:calibration}
 \end{figure*}
+
 
 \begin{figure}[!t]
 \centering
@@ -270,9 +272,8 @@ on KITTI ($\sigma{=}0.21$) than on BDD100K ($\sigma{=}0.10$).}
 \label{fig:adv_dist}
 \end{figure}
 
-\subsubsection{Main Result: Pareto Dominance}
+\subsubsection{Main Result}
 \label{sec:results_main}
-
 
 We compare the proposed advantage-regression router against the heuristic routing baselines. 
 Figure~\ref{fig:main} shows that a single trained router traces a continuous Pareto frontier that consistently dominates all baselines across all three benchmarks.
@@ -281,35 +282,16 @@ In particular, the advantage of the proposed routing strategy is most pronounced
 Table~\ref{tab:main} provides the corresponding operating points along the Pareto curve. 
 On KITTI (Figure~\ref{fig:main}(a)), the router maintains AP@[.50:.95] within 0.1 point of the SUPER-only ceiling (41.4 vs.\ 41.5) while routing only 67\% of frames through the SUPER path. 
 This reduces computation from 26.30 to 23.20 GFLOPs/frame ($-11.8\%$), latency from 20.69 to 18.66 ms ($-9.8\%$), and energy consumption from 3277 to 2957 mJ ($-9.8\%$), while increasing throughput from 48.3 to 53.6 FPS ($+11.0\%$). 
-A more aggressive operating point routes only 43\% of frames to the SUPER path, incurring merely a 0.3 AP reduction while lowering computation by 20.6\%, latency by 18.6\%, and energy by 18.5\%.
+% A more aggressive operating point routes only 43\% of frames to the SUPER path, incurring merely a 0.3 AP reduction while lowering computation by 20.6\%, latency by 18.6\%, and energy by 18.5\%.
 
-The same trend holds on BDD100K (Figure~\ref{fig:main}(b)). 
-At 26\% SUPER usage, the router already recovers most of the SUPER-path accuracy gain (22.0 vs.\ 22.5 AP@[.50:.95]) while reducing computation from 51.72 to 38.02 GFLOPs/frame ($-26.5\%$), latency from 39.16 to 28.79 ms ($-26.5\%$), and energy consumption from 13289 to 9669 mJ ($-27.2\%$). 
-Throughput correspondingly increases from 25.5 to 34.7 FPS ($+36.1\%$).
+The same trend holds on BDD100K (Figure~\ref{fig:main}(b)).
+At 55.3\% SUPER usage, the router recovers nearly all of the SUPER-path accuracy gain (22.3 vs.\ 22.5 AP@[.50:.95]) while reducing computation from 51.72 to 43.43 GFLOPs/frame ($-16.0\%$), latency from 40.06 to 33.80 ms ($-15.6\%$), and energy consumption from 13250 to 11043 mJ ($-16.7\%$).
+Throughput correspondingly increases from 25.0 to 29.6 FPS ($+18.4\%$).
 
 The same behavior carries over to the large-scale, high-resolution Waymo Open benchmark (Figure~\ref{fig:main}(c)).
 At only 35\% SUPER usage, the router recovers nearly all of the SUPER-path accuracy gain (38.7 vs.\ 38.9 AP@[.50:.95], within 0.2 point of the ceiling) while reducing computation from 134.84 to 103.21 GFLOPs/frame ($-23.5\%$), latency from 16.51 to 14.05 ms ($-14.9\%$), and energy consumption from 2108 to 1677 mJ ($-20.4\%$).
 Throughput correspondingly increases from 60.6 to 71.2 FPS ($+17.5\%$).
-Notably, the advantage-regression router remains the only strategy that improves monotonically from the very first frames routed to the deep path, whereas the heuristic baselines (most visibly edge density) initially \emph{degrade} accuracy below the always-base anchor by spending the SUPER budget on uninformative frames.
-
-
-
-\subsubsection{Advantage Regression Quality}
-\label{sec:results_calibration}
-
-Because deployment routes by thresholding the predicted advantage $\hat{A}$, the router need not predict the exact advantage magnitude; instead, it must correctly rank frames according to how much they benefit from the deep path. 
-Figure~\ref{fig:calibration} evaluates this property by grouping validation images into deciles based on $\hat{A}$ and reporting the mean true advantage $A = L_{\text{base}} - L_{\text{super}}$ within each group. 
-On all three datasets, the mean true advantage increases consistently with the predicted decile, indicating that frames assigned higher scores indeed benefit more from deeper execution.
-This confirms that the router successfully captures the relative utility of the deep path, which is the key requirement for threshold-based routing. 
-We emphasize ranking rather than per-image regression accuracy because the single-image target is inherently noisy, making robust ordering a more meaningful indicator of deployment performance.
-
-The pronounced increase in the highest decile is explained by the distribution of the true advantage itself (Figure~\ref{fig:adv_dist}). 
-The advantage is heavily concentrated near zero while exhibiting a long positive tail, indicating that most frames gain little from deeper execution whereas a small subset benefits substantially. 
-The router successfully concentrates these rare high-payoff frames into the top-ranked decile, enabling limited computational resources to be allocated where deeper execution yields the greatest return. 
-This positive tail is noticeably wider on KITTI ($\sigma{=}0.21$) than on BDD100K ($\sigma{=}0.10$). 
-Accordingly, the advantage distribution on BDD100K spans a much narrower range, as also reflected by the different y-axis scales in Figure~\ref{fig:calibration}, meaning that most achievable operating points are covered by a relatively narrow range of threshold values $\tau$.
-
-
+Notably, the advantage-regression router remains the only strategy that improves monotonically from the very first frames routed to the deep path, whereas the heuristic baselines (most visibly edge density) initially degrade accuracy below the always-base anchor by spending the SUPER budget on uninformative frames.
 
 \begin{figure*}[t]
 \centering
@@ -325,6 +307,25 @@ Accordingly, the advantage distribution on BDD100K spans a much narrower range, 
 \label{fig:budget}
 \end{figure*}
 
+
+\subsubsection{Advantage Regression Quality}
+\label{sec:results_calibration}
+
+Because deployment routes by thresholding the predicted advantage $\hat{A}$, the router need not predict the exact advantage magnitude; instead, it must correctly \textit{rank} frames according to how much they benefit from the deep path. 
+Figure~\ref{fig:calibration} evaluates this property by grouping validation images into deciles based on $\hat{A}$ and reporting the mean true advantage $A = L_{\text{base}} - L_{\text{super}}$ within each group. 
+On all three datasets, the mean true advantage increases consistently with the predicted decile, indicating that frames assigned higher scores indeed benefit more from deeper execution.
+This confirms that the router successfully captures the relative utility of the deep path, which is the key requirement for threshold-based routing. 
+We emphasize ranking rather than per-image regression accuracy because the single-image target is inherently noisy, making robust ordering a more meaningful indicator of deployment performance.
+
+The pronounced increase in the highest decile is a direct consequence of the true advantage's right-skewed distribution (Figure~\ref{fig:adv_dist}). 
+While this rightward skew indicates that deeper execution generally yields lower detection losses, the distribution is heavily concentrated near zero. 
+This means that for the vast majority of frames, the benefit of the super path is present but modest. 
+In contrast, the long positive tail reveals that a small minority of frames experience substantial gains. 
+The router successfully isolates these rare, high-payoff frames into the top-ranked decile, ensuring that limited computational resources are allocated precisely where deeper execution yields the greatest return. 
+This positive tail is noticeably wider on KITTI ($\sigma{=}0.21$) and Waymo ($\sigma{=}0.22$) compared to BDD100K ($\sigma{=}0.10$). 
+Accordingly, the advantage distribution on BDD100K spans a much narrower range, as reflected by the different y-axis scales in Figure~\ref{fig:calibration}, meaning that most achievable operating points for this dataset are governed by a relatively narrow band of threshold values $\tau$.
+
+
 \subsubsection{Runtime Latency-Budget Tracking}
 \label{sec:results_budget}
 The single-scalar threshold $\tau$ exposes the operating point as a tunable dial, allowing the detector to be steered at runtime to track a time-varying latency budget $L^\star(t)$ (e.g., a thermal- or battery-driven schedule) without any retraining. 
@@ -332,13 +333,14 @@ We wrap $\tau$ in a proportional-integral (PI) control loop: the controller comp
 To stress the controller under realistic non-stationary conditions rather than abrupt synthetic boundaries, we concatenate BDD100K MOT sequences with alternating scene conditions (night$\leftrightarrow$daytime, city$\leftrightarrow$highway, clear$\leftrightarrow$rainy). 
 This forces the input distribution---and hence the expected advantage of the deep path---to drift continuously as the scene evolves.
 
-Because individual frames strictly execute at discrete latencies (the super or base), no single frame can exactly match an intermediate target budget. 
-Thus, the controllable quantity is the mean latency, effectively the fraction of frames routed to the super path, which the PI controller regulates using the EMA error. 
-Figure~\ref{fig:budget} evaluates this runtime tracking as a live on-device closed loop. 
-To visualize the tracked mean without the artificial phase delay inherently introduced by causal trailing filters, we smooth the binary per-frame measurements using a zero-phase (centered) moving average. 
-This purely offline visualization accurately reflects the controller's tracking quality without smoothing-induced lag, while the underlying closed loop remains unchanged. 
-The realized mean latency tracks both step and sawtooth target budgets with exceptional precision across all condition drifts, achieving a mean absolute error of only $0.18$--$0.30$\,ms. 
-Ultimately, a single trained router successfully turns a static Pareto front into a robust, runtime-adjustable system that seamlessly adapts to dynamic environments.
+Because routing decisions are binary, each frame executes either the SUPER or BASE path, making fine-grained latency control impossible at the per-frame level. 
+In practice, however, deployment constraints are typically imposed on average latency rather than individual frames. 
+We therefore regulate the mean latency by adjusting the fraction of frames routed to the SUPER path through a PI controller driven by the EMA tracking error.
+Figure~\ref{fig:budget} evaluates this runtime tracking in a live on-device closed loop. 
+To visualize the tracked mean without the phase delay introduced by causal trailing filters, we smooth the binary per-frame latency measurements using a zero-phase (centered) moving average. 
+This offline visualization preserves the true tracking behavior while avoiding smoothing-induced lag, leaving the underlying control loop unchanged.
+The realized mean latency closely tracks both step and sawtooth target budgets across all condition drifts, achieving a mean absolute error of only $0.18$--$0.30$,ms. 
+Ultimately, a single trained router transforms a static Pareto front into a runtime-adjustable system, enabling precise latency-budget tracking despite relying on binary per-frame routing decisions.
 
 
 \subsubsection{TensorRT Deployment}
@@ -346,7 +348,7 @@ Ultimately, a single trained router successfully turns a static Pareto front int
 A natural concern is whether depth routing remains practical on a production inference stack: TensorRT compiles a \emph{static} graph and cannot conditionally skip layers inside a single engine.
 We therefore realize routing by exporting the BASE and SUPER paths as two separate FP16 engines and keeping both resident in GPU memory; the router simply selects which engine to execute per frame.
 The only routing-specific concern is then the cost of \emph{switching} between the two resident engines every time the chosen path changes.
-We isolate this cost on an embedded NVIDIA Jetson Orin Nano (8\,GB unified memory, FP16, clocks pinned with \texttt{jetson\_clocks}) by comparing each single-path engine run against an \textsc{alternating} schedule that forces a BASE$\leftrightarrow$SUPER engine switch on \emph{every} frame---a pathological worst case far more frequent than any realistic routing trace, in which the chosen path typically persists for many consecutive frames.
+We isolate this cost on an embedded NVIDIA Jetson Orin Nano by comparing each single-path engine run against an alternating schedule that forces a BASE$\leftrightarrow$SUPER engine switch on \emph{every} frame---a pathological worst case far more frequent than any realistic routing trace, in which the chosen path typically persists for many consecutive frames.
 The switching overhead is then isolated as the latency of the alternating schedule minus the mean of the two static single-path runs.
 To verify that this holds across compute scales, we report it at two input resolutions---$384\times1248$ and $736\times1280$ (the KITTI and BDD100K evaluation resolutions, respectively)---since it is the input resolution, not the dataset, that sets the per-engine cost (Table~\ref{tab:trt}).
 Even under this per-frame worst case, switching costs only $+0.05\%$ at $384\times1248$ and $+0.16\%$ at $736\times1280$ over the single-path mean, confirming that engine switching is effectively free: because both FP16 engines are held resident in GPU memory, a switch merely selects which execution context to launch and incurs no weight reload or memory transfer.
@@ -361,6 +363,7 @@ FP16 quantization slightly perturbs the router's predicted advantage $\hat{A}$, 
 Crucially, quantization shifts only the \emph{calibration} of $\tau$, not the ranking it induces: $\hat{A}$ remains monotone, so the same accuracy--efficiency frontier is reachable, merely at different threshold values.
 Recovering a target operating point therefore requires no retraining---only a one-pass recalibration of the $\tau$-to-budget map on a small held-out clip evaluated through the FP16 engines.
 In the budget-tracking deployment (Sec.~\ref{sec:results_budget}) even this step is unnecessary: the PI controller adjusts $\tau$ online from the realized latency, absorbing the FP16 shift automatically.
+
 
 \begin{table}[!t]
 \caption{
@@ -403,21 +406,25 @@ switch overhead & \multicolumn{4}{l}{$+0.052$\,ms\ \ ($+0.16\%$)}\\
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.9\columnwidth]{fig_abl_feat_ap5095.pdf}
-\caption{Feature-source ablation on BDD100K (AP@[.50:.95] vs.\ SUPER usage; mean
-$\pm$ std over $5$ seeds). The three sources are close, but the both-feature router
-attains the best-or-tied mean with the tightest seed band, whereas backbone-only has
-the widest variance.}
+\caption{
+    Ablation on feature sources for the router on BDD100K. 
+    Using both backbone and neck features yields the best-or-tied mean performance and the most stable routing behavior across training seeds.
+}
 \label{fig:abl_feat_source}
 \end{figure}
 
-We compare three feature sources for the router on both datasets: the backbone pyramid features (input-level representations, before the detection neck), the neck features (prediction-level representations, immediately before the heads), and their concatenation (both). 
+We evaluate three potential feature sources for the router: the backbone pyramid features (input-level representations extracted before the detection neck), the neck features (prediction-level representations immediately preceding the detection heads), and their concatenation (both). 
+Figure~\ref{fig:abl_feat_source} presents the results on BDD100K.
 
-As illustrated in Figure~\ref{fig:abl_feat_source}, the mean accuracy--efficiency trajectories of all three configurations are largely comparable on the BDD100K dataset. 
-However, analyzing the performance variance across multiple training seeds reveals a critical distinction in routing stability. 
-Relying solely on the backbone yields the widest variance band (red shaded area), suggesting that early-stage representations alone lack the task-specific refinement necessary for consistent advantage prediction. 
-Conversely, the concatenation of both feature sets (green curve) consistently attains the best-or-tied mean performance across the entire operational range while exhibiting the tightest variance. 
-By providing the router simultaneously with coarse, low-level spatial context from the backbone and refined, task-specific semantics from the neck, the system achieves the most robust routing behavior. 
-Given that this concatenation introduces negligible computational overhead (as previously established in Table~\ref{tab:overhead}), we confidently adopt the \emph{both} configuration as our default design.
+While all three configurations exhibit similar mean accuracy--efficiency trade-offs, their stability differs noticeably across five training seeds. 
+The backbone-only router shows the widest performance variance (red shaded region). 
+Because backbone features represent the visual encoding prior to multi-scale aggregation, they lack the fully fused, task-aligned context that directly dictates the final prediction difficulty. 
+Relying solely on these pre-fusion features forces the router to implicitly infer the outcome of the complex neck operations, making the routing policy more sensitive to initialization and training noise.
+
+In contrast, combining the backbone and neck features consistently achieves the best-or-tied mean performance while exhibiting the narrowest variance band. 
+By providing the router with both the raw hierarchical feature state and the aggregated, task-specific context, the network observes a more comprehensive representation of the frame's inherent difficulty. 
+This enables a much more robust and consistent estimation of the deep-path advantage.
+Since this combined design incurs negligible additional computational overhead (Table~\ref{tab:overhead}), we adopt the \emph{both} configuration as the default feature source throughout the paper.
 
 
  
@@ -427,37 +434,46 @@ Given that this concatenation introduces negligible computational overhead (as p
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.9\columnwidth]{fig_abl_router_grid_ap5095.pdf}
-\caption{Router design and grid resolution on KITTI. GAP-MLP is compared with
-TinyConv at $2\times2$ and $8\times8$ grids in AP@.50:.95.}
+\caption{
+    Ablation on router architecture and grid resolution on KITTI. 
+    % TinyConv with a coarse $2\times2$ grid consistently matches or outperforms larger grids, suggesting that preserving fine-grained spatial detail is unnecessary for robust routing decisions.
+}
 \label{fig:abl_router_grid}
 \end{figure}
 
-We compare GAP-MLP with TinyConv at $2\times2$ and $8\times8$ grids (Figure~\ref{fig:abl_router_grid}). 
-As shown in the performance trajectories, the TinyConv architecture with a coarse $2\times2$ pooling grid consistently achieves the optimal accuracy--efficiency trade-off, outperforming both the spatially-agnostic GAP-MLP and the higher-resolution $8\times8$ variant.
-The gap between GAP-MLP and TinyConv $2\times2$ highlights the importance of spatial awareness. 
-Because GAP-MLP globally collapses the feature maps, it discards all spatial layout information. 
-The superiority of the $2\times2$ grid indicates that preserving a coarse geometric context---allowing the router to roughly distinguish where dense or difficult objects might be located in the frame---provides valuable cues for predicting the advantage of the deep path.
+We evaluate the impact of spatial resolution on the router's predictive capacity by comparing a spatially-agnostic GAP-MLP with TinyConv architectures utilizing $2\times2$ and $8\times8$ pooling grids (Figure~\ref{fig:abl_router_grid}).
+As illustrated in the performance trajectories, the TinyConv router with a coarse $2\times2$ grid consistently achieves the optimal accuracy--efficiency trade-off. 
+The performance gap between the $2\times2$ variant and GAP-MLP highlights the necessity of spatial awareness. 
+Because GAP-MLP globally collapses the feature maps, it entirely discards spatial layout. 
+The superiority of the $2\times2$ grid demonstrates that preserving a coarse geometric context, which enables the router to roughly localize dense or difficult object clusters within the frame, provides critical cues for estimating the utility of the deep path.
 Conversely, increasing the spatial grid resolution to $8\times8$ proves detrimental. 
-Not only does it yield the lowest mean performance, but it also suffers from severe instability across varying training seeds, as evidenced by its conspicuously wide variance band (green shaded area). 
-This suggests that forcing a lightweight router to process overly fine-grained spatial details causes it to overfit to local feature patterns rather than learning a generalized representation of overall scene difficulty.
-Consequently, the $2\times2$ grid emerges as the sweet spot, providing just enough spatial layout to inform routing decisions without introducing the optimization challenges of higher resolutions.
+This high-resolution configuration not only yields the lowest mean performance but also suffers from severe instability across different training seeds, as evidenced by its significantly wider variance band (green shaded area). 
+This instability suggests that forcing a lightweight router to process overly fine-grained spatial details causes it to overfit to local feature noise rather than learning a robust, generalized representation of overall scene difficulty. 
+Consequently, the $2\times2$ grid emerges as the optimal configuration, supplying sufficient spatial context to effectively inform routing decisions while avoiding the optimization challenges associated with higher resolutions.
 
 
-\subsubsection{Previous-Action Sampling Ratio $p(\mathrm{super})$}
-\label{sec:abl_prevaction}
-During training, we sample the assumed previous action (the path whose features the router conditions on) as \textsc{super} with probability $p$, sweeping $p \in \{0.0, 0.5, 1.0\}$ (Figure~\ref{fig:abl_prevaction}). We find that the balanced setting $p = 0.5$ yields the best performance, outperforming both extreme configurations.
-This behavior stems from a train-serve distribution matching effect. 
-At deployment, the router must read features produced by whichever path executed on the previous frame, whether it was \textsc{base} or \textsc{super}, and the same image yields slightly different feature maps under each path. 
-If training only exposes \textsc{super} path features ($p = 1.0$), the router fails to calibrate to \textsc{base} path features and mis-ranks frames whenever the previous frame ran \textsc{base}. Conversely, $p = 0.0$ fails symmetrically. Training with a balanced $p = 0.5$ exposes the router to both feature distributions equally, ensuring that its advantage prediction remains calibrated regardless of the upstream routing decision. 
-The takeaway is that the previous action is an essential component of the router's input distribution, and balanced sampling is vital for robust, causal per-frame deployment.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.9\columnwidth]{fig_abl_prevp_ap5095.pdf}
-\caption{Previous-action sampling ratio $p(\mathrm{super})$ during training
-(AP@.50:.95) on KITTI.
+\caption{
+    Ablation on the previous-action sampling ratio $p$ on KITTI. 
+    The balanced setting ($p=0.5$) achieves the most robust performance by reducing train-deployment distribution shift.
 }
 \label{fig:abl_prevaction}
 \end{figure}
+
+
+
+\subsubsection{Previous-Action Sampling Ratio $p(\mathrm{super})$}
+\label{sec:abl_prevaction}
+
+During training, we simulate the prior frame's routing decision by sampling the assumed previous action as super with probability $p$, where $p$ represents the path whose features the router conditions on. 
+We evaluate three configurations: $p \in \{0.0, 0.5, 1.0\}$. 
+As illustrated Figure~\ref{fig:abl_prevaction}, the balanced setting of $p = 0.5$ yields the most robust performance, consistently outperforming both extreme configurations.
+This behavior is driven by the need to mitigate train-deployment distribution shift. 
+At deployment, the router must process features generated by whichever path actually executed on the previous frame. 
+Since the two paths produce slightly different feature representations for the same input, training on only one path ($p=1.0$ or $p=0.0$) leaves the router poorly calibrated when the other path is encountered at runtime. 
+In contrast, $p=0.5$ exposes the router equally to both feature distributions, resulting in more robust advantage estimation and more stable routing decisions during causal video inference.
 
 
