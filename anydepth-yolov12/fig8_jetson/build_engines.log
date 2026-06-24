@@ -1,5 +1,0 @@
-=== build base ===
-[*] trt_bench/onnx/bdd_pooled/base.onnx -> trt_bench/onnx/bdd_pooled/base.fp16.engine  (fp16=True)
-=== build super ===
-[*] trt_bench/onnx/bdd_pooled/super.onnx -> trt_bench/onnx/bdd_pooled/super.fp16.engine  (fp16=True)
-=== ALL ENGINES DONE ===

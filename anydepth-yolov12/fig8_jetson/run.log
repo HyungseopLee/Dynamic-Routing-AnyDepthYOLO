@@ -1,9 +1,0 @@
-FlashAttention is not available on this device. Using scaled_dot_product_attention instead.
-task: detect
-Detected YOLOv12AnyDepth model from weights, switching to AnyDepth task_map
-[*] night_dawn: 1011 frames, 5 segments
-[*] city_highway: 915 frames, 5 segments
-[*] clear_rainy: 1011 frames, 5 segments
-[*] measured anchors: BASE=105.74  SUPER=173.86 ms  band [112.55, 167.05];  tau in [-0.066, 0.049]
-
-scenario      budget       SUPER%

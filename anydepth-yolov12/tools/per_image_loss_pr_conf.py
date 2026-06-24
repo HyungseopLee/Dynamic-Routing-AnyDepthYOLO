@@ -15,7 +15,7 @@ Outputs a single wide CSV; all downstream analyze_* scripts read from it.
 Usage:
     # bdd100k
     PYTHONPATH=$PWD python tools/per_image_loss_pr_conf.py \
-        --weight ./finetuned_bdd100k/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.6_orig_mAP34.3_33.1.pt \
+        --weight ./finetuning_AnyDepthYOLO/weights/bdd100k/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.6_orig_mAP34.3_33.1.pt \
         --data bdd100k.yaml --imgsz 1280 \
         --out ./analysis/bdd100k-AnyDepth/per_image_loss_pr_conf.csv
 

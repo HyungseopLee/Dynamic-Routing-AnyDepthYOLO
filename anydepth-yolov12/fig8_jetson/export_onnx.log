@@ -1,9 +1,0 @@
-FlashAttention is not available on this device. Using scaled_dot_product_attention instead.
-/home/hslee/context-anydepth-det/anydepth-yolov12/ultralytics/nn/modules/head.py:102: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
-  if self.format != "imx" and (self.dynamic or self.shape != shape):
-/home/hslee/context-anydepth-det/anydepth-yolov12/ultralytics/utils/tal.py:338: TracerWarning: Iterating over a tensor might cause the trace to be incorrect. Passing a tensor of different shape won't change the number of iterations executed (and might lead to errors or silently give incorrect results).
-  for i, stride in enumerate(strides):
-task: detect
-Detected YOLOv12AnyDepth model from weights, switching to AnyDepth task_map
-[*] base: skip=all -> trt_bench/onnx/bdd_pooled/base.onnx  (input 1x3x736x1280, +raw tap maps [4, 6, 8, 14, 17, 20])
-[*] super: skip=none -> trt_bench/onnx/bdd_pooled/super.onnx  (input 1x3x736x1280, +raw tap maps [4, 6, 8, 14, 17, 20])

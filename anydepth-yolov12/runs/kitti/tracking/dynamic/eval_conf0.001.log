@@ -1,3 +1,0 @@
-/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:54: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
-  import pynvml  # type: ignore[import]
-FlashAttention is not available on this device. Using scaled_dot_product_attention instead.
