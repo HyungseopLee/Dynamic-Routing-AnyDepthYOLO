@@ -51,9 +51,21 @@ Checkpoint key: `state_dict` (not `model_state`).
 
 Engines: `method_advantage_regress/jetson/onnx/bdd_pooled/{base,super,router}.fp16.engine`
 
-PI controller tuning for RTX3090 TRT backend:
-- `gscale = (TAU_HI - TAU_LO) / (l_super - l_base)` ≈ 0.10 (auto-computed)
-- **Good params:** `--kp 0.28 --ki 0.06 --beta 0.93 --warmup 60 --win 60`
+PI controller tuning:
+- `gscale = (TAU_HI - TAU_LO) / (l_super - l_base)` (auto-computed)
+- **RTX 3090 TRT (720×1280 BDD):** `--kp 0.28 --ki 0.06 --beta 0.93 --warmup 60 --win 60`
+  - l_base=3.24ms, l_super=5.20ms
+- **Jetson Orin Nano TRT (576×1024 BDD):** `--kp 1.1 --ki 0.18 --beta 0.95 --warmup 60 --win 60`
+  - l_base=14.45ms, l_super=23.37ms
+  - Engines: `trt_bench/onnx/bdd576_pooled/{base,super,router}.fp16.engine`
+  - Final figure: `method_advantage_regress/outputs/bdd100k/jetson_trtengine_576×1024_b0.95_kp1.1_ki0.18_warmup60_window60.pdf`
+  - MAE: step 0.30~0.37 ms, sawtooth 0.66~0.73 ms (all < 1 ms)
+  - Code changes in `online_budget_demo_stream.py`: per-family τ init + L_ema init at Ltgt[0]
+- **Jetson Orin Nano TRT (720×1280 BDD, original res):** `--kp 2.0 --ki 0.33 --beta 0.85 --warmup 60 --win 30`
+  - l_base=25.12ms, l_super=42.12ms
+  - Engines: `trt_bench/onnx/bdd_pooled/{base,super,router}.fp16.engine`
+  - Final figure: `method_advantage_regress/outputs/bdd100k/jetson_trtengine_720×1280_b0.85_kp2.0_ki0.33_warmup60_window30.pdf`
+  - MAE: step 0.37~0.44 ms, sawtooth 0.55~0.60 ms (all < 1 ms)
 - PyTorch backend params: `--kp 0.020 --ki 0.004 --beta 0.85`
 
 ## Google Drive

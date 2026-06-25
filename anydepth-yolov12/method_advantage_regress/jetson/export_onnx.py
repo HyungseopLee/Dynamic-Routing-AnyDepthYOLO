@@ -34,7 +34,7 @@ Step 3 — (optional) export router ONNX (see export_router_onnx.py):
         --onnx method_advantage_regress/jetson/onnx/bdd_pooled/router.onnx --fp16
 
 Step 4 — run TRT budget-tracking demo (see online_budget_demo_stream.py):
-
+    # RTX 3090 (736×1280)
     python -m method_advantage_regress.jetson.online_budget_demo_stream \
     --base  method_advantage_regress/jetson/onnx/bdd_pooled/base.fp16.engine \
     --super method_advantage_regress/jetson/onnx/bdd_pooled/super.fp16.engine \
@@ -45,6 +45,20 @@ Step 4 — run TRT budget-tracking demo (see online_budget_demo_stream.py):
     --kp 0.28 --ki 0.06 --beta 0.93 --warmup 60 --win 60 \
     --dump method_advantage_regress/outputs/bdd100k/online_budget_demo_trt.json \
     --out  method_advantage_regress/outputs/figures/fig_scenario_budget_trt.pdf
+    
+    # Jetson Orin Nano (576×1024)
+    python -m method_advantage_regress.jetson.online_budget_demo_stream \
+    --base  method_advantage_regress/jetson/onnx/bdd_pooled/base.fp16.engine \
+    --super method_advantage_regress/jetson/onnx/bdd_pooled/super.fp16.engine \
+    --policy method_advantage_regress/outputs/bdd100k/policy_both_0.pt \
+    --router_engine method_advantage_regress/jetson/onnx/bdd_pooled/router.fp16.engine \
+    --scenarios method_advantage_regress/outputs/bdd100k/scenarios.json \
+    --mot_root /media/data/bdd100k_mot/val \
+    --kp 0.28 --ki 0.06 --beta 0.93 --warmup 60 --win 60 \
+    --dump method_advantage_regress/outputs/bdd100k/online_budget_demo_trt.json \
+    --out  method_advantage_regress/outputs/figures/fig_scenario_budget_trt.pdf
+    
+    
     
     
 

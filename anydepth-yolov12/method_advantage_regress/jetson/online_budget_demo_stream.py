@@ -175,12 +175,16 @@ def main():
     # and cannot reach the operating point its budget needs (a scene-dependent tracking
     # bias). Spanning every family's Ahat range lets tau reach any scene's operating point.
     fam0 = next(iter(scen))
-    wb, ws, wa = [], [], []
+    wb, ws = [], []
+    wa_per_fam = {}   # per-family advantages for accurate tau initialisation
+    wa_fam0 = []
     for i, (bgr, _first) in enumerate(stream_family(meta[fam0]["order"])):
         if i >= args.warmup:
             break
-        lb, ab = run_frame(bgr, "base"); wb.append(lb); wa.append(ab)
-        ls, as_ = run_frame(bgr, "super"); ws.append(ls); wa.append(as_)
+        lb, ab = run_frame(bgr, "base"); wb.append(lb); wa_fam0.append(ab)
+        ls, as_ = run_frame(bgr, "super"); ws.append(ls); wa_fam0.append(as_)
+    wa_per_fam[fam0] = wa_fam0
+    wa = list(wa_fam0)   # global range still spans all families
     l_base = float(np.median(wb[len(wb) // 2:]))
     l_super = float(np.median(ws[len(ws) // 2:]))
     lo = l_base + 0.10 * (l_super - l_base)
@@ -189,11 +193,14 @@ def main():
     for fam in scen:
         if fam == fam0:
             continue
+        wa_fam = []
         for i, (bgr, _first) in enumerate(stream_family(meta[fam]["order"])):
             if i >= args.warmup:
                 break
-            wa.append(run_frame(bgr, "base")[1])
-            wa.append(run_frame(bgr, "super")[1])
+            wa_fam.append(run_frame(bgr, "base")[1])
+            wa_fam.append(run_frame(bgr, "super")[1])
+        wa_per_fam[fam] = wa_fam
+        wa.extend(wa_fam)
     TAU_HI = float(max(wa)) + 0.03
     TAU_LO = float(min(wa)) - 0.03
     tau0 = 0.5 * (TAU_HI + TAU_LO)
@@ -208,10 +215,15 @@ def main():
           f"band [{lo:.2f}, {hi:.2f}];  tau in [{TAU_LO:.3f}, {TAU_HI:.3f}]  "
           f"gscale={gscale:.4f} -> kp={kp:.2e} ki={ki:.2e}", flush=True)
 
-    def online_loop(order, Ltgt):
+    def online_loop(order, Ltgt, fam):
         n = len(Ltgt)
-        config = "base"; tau = TAU_HI; integ = 0.0
-        L_ema = l_base
+        # Use per-family advantages so the initial τ is calibrated to this scene's
+        # advantage distribution rather than the global (cross-family) pool.
+        wa_fam = wa_per_fam.get(fam, wa)
+        init_pct = float(np.clip((Ltgt[0] - l_base) / (l_super - l_base), 0.0, 1.0))
+        tau_init = float(np.clip(np.quantile(wa_fam, 1.0 - init_pct), TAU_LO, TAU_HI))
+        config = "base"; tau = tau_init; integ = 0.0
+        L_ema = float(Ltgt[0])
         realized = np.full(n, np.nan); n_super = 0; produced = 0
         for t, (bgr, first) in enumerate(stream_family(order)):
             if first:
@@ -219,6 +231,10 @@ def main():
             lat, ahat = run_frame(bgr, config)
             realized[t] = lat; produced = t + 1; n_super += (config == "super")
             L_ema = args.beta * L_ema + (1 - args.beta) * lat
+            # On a sudden target drop (sawtooth reset), flush integrator windup so the
+            # proportional term alone drives τ to TAU_HI (all BASE) immediately.
+            if t > 0 and (Ltgt[t] - Ltgt[t - 1]) < -1.0:
+                integ = 0.0
             e = Ltgt[t] - L_ema
             # Positional PI with back-calculation anti-windup (un-saturates the instant
             # the error reverses, so a falling budget is tracked rather than stuck).
@@ -242,7 +258,7 @@ def main():
         for bkind in ("step", "sawtooth"):
             Ltgt = target_schedule(bkind, n, lo, hi)
             t_cell = time.perf_counter()
-            realized, super_rate = online_loop(meta[fam]["order"], Ltgt)
+            realized, super_rate = online_loop(meta[fam]["order"], Ltgt, fam)
             Ltgt = Ltgt[:len(realized)]   # match trimmed realized length
             print(f"    [{fam}/{bkind}] {len(realized)} frames in {time.perf_counter()-t_cell:.1f}s",
                   flush=True)
