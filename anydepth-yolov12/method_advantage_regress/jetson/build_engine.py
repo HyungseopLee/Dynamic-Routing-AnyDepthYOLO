@@ -1,6 +1,16 @@
 """Build a TensorRT engine from an ONNX file (FP16 by default).
 
-    python method_advantage_regress/jetson/build_engine.py --onnx method_advantage_regress/jetson/onnx/bdd/base.onnx --fp16
+Typical usage — build BASE, SUPER, and router engines for BDD100K:
+
+    python -m method_advantage_regress.jetson.build_engine \
+        --onnx method_advantage_regress/jetson/onnx/bdd_pooled/base.onnx --fp16
+    python -m method_advantage_regress.jetson.build_engine \
+        --onnx method_advantage_regress/jetson/onnx/bdd_pooled/super.onnx --fp16
+    python -m method_advantage_regress.jetson.build_engine \
+        --onnx method_advantage_regress/jetson/onnx/bdd_pooled/router.onnx --fp16
+
+See export_onnx.py (Step 1) and export_router_onnx.py (Step 3) for ONNX generation.
+On Jetson with limited RAM, use --workspace_gb 4.
 """
 import argparse
 from pathlib import Path

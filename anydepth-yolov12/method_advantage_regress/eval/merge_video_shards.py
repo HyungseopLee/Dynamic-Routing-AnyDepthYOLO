@@ -31,7 +31,7 @@ import numpy as np
 import torch
 
 import eval_baseline_kitti as B
-from method_advantage_regress.eval.eval_video_bdd import BDD_MOT_EVAL_CLS
+from method_advantage_regress.eval.eval_video import BDD_MOT_EVAL_CLS
 
 
 def compact_map_multi_iou(cls_arr, conf_arr, tp_arr, gt_count, iou_grid=B.IOU_GRID):

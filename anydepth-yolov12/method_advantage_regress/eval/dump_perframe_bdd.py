@@ -28,7 +28,7 @@ from ultralytics import YOLO  # noqa
 
 import eval_baseline_kitti as B  # noqa
 from method_advantage_regress.router.feature_tap import INPUT_LEVEL_LAYERS, STATE_LAYERS  # noqa
-from method_advantage_regress.eval.eval_video_bdd import (  # noqa
+from method_advantage_regress.eval.eval_video import (  # noqa
     parse_box_track, labeled_frames, load_policy, grid_vec, BDD_MOT_EVAL_CLS)
 
 OUT = Path(__file__).resolve().parent / "outputs"

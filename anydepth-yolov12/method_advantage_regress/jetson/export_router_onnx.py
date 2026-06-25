@@ -9,10 +9,17 @@ Inputs are the pre-pooled (C,grid,grid) tap groups the detector engine already e
   feat=both  -> iv = cat(input-level taps), pv = cat(pred-level taps)  -> logit
   feat=input -> iv only                                               -> logit
 
-    python method_advantage_regress/jetson/export_router_onnx.py \
-        --policy method_advantage_regress/jetson/assets/policy_both_0.pt \
+Requires a pooled detector engine (export_onnx.py --pool) to read iv/pv channel dims.
+After export, build the TRT engine with build_engine.py and pass it via --router_engine
+to online_budget_demo_stream.py.
+
+    python -m method_advantage_regress.jetson.export_router_onnx \
+        --policy method_advantage_regress/outputs/bdd100k/policy_both_0.pt \
         --base_engine method_advantage_regress/jetson/onnx/bdd_pooled/base.fp16.engine \
         --out method_advantage_regress/jetson/onnx/bdd_pooled/router.onnx
+
+    python -m method_advantage_regress.jetson.build_engine \
+        --onnx method_advantage_regress/jetson/onnx/bdd_pooled/router.onnx --fp16
 """
 import argparse
 import sys
@@ -24,7 +31,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from method_advantage_regress.eval.eval_video_bdd import load_policy
+from method_advantage_regress.eval.eval_video import load_policy
 from method_advantage_regress.router.feature_tap import INPUT_LEVEL_LAYERS, PRED_LEVEL_LAYERS
 
 

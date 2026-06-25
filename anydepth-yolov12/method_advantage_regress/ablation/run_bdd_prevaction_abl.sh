@@ -58,7 +58,7 @@ POLS="${POLS%,}"
 OUT_JSON=$PKG/outputs/bdd100k/eval/video_curve_prevp_both_bdd.json
 echo "  out: $OUT_JSON"
 
-$PY -m $PKG.eval_video_bdd \
+$PY -m $PKG.eval_video --dataset bdd100k \
   --weight finetuning_AnyDepthYOLO/weights/bdd100k/anydepth_best.pt \
   --policies "$POLS" \
   --grid 2 \

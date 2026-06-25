@@ -43,7 +43,7 @@ import torch.nn.functional as F
 
 from method_advantage_regress.router.feature_tap import (
     INPUT_LEVEL_LAYERS, PRED_LEVEL_LAYERS)
-from method_advantage_regress.eval.eval_video_bdd import load_policy
+from method_advantage_regress.eval.eval_video import load_policy
 
 TRT_LOGGER = trt.Logger(trt.Logger.ERROR)
 

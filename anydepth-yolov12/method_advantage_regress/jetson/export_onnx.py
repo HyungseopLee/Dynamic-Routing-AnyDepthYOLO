@@ -5,7 +5,49 @@ These two static graphs are then converted to TensorRT engines (build_engine.py)
 runtime the router selects which engine to run per frame -- this is how depth routing
 is realized under TensorRT, which cannot skip layers inside a single static engine.
 
-    python method_advantage_regress/jetson/export_onnx.py --weight <anydepth.pt> --imgsz 720 1280 --out_dir method_advantage_regress/jetson/onnx/bdd
+Use --pool to bake the 2x2 adaptive pooling of router feature taps into the engine
+graph (recommended for TRT deployment: saves ~2 ms/frame on Jetson vs host-side pooling).
+
+Full TRT pipeline for BDD100K:
+
+Step 1 — export pooled ONNX (router features pre-pooled inside the graph):
+
+    python -m method_advantage_regress.jetson.export_onnx \
+        --weight finetuning_AnyDepthYOLO/weights/bdd100k/best.pt \
+        --imgsz 720 1280 --pool \
+        --out_dir method_advantage_regress/jetson/onnx/bdd_pooled
+
+Step 2 — build TRT engines (see build_engine.py):
+
+    python -m method_advantage_regress.jetson.build_engine \
+        --onnx method_advantage_regress/jetson/onnx/bdd_pooled/base.onnx --fp16
+    python -m method_advantage_regress.jetson.build_engine \
+        --onnx method_advantage_regress/jetson/onnx/bdd_pooled/super.onnx --fp16
+
+Step 3 — (optional) export router ONNX (see export_router_onnx.py):
+
+    python -m method_advantage_regress.jetson.export_router_onnx \
+        --policy method_advantage_regress/outputs/bdd100k/policy_both_0.pt \
+        --base_engine method_advantage_regress/jetson/onnx/bdd_pooled/base.fp16.engine \
+        --out method_advantage_regress/jetson/onnx/bdd_pooled/router.onnx
+    python -m method_advantage_regress.jetson.build_engine \
+        --onnx method_advantage_regress/jetson/onnx/bdd_pooled/router.onnx --fp16
+
+Step 4 — run TRT budget-tracking demo (see online_budget_demo_stream.py):
+
+    python -m method_advantage_regress.jetson.online_budget_demo_stream \
+    --base  method_advantage_regress/jetson/onnx/bdd_pooled/base.fp16.engine \
+    --super method_advantage_regress/jetson/onnx/bdd_pooled/super.fp16.engine \
+    --policy method_advantage_regress/outputs/bdd100k/policy_both_0.pt \
+    --router_engine method_advantage_regress/jetson/onnx/bdd_pooled/router.fp16.engine \
+    --scenarios method_advantage_regress/outputs/bdd100k/scenarios.json \
+    --mot_root /media/data/bdd100k_mot/val \
+    --kp 0.28 --ki 0.06 --beta 0.93 --warmup 60 --win 60 \
+    --dump method_advantage_regress/outputs/bdd100k/online_budget_demo_trt.json \
+    --out  method_advantage_regress/outputs/figures/fig_scenario_budget_trt.pdf
+    
+    
+
 """
 import argparse
 import sys

@@ -27,7 +27,7 @@ POL_G8="${POL_G8%,}"
 
 echo ""
 echo "=== [1/2] Video eval grid=8 (TinyConv 8x8) ==="
-python -m $PKG.eval_video_bdd \
+python -m $PKG.eval_video --dataset bdd100k \
     --weight "$W" \
     --policies "$POL_G8" \
     --grid 8 --imgsz 720 1280 --conf 0.25 \

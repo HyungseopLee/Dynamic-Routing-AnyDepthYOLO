@@ -1,22 +1,35 @@
-"""On-device ONLINE latency-budget demo (RTX 3090) -- live version of the scenario
-budget-tracking figure (make_scenario_figures_bdd.py).
+"""On-device ONLINE latency-budget demo -- live version of the scenario budget-tracking
+figure. Runs the full closed loop LIVE: each frame executes EXACTLY ONE detector path,
+its latency is MEASURED on the fly, the router predicts the next-frame advantage from
+the features of the executed path, and a PI controller adjusts tau so the realized
+latency tracks a time-varying budget L*(t). Nothing is replayed.
 
-Unlike the replay simulator (sim_latency_budget.py / make_scenario_figures_bdd.py,
-which replay pre-recorded per-frame advantages and FIXED latency anchors), this runs
-the full closed loop LIVE for every scenario x budget cell: each frame executes
-EXACTLY ONE depth on the real detector, its latency is MEASURED on the fly, the
-router predicts the next-frame advantage from the features of the path actually
-executed, and a PI controller adjusts tau so the measured realized latency tracks a
-time-varying budget L*(t). Nothing is replayed.
+Rows = scenario families (night<->daytime, city<->highway, clear<->rainy),
+columns = {step, sawtooth} budgets. Self-calibrating warm-up measures live
+BASE/SUPER latency anchors on this device.
 
-It reproduces the same grid as the replay figure: rows = scenario families
-(night<->daytime, city<->highway, clear<->rainy from scenarios.json), columns =
-{step, sawtooth} budgets, with per-segment condition shading. Self-calibrating: a
-short warm-up measures the live BASE/SUPER anchors on this device.
+NOTE: loads all frames into RAM upfront (~8 GB for 3000 frames). For memory-
+constrained devices (e.g. Jetson) use online_budget_demo_stream.py instead.
 
-    conda run -n yolov12 python -m method_advantage_regress.jetson.online_budget_demo \
-        --weight finetuning_AnyDepthYOLO/weights/bdd100k/best.pt \
-        --policy method_advantage_regress/outputs/bdd100k/policy_both_0.pt
+Step 1 — run live inference and save dump:
+
+    python -m method_advantage_regress.jetson.online_budget_demo \
+        --weight  finetuning_AnyDepthYOLO/weights/bdd100k/best.pt \
+        --policy  method_advantage_regress/outputs/bdd100k/policy_both_0.pt \
+        --scenarios method_advantage_regress/outputs/bdd100k/scenarios.json \
+        --mot_root  /media/data/bdd100k_mot/val \
+        --dump method_advantage_regress/outputs/bdd100k/online_budget_demo.json \
+        --out  method_advantage_regress/outputs/figures/fig_scenario_budget.pdf
+
+Step 2 — re-render from saved dump (instant, no inference):
+    python -m method_advantage_regress.jetson.online_budget_demo \
+        --dump method_advantage_regress/outputs/bdd100k/online_budget_demo.json \
+        --out  method_advantage_regress/outputs/figures/fig_scenario_budget.pdf \
+        --replot [--win 60]
+
+The printed MAE is computed on the smoothed (centered moving-average, --win frames)
+realized latency vs the target budget. Raw per-frame MAE is ~3 ms; smoothed MAE
+reflects tracking quality of the visible curve.
 """
 import argparse
 import json
@@ -30,8 +43,8 @@ import numpy as np
 import torch
 from ultralytics import YOLO  # noqa
 
-from method_advantage_regress.router.feature_tap import INPUT_LEVEL_LAYERS, STATE_LAYERS  # noqa
-from method_advantage_regress.eval.eval_video_bdd import (  # noqa
+from method_advantage_regress.router.feature_tap import INPUT_LEVEL_LAYERS, PRED_LEVEL_LAYERS, STATE_LAYERS  # noqa
+from method_advantage_regress.eval.eval_video import (  # noqa
     parse_box_track, labeled_frames, load_policy, grid_vec)
 
 OUT = Path(__file__).resolve().parents[1] / "outputs"  # method_advantage_regress/outputs
@@ -193,11 +206,14 @@ def main():
         r = yolo.predict(source=bgr, imgsz=tuple(args.imgsz), conf=args.conf,
                          iou=0.7, skip=skip[config], verbose=False, device=dev)[0]
         det_ms = r.speed["preprocess"] + r.speed["inference"] + r.speed["postprocess"]
-        x = grid_vec(captured, INPUT_LEVEL_LAYERS, args.grid).unsqueeze(0)
-        x = x.mean(dim=(2, 3)) if is_gap else x
+        xi = grid_vec(captured, INPUT_LEVEL_LAYERS, args.grid).unsqueeze(0)
+        xp = grid_vec(captured, PRED_LEVEL_LAYERS, args.grid).unsqueeze(0) if feat != "input" else None
+        if is_gap:
+            xi = xi.mean(dim=(2, 3))
+            xp = xp.mean(dim=(2, 3)) if xp is not None else None
         cuda_sync(); t0 = time.perf_counter()
         with torch.no_grad():
-            ahat = float(net.logit(x, None, pid[config]))
+            ahat = float(net.logit(xi, xp, pid[config]))
         cuda_sync(); rtr_ms = (time.perf_counter() - t0) * 1000.0
         return det_ms + rtr_ms, ahat
 

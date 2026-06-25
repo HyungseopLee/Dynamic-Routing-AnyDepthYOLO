@@ -97,7 +97,7 @@ class JetsonPower:
 
 from method_advantage_regress.router.feature_tap import (
     INPUT_LEVEL_LAYERS, PRED_LEVEL_LAYERS, STATE_LAYERS)
-from method_advantage_regress.eval.eval_video_bdd import load_policy, grid_vec
+from method_advantage_regress.eval.eval_video import load_policy, grid_vec
 
 
 # --------------------------------------------------------------------------- #

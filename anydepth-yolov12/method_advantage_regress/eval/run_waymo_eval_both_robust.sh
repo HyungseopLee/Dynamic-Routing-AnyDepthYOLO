@@ -18,7 +18,7 @@ shard() {  # gpu, shard_id(0..3)
   local GPU=$1 SID=$2 RAW="$O/eval_both/shard_n${2}.pt"
   if [ -f "$RAW" ]; then echo "[$(date +%T)] shard $SID already done, skip"; return 0; fi
   echo "[$(date +%T)] shard $SID on GPU$GPU -> $RAW"
-  CUDA_VISIBLE_DEVICES=$GPU python -u -m $PKG.eval_video_waymo \
+  CUDA_VISIBLE_DEVICES=$GPU python -u -m $PKG.eval_video --dataset waymo \
     --weight "$W" --policies "$POL" --waymo_root /media/data/waymo_yolo/val \
     --grid 2 --imgsz 1280 1920 --conf 0.001 --val_cache "$O/cache_val_both.pt" \
     --budgets 10,20,30,40,50,60,70,80,90 --pi \

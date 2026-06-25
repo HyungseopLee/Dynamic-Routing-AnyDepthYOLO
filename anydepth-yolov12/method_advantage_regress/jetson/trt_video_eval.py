@@ -30,7 +30,7 @@ from ultralytics.data.augment import LetterBox
 from ultralytics.utils import ops
 
 from method_advantage_regress.router.feature_tap import INPUT_LEVEL_LAYERS
-from method_advantage_regress.eval.eval_video_bdd import (
+from method_advantage_regress.eval.eval_video import (
     parse_box_track, labeled_frames, load_policy)
 
 TRT_LOGGER = trt.Logger(trt.Logger.ERROR)

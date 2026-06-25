@@ -19,7 +19,7 @@ import torch
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from ultralytics import YOLO  # noqa
-from method_advantage_regress.eval.eval_video_bdd import BDD_MOT_EVAL_CLS  # noqa
+from method_advantage_regress.eval.eval_video import BDD_MOT_EVAL_CLS  # noqa
 
 OUT = Path(__file__).resolve().parent.parent / "outputs/figures"
 
