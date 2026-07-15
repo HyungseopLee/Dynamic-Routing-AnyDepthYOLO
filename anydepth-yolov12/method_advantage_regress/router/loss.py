@@ -1,11 +1,11 @@
-"""Policy training loss for method01 (2-level, path B: deterministic advantage).
+"""Router training loss for method01 (2-level, path B: deterministic advantage).
 
     L = L_acc + lambda_flops * L_flops + lambda_uni * L_uni
 
   - L_acc   = - mean_i ( p_super_i * A_i )
               A_i = (L_base[i] - L_super[i]).detach()  -- per-image advantage of
-              running SUPER, a constant w.r.t. the policy (detector is frozen).
-              p_super_i in (0,1) is the policy's soft probability of SUPER.
+              running SUPER, a constant w.r.t. the router (detector is frozen).
+              p_super_i in (0,1) is the router's soft probability of SUPER.
               Minimising raises p_super where SUPER actually helps (A>0) and
               lowers it where it does not (A<=0). No Gumbel/sampling needed: the
               objective is linear in the decision so the soft prob equals the
@@ -26,7 +26,7 @@ import torch
 import torch.nn.functional as F
 
 
-class PolicyLoss:
+class RouterLoss:
     def __init__(self, flops_table_path: str,
                  lambda_flops: float = 1.0, lambda_uni: float = 0.1,
                  uni_target: float = 0.5, standardize_adv: bool = True,
@@ -58,7 +58,7 @@ class PolicyLoss:
                  l_base: torch.Tensor, l_super: torch.Tensor):
         """
         Args:
-            p_super: [B] or [B,1] soft prob of SUPER (policy output, requires grad).
+            p_super: [B] or [B,1] soft prob of SUPER (router output, requires grad).
             l_base:  [B] per-image detection loss under BASE  (no grad).
             l_super: [B] per-image detection loss under SUPER (no grad).
         Returns:
@@ -67,7 +67,7 @@ class PolicyLoss:
         adv_raw = (l_base.view(-1) - l_super.view(-1)).detach()  # A_i, constant
 
         if self.mode == "regress":
-            # policy output is a direct advantage prediction (linear, no sigmoid).
+            # router output is a direct advantage prediction (linear, no sigmoid).
             # The regression loss form is ablatable (C1): magnitude losses
             # (mse/mae/huber) vs scale-invariant ranking (corr). Trade-off handled
             # by the eval threshold, so no flops/uni needed.

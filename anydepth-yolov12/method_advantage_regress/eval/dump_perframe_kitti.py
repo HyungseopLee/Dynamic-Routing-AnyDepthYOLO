@@ -19,7 +19,7 @@ detector forward only needs to happen once here.
 
     python -m method_advantage_regress.eval.dump_perframe_kitti \
         --weight runs/kitti/detect/anydepth-yolov12s/train/weights/best.pt \
-        --policy method_advantage_regress/outputs/kitti/ablation/policy_input_g2_s0.pt \
+        --router method_advantage_regress/outputs/kitti/ablation/router_input_g2_s0.pt \
         --grid 2 --imgsz 384 1248 --conf 0.001
 """
 
@@ -38,7 +38,7 @@ from ultralytics import YOLO
 
 import eval_baseline_kitti as B
 from method_advantage_regress.router.feature_tap import INPUT_LEVEL_LAYERS, STATE_LAYERS
-from method_advantage_regress.eval.eval_video import load_policy, grid_vec
+from method_advantage_regress.eval.eval_video import load_router, grid_vec
 from method_advantage_regress.train.build_cache import num_skippable
 
 BASE = Path(__file__).resolve().parent / "outputs"
@@ -47,7 +47,7 @@ BASE = Path(__file__).resolve().parent / "outputs"
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--weight", default="runs/kitti/detect/anydepth-yolov12s/train/weights/best.pt")
-    ap.add_argument("--policy", default=str(BASE / "kitti/ablation/policy_input_g2_s0.pt"))
+    ap.add_argument("--router", default=str(BASE / "kitti/ablation/router_input_g2_s0.pt"))
     ap.add_argument("--kitti_root", default="/media/data/kitti-tracking")
     ap.add_argument("--imgsz", type=int, nargs=2, default=[384, 1248])
     ap.add_argument("--grid", default="2")
@@ -66,12 +66,12 @@ def main():
     N = yolo.model.num_skippable_layers
     skip_super, skip_base = [False] * N, [True] * N
 
-    net, _ = load_policy(args.policy, device)
+    net, _ = load_router(args.router, device)
     in_c = (768 // len(INPUT_LEVEL_LAYERS)) * len(INPUT_LEVEL_LAYERS)
     with torch.no_grad():
         net(torch.zeros(2, in_c, G[0], G[1], device=device), None,
             torch.zeros(2, dtype=torch.long, device=device))
-    net.load_state_dict(torch.load(args.policy, map_location=device, weights_only=False)["state_dict"])
+    net.load_state_dict(torch.load(args.router, map_location=device, weights_only=False)["state_dict"])
     net.eval()
 
     captured = {}
@@ -134,7 +134,7 @@ def main():
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     with open(out, "wb") as f:
-        pickle.dump({"meta": {"weight": args.weight, "policy": args.policy,
+        pickle.dump({"meta": {"weight": args.weight, "router": args.router,
                               "grid": G, "imgsz": args.imgsz, "conf": args.conf},
                      "frames": frames_out}, f)
     print(f"[*] dumped {len(frames_out)} frames -> {out}")

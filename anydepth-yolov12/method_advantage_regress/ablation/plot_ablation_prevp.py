@@ -1,7 +1,7 @@
 """Fig 11 (re-run): prev-action sampling ratio ablation with feat=both on KITTI.
 
 Reads video_curve_prevp_both_g2.json produced by run_prevaction_abl.sh.
-policy family names: both_p00_s*, both_p05_s*, both_p10_s*
+router family names: both_p00_s*, both_p05_s*, both_p10_s*
   -> prev_p = 0.0 / 0.5 / 1.0
 
     python -m method_advantage_regress.ablation.plot_ablation_prevp \
@@ -34,7 +34,7 @@ P_STYLE = {
     "p10": ("tab:blue",  "$p=1.0$"),
 }
 # family prefix regex: both_p{tag}_s{seed}
-FAM_RE = re.compile(r"^policy_both_(p\d+)_s(\d+)$")
+FAM_RE = re.compile(r"^router_both_(p\d+)_s(\d+)$")
 
 
 def main():

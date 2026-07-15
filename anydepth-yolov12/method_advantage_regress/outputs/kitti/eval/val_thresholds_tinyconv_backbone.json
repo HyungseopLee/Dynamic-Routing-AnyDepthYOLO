@@ -13,7 +13,7 @@
       80,
       90
     ],
-    "policy_glob": "ablation/policy_input_s*.pt",
+    "router_glob": "ablation/router_input_s*.pt",
     "n_policies": 5,
     "datetime": "2026-06-03 14:53:50"
   },

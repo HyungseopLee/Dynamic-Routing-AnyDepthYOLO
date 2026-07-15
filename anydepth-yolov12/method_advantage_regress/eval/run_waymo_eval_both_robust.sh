@@ -11,7 +11,7 @@ cd "$(dirname "$0")/../.."
 PKG=method_advantage_regress
 O=$PKG/outputs/waymo
 W=finetuning_AnyDepthYOLO/weights/waymo/best.pt
-POL=$(for s in 0 1 2 3 4; do echo -n "seed$s=$O/policy_both_$s.pt,"; done | sed 's/,$//')
+POL=$(for s in 0 1 2 3 4; do echo -n "seed$s=$O/router_both_$s.pt,"; done | sed 's/,$//')
 mkdir -p "$O/eval_both"
 
 shard() {  # gpu, shard_id(0..3)

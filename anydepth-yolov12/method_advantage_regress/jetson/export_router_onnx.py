@@ -1,4 +1,4 @@
-"""Export the advantage-regression router (PolicyNetwork) as a standalone ONNX graph
+"""Export the advantage-regression router (RouterNetwork) as a standalone ONNX graph
 for TensorRT, so routing runs on-device in TRT instead of eager PyTorch.
 
 The deployed router is a SINGLE fixed graph: the path_embed (path-conditioning) is a
@@ -14,7 +14,7 @@ After export, build the TRT engine with build_engine.py and pass it via --router
 to online_budget_demo_stream.py.
 
     python -m method_advantage_regress.jetson.export_router_onnx \
-        --policy method_advantage_regress/outputs/bdd100k/policy_both_0.pt \
+        --router method_advantage_regress/outputs/bdd100k/router_both_0.pt \
         --base_engine method_advantage_regress/jetson/onnx/bdd_pooled/base.fp16.engine \
         --out method_advantage_regress/jetson/onnx/bdd_pooled/router.onnx
 
@@ -31,7 +31,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from method_advantage_regress.eval.eval_video import load_policy
+from method_advantage_regress.eval.eval_video import load_router
 from method_advantage_regress.router.feature_tap import INPUT_LEVEL_LAYERS, PRED_LEVEL_LAYERS
 
 
@@ -60,7 +60,7 @@ class RouterWrap(nn.Module):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--policy", required=True)
+    ap.add_argument("--router", required=True)
     ap.add_argument("--base_engine", required=True,
                     help="a pooled detector engine, to read iv/pv channel dims + grid")
     ap.add_argument("--out", required=True)
@@ -70,7 +70,7 @@ def main():
     args = ap.parse_args()
     dev = args.device if torch.cuda.is_available() else "cpu"
 
-    net, ckpt, feat, is_gap = load_policy(args.policy, dev)
+    net, ckpt, feat, is_gap = load_router(args.router, dev)
     use_pred = feat in ("both", "pred")
     in_c, grid = tap_channels(args.base_engine, INPUT_LEVEL_LAYERS)
     pr_c = tap_channels(args.base_engine, PRED_LEVEL_LAYERS)[0] if use_pred else 0

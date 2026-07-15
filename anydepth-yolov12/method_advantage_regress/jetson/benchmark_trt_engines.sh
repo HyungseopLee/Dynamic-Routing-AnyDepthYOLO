@@ -15,9 +15,9 @@ set -euo pipefail
 JB=method_advantage_regress/jetson
 ENG=$JB/onnx
 
-# dataset | H W | log name | detector weight | router policy
+# dataset | H W | log name | detector weight | router
 run() {
-  local ds="$1" H="$2" W="$3" log="$4" weight="$5" policy="$6"
+  local ds="$1" H="$2" W="$3" log="$4" weight="$5" router="$6"
   local out="$ENG/${ds}_pooled"
 
   # 1) detector -> base.onnx + super.onnx (2x2 pool baked in) -> FP16 engines
@@ -26,7 +26,7 @@ run() {
   python $JB/build_engine.py --onnx "$out/super.onnx" --fp16
 
   # 2) router -> router.onnx -> FP16 engine
-  python $JB/export_router_onnx.py --policy "$policy" --base_engine "$out/base.fp16.engine" --out "$out/router.onnx"
+  python $JB/export_router_onnx.py --router "$router" --base_engine "$out/base.fp16.engine" --out "$out/router.onnx"
   python $JB/build_engine.py --onnx "$out/router.onnx" --fp16
 
   # 3) benchmark -> log (BASE / SUPER / ALTERNATING + switch overhead + detector+router)
@@ -39,10 +39,10 @@ run() {
 }
 
 run kitti  384 1248  kitti.log    finetuning_AnyDepthYOLO/weights/kitti/best.pt \
-    method_advantage_regress/outputs/kitti/ablation/policy_both_g2_s0.pt
+    method_advantage_regress/outputs/kitti/ablation/router_both_g2_s0.pt
 
 run bdd    736 1280  bdd100k.log  finetuning_AnyDepthYOLO/weights/bdd100k/best.pt \
-    method_advantage_regress/outputs/bdd100k/policy_both_0.pt
+    method_advantage_regress/outputs/bdd100k/router_both_0.pt
 
 run waymo 1280 1920  waymo.log    finetuning_AnyDepthYOLO/weights/waymo/best.pt \
-    method_advantage_regress/outputs/waymo/policy_both_0.pt
+    method_advantage_regress/outputs/waymo/router_both_0.pt

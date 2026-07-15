@@ -22,14 +22,14 @@ OUT = ROOT / "outputs"
 TARGETS = [10, 20, 30, 40, 50, 60, 70, 80, 90]   # interior; 0/100 are the anchors
 
 CURVES = {
-    "KITTI":   (OUT / "kitti/eval/video_curve_main_both_g2.json", r"policy_both_s(\d+)"),
-    "BDD100K": (OUT / "bdd100k/eval/video_curve_full_aligned.json", r"policy_bn(\d+)"),
-    "Waymo":   (OUT / "waymo/eval_both/video_curve.json", r"policy_seed(\d+)"),
+    "KITTI":   (OUT / "kitti/eval/video_curve_main_both_g2.json", r"router_both_s(\d+)"),
+    "BDD100K": (OUT / "bdd100k/eval/video_curve_full_aligned.json", r"router_bn(\d+)"),
+    "Waymo":   (OUT / "waymo/eval_both/video_curve.json", r"router_seed(\d+)"),
 }
 
 
 def curve_arrays(curve_json, pol_re, metric="map"):
-    """Return (super%, thres, gflops, AP%) arrays for the policy sweep, averaged over
+    """Return (super%, thres, gflops, AP%) arrays for the router sweep, averaged over
     seeds and sorted by SUPER usage, plus the two anchors."""
     d = json.loads(Path(curve_json).read_text())
     pol_re = re.compile(pol_re)

@@ -17,11 +17,26 @@ rows x {step, sawtooth} budgets), but two things differ from online_budget_demo:
 Timed scope and everything else (live BASE/SUPER anchors, router-on-executed-path,
 display smoothing) match online_budget_demo, whose render/schedule helpers are reused.
 
-Step 1 — run live inference and save dump:
+Step 1a — TRT backend (base + super + router engines, RTX 3090):
+
+    python -m method_advantage_regress.jetson.online_budget_demo_stream \
+        --base   method_advantage_regress/jetson/onnx/bdd_pooled/base.fp16.engine \
+        --super  method_advantage_regress/jetson/onnx/bdd_pooled/super.fp16.engine \
+        --router method_advantage_regress/outputs/bdd100k/router_both_0.pt \
+        --router_engine method_advantage_regress/jetson/onnx/bdd_pooled/router.fp16.engine \
+        --scenarios method_advantage_regress/outputs/bdd100k/scenarios.json \
+        --mot_root  /media/data/bdd100k_mot/val \
+        --kp 1.0 --ki 0.10 --beta 0.75 --warmup 60 --win 30 \
+        --mode fps
+        # output auto-named: online_budget_demo_trt_<engdir>_<HxW>_<mode>_b<beta>_kp<kp>_ki<ki>_win<win>.{json,pdf}
+        # --mode: latency (default, ms) | fps | energy (mJ/frame via NVML, needs pynvml)
+        # final FPS-tracking figure params: --kp 1.0 --ki 0.10 --beta 0.75 --win 30
+
+Step 1b — PyTorch eager backend:
 
     python -m method_advantage_regress.jetson.online_budget_demo_stream \\
         --weight  finetuning_AnyDepthYOLO/weights/bdd100k/best.pt \\
-        --policy  method_advantage_regress/outputs/bdd100k/policy_both_0.pt \\
+        --router  method_advantage_regress/outputs/bdd100k/router_both_0.pt \\
         --scenarios method_advantage_regress/outputs/bdd100k/scenarios.json \\
         --mot_root  /media/data/bdd100k_mot/val \\
         --dump method_advantage_regress/outputs/bdd100k/online_budget_demo.json \\
@@ -52,9 +67,9 @@ method_advantage_regress/jetson/online_budget_demo_stream.py \
 Step 2 — re-render from saved dump (instant, no inference):
 
     python -m method_advantage_regress.jetson.online_budget_demo_stream \\
-        --dump method_advantage_regress/outputs/bdd100k/online_budget_demo.json \\
-        --out  method_advantage_regress/outputs/figures/fig_scenario_budget.pdf \\
+        --dump method_advantage_regress/outputs/bdd100k/online_budget_demo_trt_b0.93_kp0.28_ki0.06_warmup60_window60.json \\
         --replot [--win 60]
+        # --out can be specified to override the default PDF path
 
 The printed MAE is computed on the smoothed (centered moving-average, --win frames)
 realized latency vs the target budget. Raw per-frame MAE is ~3 ms; smoothed MAE
@@ -74,7 +89,7 @@ from ultralytics import YOLO  # noqa
 
 from method_advantage_regress.router.feature_tap import INPUT_LEVEL_LAYERS, PRED_LEVEL_LAYERS, STATE_LAYERS  # noqa
 from method_advantage_regress.eval.eval_video import (  # noqa
-    parse_box_track, labeled_frames, load_policy, grid_vec)
+    parse_box_track, labeled_frames, load_router, grid_vec)
 from method_advantage_regress.jetson.online_budget_demo import (  # noqa
     OUT, cond_label, target_schedule, render)
 
@@ -207,7 +222,7 @@ def main():
     ap.add_argument("--base", default=None, help="BASE TRT engine (.engine)")
     ap.add_argument("--super", default=None, help="SUPER TRT engine (.engine)")
     ap.add_argument("--router_engine", default=None, help="single TRT router engine (iv[,pv]->logit)")
-    ap.add_argument("--policy", default=None)
+    ap.add_argument("--router", default=None)
     ap.add_argument("--scenarios", default=str(OUT / "bdd100k/scenarios.json"))
     ap.add_argument("--mot_root", default="/media/data/bdd100k_mot/val")
     ap.add_argument("--grid", type=int, default=2)
@@ -219,13 +234,30 @@ def main():
     ap.add_argument("--beta", type=float, default=0.85)
     ap.add_argument("--win", type=int, default=60)
     ap.add_argument("--device", default="cuda:0")
-    ap.add_argument("--out", default=str(OUT / "bdd100k/online_budget_demo.pdf"))
-    ap.add_argument("--dump", default=str(OUT / "bdd100k/online_budget_demo.json"))
+    ap.add_argument("--out", default=None, help="output PDF path (auto-named from hyperparams if omitted)")
+    ap.add_argument("--dump", default=None, help="dump JSON path (auto-named from hyperparams if omitted)")
     ap.add_argument("--families", nargs="*", default=None, help="subset of scenario families to run")
+    ap.add_argument("--mode", default="latency", choices=["latency", "fps", "energy"],
+                    help="tracking target space: latency (ms), fps, or energy (mJ/frame)")
     ap.add_argument("--replot", action="store_true")
     ap.add_argument("--mode", default="latency", choices=["latency", "fps", "energy"],
                     help="control target: latency (ms), fps, or energy (mJ/frame)")
     args = ap.parse_args()
+
+    # Auto-name outputs so every run is fully traceable
+    if args.base and args.super:
+        # e.g. "bdd_pooled" from the engine directory name
+        eng_name = Path(args.base).parent.name
+        backend_tag = f"trt_{eng_name}"
+    else:
+        backend_tag = "torch"
+    res_tag = f"{args.imgsz[0]}x{args.imgsz[1]}"
+    hp_tag = f"b{args.beta}_kp{args.kp}_ki{args.ki}_win{args.win}"
+    stem = f"online_budget_demo_{backend_tag}_{res_tag}_{args.mode}_{hp_tag}"
+    if args.out is None:
+        args.out = str(OUT / f"bdd100k/{stem}.pdf")
+    if args.dump is None:
+        args.dump = str(OUT / f"bdd100k/{stem}.json")
 
     if args.replot:
         dump = json.loads(Path(args.dump).read_text())
@@ -245,7 +277,7 @@ def main():
         # CUDA-event timed; correct for feat=both (computes iv AND pv from pooled taps).
         from method_advantage_regress.jetson.jetson_budget_track import TRTBackend
         from ultralytics.data.augment import LetterBox
-        backend = TRTBackend(args.base, args.super, args.policy, args.grid, dev,
+        backend = TRTBackend(args.base, args.super, args.router, args.grid, dev,
                              router_engine=args.router_engine)
         feat = backend.feat
         H = (args.imgsz[0] + 31) // 32 * 32
@@ -271,8 +303,8 @@ def main():
         captured = {}
         for idx in STATE_LAYERS:
             yolo.model.model[idx].register_forward_hook(
-                lambda m, i, o, k=idx: captured.__setitem__(k, o))
-        net, ckpt, feat, is_gap = load_policy(args.policy, dev)
+                lambda _m, _i, o, k=idx: captured.__setitem__(k, o))
+        net, _ckpt, feat, is_gap = load_router(args.router, dev)
         pid = {"super": torch.ones(1, dtype=torch.long, device=dev),
                "base": torch.zeros(1, dtype=torch.long, device=dev)}
 
@@ -297,6 +329,28 @@ def main():
             cuda_sync(); rtr_ms = (time.perf_counter() - t0) * 1000.0
             return det_ms + rtr_ms, ahat
 
+    # Energy mode: per-frame cost = GPU power (NVML) x latency, in mJ. Energy/frame is
+    # linear in the SUPER rate (like latency, unlike FPS), so the whole latency-mode
+    # pipeline (anchors, feedforward, PI) is reused with mJ anchors instead of ms.
+    if args.mode == "energy":
+        import pynvml
+        pynvml.nvmlInit()
+        gpu_idx = int(dev.split(":")[1]) if ":" in dev else 0
+        nvml_h = pynvml.nvmlDeviceGetHandleByIndex(gpu_idx)
+
+        def frame_cost(lat):
+            pw = pynvml.nvmlDeviceGetPowerUsage(nvml_h) / 1000.0   # mW -> W
+            return pw * lat                                        # W * ms = mJ
+    else:
+        def frame_cost(lat):
+            return lat
+
+    _run_frame_raw = run_frame
+
+    def run_frame(bgr, config):
+        lat, ahat = _run_frame_raw(bgr, config)
+        return frame_cost(lat), ahat
+
     scen = json.loads(Path(args.scenarios).read_text())
     label_dir = Path(args.mot_root) / "labels"
     video_dir = Path(args.mot_root) / "videos"
@@ -306,7 +360,7 @@ def main():
         for seg in order:
             gt = parse_box_track(label_dir / f"{seg['seq']}.json")
             first = True
-            for _fidx, bgr in labeled_frames(video_dir / f"{seg['seq']}.mov", gt):
+            for _, bgr in labeled_frames(video_dir / f"{seg['seq']}.mov", gt):
                 yield bgr, first
                 first = False
 
@@ -339,7 +393,7 @@ def main():
     pb, ps = [], []   # power samples for energy mode
     wa_per_fam = {}   # per-family advantages for accurate tau initialisation
     wa_fam0 = []
-    for i, (bgr, _first) in enumerate(stream_family(meta[fam0]["order"])):
+    for i, (bgr, _) in enumerate(stream_family(meta[fam0]["order"])):
         if i >= args.warmup:
             break
         lb, ab = run_frame(bgr, "base"); wb.append(lb); wa_fam0.append(ab)
@@ -379,7 +433,7 @@ def main():
         if fam == fam0:
             continue
         wa_fam = []
-        for i, (bgr, _first) in enumerate(stream_family(meta[fam]["order"])):
+        for i, (bgr, _) in enumerate(stream_family(meta[fam]["order"])):
             if i >= args.warmup:
                 break
             wa_fam.append(run_frame(bgr, "base")[1])
@@ -446,7 +500,9 @@ def main():
                 integ = 0.0
             e = ctrl[t] - sig_ema
             integ += e
-            tau_un = tau0 - kp * e - ki * integ
+            # fps/energy mode: feedforward tau from the known target + PI residual correction
+            base_tau = tau_ff[t] if args.mode in ("fps", "energy") else tau0
+            tau_un = base_tau - kp * e - ki * integ
             tau = float(np.clip(tau_un, TAU_LO, TAU_HI))
             if ki:
                 integ += (tau_un - tau) / ki
@@ -473,6 +529,7 @@ def main():
 
     dump = {"l_base": l_base, "l_super": l_super, "win": args.win,
             "kp": args.kp, "ki": args.ki, "mode": args.mode,
+            "kp": args.kp, "ki": args.ki, "mode": args.mode,
             "fam_order": fams, "families": families_meta, "cells": results}
     if args.mode == "fps":
         dump["fps_lo"] = fps_lo; dump["fps_hi"] = fps_hi
@@ -481,6 +538,12 @@ def main():
     Path(args.dump).parent.mkdir(parents=True, exist_ok=True)
     json.dump(dump, open(args.dump, "w"))
     print(f"[*] -> {args.dump}", flush=True)
+    if args.mode == "fps":
+        render_fps(dump, args.win, args.out)
+    elif args.mode == "energy":
+        render_energy(dump, args.win, args.out)
+    else:
+        render(dump, args.win, args.out)
     if args.mode == "fps":
         render_fps(dump, args.win, args.out)
     elif args.mode == "energy":

@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 FEATS = [
     ("policy_bb", "tab:red",  "o", "backbone"),
     ("policy_pn", "tab:blue", "s", "neck"),
-    ("policy_bn", "tab:green", "^", "both (default)"),
+    ("router_bn", "tab:green", "^", "both (default)"),
 ]
 
 

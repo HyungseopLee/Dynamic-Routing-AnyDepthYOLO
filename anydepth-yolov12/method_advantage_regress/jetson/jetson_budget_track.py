@@ -26,14 +26,14 @@ Usage (TRT):
     python method_advantage_regress/jetson/jetson_budget_track.py \
         --base  method_advantage_regress/jetson/onnx/kitti/base.fp16.engine \
         --super method_advantage_regress/jetson/onnx/kitti/super.fp16.engine \
-        --policy method_advantage_regress/outputs/kitti/ablation/policy_both_g2_s0.pt \
+        --router method_advantage_regress/outputs/kitti/ablation/router_both_g2_s0.pt \
         --kitti_root /media/data/kitti-tracking --imgsz 384 1248 \
         --out method_advantage_regress/jetson/outputs/jetson_budget.pdf
 
 Usage (PyTorch):
     python method_advantage_regress/jetson/jetson_budget_track.py \
         --weight finetuning_AnyDepthYOLO/weights/kitti/best.pt \
-        --policy method_advantage_regress/outputs/kitti/ablation/policy_both_g2_s0.pt \
+        --router method_advantage_regress/outputs/kitti/ablation/router_both_g2_s0.pt \
         --kitti_root /media/data/kitti-tracking --imgsz 384 1248 \
         --out method_advantage_regress/jetson/outputs/jetson_budget.pdf
 """
@@ -97,7 +97,7 @@ class JetsonPower:
 
 from method_advantage_regress.router.feature_tap import (
     INPUT_LEVEL_LAYERS, PRED_LEVEL_LAYERS, STATE_LAYERS)
-from method_advantage_regress.eval.eval_video import load_policy, grid_vec
+from method_advantage_regress.eval.eval_video import load_router, grid_vec
 
 
 # --------------------------------------------------------------------------- #
@@ -106,14 +106,14 @@ from method_advantage_regress.eval.eval_video import load_policy, grid_vec
 # the (detector inference + router) scope. Both keep the router resident.
 # --------------------------------------------------------------------------- #
 class TRTBackend:
-    def __init__(self, base_path, super_path, policy, grid, device, router_engine=None):
+    def __init__(self, base_path, super_path, router, grid, device, router_engine=None):
         import tensorrt as trt
         self.trt = trt
         self.logger = trt.Logger(trt.Logger.ERROR)
         self.dev = device
         self.grid = grid
         self.eng = {"base": self._load(base_path), "super": self._load(super_path)}
-        self.net, self.ckpt, self.feat, self.is_gap = load_policy(policy, device)
+        self.net, self.ckpt, self.feat, self.is_gap = load_router(router, device)
         self.use_pred = self.feat in ("both", "pred")
         self.pid = {"base": torch.zeros(1, dtype=torch.long, device=device),
                     "super": torch.ones(1, dtype=torch.long, device=device)}
@@ -201,7 +201,7 @@ class TRTBackend:
 
 
 class TorchBackend:
-    def __init__(self, weight, policy, grid, imgsz, device):
+    def __init__(self, weight, router, grid, imgsz, device):
         from ultralytics import YOLO
         self.dev = device
         self.grid = grid
@@ -217,7 +217,7 @@ class TorchBackend:
         for l in STATE_LAYERS:
             self.model.model[l].register_forward_hook(
                 lambda m, i, o, k=l: self.cap.__setitem__(k, o))
-        self.net, self.ckpt, self.feat, self.is_gap = load_policy(policy, device)
+        self.net, self.ckpt, self.feat, self.is_gap = load_router(router, device)
         self.use_pred = self.feat in ("both", "pred")
         self.pid = {"base": torch.zeros(1, dtype=torch.long, device=device),
                     "super": torch.ones(1, dtype=torch.long, device=device)}
@@ -386,7 +386,7 @@ def main():
     ap.add_argument("--base", default=None, help="BASE TRT engine (.engine)")
     ap.add_argument("--super", default=None, help="SUPER TRT engine (.engine)")
     ap.add_argument("--weight", default=None, help="AnyDepth .pt (PyTorch backend)")
-    ap.add_argument("--policy", required=True, help="router checkpoint (.pt)")
+    ap.add_argument("--router", required=True, help="router checkpoint (.pt)")
     ap.add_argument("--router_engine", default=None,
                     help="optional single TRT router engine (iv,pv)->logit; if set, the "
                          "router runs in TRT instead of eager PyTorch")
@@ -394,7 +394,7 @@ def main():
     ap.add_argument("--split", default="testing", help="testing (unlabelled) or training")
     ap.add_argument("--sequences", type=str, nargs="*", default=None, help="seq subset")
     ap.add_argument("--imgsz", type=int, nargs=2, default=[384, 1248], help="H W")
-    ap.add_argument("--grid", type=int, default=2, help="router feature grid (match policy)")
+    ap.add_argument("--grid", type=int, default=2, help="router feature grid (match router)")
     ap.add_argument("--device", default="cuda:0")
     ap.add_argument("--warmup", type=int, default=50)
     ap.add_argument("--kp", type=float, default=0.040)
@@ -417,14 +417,14 @@ def main():
 
     if args.base and args.super:
         print(f"[*] TRT backend: {args.base} / {args.super}")
-        backend = TRTBackend(args.base, args.super, args.policy, args.grid, dev,
+        backend = TRTBackend(args.base, args.super, args.router, args.grid, dev,
                              router_engine=args.router_engine)
     elif args.weight:
         print(f"[*] PyTorch backend: {args.weight}")
-        backend = TorchBackend(args.weight, args.policy, args.grid, args.imgsz, dev)
+        backend = TorchBackend(args.weight, args.router, args.grid, args.imgsz, dev)
     else:
         raise SystemExit("Provide either --base/--super engines or --weight.")
-    print(f"[*] router: {args.policy}  (feat={backend.feat}, gap={backend.is_gap})")
+    print(f"[*] router: {args.router}  (feat={backend.feat}, gap={backend.is_gap})")
 
     try:
         import pynvml
@@ -543,7 +543,7 @@ def main():
     dump = {"l_base": l_base, "l_super": l_super, "win": args.win,
             "kp": args.kp, "ki": args.ki, "beta": args.beta,
             "device_name": dev_name, "imgsz": args.imgsz, "n_frames": n,
-            "policy": args.policy, "feat": backend.feat,
+            "router": args.router, "feat": backend.feat,
             "power_rails": list(power.chans), "cells": cells}
     Path(args.dump_out).parent.mkdir(parents=True, exist_ok=True)
     json.dump(dump, open(args.dump_out, "w"))

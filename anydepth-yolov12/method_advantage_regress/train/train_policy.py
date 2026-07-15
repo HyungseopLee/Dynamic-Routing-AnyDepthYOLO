@@ -5,7 +5,7 @@ here -- each epoch is a cheap MLP/TinyConv pass over precomputed vectors.
 
 Per step (image i, batch B):
   - sample prev_action ~ Uniform{0,1}  (simulates the path the previous frame
-    used at eval time; selects which cached feature vector feeds the policy and
+    used at eval time; selects which cached feature vector feeds the router and
     sets path_id).
   - p_super = router(input_vec[prev], pred_vec[prev], path_id=prev)
   - L = -mean(p_super * A) + lambda_flops*L_flops + lambda_uni*L_uni
@@ -14,30 +14,30 @@ Per step (image i, batch B):
 
 Usage (run from repo root):
     # KITTI  (reads outputs/kitti/cache_{train,val}.pt)
-    python -m method_advantage_regress.train.train_policy \
+    python -m method_advantage_regress.train.train_router \
         --dataset kitti --feat both --norm batch \
         --cache method_advantage_regress/outputs/kitti/cache_train_both.pt \
         --val_cache method_advantage_regress/outputs/kitti/cache_val_both.pt \
         --epochs 50 --select val_corr --mode regress --seed 0
 
     # BDD100K  (reads outputs/bdd100k/cache_{train,val}_both.pt)
-    python -m method_advantage_regress.train.train_policy \
+    python -m method_advantage_regress.train.train_router \
         --dataset bdd100k --feat both --norm batch \
         --cache method_advantage_regress/outputs/bdd100k/cache_train_both.pt \
         --val_cache method_advantage_regress/outputs/bdd100k/cache_val_both.pt \
         --epochs 30 --select val_corr --mode regress --seed 0 \
-        --out method_advantage_regress/outputs/bdd100k/policy_s0.pt
+        --out method_advantage_regress/outputs/bdd100k/router_s0.pt
 
     # Waymo  (reads outputs/waymo/cache_{train,val}_both.pt; fp16 cache)
-    python -m method_advantage_regress.train.train_policy \
+    python -m method_advantage_regress.train.train_router \
         --dataset waymo --feat both --norm batch \
         --cache method_advantage_regress/outputs/waymo/cache_train_both.pt \
         --val_cache method_advantage_regress/outputs/waymo/cache_val_both.pt \
         --epochs 50 --select val_corr --mode regress --seed 0 \
-        --out method_advantage_regress/outputs/waymo/policy_both_0.pt
+        --out method_advantage_regress/outputs/waymo/router_both_0.pt
 
     # GAP-MLP router (--arch gapmpl; same cache, spatial dims are pooled internally)
-    python -m method_advantage_regress.train.train_policy \
+    python -m method_advantage_regress.train.train_router \
         --dataset bdd100k --arch gapmpl --feat both --norm batch \
         --cache method_advantage_regress/outputs/bdd100k/cache_train_both.pt \
         --val_cache method_advantage_regress/outputs/bdd100k/cache_val_both.pt \
@@ -55,8 +55,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import torch
 from torch.utils.data import DataLoader, TensorDataset
 
-from method_advantage_regress.router.loss import PolicyLoss
-from method_advantage_regress.router.policy_net import GapMlpNet, PolicyNetwork
+from method_advantage_regress.router.loss import RouterLoss
+from method_advantage_regress.router.router_net import GapMlpNet, RouterNetwork
 from method_advantage_regress.router.feature_tap import INPUT_LEVEL_LAYERS
 
 
@@ -186,7 +186,7 @@ def main():
     ap.add_argument("--path_dim", type=int, default=8,
                     help="prev-action embedding dim (0 = no path embedding)")
     ap.add_argument("--feat", default="both", choices=["input", "pred", "both"],
-                    help="which context feature(s) the policy uses")
+                    help="which context feature(s) the router uses")
     ap.add_argument("--arch", default="tinyconv", choices=["tinyconv", "gapmpl"],
                     help="router architecture: tinyconv (spatial conv) or gapmpl (GAP then MLP)")
     ap.add_argument("--norm", default="batch", choices=["batch", "layer", "none"],
@@ -217,7 +217,7 @@ def main():
     if args.cache is None:     args.cache = str(base / "cache_train.pt")
     if args.val_cache is None: args.val_cache = str(base / "cache_val.pt")
     if args.flops is None:     args.flops = str(base / "flops_table.json")
-    if args.out is None:       args.out = str(base / "policy.pt")
+    if args.out is None:       args.out = str(base / "router.pt")
     # per-run .log/.json are opt-in: only written when --logdir is given (avoids
     # littering outputs/ with regenerable training-history files by default).
 
@@ -249,7 +249,7 @@ def main():
                     val_cache[k] = val_cache[k].mean(dim=(2, 3))
         net = GapMlpNet(feat=args.feat).to(device)
     else:
-        net = PolicyNetwork(group_dim=args.group_dim, path_dim=args.path_dim, hidden_dim=args.hidden,
+        net = RouterNetwork(group_dim=args.group_dim, path_dim=args.path_dim, hidden_dim=args.hidden,
                             feat=args.feat, norm=args.norm, dropout=args.dropout).to(device)
 
     # materialise LazyLinear shapes with a dummy forward (pred optional for
@@ -259,7 +259,7 @@ def main():
         net(train_cache["input_base"][:2].to(device, dtype=torch.float32), dummy_pred,
             torch.zeros(2, dtype=torch.long, device=device))
 
-    lossfn = PolicyLoss(args.flops, lambda_flops=args.lambda_flops, lambda_uni=args.lambda_uni,
+    lossfn = RouterLoss(args.flops, lambda_flops=args.lambda_flops, lambda_uni=args.lambda_uni,
                         mode=args.mode, margin=args.margin, regress_loss=args.regress_loss)
     opt = torch.optim.Adam(net.parameters(), lr=args.lr, weight_decay=args.weight_decay)
 
@@ -328,7 +328,7 @@ def main():
     torch.save({"state_dict": best_state,
                 "args": vars(args),
                 "best_epoch": best_epoch, "best_metric": best_metric, "select_on": sel}, out)
-    print(f"[*] saved policy (val-best) -> {out}")
+    print(f"[*] saved router (val-best) -> {out}")
 
 
 if __name__ == "__main__":
