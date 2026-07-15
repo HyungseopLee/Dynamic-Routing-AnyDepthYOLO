@@ -71,7 +71,7 @@ class Engine:
 
 
 class JetsonPower:
-    """INA3221 board power via hwmon sysfs (NVML reports no power on Tegra)."""
+    """INA322 board power via hwmon sysfs (NVML reports no power on Tegra)."""
     RAILS = ("VDD_IN", "VDD_CPU_GPU_CV")
 
     def __init__(self):
@@ -197,8 +197,8 @@ def main():
     except Exception:
         pass
 
-    lb, fb, enb = timed(lambda s: eb.run(s), args.iters, args.warmup, power)
     ls, fs, ens = timed(lambda s: es.run(s), args.iters, args.warmup, power)
+    lb, fb, enb = timed(lambda s: eb.run(s), args.iters, args.warmup, power)
 
     flip = {"v": True}
     def alt(s):
@@ -246,10 +246,46 @@ def main():
         lb_r, fb_r, enb_r = timed(base_router_fn, args.iters, args.warmup, power)
         ls_r, fs_r, ens_r = timed(super_router_fn, args.iters, args.warmup, power)
 
+    # ---- engine weights + scratch memory ----
+    MB = 1024 ** 2
+    def engine_mem(eng):
+        w = len(open(eng.engine.__class__.__name__, "rb").read()) if False else 0
+        try:
+            s = eng.engine.get_device_memory_size_v2()
+        except Exception:
+            s = eng.engine.device_memory_size
+        return s
+
+    base_path = args.base; super_path = args.super
+    base_w = len(open(base_path, "rb").read())
+    super_w = len(open(super_path, "rb").read())
+    router_w = len(open(args.router_engine, "rb").read()) if args.router_engine else 0
+    try:
+        base_s = eb.engine.get_device_memory_size_v2()
+        super_s = es.engine.get_device_memory_size_v2()
+    except Exception:
+        base_s = eb.engine.device_memory_size
+        super_s = es.engine.device_memory_size
+    router_s = 0
+    if args.router_engine:
+        try:
+            router_s = er.engine.get_device_memory_size_v2()
+        except Exception:
+            router_s = er.engine.device_memory_size if lb_r is not None else 0
+    total_w = base_w + super_w + router_w
+    total_s = base_s + super_s + router_s
+
     # ---- report ----
     dev_name = torch.cuda.get_device_name(dev) if torch.cuda.is_available() else "CPU"
     mean_bs = (lb + ls) / 2
     sw = la - mean_bs
+    print(f"\n==== Engine memory footprint ====")
+    print(f"{'engine':<10}{'weights(MB)':>14}{'scratch(MB)':>14}{'total(MB)':>12}")
+    print(f"{'base':<10}{base_w/MB:>14.1f}{base_s/MB:>14.1f}{(base_w+base_s)/MB:>12.1f}")
+    print(f"{'super':<10}{super_w/MB:>14.1f}{super_s/MB:>14.1f}{(super_w+super_s)/MB:>12.1f}")
+    if args.router_engine:
+        print(f"{'router':<10}{router_w/MB:>14.1f}{router_s/MB:>14.1f}{(router_w+router_s)/MB:>12.1f}")
+    print(f"{'TOTAL':<10}{total_w/MB:>14.1f}{total_s/MB:>14.1f}{(total_w+total_s)/MB:>12.1f}")
     print(f"\n==== TensorRT engine latency ({dev_name}, FP16, pure GPU inference) ====")
     print(f" BASE        : {lb:6.2f} ms   {fb:6.1f} fps   {enb:8.1f} mJ")
     print(f" SUPER       : {ls:6.2f} ms   {fs:6.1f} fps   {ens:8.1f} mJ")
