@@ -15,7 +15,7 @@ Step 1 — run live inference and save dump:
 
     python -m method_advantage_regress.jetson.online_budget_demo \
         --weight  finetuning_AnyDepthYOLO/weights/bdd100k/best.pt \
-        --policy  method_advantage_regress/outputs/bdd100k/policy_both_0.pt \
+        --router  method_advantage_regress/outputs/bdd100k/router_both_0.pt \
         --scenarios method_advantage_regress/outputs/bdd100k/scenarios.json \
         --mot_root  /media/data/bdd100k_mot/val \
         --dump method_advantage_regress/outputs/bdd100k/online_budget_demo.json \
@@ -45,7 +45,7 @@ from ultralytics import YOLO  # noqa
 
 from method_advantage_regress.router.feature_tap import INPUT_LEVEL_LAYERS, PRED_LEVEL_LAYERS, STATE_LAYERS  # noqa
 from method_advantage_regress.eval.eval_video import (  # noqa
-    parse_box_track, labeled_frames, load_policy, grid_vec)
+    parse_box_track, labeled_frames, load_router, grid_vec)
 
 OUT = Path(__file__).resolve().parents[1] / "outputs"  # method_advantage_regress/outputs
 TITLES = {"night_dawn": "night $\\leftrightarrow$ daytime",
@@ -161,7 +161,7 @@ def replot(args):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--weight", required=True)
-    ap.add_argument("--policy", required=True)
+    ap.add_argument("--router", required=True)
     ap.add_argument("--scenarios", default=str(OUT / "bdd100k/scenarios.json"))
     ap.add_argument("--mot_root", default="/media/data/bdd100k_mot/val")
     ap.add_argument("--grid", type=int, default=2)
@@ -192,7 +192,7 @@ def main():
     for idx in STATE_LAYERS:
         yolo.model.model[idx].register_forward_hook(
             lambda m, i, o, k=idx: captured.__setitem__(k, o))
-    net, ckpt, feat, is_gap = load_policy(args.policy, dev)
+    net, ckpt, feat, is_gap = load_router(args.router, dev)
     pid = {"super": torch.ones(1, dtype=torch.long, device=dev),
            "base": torch.zeros(1, dtype=torch.long, device=dev)}
 

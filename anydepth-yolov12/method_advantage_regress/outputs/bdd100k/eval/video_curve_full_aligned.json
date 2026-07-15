@@ -25,9 +25,9 @@
       "gflops": 33.1771136
     },
     {
-      "name": "policy_bb0_b00",
+      "name": "router_bb0_b00",
       "kind": "policy",
-      "family": "policy_bb0",
+      "family": "router_bb0",
       "thres": 0.20888301730155945,
       "budget": 0,
       "map50": 0.36310123908517467,
@@ -36,9 +36,9 @@
       "gflops": 33.1771136
     },
     {
-      "name": "policy_bb1_b00",
+      "name": "router_bb1_b00",
       "kind": "policy",
-      "family": "policy_bb1",
+      "family": "router_bb1",
       "thres": 0.35565808415412903,
       "budget": 0,
       "map50": 0.36310128662164154,
@@ -47,9 +47,9 @@
       "gflops": 33.177580078299584
     },
     {
-      "name": "policy_bb2_b00",
+      "name": "router_bb2_b00",
       "kind": "policy",
-      "family": "policy_bb2",
+      "family": "router_bb2",
       "thres": 0.2615480422973633,
       "budget": 0,
       "map50": 0.36310128662164154,
@@ -58,9 +58,9 @@
       "gflops": 33.177580078299584
     },
     {
-      "name": "policy_bb3_b00",
+      "name": "router_bb3_b00",
       "kind": "policy",
-      "family": "policy_bb3",
+      "family": "router_bb3",
       "thres": 0.3006148636341095,
       "budget": 0,
       "map50": 0.36310128662164154,
@@ -69,9 +69,9 @@
       "gflops": 33.177580078299584
     },
     {
-      "name": "policy_bb4_b00",
+      "name": "router_bb4_b00",
       "kind": "policy",
-      "family": "policy_bb4",
+      "family": "router_bb4",
       "thres": 0.29080235958099365,
       "budget": 0,
       "map50": 0.36310140463604396,
@@ -80,9 +80,9 @@
       "gflops": 33.17804655659917
     },
     {
-      "name": "policy_bn0_b00",
+      "name": "router_bn0_b00",
       "kind": "policy",
-      "family": "policy_bn0",
+      "family": "router_bn0",
       "thres": 0.5753148198127747,
       "budget": 0,
       "map50": 0.36312223604846283,
@@ -91,9 +91,9 @@
       "gflops": 33.17991246979751
     },
     {
-      "name": "policy_bn2_b00",
+      "name": "router_bn2_b00",
       "kind": "policy",
-      "family": "policy_bn2",
+      "family": "router_bn2",
       "thres": 0.6924570798873901,
       "budget": 0,
       "map50": 0.3631302393282473,
@@ -102,9 +102,9 @@
       "gflops": 33.18037894809709
     },
     {
-      "name": "policy_bn4_b00",
+      "name": "router_bn4_b00",
       "kind": "policy",
-      "family": "policy_bn4",
+      "family": "router_bn4",
       "thres": 0.735288143157959,
       "budget": 0,
       "map50": 0.3631302393282473,
@@ -113,9 +113,9 @@
       "gflops": 33.18037894809709
     },
     {
-      "name": "policy_bn1_b00",
+      "name": "router_bn1_b00",
       "kind": "policy",
-      "family": "policy_bn1",
+      "family": "router_bn1",
       "thres": 0.6213212013244629,
       "budget": 0,
       "map50": 0.3631302730101942,
@@ -124,9 +124,9 @@
       "gflops": 33.18084542639668
     },
     {
-      "name": "policy_bn3_b00",
+      "name": "router_bn3_b00",
       "kind": "policy",
-      "family": "policy_bn3",
+      "family": "router_bn3",
       "thres": 0.8024923801422119,
       "budget": 0,
       "map50": 0.3631302730101942,
@@ -190,9 +190,9 @@
       "gflops": 34.348440610257825
     },
     {
-      "name": "policy_bb1_b10",
+      "name": "router_bb1_b10",
       "kind": "policy",
-      "family": "policy_bb1",
+      "family": "router_bb1",
       "thres": 0.08361676707863808,
       "budget": 10,
       "map50": 0.36733905084792007,
@@ -234,9 +234,9 @@
       "gflops": 35.05095692943277
     },
     {
-      "name": "policy_bn4_b10",
+      "name": "router_bn4_b10",
       "kind": "policy",
-      "family": "policy_bn4",
+      "family": "router_bn4",
       "thres": 0.08634591102600098,
       "budget": 10,
       "map50": 0.3681341867669145,
@@ -245,9 +245,9 @@
       "gflops": 35.4162094380078
     },
     {
-      "name": "policy_bb1_b20",
+      "name": "router_bb1_b20",
       "kind": "policy",
-      "family": "policy_bb1",
+      "family": "router_bb1",
       "thres": 0.07174700796604157,
       "budget": 20,
       "map50": 0.3694740507811912,
@@ -256,9 +256,9 @@
       "gflops": 35.61632862852974
     },
     {
-      "name": "policy_bb0_b10",
+      "name": "router_bb0_b10",
       "kind": "policy",
-      "family": "policy_bb0",
+      "family": "router_bb0",
       "thres": 0.0828262858092785,
       "budget": 10,
       "map50": 0.36826310001084006,
@@ -278,9 +278,9 @@
       "gflops": 35.7324817251264
     },
     {
-      "name": "policy_bn0_b10",
+      "name": "router_bn0_b10",
       "kind": "policy",
-      "family": "policy_bn0",
+      "family": "router_bn0",
       "thres": 0.0794325277209282,
       "budget": 10,
       "map50": 0.3689376509971442,
@@ -289,9 +289,9 @@
       "gflops": 35.77166590229153
     },
     {
-      "name": "policy_bn1_b10",
+      "name": "router_bn1_b10",
       "kind": "policy",
-      "family": "policy_bn1",
+      "family": "router_bn1",
       "thres": 0.09026640802621845,
       "budget": 10,
       "map50": 0.36961974754279214,
@@ -311,9 +311,9 @@
       "gflops": 36.04455570754873
     },
     {
-      "name": "policy_bn2_b10",
+      "name": "router_bn2_b10",
       "kind": "policy",
-      "family": "policy_bn2",
+      "family": "router_bn2",
       "thres": 0.07813621535897257,
       "budget": 10,
       "map50": 0.3714128951974852,
@@ -322,9 +322,9 @@
       "gflops": 36.053418795240844
     },
     {
-      "name": "policy_bn3_b10",
+      "name": "router_bn3_b10",
       "kind": "policy",
-      "family": "policy_bn3",
+      "family": "router_bn3",
       "thres": 0.0936963438987732,
       "budget": 10,
       "map50": 0.3707199825392986,
@@ -333,9 +333,9 @@
       "gflops": 36.360361516367746
     },
     {
-      "name": "policy_bb2_b10",
+      "name": "router_bb2_b10",
       "kind": "policy",
-      "family": "policy_bb2",
+      "family": "router_bb2",
       "thres": 0.05356925874948502,
       "budget": 10,
       "map50": 0.370208847354014,
@@ -344,9 +344,9 @@
       "gflops": 36.44106226219595
     },
     {
-      "name": "policy_bb4_b10",
+      "name": "router_bb4_b10",
       "kind": "policy",
-      "family": "policy_bb4",
+      "family": "router_bb4",
       "thres": 0.05574779361486435,
       "budget": 10,
       "map50": 0.3695493091834776,
@@ -355,9 +355,9 @@
       "gflops": 36.767130593605835
     },
     {
-      "name": "policy_bb3_b10",
+      "name": "router_bb3_b10",
       "kind": "policy",
-      "family": "policy_bb3",
+      "family": "router_bb3",
       "thres": 0.06852817162871361,
       "budget": 10,
       "map50": 0.37231730068818514,
@@ -366,9 +366,9 @@
       "gflops": 36.898210995789206
     },
     {
-      "name": "policy_bb1_b30",
+      "name": "router_bb1_b30",
       "kind": "policy",
-      "family": "policy_bb1",
+      "family": "router_bb1",
       "thres": 0.06392746344208718,
       "budget": 30,
       "map50": 0.3718843579034323,
@@ -399,9 +399,9 @@
       "gflops": 37.08620175052195
     },
     {
-      "name": "policy_bn4_b20",
+      "name": "router_bn4_b20",
       "kind": "policy",
-      "family": "policy_bn4",
+      "family": "router_bn4",
       "thres": 0.07390061914920808,
       "budget": 20,
       "map50": 0.3725121241767816,
@@ -421,9 +421,9 @@
       "gflops": 37.49716913245629
     },
     {
-      "name": "policy_bn0_b20",
+      "name": "router_bn0_b20",
       "kind": "policy",
-      "family": "policy_bn0",
+      "family": "router_bn0",
       "thres": 0.06839510947465897,
       "budget": 20,
       "map50": 0.3741144130049172,
@@ -432,9 +432,9 @@
       "gflops": 37.55174709350773
     },
     {
-      "name": "policy_bb0_b20",
+      "name": "router_bb0_b20",
       "kind": "policy",
-      "family": "policy_bb0",
+      "family": "router_bb0",
       "thres": 0.07141448706388476,
       "budget": 20,
       "map50": 0.37307175691811767,
@@ -454,9 +454,9 @@
       "gflops": 37.990703173417174
     },
     {
-      "name": "policy_bb1_b40",
+      "name": "router_bb1_b40",
       "kind": "policy",
-      "family": "policy_bb1",
+      "family": "router_bb1",
       "thres": 0.05793546885251998,
       "budget": 40,
       "map50": 0.373874345850995,
@@ -465,9 +465,9 @@
       "gflops": 38.18382518944535
     },
     {
-      "name": "policy_bn2_b20",
+      "name": "router_bn2_b20",
       "kind": "policy",
-      "family": "policy_bn2",
+      "family": "router_bn2",
       "thres": 0.06469208598136902,
       "budget": 20,
       "map50": 0.3753339324536096,
@@ -476,9 +476,9 @@
       "gflops": 38.28645041535404
     },
     {
-      "name": "policy_bn1_b20",
+      "name": "router_bn1_b20",
       "kind": "policy",
-      "family": "policy_bn1",
+      "family": "router_bn1",
       "thres": 0.07477833628654483,
       "budget": 20,
       "map50": 0.3729503218266329,
@@ -487,9 +487,9 @@
       "gflops": 38.28831632855238
     },
     {
-      "name": "policy_bn3_b20",
+      "name": "router_bn3_b20",
       "kind": "policy",
-      "family": "policy_bn3",
+      "family": "router_bn3",
       "thres": 0.07728735208511357,
       "budget": 20,
       "map50": 0.3750645393491093,
@@ -531,9 +531,9 @@
       "gflops": 39.049608913475026
     },
     {
-      "name": "policy_bn0_b30",
+      "name": "router_bn0_b30",
       "kind": "policy",
-      "family": "policy_bn0",
+      "family": "router_bn0",
       "thres": 0.06203151047229767,
       "budget": 30,
       "map50": 0.3754200911791572,
@@ -542,9 +542,9 @@
       "gflops": 39.23293488521192
     },
     {
-      "name": "policy_bn4_b30",
+      "name": "router_bn4_b30",
       "kind": "policy",
-      "family": "policy_bn4",
+      "family": "router_bn4",
       "thres": 0.06680307909846304,
       "budget": 30,
       "map50": 0.3761554162451001,
@@ -553,9 +553,9 @@
       "gflops": 39.273518497275816
     },
     {
-      "name": "policy_bb0_b30",
+      "name": "router_bb0_b30",
       "kind": "policy",
-      "family": "policy_bb0",
+      "family": "router_bb0",
       "thres": 0.06474815681576729,
       "budget": 30,
       "map50": 0.3757358189618627,
@@ -564,9 +564,9 @@
       "gflops": 39.54314295443592
     },
     {
-      "name": "policy_bb1_b50",
+      "name": "router_bb1_b50",
       "kind": "policy",
-      "family": "policy_bb1",
+      "family": "router_bb1",
       "thres": 0.052560120820999146,
       "budget": 50,
       "map50": 0.37411341004136056,
@@ -575,9 +575,9 @@
       "gflops": 39.54967365063011
     },
     {
-      "name": "policy_bb2_b20",
+      "name": "router_bb2_b20",
       "kind": "policy",
-      "family": "policy_bb2",
+      "family": "router_bb2",
       "thres": 0.03989442512392998,
       "budget": 20,
       "map50": 0.3746775134024739,
@@ -597,9 +597,9 @@
       "gflops": 39.59865387208653
     },
     {
-      "name": "policy_bb4_b20",
+      "name": "router_bb4_b20",
       "kind": "policy",
-      "family": "policy_bb4",
+      "family": "router_bb4",
       "thres": 0.04674883335828781,
       "budget": 20,
       "map50": 0.376119922314465,
@@ -608,9 +608,9 @@
       "gflops": 40.02408208130801
     },
     {
-      "name": "policy_bn2_b30",
+      "name": "router_bn2_b30",
       "kind": "policy",
-      "family": "policy_bn2",
+      "family": "router_bn2",
       "thres": 0.05657023973762989,
       "budget": 30,
       "map50": 0.37456965248475793,
@@ -619,9 +619,9 @@
       "gflops": 40.17195570227644
     },
     {
-      "name": "policy_bn1_b30",
+      "name": "router_bn1_b30",
       "kind": "policy",
-      "family": "policy_bn1",
+      "family": "router_bn1",
       "thres": 0.06656133830547332,
       "budget": 30,
       "map50": 0.37339674770588066,
@@ -663,9 +663,9 @@
       "gflops": 40.61231121708464
     },
     {
-      "name": "policy_bn3_b30",
+      "name": "router_bn3_b30",
       "kind": "policy",
-      "family": "policy_bn3",
+      "family": "router_bn3",
       "thres": 0.06799292862415311,
       "budget": 30,
       "map50": 0.37587277214107373,
@@ -674,9 +674,9 @@
       "gflops": 40.67108748283235
     },
     {
-      "name": "policy_bb1_b60",
+      "name": "router_bb1_b60",
       "kind": "policy",
-      "family": "policy_bb1",
+      "family": "router_bb1",
       "thres": 0.047498250007629396,
       "budget": 60,
       "map50": 0.3755204071844024,
@@ -685,9 +685,9 @@
       "gflops": 40.84041910558169
     },
     {
-      "name": "policy_bb3_b20",
+      "name": "router_bb3_b20",
       "kind": "policy",
-      "family": "policy_bb3",
+      "family": "router_bb3",
       "thres": 0.05708074942231179,
       "budget": 20,
       "map50": 0.3753603802098414,
@@ -696,9 +696,9 @@
       "gflops": 40.847416280075464
     },
     {
-      "name": "policy_bb0_b40",
+      "name": "router_bb0_b40",
       "kind": "policy",
-      "family": "policy_bb0",
+      "family": "router_bb0",
       "thres": 0.05985123962163925,
       "budget": 40,
       "map50": 0.3754103784062114,
@@ -707,9 +707,9 @@
       "gflops": 41.05033434039492
     },
     {
-      "name": "policy_bn0_b40",
+      "name": "router_bn0_b40",
       "kind": "policy",
-      "family": "policy_bn0",
+      "family": "router_bn0",
       "thres": 0.05699338763952255,
       "budget": 40,
       "map50": 0.37554053188354386,
@@ -718,9 +718,9 @@
       "gflops": 41.071792342175826
     },
     {
-      "name": "policy_bn4_b40",
+      "name": "router_bn4_b40",
       "kind": "policy",
-      "family": "policy_bn4",
+      "family": "router_bn4",
       "thres": 0.061913041025400156,
       "budget": 40,
       "map50": 0.3756112914120384,
@@ -751,9 +751,9 @@
       "gflops": 41.60311112540309
     },
     {
-      "name": "policy_bn2_b40",
+      "name": "router_bn2_b40",
       "kind": "policy",
-      "family": "policy_bn2",
+      "family": "router_bn2",
       "thres": 0.0506456233561039,
       "budget": 40,
       "map50": 0.37661577250964495,
@@ -762,9 +762,9 @@
       "gflops": 41.82702070920387
     },
     {
-      "name": "policy_bn1_b40",
+      "name": "router_bn1_b40",
       "kind": "policy",
-      "family": "policy_bn1",
+      "family": "router_bn1",
       "thres": 0.060673266649246216,
       "budget": 40,
       "map50": 0.3764944448226165,
@@ -773,9 +773,9 @@
       "gflops": 41.932911283209656
     },
     {
-      "name": "policy_bb2_b30",
+      "name": "router_bb2_b30",
       "kind": "policy",
-      "family": "policy_bb2",
+      "family": "router_bb2",
       "thres": 0.03220284357666969,
       "budget": 30,
       "map50": 0.3762295760326364,
@@ -806,9 +806,9 @@
       "gflops": 42.343878665144004
     },
     {
-      "name": "policy_bn3_b40",
+      "name": "router_bn3_b40",
       "kind": "policy",
-      "family": "policy_bn3",
+      "family": "router_bn3",
       "thres": 0.06200015470385552,
       "budget": 40,
       "map50": 0.3763330514161264,
@@ -828,9 +828,9 @@
       "gflops": 42.396124234697524
     },
     {
-      "name": "policy_bb1_b70",
+      "name": "router_bb1_b70",
       "kind": "policy",
-      "family": "policy_bb1",
+      "family": "router_bb1",
       "thres": 0.04145590029656888,
       "budget": 70,
       "map50": 0.3757468618811036,
@@ -839,9 +839,9 @@
       "gflops": 42.42551236757137
     },
     {
-      "name": "policy_bb0_b50",
+      "name": "router_bb0_b50",
       "kind": "policy",
-      "family": "policy_bb0",
+      "family": "router_bb0",
       "thres": 0.05549301579594612,
       "budget": 50,
       "map50": 0.37777277384910557,
@@ -861,9 +861,9 @@
       "gflops": 42.836946227805306
     },
     {
-      "name": "policy_bn0_b50",
+      "name": "router_bn0_b50",
       "kind": "policy",
-      "family": "policy_bn0",
+      "family": "router_bn0",
       "thres": 0.05278130620718002,
       "budget": 50,
       "map50": 0.37638715204646156,
@@ -883,9 +883,9 @@
       "gflops": 43.055258072011064
     },
     {
-      "name": "policy_bb4_b30",
+      "name": "router_bb4_b30",
       "kind": "policy",
-      "family": "policy_bb4",
+      "family": "router_bb4",
       "thres": 0.04153544642031193,
       "budget": 30,
       "map50": 0.37828506881515767,
@@ -894,9 +894,9 @@
       "gflops": 43.10703716326499
     },
     {
-      "name": "policy_bn2_b50",
+      "name": "router_bn2_b50",
       "kind": "policy",
-      "family": "policy_bn2",
+      "family": "router_bn2",
       "thres": 0.04550747945904732,
       "budget": 50,
       "map50": 0.37749199962397806,
@@ -905,9 +905,9 @@
       "gflops": 43.41957762398692
     },
     {
-      "name": "policy_bn4_b50",
+      "name": "router_bn4_b50",
       "kind": "policy",
-      "family": "policy_bn4",
+      "family": "router_bn4",
       "thres": 0.057543180882930756,
       "budget": 50,
       "map50": 0.37780569614788506,
@@ -916,9 +916,9 @@
       "gflops": 43.46762488884417
     },
     {
-      "name": "policy_bb3_b30",
+      "name": "router_bb3_b30",
       "kind": "policy",
-      "family": "policy_bb3",
+      "family": "router_bb3",
       "thres": 0.05220833793282508,
       "budget": 30,
       "map50": 0.37778024330651605,
@@ -927,9 +927,9 @@
       "gflops": 43.6434872077877
     },
     {
-      "name": "policy_bn1_b50",
+      "name": "router_bn1_b50",
       "kind": "policy",
-      "family": "policy_bn1",
+      "family": "router_bn1",
       "thres": 0.05520804412662983,
       "budget": 50,
       "map50": 0.3773404507841668,
@@ -949,9 +949,9 @@
       "gflops": 43.75357608648975
     },
     {
-      "name": "policy_bn3_b50",
+      "name": "router_bn3_b50",
       "kind": "policy",
-      "family": "policy_bn3",
+      "family": "router_bn3",
       "thres": 0.05709266662597656,
       "budget": 50,
       "map50": 0.37638545627483266,
@@ -971,9 +971,9 @@
       "gflops": 43.81141939563828
     },
     {
-      "name": "policy_bb0_b60",
+      "name": "router_bb0_b60",
       "kind": "policy",
-      "family": "policy_bb0",
+      "family": "router_bb0",
       "thres": 0.05150166004896164,
       "budget": 60,
       "map50": 0.37857835716425237,
@@ -982,9 +982,9 @@
       "gflops": 43.85806722559678
     },
     {
-      "name": "policy_bb1_b80",
+      "name": "router_bb1_b80",
       "kind": "policy",
-      "family": "policy_bb1",
+      "family": "router_bb1",
       "thres": 0.03406668752431869,
       "budget": 80,
       "map50": 0.3773270751002666,
@@ -993,9 +993,9 @@
       "gflops": 44.24431125765312
     },
     {
-      "name": "policy_bb2_b40",
+      "name": "router_bb2_b40",
       "kind": "policy",
-      "family": "policy_bb2",
+      "family": "router_bb2",
       "thres": 0.026198714226484298,
       "budget": 40,
       "map50": 0.3774921611359231,
@@ -1037,9 +1037,9 @@
       "gflops": 44.76863286638662
     },
     {
-      "name": "policy_bn0_b60",
+      "name": "router_bn0_b60",
       "kind": "policy",
-      "family": "policy_bn0",
+      "family": "router_bn0",
       "thres": 0.048633410781621936,
       "budget": 60,
       "map50": 0.37775753312494836,
@@ -1048,9 +1048,9 @@
       "gflops": 44.89971326857
     },
     {
-      "name": "policy_bn2_b60",
+      "name": "router_bn2_b60",
       "kind": "policy",
-      "family": "policy_bn2",
+      "family": "router_bn2",
       "thres": 0.040579138696193694,
       "budget": 60,
       "map50": 0.37765916848359227,
@@ -1059,9 +1059,9 @@
       "gflops": 45.10309780718903
     },
     {
-      "name": "policy_bn3_b60",
+      "name": "router_bn3_b60",
       "kind": "policy",
-      "family": "policy_bn3",
+      "family": "router_bn3",
       "thres": 0.0524737723171711,
       "budget": 60,
       "map50": 0.37754644007955906,
@@ -1070,9 +1070,9 @@
       "gflops": 45.171670117228025
     },
     {
-      "name": "policy_bn4_b60",
+      "name": "router_bn4_b60",
       "kind": "policy",
-      "family": "policy_bn4",
+      "family": "router_bn4",
       "thres": 0.053298269957304,
       "budget": 60,
       "map50": 0.37842611967575257,
@@ -1081,9 +1081,9 @@
       "gflops": 45.18706390111433
     },
     {
-      "name": "policy_bb0_b70",
+      "name": "router_bb0_b70",
       "kind": "policy",
-      "family": "policy_bb0",
+      "family": "router_bb0",
       "thres": 0.04754760786890984,
       "budget": 70,
       "map50": 0.3784736273598315,
@@ -1092,9 +1092,9 @@
       "gflops": 45.268697603541696
     },
     {
-      "name": "policy_bn1_b60",
+      "name": "router_bn1_b60",
       "kind": "policy",
-      "family": "policy_bn1",
+      "family": "router_bn1",
       "thres": 0.05038076862692833,
       "budget": 60,
       "map50": 0.3775828443340453,
@@ -1125,9 +1125,9 @@
       "gflops": 45.52292827681549
     },
     {
-      "name": "policy_bb3_b40",
+      "name": "router_bb3_b40",
       "kind": "policy",
-      "family": "policy_bb3",
+      "family": "router_bb3",
       "thres": 0.04894120022654533,
       "budget": 40,
       "map50": 0.3780700653962541,
@@ -1158,9 +1158,9 @@
       "gflops": 46.03512144975977
     },
     {
-      "name": "policy_bb4_b40",
+      "name": "router_bb4_b40",
       "kind": "policy",
-      "family": "policy_bb4",
+      "family": "router_bb4",
       "thres": 0.037667356431484215,
       "budget": 40,
       "map50": 0.3783630596784745,
@@ -1191,9 +1191,9 @@
       "gflops": 46.204919550808704
     },
     {
-      "name": "policy_bb2_b50",
+      "name": "router_bb2_b50",
       "kind": "policy",
-      "family": "policy_bb2",
+      "family": "router_bb2",
       "thres": 0.02099110186100006,
       "budget": 50,
       "map50": 0.37795299884469735,
@@ -1202,9 +1202,9 @@
       "gflops": 46.210050812104136
     },
     {
-      "name": "policy_bb1_b90",
+      "name": "router_bb1_b90",
       "kind": "policy",
-      "family": "policy_bb1",
+      "family": "router_bb1",
       "thres": 0.02430072799324989,
       "budget": 90,
       "map50": 0.37714502452880916,
@@ -1224,9 +1224,9 @@
       "gflops": 46.531920838817754
     },
     {
-      "name": "policy_bn3_b70",
+      "name": "router_bn3_b70",
       "kind": "policy",
-      "family": "policy_bn3",
+      "family": "router_bn3",
       "thres": 0.04772296920418739,
       "budget": 70,
       "map50": 0.37745193890545836,
@@ -1235,9 +1235,9 @@
       "gflops": 46.57576979897874
     },
     {
-      "name": "policy_bn2_b70",
+      "name": "router_bn2_b70",
       "kind": "policy",
-      "family": "policy_bn2",
+      "family": "router_bn2",
       "thres": 0.03587478920817375,
       "budget": 70,
       "map50": 0.37786722674886364,
@@ -1246,9 +1246,9 @@
       "gflops": 46.64200971751981
     },
     {
-      "name": "policy_bn4_b70",
+      "name": "router_bn4_b70",
       "kind": "policy",
-      "family": "policy_bn4",
+      "family": "router_bn4",
       "thres": 0.04981323890388012,
       "budget": 70,
       "map50": 0.37789751435625407,
@@ -1257,9 +1257,9 @@
       "gflops": 46.67652911168909
     },
     {
-      "name": "policy_bn0_b70",
+      "name": "router_bn0_b70",
       "kind": "policy",
-      "family": "policy_bn0",
+      "family": "router_bn0",
       "thres": 0.04407256804406643,
       "budget": 70,
       "map50": 0.378080995458118,
@@ -1268,9 +1268,9 @@
       "gflops": 46.784752077192806
     },
     {
-      "name": "policy_bb0_b80",
+      "name": "router_bb0_b80",
       "kind": "policy",
-      "family": "policy_bb0",
+      "family": "router_bb0",
       "thres": 0.0432968020439148,
       "budget": 80,
       "map50": 0.378605251966843,
@@ -1279,9 +1279,9 @@
       "gflops": 46.84819312593636
     },
     {
-      "name": "policy_bn1_b70",
+      "name": "router_bn1_b70",
       "kind": "policy",
-      "family": "policy_bn1",
+      "family": "router_bn1",
       "thres": 0.04576813168823719,
       "budget": 70,
       "map50": 0.3777981916381744,
@@ -1301,9 +1301,9 @@
       "gflops": 46.980206484718906
     },
     {
-      "name": "policy_bb3_b50",
+      "name": "router_bb3_b50",
       "kind": "policy",
-      "family": "policy_bb3",
+      "family": "router_bb3",
       "thres": 0.046397700905799866,
       "budget": 50,
       "map50": 0.378272743150883,
@@ -1334,9 +1334,9 @@
       "gflops": 47.44155352300842
     },
     {
-      "name": "policy_bb2_b60",
+      "name": "router_bb2_b60",
       "kind": "policy",
-      "family": "policy_bb2",
+      "family": "router_bb2",
       "thres": 0.01649344936013222,
       "budget": 60,
       "map50": 0.3782585367953413,
@@ -1356,9 +1356,9 @@
       "gflops": 47.7400996347428
     },
     {
-      "name": "policy_bb4_b50",
+      "name": "router_bb4_b50",
       "kind": "policy",
-      "family": "policy_bb4",
+      "family": "router_bb4",
       "thres": 0.03426423296332359,
       "budget": 50,
       "map50": 0.37736385840449616,
@@ -1367,9 +1367,9 @@
       "gflops": 47.794677595794234
     },
     {
-      "name": "policy_bn3_b80",
+      "name": "router_bn3_b80",
       "kind": "policy",
-      "family": "policy_bn3",
+      "family": "router_bn3",
       "thres": 0.04250003769993782,
       "budget": 80,
       "map50": 0.3791577080253713,
@@ -1389,9 +1389,9 @@
       "gflops": 47.96540865344233
     },
     {
-      "name": "policy_bn2_b80",
+      "name": "router_bn2_b80",
       "kind": "policy",
-      "family": "policy_bn2",
+      "family": "router_bn2",
       "thres": 0.030767387151718138,
       "budget": 80,
       "map50": 0.3789225537365257,
@@ -1400,9 +1400,9 @@
       "gflops": 48.143603363883784
     },
     {
-      "name": "policy_bn4_b80",
+      "name": "router_bn4_b80",
       "kind": "policy",
-      "family": "policy_bn4",
+      "family": "router_bn4",
       "thres": 0.04400202855467796,
       "budget": 80,
       "map50": 0.37792002598835295,
@@ -1433,9 +1433,9 @@
       "gflops": 48.29334289805056
     },
     {
-      "name": "policy_bn0_b80",
+      "name": "router_bn0_b80",
       "kind": "policy",
-      "family": "policy_bn0",
+      "family": "router_bn0",
       "thres": 0.0396292395889759,
       "budget": 80,
       "map50": 0.3794186948913737,
@@ -1444,9 +1444,9 @@
       "gflops": 48.41695964744057
     },
     {
-      "name": "policy_bn1_b80",
+      "name": "router_bn1_b80",
       "kind": "policy",
-      "family": "policy_bn1",
+      "family": "router_bn1",
       "thres": 0.04066040068864822,
       "budget": 80,
       "map50": 0.37894576749558395,
@@ -1455,9 +1455,9 @@
       "gflops": 48.444015388816496
     },
     {
-      "name": "policy_bb3_b60",
+      "name": "router_bb3_b60",
       "kind": "policy",
-      "family": "policy_bb3",
+      "family": "router_bb3",
       "thres": 0.04372231587767601,
       "budget": 60,
       "map50": 0.3783400621427848,
@@ -1466,9 +1466,9 @@
       "gflops": 48.660461319823916
     },
     {
-      "name": "policy_bb2_b70",
+      "name": "router_bb2_b70",
       "kind": "policy",
-      "family": "policy_bb2",
+      "family": "router_bb2",
       "thres": 0.01206779330968857,
       "budget": 70,
       "map50": 0.37901056117658805,
@@ -1477,9 +1477,9 @@
       "gflops": 48.75142458824298
     },
     {
-      "name": "policy_bb0_b90",
+      "name": "router_bb0_b90",
       "kind": "policy",
-      "family": "policy_bb0",
+      "family": "router_bb0",
       "thres": 0.037552536278963086,
       "budget": 90,
       "map50": 0.3786449001232285,
@@ -1499,9 +1499,9 @@
       "gflops": 48.85451629245126
     },
     {
-      "name": "policy_bb4_b60",
+      "name": "router_bb4_b60",
       "kind": "policy",
-      "family": "policy_bb4",
+      "family": "router_bb4",
       "thres": 0.03127225190401078,
       "budget": 60,
       "map50": 0.3788583699954944,
@@ -1521,9 +1521,9 @@
       "gflops": 49.185249406857
     },
     {
-      "name": "policy_bn3_b90",
+      "name": "router_bn3_b90",
       "kind": "policy",
-      "family": "policy_bn3",
+      "family": "router_bn3",
       "thres": 0.03525933325290679,
       "budget": 90,
       "map50": 0.379177721238192,
@@ -1532,9 +1532,9 @@
       "gflops": 49.20903980013583
     },
     {
-      "name": "policy_bb3_b70",
+      "name": "router_bb3_b70",
       "kind": "policy",
-      "family": "policy_bb3",
+      "family": "router_bb3",
       "thres": 0.041176827251911165,
       "budget": 70,
       "map50": 0.3786460833191145,
@@ -1543,9 +1543,9 @@
       "gflops": 49.628870269762295
     },
     {
-      "name": "policy_bn2_b90",
+      "name": "router_bn2_b90",
       "kind": "policy",
-      "family": "policy_bn2",
+      "family": "router_bn2",
       "thres": 0.02469742503017187,
       "budget": 90,
       "map50": 0.3796449196263071,
@@ -1565,9 +1565,9 @@
       "gflops": 49.74269097486103
     },
     {
-      "name": "policy_bn4_b90",
+      "name": "router_bn4_b90",
       "kind": "policy",
-      "family": "policy_bn4",
+      "family": "router_bn4",
       "thres": 0.0354095671325922,
       "budget": 90,
       "map50": 0.37957925461195113,
@@ -1587,9 +1587,9 @@
       "gflops": 49.77021319453654
     },
     {
-      "name": "policy_bb2_b80",
+      "name": "router_bb2_b80",
       "kind": "policy",
-      "family": "policy_bb2",
+      "family": "router_bb2",
       "thres": 0.007112396508455274,
       "budget": 80,
       "map50": 0.3783058603928985,
@@ -1609,9 +1609,9 @@
       "gflops": 49.94094425218463
     },
     {
-      "name": "policy_bn1_b90",
+      "name": "router_bn1_b90",
       "kind": "policy",
-      "family": "policy_bn1",
+      "family": "router_bn1",
       "thres": 0.03402024433016777,
       "budget": 90,
       "map50": 0.3797737440572029,
@@ -1620,9 +1620,9 @@
       "gflops": 49.9945892566369
     },
     {
-      "name": "policy_bb4_b70",
+      "name": "router_bb4_b70",
       "kind": "policy",
-      "family": "policy_bb4",
+      "family": "router_bb4",
       "thres": 0.02877170667052269,
       "budget": 70,
       "map50": 0.37920631579527975,
@@ -1631,9 +1631,9 @@
       "gflops": 50.078088872262605
     },
     {
-      "name": "policy_bn0_b90",
+      "name": "router_bn0_b90",
       "kind": "policy",
-      "family": "policy_bn0",
+      "family": "router_bn0",
       "thres": 0.03382782563567161,
       "budget": 90,
       "map50": 0.379653166884473,
@@ -1642,9 +1642,9 @@
       "gflops": 50.2115016659439
     },
     {
-      "name": "policy_bb3_b80",
+      "name": "router_bb3_b80",
       "kind": "policy",
-      "family": "policy_bb3",
+      "family": "router_bb3",
       "thres": 0.037931317090988154,
       "budget": 80,
       "map50": 0.3779676543908828,
@@ -1664,9 +1664,9 @@
       "gflops": 50.42421577055465
     },
     {
-      "name": "policy_bb4_b80",
+      "name": "router_bb4_b80",
       "kind": "policy",
-      "family": "policy_bb4",
+      "family": "router_bb4",
       "thres": 0.026230664551258085,
       "budget": 80,
       "map50": 0.3791669582380909,
@@ -1697,9 +1697,9 @@
       "gflops": 50.78060519143756
     },
     {
-      "name": "policy_bb2_b90",
+      "name": "router_bb2_b90",
       "kind": "policy",
-      "family": "policy_bb2",
+      "family": "router_bb2",
       "thres": -0.0005281642079353354,
       "budget": 90,
       "map50": 0.37893666824119554,
@@ -1708,9 +1708,9 @@
       "gflops": 50.83191780439189
     },
     {
-      "name": "policy_bb3_b90",
+      "name": "router_bb3_b90",
       "kind": "policy",
-      "family": "policy_bb3",
+      "family": "router_bb3",
       "thres": 0.033108261227607724,
       "budget": 90,
       "map50": 0.37891952839531645,
@@ -1719,9 +1719,9 @@
       "gflops": 51.00358181863916
     },
     {
-      "name": "policy_bb4_b90",
+      "name": "router_bb4_b90",
       "kind": "policy",
-      "family": "policy_bb4",
+      "family": "router_bb4",
       "thres": 0.022393983975052833,
       "budget": 90,
       "map50": 0.3789555775545579,
@@ -1730,9 +1730,9 @@
       "gflops": 51.186907790376054
     },
     {
-      "name": "policy_bn2_b100",
+      "name": "router_bn2_b100",
       "kind": "policy",
-      "family": "policy_bn2",
+      "family": "router_bn2",
       "thres": 0.010338163003325462,
       "budget": 100,
       "map50": 0.3805821000034725,
@@ -1752,9 +1752,9 @@
       "gflops": 51.51484203498428
     },
     {
-      "name": "policy_bb1_b100",
+      "name": "router_bb1_b100",
       "kind": "policy",
-      "family": "policy_bb1",
+      "family": "router_bb1",
       "thres": -0.04518947750329971,
       "budget": 100,
       "map50": 0.38057673348863785,
@@ -1763,9 +1763,9 @@
       "gflops": 51.572685344132815
     },
     {
-      "name": "policy_bn3_b100",
+      "name": "router_bn3_b100",
       "kind": "policy",
-      "family": "policy_bn3",
+      "family": "router_bn3",
       "thres": -0.016315223649144173,
       "budget": 100,
       "map50": 0.3805622315567895,
@@ -1774,9 +1774,9 @@
       "gflops": 51.59274391101496
     },
     {
-      "name": "policy_bn4_b100",
+      "name": "router_bn4_b100",
       "kind": "policy",
-      "family": "policy_bn4",
+      "family": "router_bn4",
       "thres": -0.0010724617168307304,
       "budget": 100,
       "map50": 0.3805506509014508,
@@ -1785,9 +1785,9 @@
       "gflops": 51.61700078259338
     },
     {
-      "name": "policy_bn0_b100",
+      "name": "router_bn0_b100",
       "kind": "policy",
-      "family": "policy_bn0",
+      "family": "router_bn0",
       "thres": 0.02778669446706772,
       "budget": 100,
       "map50": 0.38054980119599113,
@@ -1796,9 +1796,9 @@
       "gflops": 51.62633034858508
     },
     {
-      "name": "policy_bb0_b100",
+      "name": "router_bb0_b100",
       "kind": "policy",
-      "family": "policy_bb0",
+      "family": "router_bb0",
       "thres": 0.005422493442893028,
       "budget": 100,
       "map50": 0.3805505819883879,
@@ -1807,9 +1807,9 @@
       "gflops": 51.62819626178342
     },
     {
-      "name": "policy_bb3_b100",
+      "name": "router_bb3_b100",
       "kind": "policy",
-      "family": "policy_bb3",
+      "family": "router_bb3",
       "thres": -0.018609225749969482,
       "budget": 100,
       "map50": 0.38055055668008525,
@@ -1818,9 +1818,9 @@
       "gflops": 51.62819626178342
     },
     {
-      "name": "policy_bb2_b100",
+      "name": "router_bb2_b100",
       "kind": "policy",
-      "family": "policy_bb2",
+      "family": "router_bb2",
       "thres": -0.06128085032105446,
       "budget": 100,
       "map50": 0.38055053501090264,
@@ -1829,9 +1829,9 @@
       "gflops": 51.62866274008301
     },
     {
-      "name": "policy_bb4_b100",
+      "name": "router_bb4_b100",
       "kind": "policy",
-      "family": "policy_bb4",
+      "family": "router_bb4",
       "thres": -0.015258532017469406,
       "budget": 100,
       "map50": 0.38055053501090264,
@@ -1840,9 +1840,9 @@
       "gflops": 51.62866274008301
     },
     {
-      "name": "policy_bn1_b100",
+      "name": "router_bn1_b100",
       "kind": "policy",
-      "family": "policy_bn1",
+      "family": "router_bn1",
       "thres": 0.015027138404548168,
       "budget": 100,
       "map50": 0.38055053501090264,

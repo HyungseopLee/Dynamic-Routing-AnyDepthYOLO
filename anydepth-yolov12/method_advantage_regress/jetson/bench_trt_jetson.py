@@ -12,7 +12,7 @@ We hold BOTH FP16 engines resident in memory and measure pure GPU inference late
   * ALTERNATING           (force a BASE<->SUPER engine switch EVERY frame; worst case),
 so the switch overhead is isolated as ALTERNATING - mean(BASE, SUPER).
 
-With --policy, we additionally time the router head (grid-pool the engine's tap maps
+With --router, we additionally time the router head (grid-pool the engine's tap maps
 + tiny MLP) to report routing overhead as a fraction of the detector latency.
 
 With --router_engine, we time the TRT router engine (iv+pv -> logit) combined with
@@ -43,7 +43,7 @@ import torch.nn.functional as F
 
 from method_advantage_regress.router.feature_tap import (
     INPUT_LEVEL_LAYERS, PRED_LEVEL_LAYERS)
-from method_advantage_regress.eval.eval_video import load_policy
+from method_advantage_regress.eval.eval_video import load_router
 
 TRT_LOGGER = trt.Logger(trt.Logger.ERROR)
 
@@ -164,7 +164,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--base", required=True)
     ap.add_argument("--super", required=True)
-    ap.add_argument("--policy", default=None, help="router .pt; if set, also time routing overhead")
+    ap.add_argument("--router", default=None, help="router .pt; if set, also time routing overhead")
     ap.add_argument("--router_engine", default=None, help="TRT router .fp16.engine; times detector+router combined")
     ap.add_argument("--grid", type=int, default=2)
     ap.add_argument("--iters", type=int, default=1000)
@@ -208,8 +208,8 @@ def main():
 
     # ---- routing overhead: grid-pool the engine taps + tiny MLP ----
     router_ms = None
-    if args.policy:
-        net, ckpt, feat, is_gap = load_policy(args.policy, dev)
+    if args.router:
+        net, ckpt, feat, is_gap = load_router(args.router, dev)
         use_pred = feat in ("both", "pred")
         pid = torch.ones(1, dtype=torch.long, device=dev)   # time the SUPER-path head
         in_c = sum(es.buffers[f"feat{l}"].shape[1] for l in INPUT_LEVEL_LAYERS)

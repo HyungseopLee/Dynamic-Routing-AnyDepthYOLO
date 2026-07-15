@@ -8,7 +8,7 @@ Usage:
     # KITTI
     python -m method_advantage_regress.eval.eval_video \
         --dataset kitti --weight finetuning_AnyDepthYOLO/weights/kitti/best.pt \
-        --policies "s0=.../policy_s0.pt,s1=.../policy_s1.pt" \
+        --policies "s0=.../router_s0.pt,s1=.../router_s1.pt" \
         --val_cache method_advantage_regress/outputs/kitti/cache_val_g2.pt \
         --imgsz 384 1248 --conf 0.25 --budgets 10,20,30,40,50,60,70,80,90 \
         --out method_advantage_regress/outputs/kitti/eval/video_curve.json
@@ -16,7 +16,7 @@ Usage:
     # BDD100K
     python -m method_advantage_regress.eval.eval_video \
         --dataset bdd100k --weight finetuning_AnyDepthYOLO/weights/bdd100k/best.pt \
-        --policies "s0=.../policy_s0.pt,s1=.../policy_s1.pt" \
+        --policies "s0=.../router_s0.pt,s1=.../router_s1.pt" \
         --val_cache method_advantage_regress/outputs/bdd100k/cache_val_both.pt \
         --imgsz 720 1280 --conf 0.25 --budgets 10,20,30,40,50,60,70,80,90 \
         --out method_advantage_regress/outputs/bdd100k/eval/video_curve.json
@@ -24,9 +24,9 @@ Usage:
     # Waymo (4 shards across 2 GPUs — see eval/run_waymo_eval_both_robust.sh)
     python -m method_advantage_regress.eval.eval_video \
         --dataset waymo --weight finetuning_AnyDepthYOLO/weights/waymo/best.pt \
-        --policies "s0=.../policy_s0.pt,..." \
+        --policies "s0=.../router_s0.pt,..." \
         --val_cache method_advantage_regress/outputs/waymo/cache_val_both.pt \
-        --imgsz 1280 1920 --conf 0.25 --pi --policy_only \
+        --imgsz 1280 1920 --conf 0.25 --pi --router_only \
         --num_shards 4 --shard_id 0 \
         --raw_out method_advantage_regress/outputs/waymo/eval/shard_0.pt
 """
@@ -47,7 +47,7 @@ from ultralytics import YOLO
 
 from method_advantage_regress.router.feature_tap import (
     INPUT_LEVEL_LAYERS, PRED_LEVEL_LAYERS, STATE_LAYERS)
-from method_advantage_regress.router.policy_net import PolicyNetwork
+from method_advantage_regress.router.router_net import RouterNetwork
 
 # ── BDD100K class mapping ─────────────────────────────────────────────────────
 _MOT_TO_ID = {
@@ -216,13 +216,13 @@ def pixel_signals(bgr):
     return lum, edge
 
 
-def load_policy(path, device):
-    from method_advantage_regress.router.policy_net import GapMlpNet
+def load_router(path, device):
+    from method_advantage_regress.router.router_net import GapMlpNet
     ckpt = torch.load(path, map_location=device, weights_only=False)
     a = ckpt.get("args", {})
     sd = ckpt["state_dict"]
     is_gap = not any(k.endswith("weight") and v.dim() == 4 for k, v in sd.items())
-    cls = GapMlpNet if is_gap else PolicyNetwork
+    cls = GapMlpNet if is_gap else RouterNetwork
     net = cls(group_dim=a.get("group_dim", 64), path_dim=a.get("path_dim", 8),
               hidden_dim=a.get("hidden", 64), feat=a.get("feat", "both"),
               norm=a.get("norm", "batch"), dropout=a.get("dropout", 0.0)).to(device)
@@ -264,7 +264,7 @@ def main():
     ap.add_argument("--weight", required=True)
     ap.add_argument("--policies", default="",
                     help="comma-sep tag=path, e.g. s0=...pt,s1=...pt")
-    ap.add_argument("--policy", default=None, help="single policy shorthand")
+    ap.add_argument("--router", default=None, help="single router shorthand")
     ap.add_argument("--data_root", default=None,
                     help="dataset root (default: /media/data/<dataset>_tracking or _mot/val)")
     ap.add_argument("--sequences", type=str, nargs="*", default=None)
@@ -275,9 +275,9 @@ def main():
     ap.add_argument("--conf", type=float, default=0.25)
     ap.add_argument("--device", default="cuda:0")
     ap.add_argument("--limit", type=int, default=0)
-    ap.add_argument("--policy_only", action="store_true")
+    ap.add_argument("--router_only", action="store_true")
     ap.add_argument("--no_conf", action="store_true")
-    ap.add_argument("--policy_taus", type=int, default=21)
+    ap.add_argument("--router_taus", type=int, default=21)
     ap.add_argument("--val_cache", default=None)
     ap.add_argument("--budgets", default="10,20,30,40,50,60,70,80,90")
     ap.add_argument("--pi", action="store_true")
@@ -339,8 +339,8 @@ def main():
     # ── load policies ─────────────────────────────────────────────────────────
     if args.policies:
         pol_specs = [kv.split("=", 1) for kv in args.policies.split(",")]
-    elif args.policy:
-        pol_specs = [("policy", args.policy)]
+    elif args.router:
+        pol_specs = [("router", args.router)]
     else:
         pol_specs = []
     nets, feats, gaps = {}, {}, {}
@@ -348,7 +348,7 @@ def main():
     dummy_pr = torch.zeros(2, 640, args.grid[0], args.grid[1], device=device)
     zpid = torch.zeros(2, dtype=torch.long, device=device)
     for tag, path in pol_specs:
-        net, ckpt, feat, is_gap = load_policy(path, device)
+        net, ckpt, feat, is_gap = load_router(path, device)
         net.eval()
         di = dummy_in.mean(dim=(2, 3)) if is_gap else dummy_in
         dp = dummy_pr.mean(dim=(2, 3)) if is_gap else dummy_pr
@@ -372,7 +372,7 @@ def main():
     # ── lum/edge percentile thresholds ────────────────────────────────────────
     lum_taus = edge_taus = None
     pcts = list(range(5, 100, 5))
-    if not args.policy_only:
+    if not args.router_only:
         lum_all, edge_all = [], []
         thr_seqs = seqs if args.thresh_clips <= 0 else seqs[:args.thresh_clips]
         for seq in thr_seqs:
@@ -383,7 +383,7 @@ def main():
             edge_taus = np.percentile(edge_all, pcts)
             print(f"[*] lum/edge thresholds from {len(lum_all)} frames ({len(thr_seqs)} clips)")
 
-    # ── val-derived policy thresholds ─────────────────────────────────────────
+    # ── val-derived router thresholds ─────────────────────────────────────────
     val_taus = None
     if args.val_cache:
         budgets = [int(b) for b in args.budgets.split(",")]
@@ -408,7 +408,7 @@ def main():
         dict(name="always_super", kind="const", thres=0,
              decide=lambda pc, pv, fi: "super"),
     ]
-    if not args.policy_only and lum_taus is not None:
+    if not args.router_only and lum_taus is not None:
         for p in range(0, 101, 10):
             ps = p / 100.0
             strategies.append(dict(
@@ -427,20 +427,20 @@ def main():
                         name=f"{kind}_t{int(tau*100):02d}", kind=kind, thres=tau,
                         decide=lambda pc, pv, fi, tau=tau: "base" if (fi == 0 or pv >= tau) else "super"))
 
-    policy_taus = [round(-0.4 + (2.0 / (args.policy_taus - 1)) * i, 3)
-                   for i in range(args.policy_taus)]
+    policy_taus = [round(-0.4 + (2.0 / (args.router_taus - 1)) * i, 3)
+                   for i in range(args.router_taus)]
     for tag in nets:
         pname = f"policy_{tag}"
         if val_taus is not None:
             for b, tau in val_taus[tag].items():
                 strategies.append(dict(
-                    name=f"{pname}_b{b:02d}", kind="policy", ptag=tag,
+                    name=f"{pname}_b{b:02d}", kind="router", ptag=tag,
                     thres=tau, budget=b,
                     decide=lambda pc, pv, fi, tau=tau: "super" if (fi > 0 and pv > tau) else "base"))
         else:
             for tau in policy_taus:
                 strategies.append(dict(
-                    name=f"{pname}_t{int(tau*100):+04d}", kind="policy", ptag=tag,
+                    name=f"{pname}_t{int(tau*100):+04d}", kind="router", ptag=tag,
                     thres=tau,
                     decide=lambda pc, pv, fi, tau=tau: "super" if (fi > 0 and pv > tau) else "base"))
         if args.pi:
@@ -449,7 +449,7 @@ def main():
                 ctrl = PIController(target=t / 100.0, kp=args.pi_kp, ki=args.pi_ki,
                                     beta=args.pi_beta, tau0=args.pi_tau0)
                 strategies.append(dict(
-                    name=f"{pname}_pi{t:02d}", kind="policy", ptag=tag,
+                    name=f"{pname}_pi{t:02d}", kind="router", ptag=tag,
                     thres=args.pi_tau0, budget=t, ctrl=ctrl, decide=ctrl))
 
     print(f"[*] shard {args.shard_id}/{args.num_shards}: "
@@ -523,7 +523,7 @@ def main():
                 if kind in ("conftop20", "confge10"):
                     pv = ((sig_super[kind] if s.prev_choice == "super" else sig_base[kind])
                           if s.prev_choice else 0.0)
-                elif kind == "policy":
+                elif kind == "router":
                     avt = av[st["ptag"]]
                     pv = ((avt["super"] if s.prev_choice == "super" else avt["base"])
                           if s.prev_choice else 0.0)

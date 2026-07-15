@@ -91,7 +91,7 @@
       "gflops": 90.35
     },
     {
-      "name": "policy_seed4_pi10",
+      "name": "router_seed4_pi10",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -102,7 +102,7 @@
       "gflops": 90.63
     },
     {
-      "name": "policy_seed1_pi10",
+      "name": "router_seed1_pi10",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -113,7 +113,7 @@
       "gflops": 90.62
     },
     {
-      "name": "policy_seed2_pi10",
+      "name": "router_seed2_pi10",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -124,7 +124,7 @@
       "gflops": 90.64
     },
     {
-      "name": "policy_seed0_pi10",
+      "name": "router_seed0_pi10",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -135,7 +135,7 @@
       "gflops": 90.65
     },
     {
-      "name": "policy_seed3_pi10",
+      "name": "router_seed3_pi10",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -157,9 +157,9 @@
       "gflops": 91.25
     },
     {
-      "name": "policy_seed0_b10",
+      "name": "router_seed0_b10",
       "kind": "policy",
-      "family": "policy_seed0",
+      "family": "router_seed0",
       "thres": 0.162462866306305,
       "budget": 10,
       "map50": 0.6155,
@@ -190,9 +190,9 @@
       "gflops": 92.82
     },
     {
-      "name": "policy_seed3_b10",
+      "name": "router_seed3_b10",
       "kind": "policy",
-      "family": "policy_seed3",
+      "family": "router_seed3",
       "thres": 0.19014252424240113,
       "budget": 10,
       "map50": 0.615,
@@ -201,9 +201,9 @@
       "gflops": 92.26
     },
     {
-      "name": "policy_seed2_b10",
+      "name": "router_seed2_b10",
       "kind": "policy",
-      "family": "policy_seed2",
+      "family": "router_seed2",
       "thres": 0.14701010286808014,
       "budget": 10,
       "map50": 0.6148,
@@ -212,9 +212,9 @@
       "gflops": 92.62
     },
     {
-      "name": "policy_seed4_b10",
+      "name": "router_seed4_b10",
       "kind": "policy",
-      "family": "policy_seed4",
+      "family": "router_seed4",
       "thres": 0.1492565304040909,
       "budget": 10,
       "map50": 0.613,
@@ -223,9 +223,9 @@
       "gflops": 93.34
     },
     {
-      "name": "policy_seed1_b10",
+      "name": "router_seed1_b10",
       "kind": "policy",
-      "family": "policy_seed1",
+      "family": "router_seed1",
       "thres": 0.11237877160310747,
       "budget": 10,
       "map50": 0.6146,
@@ -267,7 +267,7 @@
       "gflops": 95.6
     },
     {
-      "name": "policy_seed1_pi20",
+      "name": "router_seed1_pi20",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -278,7 +278,7 @@
       "gflops": 95.65
     },
     {
-      "name": "policy_seed2_pi20",
+      "name": "router_seed2_pi20",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -289,7 +289,7 @@
       "gflops": 95.69
     },
     {
-      "name": "policy_seed4_pi20",
+      "name": "router_seed4_pi20",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -300,7 +300,7 @@
       "gflops": 95.69
     },
     {
-      "name": "policy_seed0_pi20",
+      "name": "router_seed0_pi20",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -311,7 +311,7 @@
       "gflops": 95.71
     },
     {
-      "name": "policy_seed3_pi20",
+      "name": "router_seed3_pi20",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -344,9 +344,9 @@
       "gflops": 97.33
     },
     {
-      "name": "policy_seed0_b20",
+      "name": "router_seed0_b20",
       "kind": "policy",
-      "family": "policy_seed0",
+      "family": "router_seed0",
       "thres": 0.12604463398456575,
       "budget": 20,
       "map50": 0.6159,
@@ -366,9 +366,9 @@
       "gflops": 96.23
     },
     {
-      "name": "policy_seed3_b20",
+      "name": "router_seed3_b20",
       "kind": "policy",
-      "family": "policy_seed3",
+      "family": "router_seed3",
       "thres": 0.1383798807859421,
       "budget": 20,
       "map50": 0.6147,
@@ -388,9 +388,9 @@
       "gflops": 98.21
     },
     {
-      "name": "policy_seed2_b20",
+      "name": "router_seed2_b20",
       "kind": "policy",
-      "family": "policy_seed2",
+      "family": "router_seed2",
       "thres": 0.11459759771823885,
       "budget": 20,
       "map50": 0.6161,
@@ -410,9 +410,9 @@
       "gflops": 98.75
     },
     {
-      "name": "policy_seed1_b20",
+      "name": "router_seed1_b20",
       "kind": "policy",
-      "family": "policy_seed1",
+      "family": "router_seed1",
       "thres": 0.08396858125925065,
       "budget": 20,
       "map50": 0.6164,
@@ -432,9 +432,9 @@
       "gflops": 100.33
     },
     {
-      "name": "policy_seed4_b20",
+      "name": "router_seed4_b20",
       "kind": "policy",
-      "family": "policy_seed4",
+      "family": "router_seed4",
       "thres": 0.11692754030227662,
       "budget": 20,
       "map50": 0.6143,
@@ -465,9 +465,9 @@
       "gflops": 102.12
     },
     {
-      "name": "policy_seed3_b30",
+      "name": "router_seed3_b30",
       "kind": "policy",
-      "family": "policy_seed3",
+      "family": "router_seed3",
       "thres": 0.11725604236125946,
       "budget": 30,
       "map50": 0.6155,
@@ -476,7 +476,7 @@
       "gflops": 101.55
     },
     {
-      "name": "policy_seed1_pi30",
+      "name": "router_seed1_pi30",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -487,7 +487,7 @@
       "gflops": 100.65
     },
     {
-      "name": "policy_seed4_pi30",
+      "name": "router_seed4_pi30",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -498,7 +498,7 @@
       "gflops": 100.68
     },
     {
-      "name": "policy_seed0_pi30",
+      "name": "router_seed0_pi30",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -509,7 +509,7 @@
       "gflops": 100.7
     },
     {
-      "name": "policy_seed2_pi30",
+      "name": "router_seed2_pi30",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -520,7 +520,7 @@
       "gflops": 100.7
     },
     {
-      "name": "policy_seed3_pi30",
+      "name": "router_seed3_pi30",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -531,9 +531,9 @@
       "gflops": 100.73
     },
     {
-      "name": "policy_seed0_b30",
+      "name": "router_seed0_b30",
       "kind": "policy",
-      "family": "policy_seed0",
+      "family": "router_seed0",
       "thres": 0.1072450414299965,
       "budget": 30,
       "map50": 0.6165,
@@ -553,9 +553,9 @@
       "gflops": 100.97
     },
     {
-      "name": "policy_seed2_b30",
+      "name": "router_seed2_b30",
       "kind": "policy",
-      "family": "policy_seed2",
+      "family": "router_seed2",
       "thres": 0.0987409234046936,
       "budget": 30,
       "map50": 0.6162,
@@ -597,9 +597,9 @@
       "gflops": 103.43
     },
     {
-      "name": "policy_seed1_b30",
+      "name": "router_seed1_b30",
       "kind": "policy",
-      "family": "policy_seed1",
+      "family": "router_seed1",
       "thres": 0.06958658248186111,
       "budget": 30,
       "map50": 0.6175,
@@ -619,9 +619,9 @@
       "gflops": 106.77
     },
     {
-      "name": "policy_seed2_b40",
+      "name": "router_seed2_b40",
       "kind": "policy",
-      "family": "policy_seed2",
+      "family": "router_seed2",
       "thres": 0.08674783408641815,
       "budget": 40,
       "map50": 0.6159,
@@ -630,9 +630,9 @@
       "gflops": 106.57
     },
     {
-      "name": "policy_seed3_b40",
+      "name": "router_seed3_b40",
       "kind": "policy",
-      "family": "policy_seed3",
+      "family": "router_seed3",
       "thres": 0.10244073569774628,
       "budget": 40,
       "map50": 0.6161,
@@ -641,9 +641,9 @@
       "gflops": 105.65
     },
     {
-      "name": "policy_seed0_b40",
+      "name": "router_seed0_b40",
       "kind": "policy",
-      "family": "policy_seed0",
+      "family": "router_seed0",
       "thres": 0.09362205117940901,
       "budget": 40,
       "map50": 0.616,
@@ -674,7 +674,7 @@
       "gflops": 108.36
     },
     {
-      "name": "policy_seed1_pi40",
+      "name": "router_seed1_pi40",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -685,7 +685,7 @@
       "gflops": 105.72
     },
     {
-      "name": "policy_seed4_pi40",
+      "name": "router_seed4_pi40",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -696,7 +696,7 @@
       "gflops": 105.73
     },
     {
-      "name": "policy_seed0_pi40",
+      "name": "router_seed0_pi40",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -707,7 +707,7 @@
       "gflops": 105.75
     },
     {
-      "name": "policy_seed2_pi40",
+      "name": "router_seed2_pi40",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -718,7 +718,7 @@
       "gflops": 105.74
     },
     {
-      "name": "policy_seed3_pi40",
+      "name": "router_seed3_pi40",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -729,9 +729,9 @@
       "gflops": 105.76
     },
     {
-      "name": "policy_seed4_b30",
+      "name": "router_seed4_b30",
       "kind": "policy",
-      "family": "policy_seed4",
+      "family": "router_seed4",
       "thres": 0.09780121445655822,
       "budget": 30,
       "map50": 0.6158,
@@ -784,9 +784,9 @@
       "gflops": 111.38
     },
     {
-      "name": "policy_seed1_b40",
+      "name": "router_seed1_b40",
       "kind": "policy",
-      "family": "policy_seed1",
+      "family": "router_seed1",
       "thres": 0.05833976864814758,
       "budget": 40,
       "map50": 0.6177,
@@ -795,9 +795,9 @@
       "gflops": 108.92
     },
     {
-      "name": "policy_seed0_b50",
+      "name": "router_seed0_b50",
       "kind": "policy",
-      "family": "policy_seed0",
+      "family": "router_seed0",
       "thres": 0.08263443410396576,
       "budget": 50,
       "map50": 0.6167,
@@ -806,9 +806,9 @@
       "gflops": 110.74
     },
     {
-      "name": "policy_seed3_b50",
+      "name": "router_seed3_b50",
       "kind": "policy",
-      "family": "policy_seed3",
+      "family": "router_seed3",
       "thres": 0.08908918499946594,
       "budget": 50,
       "map50": 0.6165,
@@ -817,9 +817,9 @@
       "gflops": 110.25
     },
     {
-      "name": "policy_seed2_b50",
+      "name": "router_seed2_b50",
       "kind": "policy",
-      "family": "policy_seed2",
+      "family": "router_seed2",
       "thres": 0.07573755085468292,
       "budget": 50,
       "map50": 0.6165,
@@ -850,7 +850,7 @@
       "gflops": 110.18
     },
     {
-      "name": "policy_seed1_pi50",
+      "name": "router_seed1_pi50",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -861,7 +861,7 @@
       "gflops": 110.74
     },
     {
-      "name": "policy_seed0_pi50",
+      "name": "router_seed0_pi50",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -872,7 +872,7 @@
       "gflops": 110.77
     },
     {
-      "name": "policy_seed2_pi50",
+      "name": "router_seed2_pi50",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -883,7 +883,7 @@
       "gflops": 110.75
     },
     {
-      "name": "policy_seed4_pi50",
+      "name": "router_seed4_pi50",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -894,7 +894,7 @@
       "gflops": 110.77
     },
     {
-      "name": "policy_seed3_pi50",
+      "name": "router_seed3_pi50",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -927,9 +927,9 @@
       "gflops": 112.02
     },
     {
-      "name": "policy_seed4_b40",
+      "name": "router_seed4_b40",
       "kind": "policy",
-      "family": "policy_seed4",
+      "family": "router_seed4",
       "thres": 0.08431210666894913,
       "budget": 40,
       "map50": 0.6171,
@@ -949,9 +949,9 @@
       "gflops": 115.91
     },
     {
-      "name": "policy_seed0_b60",
+      "name": "router_seed0_b60",
       "kind": "policy",
-      "family": "policy_seed0",
+      "family": "router_seed0",
       "thres": 0.07419307231903076,
       "budget": 60,
       "map50": 0.6175,
@@ -960,9 +960,9 @@
       "gflops": 114.94
     },
     {
-      "name": "policy_seed1_b50",
+      "name": "router_seed1_b50",
       "kind": "policy",
-      "family": "policy_seed1",
+      "family": "router_seed1",
       "thres": 0.04979065805673599,
       "budget": 50,
       "map50": 0.619,
@@ -971,9 +971,9 @@
       "gflops": 113.94
     },
     {
-      "name": "policy_seed3_b60",
+      "name": "router_seed3_b60",
       "kind": "policy",
-      "family": "policy_seed3",
+      "family": "router_seed3",
       "thres": 0.07789565026760101,
       "budget": 60,
       "map50": 0.6173,
@@ -993,9 +993,9 @@
       "gflops": 113.52
     },
     {
-      "name": "policy_seed2_b60",
+      "name": "router_seed2_b60",
       "kind": "policy",
-      "family": "policy_seed2",
+      "family": "router_seed2",
       "thres": 0.06680080443620683,
       "budget": 60,
       "map50": 0.6178,
@@ -1015,7 +1015,7 @@
       "gflops": 115.51
     },
     {
-      "name": "policy_seed1_pi60",
+      "name": "router_seed1_pi60",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -1026,7 +1026,7 @@
       "gflops": 115.76
     },
     {
-      "name": "policy_seed2_pi60",
+      "name": "router_seed2_pi60",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -1037,7 +1037,7 @@
       "gflops": 115.8
     },
     {
-      "name": "policy_seed0_pi60",
+      "name": "router_seed0_pi60",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -1048,7 +1048,7 @@
       "gflops": 115.83
     },
     {
-      "name": "policy_seed4_pi60",
+      "name": "router_seed4_pi60",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -1059,7 +1059,7 @@
       "gflops": 115.83
     },
     {
-      "name": "policy_seed3_pi60",
+      "name": "router_seed3_pi60",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -1103,9 +1103,9 @@
       "gflops": 116.01
     },
     {
-      "name": "policy_seed4_b50",
+      "name": "router_seed4_b50",
       "kind": "policy",
-      "family": "policy_seed4",
+      "family": "router_seed4",
       "thres": 0.07482670247554779,
       "budget": 50,
       "map50": 0.6174,
@@ -1114,9 +1114,9 @@
       "gflops": 118.05
     },
     {
-      "name": "policy_seed1_b60",
+      "name": "router_seed1_b60",
       "kind": "policy",
-      "family": "policy_seed1",
+      "family": "router_seed1",
       "thres": 0.04268169701099396,
       "budget": 60,
       "map50": 0.619,
@@ -1125,9 +1125,9 @@
       "gflops": 118.74
     },
     {
-      "name": "policy_seed0_b70",
+      "name": "router_seed0_b70",
       "kind": "policy",
-      "family": "policy_seed0",
+      "family": "router_seed0",
       "thres": 0.06621709316968918,
       "budget": 70,
       "map50": 0.6192,
@@ -1136,9 +1136,9 @@
       "gflops": 119.5
     },
     {
-      "name": "policy_seed3_b70",
+      "name": "router_seed3_b70",
       "kind": "policy",
-      "family": "policy_seed3",
+      "family": "router_seed3",
       "thres": 0.06757988929748536,
       "budget": 70,
       "map50": 0.6178,
@@ -1158,9 +1158,9 @@
       "gflops": 118.18
     },
     {
-      "name": "policy_seed2_b70",
+      "name": "router_seed2_b70",
       "kind": "policy",
-      "family": "policy_seed2",
+      "family": "router_seed2",
       "thres": 0.05758024603128433,
       "budget": 70,
       "map50": 0.6187,
@@ -1180,7 +1180,7 @@
       "gflops": 120.35
     },
     {
-      "name": "policy_seed1_pi70",
+      "name": "router_seed1_pi70",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -1191,7 +1191,7 @@
       "gflops": 120.79
     },
     {
-      "name": "policy_seed2_pi70",
+      "name": "router_seed2_pi70",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -1202,7 +1202,7 @@
       "gflops": 120.81
     },
     {
-      "name": "policy_seed0_pi70",
+      "name": "router_seed0_pi70",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -1213,7 +1213,7 @@
       "gflops": 120.85
     },
     {
-      "name": "policy_seed3_pi70",
+      "name": "router_seed3_pi70",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -1224,7 +1224,7 @@
       "gflops": 120.85
     },
     {
-      "name": "policy_seed4_pi70",
+      "name": "router_seed4_pi70",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -1257,9 +1257,9 @@
       "gflops": 120.95
     },
     {
-      "name": "policy_seed4_b60",
+      "name": "router_seed4_b60",
       "kind": "policy",
-      "family": "policy_seed4",
+      "family": "router_seed4",
       "thres": 0.0660315990447998,
       "budget": 60,
       "map50": 0.6171,
@@ -1268,9 +1268,9 @@
       "gflops": 122.44
     },
     {
-      "name": "policy_seed1_b70",
+      "name": "router_seed1_b70",
       "kind": "policy",
-      "family": "policy_seed1",
+      "family": "router_seed1",
       "thres": 0.036428965628147125,
       "budget": 70,
       "map50": 0.618,
@@ -1279,9 +1279,9 @@
       "gflops": 123.69
     },
     {
-      "name": "policy_seed0_b80",
+      "name": "router_seed0_b80",
       "kind": "policy",
-      "family": "policy_seed0",
+      "family": "router_seed0",
       "thres": 0.057571652531623836,
       "budget": 80,
       "map50": 0.6196,
@@ -1290,9 +1290,9 @@
       "gflops": 124.36
     },
     {
-      "name": "policy_seed3_b80",
+      "name": "router_seed3_b80",
       "kind": "policy",
-      "family": "policy_seed3",
+      "family": "router_seed3",
       "thres": 0.05825528427958488,
       "budget": 80,
       "map50": 0.6182,
@@ -1312,9 +1312,9 @@
       "gflops": 123.83
     },
     {
-      "name": "policy_seed2_b80",
+      "name": "router_seed2_b80",
       "kind": "policy",
-      "family": "policy_seed2",
+      "family": "router_seed2",
       "thres": 0.046824229508638376,
       "budget": 80,
       "map50": 0.6197,
@@ -1334,7 +1334,7 @@
       "gflops": 125.22
     },
     {
-      "name": "policy_seed1_pi80",
+      "name": "router_seed1_pi80",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -1345,7 +1345,7 @@
       "gflops": 125.84
     },
     {
-      "name": "policy_seed2_pi80",
+      "name": "router_seed2_pi80",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -1356,7 +1356,7 @@
       "gflops": 125.85
     },
     {
-      "name": "policy_seed4_pi80",
+      "name": "router_seed4_pi80",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -1367,7 +1367,7 @@
       "gflops": 125.87
     },
     {
-      "name": "policy_seed0_pi80",
+      "name": "router_seed0_pi80",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -1378,7 +1378,7 @@
       "gflops": 125.87
     },
     {
-      "name": "policy_seed3_pi80",
+      "name": "router_seed3_pi80",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -1411,9 +1411,9 @@
       "gflops": 127.32
     },
     {
-      "name": "policy_seed4_b70",
+      "name": "router_seed4_b70",
       "kind": "policy",
-      "family": "policy_seed4",
+      "family": "router_seed4",
       "thres": 0.05730777978897095,
       "budget": 70,
       "map50": 0.6178,
@@ -1422,9 +1422,9 @@
       "gflops": 126.11
     },
     {
-      "name": "policy_seed1_b80",
+      "name": "router_seed1_b80",
       "kind": "policy",
-      "family": "policy_seed1",
+      "family": "router_seed1",
       "thres": 0.030298225581645962,
       "budget": 80,
       "map50": 0.6193,
@@ -1444,9 +1444,9 @@
       "gflops": 127.91
     },
     {
-      "name": "policy_seed2_b90",
+      "name": "router_seed2_b90",
       "kind": "policy",
-      "family": "policy_seed2",
+      "family": "router_seed2",
       "thres": 0.037625085562467575,
       "budget": 90,
       "map50": 0.6186,
@@ -1455,9 +1455,9 @@
       "gflops": 128.91
     },
     {
-      "name": "policy_seed3_b90",
+      "name": "router_seed3_b90",
       "kind": "policy",
-      "family": "policy_seed3",
+      "family": "router_seed3",
       "thres": 0.04786277934908867,
       "budget": 90,
       "map50": 0.6182,
@@ -1466,9 +1466,9 @@
       "gflops": 128.86
     },
     {
-      "name": "policy_seed0_b90",
+      "name": "router_seed0_b90",
       "kind": "policy",
-      "family": "policy_seed0",
+      "family": "router_seed0",
       "thres": 0.04814343303442001,
       "budget": 90,
       "map50": 0.6191,
@@ -1488,9 +1488,9 @@
       "gflops": 129.82
     },
     {
-      "name": "policy_seed4_b80",
+      "name": "router_seed4_b80",
       "kind": "policy",
-      "family": "policy_seed4",
+      "family": "router_seed4",
       "thres": 0.049021995067596434,
       "budget": 80,
       "map50": 0.6177,
@@ -1521,7 +1521,7 @@
       "gflops": 131.55
     },
     {
-      "name": "policy_seed1_pi90",
+      "name": "router_seed1_pi90",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -1532,7 +1532,7 @@
       "gflops": 130.9
     },
     {
-      "name": "policy_seed2_pi90",
+      "name": "router_seed2_pi90",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -1543,7 +1543,7 @@
       "gflops": 130.92
     },
     {
-      "name": "policy_seed4_pi90",
+      "name": "router_seed4_pi90",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -1554,7 +1554,7 @@
       "gflops": 130.94
     },
     {
-      "name": "policy_seed0_pi90",
+      "name": "router_seed0_pi90",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -1565,7 +1565,7 @@
       "gflops": 130.96
     },
     {
-      "name": "policy_seed3_pi90",
+      "name": "router_seed3_pi90",
       "kind": "policy",
       "family": "policy",
       "thres": 0.0,
@@ -1576,9 +1576,9 @@
       "gflops": 130.96
     },
     {
-      "name": "policy_seed1_b90",
+      "name": "router_seed1_b90",
       "kind": "policy",
-      "family": "policy_seed1",
+      "family": "router_seed1",
       "thres": 0.02214050143957138,
       "budget": 90,
       "map50": 0.6186,
@@ -1587,9 +1587,9 @@
       "gflops": 131.68
     },
     {
-      "name": "policy_seed4_b90",
+      "name": "router_seed4_b90",
       "kind": "policy",
-      "family": "policy_seed4",
+      "family": "router_seed4",
       "thres": 0.03760331720113754,
       "budget": 90,
       "map50": 0.618,

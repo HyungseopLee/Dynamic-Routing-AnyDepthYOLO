@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Train BDD100K routers for prev-action ablation: feat=both, p in {0.0, 1.0}, seeds 0-4.
-# (p=0.5 already exists as policy_both_{0-4}.pt)
+# (p=0.5 already exists as router_both_{0-4}.pt)
 # Then eval video on BDD val, producing video_curve_prevp_both_bdd.json for Fig 11.
 #
 # Usage (from repo root):
@@ -19,13 +19,13 @@ echo "=== [1/2] Train: feat=both, prev_p in {0.0, 1.0}, seeds 0-4 ==="
 for PP in 0.0 1.0; do
   TAG="p$(echo $PP | tr -d '.')"   # p00 / p10
   for S in 0 1 2 3 4; do
-    PT="$OUT/policy_both_prevp${TAG}_s${S}.pt"
+    PT="$OUT/router_both_prevp${TAG}_s${S}.pt"
     if [ -f "$PT" ]; then
       echo "  [skip] $PT exists"
       continue
     fi
     echo "  training prev_p=$PP seed=$S -> $PT"
-    $PY -m $PKG.train_policy \
+    $PY -m $PKG.train_router \
       --dataset bdd100k \
       --cache    "$CACHE" \
       --val_cache "$VAL" \
@@ -42,15 +42,15 @@ done
 
 echo ""
 echo "=== [2/2] Video eval: all three p values ==="
-# p=0.5: existing policy_both_0~4
+# p=0.5: existing router_both_0~4
 POLS=""
 for S in 0 1 2 3 4; do
-  POLS+="both_p05_s${S}=$OUT/policy_both_${S}.pt,"
+  POLS+="both_p05_s${S}=$OUT/router_both_${S}.pt,"
 done
 for PP in 0.0 1.0; do
   TAG="p$(echo $PP | tr -d '.')"
   for S in 0 1 2 3 4; do
-    POLS+="both_${TAG}_s${S}=$OUT/policy_both_prevp${TAG}_s${S}.pt,"
+    POLS+="both_${TAG}_s${S}=$OUT/router_both_prevp${TAG}_s${S}.pt,"
   done
 done
 POLS="${POLS%,}"
@@ -63,7 +63,7 @@ $PY -m $PKG.eval_video --dataset bdd100k \
   --policies "$POLS" \
   --grid 2 \
   --conf 0.25 \
-  --policy_only \
+  --router_only \
   --val_cache "$VAL" \
   --out "$OUT_JSON"
 

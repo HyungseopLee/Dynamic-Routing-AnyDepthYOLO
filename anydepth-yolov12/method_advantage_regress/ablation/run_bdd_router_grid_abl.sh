@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Fig 10 (BDD100K): Router architecture & grid ablation, cache-based training.
 #
-# TinyConv 2x2 (default): existing policy_both_0-4.pt  (already done)
+# TinyConv 2x2 (default): existing router_both_0-4.pt  (already done)
 # GAP-MLP      (feat=both): spatial-mean the existing cache_train_both.pt  -> train
 # TinyConv 8x8 (feat=both): build cache_train_g8_both.pt (~50GB) -> train
 #
@@ -23,10 +23,10 @@ VAL_G8=$OUT/cache_val_g8_both.pt
 # ── [1/3] GAP-MLP: reuse existing cache_train_both.pt ────────────────────────
 echo "=== [1/3] Train GAP-MLP (feat=both, arch=gapmpl) seeds 0-4 ==="
 for S in 0 1 2 3 4; do
-  PT="$OUT/policy_gapmpl_both_s${S}.pt"
+  PT="$OUT/router_gapmpl_both_s${S}.pt"
   if [ -f "$PT" ]; then echo "  [skip] $PT"; continue; fi
   echo "  GAP-MLP seed=$S"
-  python -m $PKG.train_policy \
+  python -m $PKG.train_router \
     --dataset bdd100k \
     --cache    "$CACHE_BOTH" \
     --val_cache "$VAL_BOTH" \
@@ -78,10 +78,10 @@ fi
 echo ""
 echo "=== [3/3] Train TinyConv 8x8 (feat=both) seeds 0-4 ==="
 for S in 0 1 2 3 4; do
-  PT="$OUT/policy_tinyconv_g8_both_s${S}.pt"
+  PT="$OUT/router_tinyconv_g8_both_s${S}.pt"
   if [ -f "$PT" ]; then echo "  [skip] $PT"; continue; fi
   echo "  TinyConv 8x8 seed=$S"
-  python -m $PKG.train_policy \
+  python -m $PKG.train_router \
     --dataset bdd100k \
     --cache    "$CACHE_G8" \
     --val_cache "$VAL_G8" \

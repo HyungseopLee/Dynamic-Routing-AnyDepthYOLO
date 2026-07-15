@@ -12,7 +12,7 @@ Per labeled (5 fps) frame we store exactly what the simulator replays:
 
     python -m method_advantage_regress.eval.dump_perframe_bdd \
         --weight finetuning_AnyDepthYOLO/weights/bdd100k/<alpha0.2>.pt \
-        --policy method_advantage_regress/outputs/bdd100k/policy_scenario_s0.pt \
+        --router method_advantage_regress/outputs/bdd100k/router_scenario_s0.pt \
         --grid 2 --imgsz 720 1280 --sequences seqA,seqB,...
 """
 import argparse
@@ -29,7 +29,7 @@ from ultralytics import YOLO  # noqa
 import eval_baseline_kitti as B  # noqa
 from method_advantage_regress.router.feature_tap import INPUT_LEVEL_LAYERS, STATE_LAYERS  # noqa
 from method_advantage_regress.eval.eval_video import (  # noqa
-    parse_box_track, labeled_frames, load_policy, grid_vec, BDD_MOT_EVAL_CLS)
+    parse_box_track, labeled_frames, load_router, grid_vec, BDD_MOT_EVAL_CLS)
 
 OUT = Path(__file__).resolve().parent / "outputs"
 
@@ -37,7 +37,7 @@ OUT = Path(__file__).resolve().parent / "outputs"
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--weight", required=True)
-    ap.add_argument("--policy", required=True)
+    ap.add_argument("--router", required=True)
     ap.add_argument("--mot_root", default="/media/data/bdd100k_mot/val")
     ap.add_argument("--labels_json",
                     default="/media/data/bdd100k_yolo/bdd100k_labels_images_val.json")
@@ -65,14 +65,14 @@ def main():
         yolo.model.model[idx].register_forward_hook(
             lambda m, i, o, k=idx: captured.__setitem__(k, o))
 
-    net, ckpt, feat, is_gap = load_policy(args.policy, dev)
+    net, ckpt, feat, is_gap = load_router(args.router, dev)
     one = torch.ones(1, dtype=torch.long, device=dev)
     zero = torch.zeros(1, dtype=torch.long, device=dev)
 
     label_dir = Path(args.mot_root) / "labels"
     video_dir = Path(args.mot_root) / "videos"
 
-    out = {"seqs": {}, "meta": {"weight": args.weight, "policy": args.policy,
+    out = {"seqs": {}, "meta": {"weight": args.weight, "router": args.router,
                                 "grid": args.grid, "imgsz": args.imgsz}}
     for si, seq in enumerate(seqs):
         gt = parse_box_track(label_dir / f"{seq}.json")

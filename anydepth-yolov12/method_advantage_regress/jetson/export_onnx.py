@@ -27,7 +27,7 @@ Step 2 — build TRT engines (see build_engine.py):
 Step 3 — (optional) export router ONNX (see export_router_onnx.py):
 
     python -m method_advantage_regress.jetson.export_router_onnx \
-        --policy method_advantage_regress/outputs/bdd100k/policy_both_0.pt \
+        --router method_advantage_regress/outputs/bdd100k/router_both_0.pt \
         --base_engine method_advantage_regress/jetson/onnx/bdd_pooled/base.fp16.engine \
         --out method_advantage_regress/jetson/onnx/bdd_pooled/router.onnx
     python -m method_advantage_regress.jetson.build_engine \
@@ -38,7 +38,7 @@ Step 4 — run TRT budget-tracking demo (see online_budget_demo_stream.py):
     python -m method_advantage_regress.jetson.online_budget_demo_stream \
     --base  method_advantage_regress/jetson/onnx/bdd_pooled/base.fp16.engine \
     --super method_advantage_regress/jetson/onnx/bdd_pooled/super.fp16.engine \
-    --policy method_advantage_regress/outputs/bdd100k/policy_both_0.pt \
+    --router method_advantage_regress/outputs/bdd100k/router_both_0.pt \
     --router_engine method_advantage_regress/jetson/onnx/bdd_pooled/router.fp16.engine \
     --scenarios method_advantage_regress/outputs/bdd100k/scenarios.json \
     --mot_root /media/data/bdd100k_mot/val \
@@ -50,7 +50,7 @@ Step 4 — run TRT budget-tracking demo (see online_budget_demo_stream.py):
     python -m method_advantage_regress.jetson.online_budget_demo_stream \
     --base  method_advantage_regress/jetson/onnx/bdd_pooled/base.fp16.engine \
     --super method_advantage_regress/jetson/onnx/bdd_pooled/super.fp16.engine \
-    --policy method_advantage_regress/outputs/bdd100k/policy_both_0.pt \
+    --router method_advantage_regress/outputs/bdd100k/router_both_0.pt \
     --router_engine method_advantage_regress/jetson/onnx/bdd_pooled/router.fp16.engine \
     --scenarios method_advantage_regress/outputs/bdd100k/scenarios.json \
     --mot_root /media/data/bdd100k_mot/val \
@@ -130,7 +130,7 @@ def main():
     ap.add_argument("--out_dir", required=True)
     ap.add_argument("--device", default="cuda:0")
     ap.add_argument("--opset", type=int, default=17)
-    ap.add_argument("--grid", type=int, default=2, help="router feature grid GxG (match policy)")
+    ap.add_argument("--grid", type=int, default=2, help="router feature grid GxG (match router)")
     ap.add_argument("--tap", type=int, nargs="+", default=[4, 6, 8, 14, 17, 20],
                     help="layers to emit as raw feature outputs (input-level 4,6,8 and, for "
                          "feat=both policies, pred-level 14,17,20)")

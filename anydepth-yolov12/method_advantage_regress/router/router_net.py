@@ -1,8 +1,8 @@
-"""Router policy networks for 2-level depth routing.
+"""Router networks for 2-level depth routing.
 
 Two architectures:
 
-PolicyNetwork (TinyConv):
+RouterNetwork (TinyConv):
     Keeps spatial structure of pooled feature grids [B, C, G, G].
     Per group: BN2d -> 1x1 conv -> ReLU -> 3x3 depthwise -> ReLU -> GAP -> [B, d]
     Concat groups + path embed -> FC -> ReLU -> FC -> logit [B, 1].
@@ -58,7 +58,7 @@ class ConvGroupProj(nn.Module):
         return x.mean(dim=(2, 3))   # GAP -> [B, d]
 
 
-class PolicyNetwork(nn.Module):
+class RouterNetwork(nn.Module):
     def __init__(self, group_dim: int = 64, path_dim: int = 8, hidden_dim: int = 64,
                  feat: str = "both", norm: str = "batch", dropout: float = 0.0):
         super().__init__()
@@ -123,7 +123,7 @@ class _LinearGroupProj(nn.Module):
 class GapMlpNet(nn.Module):
     """GAP-MLP router: expects spatially pre-averaged features [B, C].
 
-    Same interface as PolicyNetwork but all weights are 2D (Linear, not Conv),
+    Same interface as RouterNetwork but all weights are 2D (Linear, not Conv),
     so checkpoint detection (checking for 4D weight tensors) correctly
     distinguishes this from the TinyConv router.
 

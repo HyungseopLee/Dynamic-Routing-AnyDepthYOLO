@@ -14,9 +14,9 @@
       "gflops": 33.1771136
     },
     {
-      "name": "policy_both_p10_s3_b10",
+      "name": "router_both_p10_s3_b10",
       "kind": "policy",
-      "family": "policy_both_p10_s3",
+      "family": "router_both_p10_s3",
       "thres": -4.377714157104492,
       "budget": 10,
       "map50": 0.36505216503114557,
@@ -25,9 +25,9 @@
       "gflops": 34.06295589091183
     },
     {
-      "name": "policy_both_p10_s1_b10",
+      "name": "router_both_p10_s1_b10",
       "kind": "policy",
-      "family": "policy_both_p10_s1",
+      "family": "router_both_p10_s1",
       "thres": -1.6348345279693604,
       "budget": 10,
       "map50": 0.3641986384496648,
@@ -36,9 +36,9 @@
       "gflops": 34.42960783438561
     },
     {
-      "name": "policy_both_p10_s3_b20",
+      "name": "router_both_p10_s3_b20",
       "kind": "policy",
-      "family": "policy_both_p10_s3",
+      "family": "router_both_p10_s3",
       "thres": -4.414341259002685,
       "budget": 20,
       "map50": 0.3652359960940501,
@@ -47,9 +47,9 @@
       "gflops": 34.829846215429505
     },
     {
-      "name": "policy_both_p10_s1_b20",
+      "name": "router_both_p10_s1_b20",
       "kind": "policy",
-      "family": "policy_both_p10_s1",
+      "family": "router_both_p10_s1",
       "thres": -1.6348398923873901,
       "budget": 20,
       "map50": 0.36429486250909454,
@@ -58,9 +58,9 @@
       "gflops": 35.40268156731983
     },
     {
-      "name": "policy_both_p05_s4_b10",
+      "name": "router_both_p05_s4_b10",
       "kind": "policy",
-      "family": "policy_both_p05_s4",
+      "family": "router_both_p05_s4",
       "thres": 0.08634590432047845,
       "budget": 10,
       "map50": 0.3693660879061944,
@@ -69,9 +69,9 @@
       "gflops": 35.41667591630738
     },
     {
-      "name": "policy_both_p00_s3_b10",
+      "name": "router_both_p00_s3_b10",
       "kind": "policy",
-      "family": "policy_both_p00_s3",
+      "family": "router_both_p00_s3",
       "thres": -5.657440900802612,
       "budget": 10,
       "map50": 0.37060311466574136,
@@ -80,9 +80,9 @@
       "gflops": 35.6984288092567
     },
     {
-      "name": "policy_both_p10_s3_b30",
+      "name": "router_both_p10_s3_b30",
       "kind": "policy",
-      "family": "policy_both_p10_s3",
+      "family": "router_both_p10_s3",
       "thres": -4.442026233673095,
       "budget": 30,
       "map50": 0.3652860612932174,
@@ -91,9 +91,9 @@
       "gflops": 35.74227776941768
     },
     {
-      "name": "policy_both_p00_s1_b10",
+      "name": "router_both_p00_s1_b10",
       "kind": "policy",
-      "family": "policy_both_p00_s1",
+      "family": "router_both_p00_s1",
       "thres": -5.599159574508664,
       "budget": 10,
       "map50": 0.3703798409425619,
@@ -102,9 +102,9 @@
       "gflops": 35.75300677030813
     },
     {
-      "name": "policy_both_p05_s0_b10",
+      "name": "router_both_p05_s0_b10",
       "kind": "policy",
-      "family": "policy_both_p05_s0",
+      "family": "router_both_p05_s0",
       "thres": 0.07943252697587014,
       "budget": 10,
       "map50": 0.37015682268286754,
@@ -113,9 +113,9 @@
       "gflops": 35.772132380591124
     },
     {
-      "name": "policy_both_p05_s1_b10",
+      "name": "router_both_p05_s1_b10",
       "kind": "policy",
-      "family": "policy_both_p05_s1",
+      "family": "router_both_p05_s1",
       "thres": 0.09026640802621845,
       "budget": 10,
       "map50": 0.3708511956914441,
@@ -124,9 +124,9 @@
       "gflops": 36.0114357482782
     },
     {
-      "name": "policy_both_p05_s2_b10",
+      "name": "router_both_p05_s2_b10",
       "kind": "policy",
-      "family": "policy_both_p05_s2",
+      "family": "router_both_p05_s2",
       "thres": 0.07813620865345003,
       "budget": 10,
       "map50": 0.3727061926696825,
@@ -135,9 +135,9 @@
       "gflops": 36.05388527354043
     },
     {
-      "name": "policy_both_p05_s3_b10",
+      "name": "router_both_p05_s3_b10",
       "kind": "policy",
-      "family": "policy_both_p05_s3",
+      "family": "router_both_p05_s3",
       "thres": 0.09369634240865708,
       "budget": 10,
       "map50": 0.37198248001296325,
@@ -146,9 +146,9 @@
       "gflops": 36.35989503806817
     },
     {
-      "name": "policy_both_p10_s1_b30",
+      "name": "router_both_p10_s1_b30",
       "kind": "policy",
-      "family": "policy_both_p10_s1",
+      "family": "router_both_p10_s1",
       "thres": -1.634843349456787,
       "budget": 30,
       "map50": 0.3655176298955487,
@@ -157,9 +157,9 @@
       "gflops": 36.47231630826814
     },
     {
-      "name": "policy_both_p10_s0_b10",
+      "name": "router_both_p10_s0_b10",
       "kind": "policy",
-      "family": "policy_both_p10_s0",
+      "family": "router_both_p10_s0",
       "thres": -0.906054836511608,
       "budget": 10,
       "map50": 0.37156404051121167,
@@ -168,9 +168,9 @@
       "gflops": 36.491908396850704
     },
     {
-      "name": "policy_both_p10_s2_b10",
+      "name": "router_both_p10_s2_b10",
       "kind": "policy",
-      "family": "policy_both_p10_s2",
+      "family": "router_both_p10_s2",
       "thres": -3.8749596118926997,
       "budget": 10,
       "map50": 0.3703504376203255,
@@ -179,9 +179,9 @@
       "gflops": 36.57774040397434
     },
     {
-      "name": "policy_both_p10_s3_b40",
+      "name": "router_both_p10_s3_b40",
       "kind": "policy",
-      "family": "policy_both_p10_s3",
+      "family": "router_both_p10_s3",
       "thres": -4.4655359268188475,
       "budget": 40,
       "map50": 0.36538639524115035,
@@ -190,9 +190,9 @@
       "gflops": 36.7745942463992
     },
     {
-      "name": "policy_both_p10_s4_b10",
+      "name": "router_both_p10_s4_b10",
       "kind": "policy",
-      "family": "policy_both_p10_s4",
+      "family": "router_both_p10_s4",
       "thres": -0.07150310128927037,
       "budget": 10,
       "map50": 0.37102585476365296,
@@ -201,9 +201,9 @@
       "gflops": 37.0722074015344
     },
     {
-      "name": "policy_both_p10_s1_b40",
+      "name": "router_both_p10_s1_b40",
       "kind": "policy",
-      "family": "policy_both_p10_s1",
+      "family": "router_both_p10_s1",
       "thres": -1.6348458528518677,
       "budget": 40,
       "map50": 0.3669201944386322,
@@ -212,9 +212,9 @@
       "gflops": 37.38987912355175
     },
     {
-      "name": "policy_both_p05_s4_b20",
+      "name": "router_both_p05_s4_b20",
       "kind": "policy",
-      "family": "policy_both_p05_s4",
+      "family": "router_both_p05_s4",
       "thres": 0.07390061914920808,
       "budget": 20,
       "map50": 0.3737385140525992,
@@ -223,9 +223,9 @@
       "gflops": 37.420666691324364
     },
     {
-      "name": "policy_both_p05_s0_b20",
+      "name": "router_both_p05_s0_b20",
       "kind": "policy",
-      "family": "policy_both_p05_s0",
+      "family": "router_both_p05_s0",
       "thres": 0.06839510947465897,
       "budget": 20,
       "map50": 0.3753636222467779,
@@ -234,9 +234,9 @@
       "gflops": 37.55128061520815
     },
     {
-      "name": "policy_both_p00_s3_b20",
+      "name": "router_both_p00_s3_b20",
       "kind": "policy",
-      "family": "policy_both_p00_s3",
+      "family": "router_both_p00_s3",
       "thres": -10.804432678222648,
       "budget": 20,
       "map50": 0.3723231913099967,
@@ -245,9 +245,9 @@
       "gflops": 37.61285575075337
     },
     {
-      "name": "policy_both_p10_s3_b50",
+      "name": "router_both_p10_s3_b50",
       "kind": "policy",
-      "family": "policy_both_p10_s3",
+      "family": "router_both_p10_s3",
       "thres": -4.486108303070068,
       "budget": 50,
       "map50": 0.3679824375576287,
@@ -256,9 +256,9 @@
       "gflops": 37.819505637469504
     },
     {
-      "name": "policy_both_p00_s1_b20",
+      "name": "router_both_p00_s1_b20",
       "kind": "policy",
-      "family": "policy_both_p00_s1",
+      "family": "router_both_p00_s1",
       "thres": -10.006222343444824,
       "budget": 20,
       "map50": 0.37281811751026006,
@@ -267,9 +267,9 @@
       "gflops": 37.823703942165764
     },
     {
-      "name": "policy_both_p00_s2_b10",
+      "name": "router_both_p00_s2_b10",
       "kind": "policy",
-      "family": "policy_both_p00_s2",
+      "family": "router_both_p00_s2",
       "thres": -8.039792728424072,
       "budget": 10,
       "map50": 0.36470353910801745,
@@ -278,9 +278,9 @@
       "gflops": 38.136244402887684
     },
     {
-      "name": "policy_both_p10_s1_b50",
+      "name": "router_both_p10_s1_b50",
       "kind": "policy",
-      "family": "policy_both_p10_s1",
+      "family": "router_both_p10_s1",
       "thres": -1.6348479986190796,
       "budget": 50,
       "map50": 0.3663205548312858,
@@ -289,9 +289,9 @@
       "gflops": 38.149305795276064
     },
     {
-      "name": "policy_both_p05_s2_b20",
+      "name": "router_both_p05_s2_b20",
       "kind": "policy",
-      "family": "policy_both_p05_s2",
+      "family": "router_both_p05_s2",
       "thres": 0.06469208002090454,
       "budget": 20,
       "map50": 0.37657411877664304,
@@ -300,9 +300,9 @@
       "gflops": 38.28645041535404
     },
     {
-      "name": "policy_both_p05_s1_b20",
+      "name": "router_both_p05_s1_b20",
       "kind": "policy",
-      "family": "policy_both_p05_s1",
+      "family": "router_both_p05_s1",
       "thres": 0.07477833032608035,
       "budget": 20,
       "map50": 0.3741887516228535,
@@ -311,9 +311,9 @@
       "gflops": 38.28738337195321
     },
     {
-      "name": "policy_both_p05_s3_b20",
+      "name": "router_both_p05_s3_b20",
       "kind": "policy",
-      "family": "policy_both_p05_s3",
+      "family": "router_both_p05_s3",
       "thres": 0.07728736400604254,
       "budget": 20,
       "map50": 0.37629708735307343,
@@ -322,9 +322,9 @@
       "gflops": 38.5668038734046
     },
     {
-      "name": "policy_both_p10_s3_b60",
+      "name": "router_both_p10_s3_b60",
       "kind": "policy",
-      "family": "policy_both_p10_s3",
+      "family": "router_both_p10_s3",
       "thres": -4.504535579681397,
       "budget": 60,
       "map50": 0.36772489016490784,
@@ -333,9 +333,9 @@
       "gflops": 38.72587297356307
     },
     {
-      "name": "policy_both_p10_s1_b60",
+      "name": "router_both_p10_s1_b60",
       "kind": "policy",
-      "family": "policy_both_p10_s1",
+      "family": "router_both_p10_s1",
       "thres": -1.6348499059677124,
       "budget": 60,
       "map50": 0.36778211006230344,
@@ -344,9 +344,9 @@
       "gflops": 38.85555394084769
     },
     {
-      "name": "policy_both_p10_s0_b20",
+      "name": "router_both_p10_s0_b20",
       "kind": "policy",
-      "family": "policy_both_p10_s0",
+      "family": "router_both_p10_s0",
       "thres": -7.285120010375972,
       "budget": 20,
       "map50": 0.37294417952158837,
@@ -355,9 +355,9 @@
       "gflops": 38.89520459631241
     },
     {
-      "name": "policy_both_p05_s0_b30",
+      "name": "router_both_p05_s0_b30",
       "kind": "policy",
-      "family": "policy_both_p05_s0",
+      "family": "router_both_p05_s0",
       "thres": 0.06203151047229767,
       "budget": 30,
       "map50": 0.3766540481965934,
@@ -366,9 +366,9 @@
       "gflops": 39.23246840691233
     },
     {
-      "name": "policy_both_p10_s2_b20",
+      "name": "router_both_p10_s2_b20",
       "kind": "policy",
-      "family": "policy_both_p10_s2",
+      "family": "router_both_p10_s2",
       "thres": -11.466585350036619,
       "budget": 20,
       "map50": 0.37259725910269414,
@@ -377,9 +377,9 @@
       "gflops": 39.24459684270154
     },
     {
-      "name": "policy_both_p00_s3_b30",
+      "name": "router_both_p00_s3_b30",
       "kind": "policy",
-      "family": "policy_both_p00_s3",
+      "family": "router_both_p00_s3",
       "thres": -13.245362186431885,
       "budget": 30,
       "map50": 0.3734957130659502,
@@ -388,9 +388,9 @@
       "gflops": 39.26978667087913
     },
     {
-      "name": "policy_both_p05_s4_b30",
+      "name": "router_both_p05_s4_b30",
       "kind": "policy",
-      "family": "policy_both_p05_s4",
+      "family": "router_both_p05_s4",
       "thres": 0.06680308431386946,
       "budget": 30,
       "map50": 0.37741552680986257,
@@ -399,9 +399,9 @@
       "gflops": 39.273518497275816
     },
     {
-      "name": "policy_both_p10_s3_b70",
+      "name": "router_both_p10_s3_b70",
       "kind": "policy",
-      "family": "policy_both_p10_s3",
+      "family": "router_both_p10_s3",
       "thres": -4.5208601474761965,
       "budget": 70,
       "map50": 0.36998860528399946,
@@ -410,9 +410,9 @@
       "gflops": 39.56506743451641
     },
     {
-      "name": "policy_both_p10_s1_b70",
+      "name": "router_both_p10_s1_b70",
       "kind": "policy",
-      "family": "policy_both_p10_s1",
+      "family": "router_both_p10_s1",
       "thres": -1.6348521709442139,
       "budget": 70,
       "map50": 0.3686466582206609,
@@ -421,9 +421,9 @@
       "gflops": 39.71807231678028
     },
     {
-      "name": "policy_both_p00_s1_b30",
+      "name": "router_both_p00_s1_b30",
       "kind": "policy",
-      "family": "policy_both_p00_s1",
+      "family": "router_both_p00_s1",
       "thres": -12.136211967468261,
       "budget": 30,
       "map50": 0.3736503388746939,
@@ -432,9 +432,9 @@
       "gflops": 39.724136534674884
     },
     {
-      "name": "policy_both_p05_s2_b30",
+      "name": "router_both_p05_s2_b30",
       "kind": "policy",
-      "family": "policy_both_p05_s2",
+      "family": "router_both_p05_s2",
       "thres": 0.05657024458050728,
       "budget": 30,
       "map50": 0.3758261235313021,
@@ -443,9 +443,9 @@
       "gflops": 40.17242218057603
     },
     {
-      "name": "policy_both_p05_s1_b30",
+      "name": "router_both_p05_s1_b30",
       "kind": "policy",
-      "family": "policy_both_p05_s1",
+      "family": "router_both_p05_s1",
       "thres": 0.06656133607029914,
       "budget": 30,
       "map50": 0.37462527135907164,
@@ -454,9 +454,9 @@
       "gflops": 40.19341370405735
     },
     {
-      "name": "policy_both_p10_s4_b20",
+      "name": "router_both_p10_s4_b20",
       "kind": "policy",
-      "family": "policy_both_p10_s4",
+      "family": "router_both_p10_s4",
       "thres": -9.632948493957516,
       "budget": 20,
       "map50": 0.37370120360121256,
@@ -465,9 +465,9 @@
       "gflops": 40.396331764376804
     },
     {
-      "name": "policy_both_p10_s3_b80",
+      "name": "router_both_p10_s3_b80",
       "kind": "policy",
-      "family": "policy_both_p10_s3",
+      "family": "router_both_p10_s3",
       "thres": -4.540471076965332,
       "budget": 80,
       "map50": 0.3711996067669252,
@@ -476,9 +476,9 @@
       "gflops": 40.53021103635769
     },
     {
-      "name": "policy_both_p10_s1_b80",
+      "name": "router_both_p10_s1_b80",
       "kind": "policy",
-      "family": "policy_both_p10_s1",
+      "family": "router_both_p10_s1",
       "thres": -1.6348545551300049,
       "budget": 80,
       "map50": 0.36995471763300525,
@@ -487,9 +487,9 @@
       "gflops": 40.594118563400826
     },
     {
-      "name": "policy_both_p05_s3_b30",
+      "name": "router_both_p05_s3_b30",
       "kind": "policy",
-      "family": "policy_both_p05_s3",
+      "family": "router_both_p05_s3",
       "thres": 0.06799291819334027,
       "budget": 30,
       "map50": 0.3770856339895301,
@@ -498,9 +498,9 @@
       "gflops": 40.66968804793359
     },
     {
-      "name": "policy_both_p00_s3_b40",
+      "name": "router_both_p00_s3_b40",
       "kind": "policy",
-      "family": "policy_both_p00_s3",
+      "family": "router_both_p00_s3",
       "thres": -14.803178024291993,
       "budget": 40,
       "map50": 0.37453109656098327,
@@ -509,9 +509,9 @@
       "gflops": 40.88753341383976
     },
     {
-      "name": "policy_both_p10_s0_b30",
+      "name": "router_both_p10_s0_b30",
       "kind": "policy",
-      "family": "policy_both_p10_s0",
+      "family": "router_both_p10_s0",
       "thres": -10.576154804229741,
       "budget": 30,
       "map50": 0.374558741427344,
@@ -520,9 +520,9 @@
       "gflops": 40.98642681335178
     },
     {
-      "name": "policy_both_p05_s0_b40",
+      "name": "router_both_p05_s0_b40",
       "kind": "policy",
-      "family": "policy_both_p05_s0",
+      "family": "router_both_p05_s0",
       "thres": 0.05699338763952255,
       "budget": 40,
       "map50": 0.37676833971906565,
@@ -531,9 +531,9 @@
       "gflops": 41.071792342175826
     },
     {
-      "name": "policy_both_p05_s4_b40",
+      "name": "router_both_p05_s4_b40",
       "kind": "policy",
-      "family": "policy_both_p05_s4",
+      "family": "router_both_p05_s4",
       "thres": 0.06191304549574852,
       "budget": 40,
       "map50": 0.37685841943081994,
@@ -542,9 +542,9 @@
       "gflops": 41.10957708444221
     },
     {
-      "name": "policy_both_p00_s1_b40",
+      "name": "router_both_p00_s1_b40",
       "kind": "policy",
-      "family": "policy_both_p00_s1",
+      "family": "router_both_p00_s1",
       "thres": -13.41012020111084,
       "budget": 40,
       "map50": 0.3743638636298522,
@@ -553,9 +553,9 @@
       "gflops": 41.27097857609861
     },
     {
-      "name": "policy_both_p10_s3_b90",
+      "name": "router_both_p10_s3_b90",
       "kind": "policy",
-      "family": "policy_both_p10_s3",
+      "family": "router_both_p10_s3",
       "thres": -4.565062141418457,
       "budget": 90,
       "map50": 0.37199091041728005,
@@ -564,9 +564,9 @@
       "gflops": 41.330221320145895
     },
     {
-      "name": "policy_both_p10_s1_b90",
+      "name": "router_both_p10_s1_b90",
       "kind": "policy",
-      "family": "policy_both_p10_s1",
+      "family": "router_both_p10_s1",
       "thres": -1.6348576545715332,
       "budget": 90,
       "map50": 0.3697550058125849,
@@ -575,9 +575,9 @@
       "gflops": 41.39179645569111
     },
     {
-      "name": "policy_both_p10_s2_b30",
+      "name": "router_both_p10_s2_b30",
       "kind": "policy",
-      "family": "policy_both_p10_s2",
+      "family": "router_both_p10_s2",
       "thres": -14.823684024810792,
       "budget": 30,
       "map50": 0.37282214256912266,
@@ -586,9 +586,9 @@
       "gflops": 41.46736594022387
     },
     {
-      "name": "policy_both_p00_s4_b10",
+      "name": "router_both_p00_s4_b10",
       "kind": "policy",
-      "family": "policy_both_p00_s4",
+      "family": "router_both_p00_s4",
       "thres": -8.588324546813965,
       "budget": 10,
       "map50": 0.3730739034172024,
@@ -597,9 +597,9 @@
       "gflops": 41.764979095359074
     },
     {
-      "name": "policy_both_p05_s2_b40",
+      "name": "router_both_p05_s2_b40",
       "kind": "policy",
-      "family": "policy_both_p05_s2",
+      "family": "router_both_p05_s2",
       "thres": 0.05064562484622001,
       "budget": 40,
       "map50": 0.3778603847049363,
@@ -608,9 +608,9 @@
       "gflops": 41.82375536110678
     },
     {
-      "name": "policy_both_p05_s1_b40",
+      "name": "router_both_p05_s1_b40",
       "kind": "policy",
-      "family": "policy_both_p05_s1",
+      "family": "router_both_p05_s1",
       "thres": 0.060673263669013974,
       "budget": 40,
       "map50": 0.3786334971872317,
@@ -619,9 +619,9 @@
       "gflops": 41.93244480491008
     },
     {
-      "name": "policy_both_p00_s2_b20",
+      "name": "router_both_p00_s2_b20",
       "kind": "policy",
-      "family": "policy_both_p00_s2",
+      "family": "router_both_p00_s2",
       "thres": -8.346833801269531,
       "budget": 20,
       "map50": 0.3702121922026924,
@@ -630,9 +630,9 @@
       "gflops": 42.127899212436176
     },
     {
-      "name": "policy_both_p00_s3_b50",
+      "name": "router_both_p00_s3_b50",
       "kind": "policy",
-      "family": "policy_both_p00_s3",
+      "family": "router_both_p00_s3",
       "thres": -16.02282428741455,
       "budget": 50,
       "map50": 0.37565595005210034,
@@ -641,9 +641,9 @@
       "gflops": 42.29583140028676
     },
     {
-      "name": "policy_both_p05_s3_b40",
+      "name": "router_both_p05_s3_b40",
       "kind": "policy",
-      "family": "policy_both_p05_s3",
+      "family": "router_both_p05_s3",
       "thres": 0.062000150233507155,
       "budget": 40,
       "map50": 0.37758380550061016,
@@ -652,9 +652,9 @@
       "gflops": 42.381663407410386
     },
     {
-      "name": "policy_both_p10_s0_b40",
+      "name": "router_both_p10_s0_b40",
       "kind": "policy",
-      "family": "policy_both_p10_s0",
+      "family": "router_both_p10_s0",
       "thres": -12.761966323852539,
       "budget": 40,
       "map50": 0.3758175484968306,
@@ -663,9 +663,9 @@
       "gflops": 42.66714812675638
     },
     {
-      "name": "policy_both_p00_s1_b50",
+      "name": "router_both_p00_s1_b50",
       "kind": "policy",
-      "family": "policy_both_p00_s1",
+      "family": "router_both_p00_s1",
       "thres": -14.557176113128662,
       "budget": 50,
       "map50": 0.3761940304978174,
@@ -674,9 +674,9 @@
       "gflops": 42.84114453250157
     },
     {
-      "name": "policy_both_p10_s4_b30",
+      "name": "router_both_p10_s4_b30",
       "kind": "policy",
-      "family": "policy_both_p10_s4",
+      "family": "router_both_p10_s4",
       "thres": -13.289278221130372,
       "budget": 30,
       "map50": 0.37411238636349164,
@@ -685,9 +685,9 @@
       "gflops": 42.84814170699534
     },
     {
-      "name": "policy_both_p05_s0_b50",
+      "name": "router_both_p05_s0_b50",
       "kind": "policy",
-      "family": "policy_both_p05_s0",
+      "family": "router_both_p05_s0",
       "thres": 0.052781304344534874,
       "budget": 50,
       "map50": 0.3776270277532978,
@@ -696,9 +696,9 @@
       "gflops": 42.85700479468746
     },
     {
-      "name": "policy_both_p10_s2_b40",
+      "name": "router_both_p10_s2_b40",
       "kind": "policy",
-      "family": "policy_both_p10_s2",
+      "family": "router_both_p10_s2",
       "thres": -17.198843002319336,
       "budget": 40,
       "map50": 0.3741078305485727,
@@ -707,9 +707,9 @@
       "gflops": 43.387390621315554
     },
     {
-      "name": "policy_both_p05_s2_b50",
+      "name": "router_both_p05_s2_b50",
       "kind": "policy",
-      "family": "policy_both_p05_s2",
+      "family": "router_both_p05_s2",
       "thres": 0.04550747945904732,
       "budget": 50,
       "map50": 0.3787341799387462,
@@ -718,9 +718,9 @@
       "gflops": 43.42051058058609
     },
     {
-      "name": "policy_both_p05_s4_b50",
+      "name": "router_both_p05_s4_b50",
       "kind": "policy",
-      "family": "policy_both_p05_s4",
+      "family": "router_both_p05_s4",
       "thres": 0.057543180882930756,
       "budget": 50,
       "map50": 0.37903760270737374,
@@ -729,9 +729,9 @@
       "gflops": 43.46902432374292
     },
     {
-      "name": "policy_both_p05_s1_b50",
+      "name": "router_both_p05_s1_b50",
       "kind": "policy",
-      "family": "policy_both_p05_s1",
+      "family": "router_both_p05_s1",
       "thres": 0.05520804412662983,
       "budget": 50,
       "map50": 0.3785807499213433,
@@ -740,9 +740,9 @@
       "gflops": 43.653749730378564
     },
     {
-      "name": "policy_both_p00_s3_b60",
+      "name": "router_both_p00_s3_b60",
       "kind": "policy",
-      "family": "policy_both_p00_s3",
+      "family": "router_both_p00_s3",
       "thres": -17.17622489929199,
       "budget": 60,
       "map50": 0.37687894578087977,
@@ -751,9 +751,9 @@
       "gflops": 43.74098117240096
     },
     {
-      "name": "policy_both_p05_s3_b50",
+      "name": "router_both_p05_s3_b50",
       "kind": "policy",
-      "family": "policy_both_p05_s3",
+      "family": "router_both_p05_s3",
       "thres": 0.057092662900686264,
       "budget": 50,
       "map50": 0.3776345958750176,
@@ -762,9 +762,9 @@
       "gflops": 43.76850339207647
     },
     {
-      "name": "policy_both_p10_s0_b50",
+      "name": "router_both_p10_s0_b50",
       "kind": "policy",
-      "family": "policy_both_p10_s0",
+      "family": "router_both_p10_s0",
       "thres": -14.59095573425293,
       "budget": 50,
       "map50": 0.377037233506631,
@@ -773,9 +773,9 @@
       "gflops": 44.253174345345236
     },
     {
-      "name": "policy_both_p00_s1_b60",
+      "name": "router_both_p00_s1_b60",
       "kind": "policy",
-      "family": "policy_both_p00_s1",
+      "family": "router_both_p00_s1",
       "thres": -15.638689231872558,
       "budget": 60,
       "map50": 0.3772990855123892,
@@ -784,9 +784,9 @@
       "gflops": 44.418307663398316
     },
     {
-      "name": "policy_both_p00_s0_b10",
+      "name": "router_both_p00_s0_b10",
       "kind": "policy",
-      "family": "policy_both_p00_s0",
+      "family": "router_both_p00_s0",
       "thres": -8.61375617980957,
       "budget": 10,
       "map50": 0.3739103499190759,
@@ -795,9 +795,9 @@
       "gflops": 44.59790180873852
     },
     {
-      "name": "policy_both_p00_s0_b20",
+      "name": "router_both_p00_s0_b20",
       "kind": "policy",
-      "family": "policy_both_p00_s0",
+      "family": "router_both_p00_s0",
       "thres": -8.61375617980957,
       "budget": 20,
       "map50": 0.3739103499190759,
@@ -806,9 +806,9 @@
       "gflops": 44.59790180873852
     },
     {
-      "name": "policy_both_p10_s4_b40",
+      "name": "router_both_p10_s4_b40",
       "kind": "policy",
-      "family": "policy_both_p10_s4",
+      "family": "router_both_p10_s4",
       "thres": -15.88358097076416,
       "budget": 40,
       "map50": 0.3760099430737873,
@@ -817,9 +817,9 @@
       "gflops": 44.849333612214814
     },
     {
-      "name": "policy_both_p05_s0_b60",
+      "name": "router_both_p05_s0_b60",
       "kind": "policy",
-      "family": "policy_both_p05_s0",
+      "family": "router_both_p05_s0",
       "thres": 0.04863340854644775,
       "budget": 60,
       "map50": 0.3789998615359691,
@@ -828,9 +828,9 @@
       "gflops": 44.89971326857
     },
     {
-      "name": "policy_both_p05_s2_b60",
+      "name": "router_both_p05_s2_b60",
       "kind": "policy",
-      "family": "policy_both_p05_s2",
+      "family": "router_both_p05_s2",
       "thres": 0.040579138696193694,
       "budget": 60,
       "map50": 0.3789296474942084,
@@ -839,9 +839,9 @@
       "gflops": 45.105896676986546
     },
     {
-      "name": "policy_both_p00_s2_b30",
+      "name": "router_both_p00_s2_b30",
       "kind": "policy",
-      "family": "policy_both_p00_s2",
+      "family": "router_both_p00_s2",
       "thres": -8.555477333068847,
       "budget": 30,
       "map50": 0.3726156207381207,
@@ -850,9 +850,9 @@
       "gflops": 45.12175693917243
     },
     {
-      "name": "policy_both_p10_s2_b50",
+      "name": "router_both_p10_s2_b50",
       "kind": "policy",
-      "family": "policy_both_p10_s2",
+      "family": "router_both_p10_s2",
       "thres": -19.343273162841797,
       "budget": 50,
       "map50": 0.37729104997710167,
@@ -861,9 +861,9 @@
       "gflops": 45.165605899333414
     },
     {
-      "name": "policy_both_p05_s3_b60",
+      "name": "router_both_p05_s3_b60",
       "kind": "policy",
-      "family": "policy_both_p05_s3",
+      "family": "router_both_p05_s3",
       "thres": 0.0524737723171711,
       "budget": 60,
       "map50": 0.3787714615739786,
@@ -872,9 +872,9 @@
       "gflops": 45.17260307382719
     },
     {
-      "name": "policy_both_p05_s4_b60",
+      "name": "router_both_p05_s4_b60",
       "kind": "policy",
-      "family": "policy_both_p05_s4",
+      "family": "router_both_p05_s4",
       "thres": 0.053298269957304,
       "budget": 60,
       "map50": 0.37965866671232434,
@@ -883,9 +883,9 @@
       "gflops": 45.18706390111433
     },
     {
-      "name": "policy_both_p00_s4_b20",
+      "name": "router_both_p00_s4_b20",
       "kind": "policy",
-      "family": "policy_both_p00_s4",
+      "family": "router_both_p00_s4",
       "thres": -8.588330268859863,
       "budget": 20,
       "map50": 0.37387423122159025,
@@ -894,9 +894,9 @@
       "gflops": 45.256102689452895
     },
     {
-      "name": "policy_both_p00_s3_b70",
+      "name": "router_both_p00_s3_b70",
       "kind": "policy",
-      "family": "policy_both_p00_s3",
+      "family": "router_both_p00_s3",
       "thres": -18.336718177795408,
       "budget": 70,
       "map50": 0.37816385330480873,
@@ -905,9 +905,9 @@
       "gflops": 45.28362490912841
     },
     {
-      "name": "policy_both_p05_s1_b60",
+      "name": "router_both_p05_s1_b60",
       "kind": "policy",
-      "family": "policy_both_p05_s1",
+      "family": "router_both_p05_s1",
       "thres": 0.050380770862102506,
       "budget": 60,
       "map50": 0.3788351610838011,
@@ -916,9 +916,9 @@
       "gflops": 45.31674486839894
     },
     {
-      "name": "policy_both_p10_s0_b60",
+      "name": "router_both_p10_s0_b60",
       "kind": "policy",
-      "family": "policy_both_p10_s0",
+      "family": "router_both_p10_s0",
       "thres": -16.175736236572263,
       "budget": 60,
       "map50": 0.378215273495507,
@@ -927,9 +927,9 @@
       "gflops": 45.79068682077725
     },
     {
-      "name": "policy_both_p00_s0_b30",
+      "name": "router_both_p00_s0_b30",
       "kind": "policy",
-      "family": "policy_both_p00_s0",
+      "family": "router_both_p00_s0",
       "thres": -8.613757133483887,
       "budget": 30,
       "map50": 0.37504590612156097,
@@ -938,9 +938,9 @@
       "gflops": 45.858326174217076
     },
     {
-      "name": "policy_both_p00_s0_b40",
+      "name": "router_both_p00_s0_b40",
       "kind": "policy",
-      "family": "policy_both_p00_s0",
+      "family": "router_both_p00_s0",
       "thres": -8.613757133483887,
       "budget": 40,
       "map50": 0.37504590612156097,
@@ -949,9 +949,9 @@
       "gflops": 45.858326174217076
     },
     {
-      "name": "policy_both_p00_s0_b50",
+      "name": "router_both_p00_s0_b50",
       "kind": "policy",
-      "family": "policy_both_p00_s0",
+      "family": "router_both_p00_s0",
       "thres": -8.613757133483887,
       "budget": 50,
       "map50": 0.37504590612156097,
@@ -960,9 +960,9 @@
       "gflops": 45.858326174217076
     },
     {
-      "name": "policy_both_p00_s1_b70",
+      "name": "router_both_p00_s1_b70",
       "kind": "policy",
-      "family": "policy_both_p00_s1",
+      "family": "router_both_p00_s1",
       "thres": -16.864200592041016,
       "budget": 70,
       "map50": 0.3779412661788267,
@@ -971,9 +971,9 @@
       "gflops": 46.152207502955605
     },
     {
-      "name": "policy_both_p10_s4_b50",
+      "name": "router_both_p10_s4_b50",
       "kind": "policy",
-      "family": "policy_both_p10_s4",
+      "family": "router_both_p10_s4",
       "thres": -18.12543487548828,
       "budget": 50,
       "map50": 0.3773224649757671,
@@ -982,9 +982,9 @@
       "gflops": 46.57483684237957
     },
     {
-      "name": "policy_both_p05_s3_b70",
+      "name": "router_both_p05_s3_b70",
       "kind": "policy",
-      "family": "policy_both_p05_s3",
+      "family": "router_both_p05_s3",
       "thres": 0.04772296920418739,
       "budget": 70,
       "map50": 0.3786813145961281,
@@ -993,9 +993,9 @@
       "gflops": 46.57576979897874
     },
     {
-      "name": "policy_both_p05_s2_b70",
+      "name": "router_both_p05_s2_b70",
       "kind": "policy",
-      "family": "policy_both_p05_s2",
+      "family": "router_both_p05_s2",
       "thres": 0.03587478920817375,
       "budget": 70,
       "map50": 0.3791126277554079,
@@ -1004,9 +1004,9 @@
       "gflops": 46.64154323922022
     },
     {
-      "name": "policy_both_p05_s4_b70",
+      "name": "router_both_p05_s4_b70",
       "kind": "policy",
-      "family": "policy_both_p05_s4",
+      "family": "router_both_p05_s4",
       "thres": 0.04981323890388012,
       "budget": 70,
       "map50": 0.3791262517184181,
@@ -1015,9 +1015,9 @@
       "gflops": 46.677462068288264
     },
     {
-      "name": "policy_both_p05_s0_b70",
+      "name": "router_both_p05_s0_b70",
       "kind": "policy",
-      "family": "policy_both_p05_s0",
+      "family": "router_both_p05_s0",
       "thres": 0.04407256543636322,
       "budget": 70,
       "map50": 0.3793305905918958,
@@ -1026,9 +1026,9 @@
       "gflops": 46.78428559889322
     },
     {
-      "name": "policy_both_p10_s2_b60",
+      "name": "router_both_p10_s2_b60",
       "kind": "policy",
-      "family": "policy_both_p10_s2",
+      "family": "router_both_p10_s2",
       "thres": -21.3209415435791,
       "budget": 60,
       "map50": 0.3782057958892474,
@@ -1037,9 +1037,9 @@
       "gflops": 46.7940816431845
     },
     {
-      "name": "policy_both_p05_s1_b70",
+      "name": "router_both_p05_s1_b70",
       "kind": "policy",
-      "family": "policy_both_p05_s1",
+      "family": "router_both_p05_s1",
       "thres": 0.04576813168823719,
       "budget": 70,
       "map50": 0.3790685551052388,
@@ -1048,9 +1048,9 @@
       "gflops": 46.900905173789454
     },
     {
-      "name": "policy_both_p00_s3_b80",
+      "name": "router_both_p00_s3_b80",
       "kind": "policy",
-      "family": "policy_both_p00_s3",
+      "family": "router_both_p00_s3",
       "thres": -19.770635223388673,
       "budget": 80,
       "map50": 0.37992229179998077,
@@ -1059,9 +1059,9 @@
       "gflops": 47.10055788601181
     },
     {
-      "name": "policy_both_p00_s4_b30",
+      "name": "router_both_p00_s4_b30",
       "kind": "policy",
-      "family": "policy_both_p00_s4",
+      "family": "router_both_p00_s4",
       "thres": -8.588334083557129,
       "budget": 30,
       "map50": 0.3743424996193354,
@@ -1070,9 +1070,9 @@
       "gflops": 47.14907162916865
     },
     {
-      "name": "policy_both_p00_s2_b40",
+      "name": "router_both_p00_s2_b40",
       "kind": "policy",
-      "family": "policy_both_p00_s2",
+      "family": "router_both_p00_s2",
       "thres": -8.72708511352539,
       "budget": 40,
       "map50": 0.37437726263947063,
@@ -1081,9 +1081,9 @@
       "gflops": 47.227439983498925
     },
     {
-      "name": "policy_both_p10_s0_b70",
+      "name": "router_both_p10_s0_b70",
       "kind": "policy",
-      "family": "policy_both_p10_s0",
+      "family": "router_both_p10_s0",
       "thres": -17.808416938781736,
       "budget": 70,
       "map50": 0.37854023842768203,
@@ -1092,9 +1092,9 @@
       "gflops": 47.36551756017607
     },
     {
-      "name": "policy_both_p05_s3_b80",
+      "name": "router_both_p05_s3_b80",
       "kind": "policy",
-      "family": "policy_both_p05_s3",
+      "family": "router_both_p05_s3",
       "thres": 0.04250003769993782,
       "budget": 80,
       "map50": 0.3803903325249841,
@@ -1103,9 +1103,9 @@
       "gflops": 47.85252090494278
     },
     {
-      "name": "policy_both_p00_s1_b80",
+      "name": "router_both_p00_s1_b80",
       "kind": "policy",
-      "family": "policy_both_p00_s1",
+      "family": "router_both_p00_s1",
       "thres": -18.345050430297853,
       "budget": 80,
       "map50": 0.3803353685613714,
@@ -1114,9 +1114,9 @@
       "gflops": 47.947682478058105
     },
     {
-      "name": "policy_both_p10_s4_b60",
+      "name": "router_both_p10_s4_b60",
       "kind": "policy",
-      "family": "policy_both_p10_s4",
+      "family": "router_both_p10_s4",
       "thres": -20.20807456970215,
       "budget": 60,
       "map50": 0.3785195634397839,
@@ -1125,9 +1125,9 @@
       "gflops": 48.03631335497925
     },
     {
-      "name": "policy_both_p05_s2_b80",
+      "name": "router_both_p05_s2_b80",
       "kind": "policy",
-      "family": "policy_both_p05_s2",
+      "family": "router_both_p05_s2",
       "thres": 0.03076738677918911,
       "budget": 80,
       "map50": 0.38018668494012464,
@@ -1136,9 +1136,9 @@
       "gflops": 48.140804494086275
     },
     {
-      "name": "policy_both_p05_s4_b80",
+      "name": "router_both_p05_s4_b80",
       "kind": "policy",
-      "family": "policy_both_p05_s4",
+      "family": "router_both_p05_s4",
       "thres": 0.04400202855467796,
       "budget": 80,
       "map50": 0.37915365892481356,
@@ -1147,9 +1147,9 @@
       "gflops": 48.214041587121116
     },
     {
-      "name": "policy_both_p10_s2_b70",
+      "name": "router_both_p10_s2_b70",
       "kind": "policy",
-      "family": "policy_both_p10_s2",
+      "family": "router_both_p10_s2",
       "thres": -23.37926330566406,
       "budget": 70,
       "map50": 0.3800065812169282,
@@ -1158,9 +1158,9 @@
       "gflops": 48.309669638536036
     },
     {
-      "name": "policy_both_p05_s0_b80",
+      "name": "router_both_p05_s0_b80",
       "kind": "policy",
-      "family": "policy_both_p05_s0",
+      "family": "router_both_p05_s0",
       "thres": 0.0396292395889759,
       "budget": 80,
       "map50": 0.38066781947873113,
@@ -1169,9 +1169,9 @@
       "gflops": 48.41695964744057
     },
     {
-      "name": "policy_both_p05_s1_b80",
+      "name": "router_both_p05_s1_b80",
       "kind": "policy",
-      "family": "policy_both_p05_s1",
+      "family": "router_both_p05_s1",
       "thres": 0.04066040068864822,
       "budget": 80,
       "map50": 0.38018109174078835,
@@ -1180,9 +1180,9 @@
       "gflops": 48.445414823715254
     },
     {
-      "name": "policy_both_p00_s4_b40",
+      "name": "router_both_p00_s4_b40",
       "kind": "policy",
-      "family": "policy_both_p00_s4",
+      "family": "router_both_p00_s4",
       "thres": -8.588337898254395,
       "budget": 40,
       "map50": 0.37934559465304807,
@@ -1191,9 +1191,9 @@
       "gflops": 48.74256150055087
     },
     {
-      "name": "policy_both_p00_s2_b50",
+      "name": "router_both_p00_s2_b50",
       "kind": "policy",
-      "family": "policy_both_p00_s2",
+      "family": "router_both_p00_s2",
       "thres": -8.879135608673096,
       "budget": 50,
       "map50": 0.3799903304643586,
@@ -1202,9 +1202,9 @@
       "gflops": 48.89603286111432
     },
     {
-      "name": "policy_both_p10_s0_b80",
+      "name": "router_both_p10_s0_b80",
       "kind": "policy",
-      "family": "policy_both_p10_s0",
+      "family": "router_both_p10_s0",
       "thres": -19.63701477050781,
       "budget": 80,
       "map50": 0.3797628017627178,
@@ -1213,9 +1213,9 @@
       "gflops": 49.07282813665702
     },
     {
-      "name": "policy_both_p00_s3_b90",
+      "name": "router_both_p00_s3_b90",
       "kind": "policy",
-      "family": "policy_both_p00_s3",
+      "family": "router_both_p00_s3",
       "thres": -21.700197982788087,
       "budget": 90,
       "map50": 0.3799949794264351,
@@ -1224,9 +1224,9 @@
       "gflops": 49.19784432094579
     },
     {
-      "name": "policy_both_p05_s3_b90",
+      "name": "router_both_p05_s3_b90",
       "kind": "policy",
-      "family": "policy_both_p05_s3",
+      "family": "router_both_p05_s3",
       "thres": 0.03525933399796485,
       "budget": 90,
       "map50": 0.38040572050066135,
@@ -1235,9 +1235,9 @@
       "gflops": 49.20903980013583
     },
     {
-      "name": "policy_both_p00_s0_b60",
+      "name": "router_both_p00_s0_b60",
       "kind": "policy",
-      "family": "policy_both_p00_s0",
+      "family": "router_both_p00_s0",
       "thres": -8.613758087158203,
       "budget": 60,
       "map50": 0.3802051084068498,
@@ -1246,9 +1246,9 @@
       "gflops": 49.24355919430512
     },
     {
-      "name": "policy_both_p10_s4_b70",
+      "name": "router_both_p10_s4_b70",
       "kind": "policy",
-      "family": "policy_both_p10_s4",
+      "family": "router_both_p10_s4",
       "thres": -22.525744819641112,
       "budget": 70,
       "map50": 0.3789488802805337,
@@ -1257,9 +1257,9 @@
       "gflops": 49.36111172580053
     },
     {
-      "name": "policy_both_p10_s2_b80",
+      "name": "router_both_p10_s2_b80",
       "kind": "policy",
-      "family": "policy_both_p10_s2",
+      "family": "router_both_p10_s2",
       "thres": -25.584110260009766,
       "budget": 80,
       "map50": 0.3802327040459872,
@@ -1268,9 +1268,9 @@
       "gflops": 49.552834306929945
     },
     {
-      "name": "policy_both_p00_s4_b50",
+      "name": "router_both_p00_s4_b50",
       "kind": "policy",
-      "family": "policy_both_p00_s4",
+      "family": "router_both_p00_s4",
       "thres": -8.588340759277344,
       "budget": 50,
       "map50": 0.3808013916687158,
@@ -1279,9 +1279,9 @@
       "gflops": 49.59061904919633
     },
     {
-      "name": "policy_both_p05_s2_b90",
+      "name": "router_both_p05_s2_b90",
       "kind": "policy",
-      "family": "policy_both_p05_s2",
+      "family": "router_both_p05_s2",
       "thres": 0.0246974254027009,
       "budget": 90,
       "map50": 0.38087882120547356,
@@ -1290,9 +1290,9 @@
       "gflops": 49.63586744425607
     },
     {
-      "name": "policy_both_p00_s0_b70",
+      "name": "router_both_p00_s0_b70",
       "kind": "policy",
-      "family": "policy_both_p00_s0",
+      "family": "router_both_p00_s0",
       "thres": -8.61375904083252,
       "budget": 70,
       "map50": 0.3807580904582337,
@@ -1301,9 +1301,9 @@
       "gflops": 49.73476084376808
     },
     {
-      "name": "policy_both_p05_s4_b90",
+      "name": "router_both_p05_s4_b90",
       "kind": "policy",
-      "family": "policy_both_p05_s4",
+      "family": "router_both_p05_s4",
       "thres": 0.035409563779830934,
       "budget": 90,
       "map50": 0.3808132747729729,
@@ -1312,9 +1312,9 @@
       "gflops": 49.74455688805936
     },
     {
-      "name": "policy_both_p00_s1_b90",
+      "name": "router_both_p00_s1_b90",
       "kind": "policy",
-      "family": "policy_both_p00_s1",
+      "family": "router_both_p00_s1",
       "thres": -20.50041961669922,
       "budget": 90,
       "map50": 0.3807125631450663,
@@ -1323,9 +1323,9 @@
       "gflops": 49.807531458503334
     },
     {
-      "name": "policy_both_p00_s2_b60",
+      "name": "router_both_p00_s2_b60",
       "kind": "policy",
-      "family": "policy_both_p00_s2",
+      "family": "router_both_p00_s2",
       "thres": -9.025939178466796,
       "budget": 60,
       "map50": 0.3800394175383178,
@@ -1334,9 +1334,9 @@
       "gflops": 49.92741638149666
     },
     {
-      "name": "policy_both_p00_s4_b60",
+      "name": "router_both_p00_s4_b60",
       "kind": "policy",
-      "family": "policy_both_p00_s4",
+      "family": "router_both_p00_s4",
       "thres": -8.588342666625977,
       "budget": 60,
       "map50": 0.3809248706869719,
@@ -1345,9 +1345,9 @@
       "gflops": 49.96333521056471
     },
     {
-      "name": "policy_both_p05_s1_b90",
+      "name": "router_both_p05_s1_b90",
       "kind": "policy",
-      "family": "policy_both_p05_s1",
+      "family": "router_both_p05_s1",
       "thres": 0.03402024433016777,
       "budget": 90,
       "map50": 0.38101717727513634,
@@ -1356,9 +1356,9 @@
       "gflops": 49.99598869153565
     },
     {
-      "name": "policy_both_p05_s0_b90",
+      "name": "router_both_p05_s0_b90",
       "kind": "policy",
-      "family": "policy_both_p05_s0",
+      "family": "router_both_p05_s0",
       "thres": 0.03382782563567161,
       "budget": 90,
       "map50": 0.3809119704084851,
@@ -1367,9 +1367,9 @@
       "gflops": 50.21103518764432
     },
     {
-      "name": "policy_both_p10_s4_b80",
+      "name": "router_both_p10_s4_b80",
       "kind": "policy",
-      "family": "policy_both_p10_s4",
+      "family": "router_both_p10_s4",
       "thres": -25.115491485595705,
       "budget": 80,
       "map50": 0.3807837218377808,
@@ -1378,9 +1378,9 @@
       "gflops": 50.42934703185008
     },
     {
-      "name": "policy_both_p00_s2_b70",
+      "name": "router_both_p00_s2_b70",
       "kind": "policy",
-      "family": "policy_both_p00_s2",
+      "family": "router_both_p00_s2",
       "thres": -9.166492462158203,
       "budget": 70,
       "map50": 0.3801925800966145,
@@ -1389,9 +1389,9 @@
       "gflops": 50.483924992901514
     },
     {
-      "name": "policy_both_p10_s0_b90",
+      "name": "router_both_p10_s0_b90",
       "kind": "policy",
-      "family": "policy_both_p10_s0",
+      "family": "router_both_p10_s0",
       "thres": -22.253583908081055,
       "budget": 90,
       "map50": 0.37941822415275067,
@@ -1400,9 +1400,9 @@
       "gflops": 50.59821217629984
     },
     {
-      "name": "policy_both_p10_s2_b90",
+      "name": "router_both_p10_s2_b90",
       "kind": "policy",
-      "family": "policy_both_p10_s2",
+      "family": "router_both_p10_s2",
       "thres": -28.73636989593506,
       "budget": 90,
       "map50": 0.3804883665081402,
@@ -1411,9 +1411,9 @@
       "gflops": 50.794599540425104
     },
     {
-      "name": "policy_both_p00_s4_b70",
+      "name": "router_both_p00_s4_b70",
       "kind": "policy",
-      "family": "policy_both_p00_s4",
+      "family": "router_both_p00_s4",
       "thres": -8.588345527648926,
       "budget": 70,
       "map50": 0.38105875245300735,
@@ -1422,9 +1422,9 @@
       "gflops": 50.79646545362344
     },
     {
-      "name": "policy_both_p00_s2_b80",
+      "name": "router_both_p00_s2_b80",
       "kind": "policy",
-      "family": "policy_both_p00_s2",
+      "family": "router_both_p00_s2",
       "thres": -9.33218822479248,
       "budget": 80,
       "map50": 0.3811316671954441,
@@ -1433,9 +1433,9 @@
       "gflops": 51.07215412867816
     },
     {
-      "name": "policy_both_p00_s4_b80",
+      "name": "router_both_p00_s4_b80",
       "kind": "policy",
-      "family": "policy_both_p00_s4",
+      "family": "router_both_p00_s4",
       "thres": -8.588348388671875,
       "budget": 80,
       "map50": 0.3803651359814878,
@@ -1444,9 +1444,9 @@
       "gflops": 51.21349705345239
     },
     {
-      "name": "policy_both_p10_s4_b90",
+      "name": "router_both_p10_s4_b90",
       "kind": "policy",
-      "family": "policy_both_p10_s4",
+      "family": "router_both_p10_s4",
       "thres": -28.78795337677002,
       "budget": 90,
       "map50": 0.38093698310146695,
@@ -1455,9 +1455,9 @@
       "gflops": 51.24008631652874
     },
     {
-      "name": "policy_both_p00_s2_b90",
+      "name": "router_both_p00_s2_b90",
       "kind": "policy",
-      "family": "policy_both_p00_s2",
+      "family": "router_both_p00_s2",
       "thres": -9.557676315307617,
       "budget": 90,
       "map50": 0.3810850484978461,
@@ -1466,9 +1466,9 @@
       "gflops": 51.25454714381587
     },
     {
-      "name": "policy_both_p00_s0_b80",
+      "name": "router_both_p00_s0_b80",
       "kind": "policy",
-      "family": "policy_both_p00_s0",
+      "family": "router_both_p00_s0",
       "thres": -8.613759994506836,
       "budget": 80,
       "map50": 0.38034336540352087,
@@ -1477,9 +1477,9 @@
       "gflops": 51.3343149330449
     },
     {
-      "name": "policy_both_p00_s4_b90",
+      "name": "router_both_p00_s4_b90",
       "kind": "policy",
-      "family": "policy_both_p00_s4",
+      "family": "router_both_p00_s4",
       "thres": -8.588351249694824,
       "budget": 90,
       "map50": 0.3804161037753421,
@@ -1488,9 +1488,9 @@
       "gflops": 51.53023581887059
     },
     {
-      "name": "policy_both_p00_s0_b90",
+      "name": "router_both_p00_s0_b90",
       "kind": "policy",
-      "family": "policy_both_p00_s0",
+      "family": "router_both_p00_s0",
       "thres": -8.613760948181152,
       "budget": 90,
       "map50": 0.3804497615716673,

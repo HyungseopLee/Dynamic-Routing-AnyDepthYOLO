@@ -1,8 +1,8 @@
-"""Feature tap for the 2-level Gumbel binary policy (method01).
+"""Feature tap for the 2-level Gumbel binary router (method01).
 
 Stateless (no learnable params): decides *which* detector layers feed the
-policy and slices the detector's `return_features=True` output into the two
-context groups. All learnable projection/fusion lives in PolicyNetwork.
+router and slices the detector's `return_features=True` output into the two
+context groups. All learnable projection/fusion lives in RouterNetwork.
 
   - input-level context : GAP of backbone layers {4, 6, 8}  (S2/S3/S4 == P3/P4/P5)
   - pred-level  context : GAP of neck-fusion layers {14, 17, 20} (Detect inputs)

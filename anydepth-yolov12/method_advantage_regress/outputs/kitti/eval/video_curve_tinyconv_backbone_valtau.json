@@ -17,9 +17,9 @@
       "energy_mj": 2305.430335223644
     },
     {
-      "name": "policy_input_s1_b10",
+      "name": "router_input_s1_b10",
       "kind": "policy",
-      "family": "policy_input_s1",
+      "family": "router_input_s1",
       "thres": 0.2739088833332062,
       "budget": 10,
       "map50": 0.6991457073592793,
@@ -31,9 +31,9 @@
       "energy_mj": 2544.3506016932256
     },
     {
-      "name": "policy_input_s3_b10",
+      "name": "router_input_s3_b10",
       "kind": "policy",
-      "family": "policy_input_s3",
+      "family": "router_input_s3",
       "thres": 0.22523142397403717,
       "budget": 10,
       "map50": 0.6996890471900672,
@@ -45,9 +45,9 @@
       "energy_mj": 2558.601023724888
     },
     {
-      "name": "policy_input_s4_b10",
+      "name": "router_input_s4_b10",
       "kind": "policy",
-      "family": "policy_input_s4",
+      "family": "router_input_s4",
       "thres": 0.21763993799686432,
       "budget": 10,
       "map50": 0.7010013636412483,
@@ -59,9 +59,9 @@
       "energy_mj": 2551.6672175111134
     },
     {
-      "name": "policy_input_s0_b10",
+      "name": "router_input_s0_b10",
       "kind": "policy",
-      "family": "policy_input_s0",
+      "family": "router_input_s0",
       "thres": 0.2593161463737488,
       "budget": 10,
       "map50": 0.7004035017775129,
@@ -73,9 +73,9 @@
       "energy_mj": 2579.956054309091
     },
     {
-      "name": "policy_input_s2_b10",
+      "name": "router_input_s2_b10",
       "kind": "policy",
-      "family": "policy_input_s2",
+      "family": "router_input_s2",
       "thres": 0.32580654323101044,
       "budget": 10,
       "map50": 0.6993196902245092,
@@ -87,9 +87,9 @@
       "energy_mj": 2595.8871851791373
     },
     {
-      "name": "policy_input_s3_b20",
+      "name": "router_input_s3_b20",
       "kind": "policy",
-      "family": "policy_input_s3",
+      "family": "router_input_s3",
       "thres": 0.16886834800243378,
       "budget": 20,
       "map50": 0.7013685756199214,
@@ -101,9 +101,9 @@
       "energy_mj": 2699.097844476992
     },
     {
-      "name": "policy_input_s4_b20",
+      "name": "router_input_s4_b20",
       "kind": "policy",
-      "family": "policy_input_s4",
+      "family": "router_input_s4",
       "thres": 0.1447707712650299,
       "budget": 20,
       "map50": 0.7031328218462322,
@@ -115,9 +115,9 @@
       "energy_mj": 2699.259238333118
     },
     {
-      "name": "policy_input_s1_b20",
+      "name": "router_input_s1_b20",
       "kind": "policy",
-      "family": "policy_input_s1",
+      "family": "router_input_s1",
       "thres": 0.20455868542194366,
       "budget": 20,
       "map50": 0.7021115677103822,
@@ -129,9 +129,9 @@
       "energy_mj": 2724.357807447713
     },
     {
-      "name": "policy_input_s0_b20",
+      "name": "router_input_s0_b20",
       "kind": "policy",
-      "family": "policy_input_s0",
+      "family": "router_input_s0",
       "thres": 0.19174298644065857,
       "budget": 20,
       "map50": 0.7011730487923278,
@@ -143,9 +143,9 @@
       "energy_mj": 2749.7639090742878
     },
     {
-      "name": "policy_input_s3_b30",
+      "name": "router_input_s3_b30",
       "kind": "policy",
-      "family": "policy_input_s3",
+      "family": "router_input_s3",
       "thres": 0.13732507079839706,
       "budget": 30,
       "map50": 0.7032647884810742,
@@ -157,9 +157,9 @@
       "energy_mj": 2802.7445300170425
     },
     {
-      "name": "policy_input_s2_b20",
+      "name": "router_input_s2_b20",
       "kind": "policy",
-      "family": "policy_input_s2",
+      "family": "router_input_s2",
       "thres": 0.2386338859796524,
       "budget": 20,
       "map50": 0.7020385754568258,
@@ -171,9 +171,9 @@
       "energy_mj": 2800.077248010213
     },
     {
-      "name": "policy_input_s4_b30",
+      "name": "router_input_s4_b30",
       "kind": "policy",
-      "family": "policy_input_s4",
+      "family": "router_input_s4",
       "thres": 0.10886748880147934,
       "budget": 30,
       "map50": 0.7039217959381346,
@@ -185,9 +185,9 @@
       "energy_mj": 2806.028671816672
     },
     {
-      "name": "policy_input_s1_b30",
+      "name": "router_input_s1_b30",
       "kind": "policy",
-      "family": "policy_input_s1",
+      "family": "router_input_s1",
       "thres": 0.1685599386692047,
       "budget": 30,
       "map50": 0.7021913372133479,
@@ -199,9 +199,9 @@
       "energy_mj": 2851.119622574221
     },
     {
-      "name": "policy_input_s0_b30",
+      "name": "router_input_s0_b30",
       "kind": "policy",
-      "family": "policy_input_s0",
+      "family": "router_input_s0",
       "thres": 0.1554366946220398,
       "budget": 30,
       "map50": 0.7012198034203866,
@@ -213,9 +213,9 @@
       "energy_mj": 2883.646451749978
     },
     {
-      "name": "policy_input_s4_b40",
+      "name": "router_input_s4_b40",
       "kind": "policy",
-      "family": "policy_input_s4",
+      "family": "router_input_s4",
       "thres": 0.08004007488489151,
       "budget": 40,
       "map50": 0.7042587653636572,
@@ -227,9 +227,9 @@
       "energy_mj": 2896.0043716936157
     },
     {
-      "name": "policy_input_s3_b40",
+      "name": "router_input_s3_b40",
       "kind": "policy",
-      "family": "policy_input_s3",
+      "family": "router_input_s3",
       "thres": 0.11096766591072083,
       "budget": 40,
       "map50": 0.7031352104824063,
@@ -241,9 +241,9 @@
       "energy_mj": 2919.3097890313456
     },
     {
-      "name": "policy_input_s2_b30",
+      "name": "router_input_s2_b30",
       "kind": "policy",
-      "family": "policy_input_s2",
+      "family": "router_input_s2",
       "thres": 0.19702545553445816,
       "budget": 30,
       "map50": 0.7030845072289186,
@@ -255,9 +255,9 @@
       "energy_mj": 2916.439785492024
     },
     {
-      "name": "policy_input_s1_b40",
+      "name": "router_input_s1_b40",
       "kind": "policy",
-      "family": "policy_input_s1",
+      "family": "router_input_s1",
       "thres": 0.14126311242580414,
       "budget": 40,
       "map50": 0.7024058259316946,
@@ -269,9 +269,9 @@
       "energy_mj": 2966.4042002767965
     },
     {
-      "name": "policy_input_s0_b40",
+      "name": "router_input_s0_b40",
       "kind": "policy",
-      "family": "policy_input_s0",
+      "family": "router_input_s0",
       "thres": 0.13084004819393158,
       "budget": 40,
       "map50": 0.7022859595241734,
@@ -283,9 +283,9 @@
       "energy_mj": 2986.0306627864975
     },
     {
-      "name": "policy_input_s4_b50",
+      "name": "router_input_s4_b50",
       "kind": "policy",
-      "family": "policy_input_s4",
+      "family": "router_input_s4",
       "thres": 0.053709134459495544,
       "budget": 50,
       "map50": 0.7046268053561627,
@@ -297,9 +297,9 @@
       "energy_mj": 2986.054375536073
     },
     {
-      "name": "policy_input_s3_b50",
+      "name": "router_input_s3_b50",
       "kind": "policy",
-      "family": "policy_input_s3",
+      "family": "router_input_s3",
       "thres": 0.0891985110938549,
       "budget": 50,
       "map50": 0.7045716519037737,
@@ -311,9 +311,9 @@
       "energy_mj": 3012.501825184219
     },
     {
-      "name": "policy_input_s2_b40",
+      "name": "router_input_s2_b40",
       "kind": "policy",
-      "family": "policy_input_s2",
+      "family": "router_input_s2",
       "thres": 0.1635814756155014,
       "budget": 40,
       "map50": 0.7026893486645797,
@@ -325,9 +325,9 @@
       "energy_mj": 3013.097036555726
     },
     {
-      "name": "policy_input_s0_b50",
+      "name": "router_input_s0_b50",
       "kind": "policy",
-      "family": "policy_input_s0",
+      "family": "router_input_s0",
       "thres": 0.1096687987446785,
       "budget": 50,
       "map50": 0.7029704847764734,
@@ -339,9 +339,9 @@
       "energy_mj": 3078.202083221378
     },
     {
-      "name": "policy_input_s4_b60",
+      "name": "router_input_s4_b60",
       "kind": "policy",
-      "family": "policy_input_s4",
+      "family": "router_input_s4",
       "thres": 0.02691495791077614,
       "budget": 60,
       "map50": 0.7041331805091048,
@@ -353,9 +353,9 @@
       "energy_mj": 3106.054250451441
     },
     {
-      "name": "policy_input_s1_b50",
+      "name": "router_input_s1_b50",
       "kind": "policy",
-      "family": "policy_input_s1",
+      "family": "router_input_s1",
       "thres": 0.1184338852763176,
       "budget": 50,
       "map50": 0.7036178071831521,
@@ -367,9 +367,9 @@
       "energy_mj": 3088.1622186596046
     },
     {
-      "name": "policy_input_s2_b50",
+      "name": "router_input_s2_b50",
       "kind": "policy",
-      "family": "policy_input_s2",
+      "family": "router_input_s2",
       "thres": 0.13790421932935715,
       "budget": 50,
       "map50": 0.7036579252952607,
@@ -381,9 +381,9 @@
       "energy_mj": 3091.13328086212
     },
     {
-      "name": "policy_input_s3_b60",
+      "name": "router_input_s3_b60",
       "kind": "policy",
-      "family": "policy_input_s3",
+      "family": "router_input_s3",
       "thres": 0.06758030503988266,
       "budget": 60,
       "map50": 0.7049641003945787,
@@ -395,9 +395,9 @@
       "energy_mj": 3109.015964002704
     },
     {
-      "name": "policy_input_s2_b60",
+      "name": "router_input_s2_b60",
       "kind": "policy",
-      "family": "policy_input_s2",
+      "family": "router_input_s2",
       "thres": 0.11392907798290253,
       "budget": 60,
       "map50": 0.7038431327236788,
@@ -409,9 +409,9 @@
       "energy_mj": 3158.684323873776
     },
     {
-      "name": "policy_input_s4_b70",
+      "name": "router_input_s4_b70",
       "kind": "policy",
-      "family": "policy_input_s4",
+      "family": "router_input_s4",
       "thres": -0.001010546460747716,
       "budget": 70,
       "map50": 0.7046300570022824,
@@ -423,9 +423,9 @@
       "energy_mj": 3194.066865290588
     },
     {
-      "name": "policy_input_s0_b60",
+      "name": "router_input_s0_b60",
       "kind": "policy",
-      "family": "policy_input_s0",
+      "family": "router_input_s0",
       "thres": 0.083812415599823,
       "budget": 60,
       "map50": 0.7032861447010615,
@@ -437,9 +437,9 @@
       "energy_mj": 3175.5083711551956
     },
     {
-      "name": "policy_input_s1_b60",
+      "name": "router_input_s1_b60",
       "kind": "policy",
-      "family": "policy_input_s1",
+      "family": "router_input_s1",
       "thres": 0.09631459414958954,
       "budget": 60,
       "map50": 0.7046431930012974,
@@ -451,9 +451,9 @@
       "energy_mj": 3180.157176759359
     },
     {
-      "name": "policy_input_s3_b70",
+      "name": "router_input_s3_b70",
       "kind": "policy",
-      "family": "policy_input_s3",
+      "family": "router_input_s3",
       "thres": 0.04519270546734333,
       "budget": 70,
       "map50": 0.7048211962374792,
@@ -465,9 +465,9 @@
       "energy_mj": 3222.2983026443494
     },
     {
-      "name": "policy_input_s2_b70",
+      "name": "router_input_s2_b70",
       "kind": "policy",
-      "family": "policy_input_s2",
+      "family": "router_input_s2",
       "thres": 0.08360262587666516,
       "budget": 70,
       "map50": 0.7036077700425089,
@@ -479,9 +479,9 @@
       "energy_mj": 3258.7060609997643
     },
     {
-      "name": "policy_input_s1_b70",
+      "name": "router_input_s1_b70",
       "kind": "policy",
-      "family": "policy_input_s1",
+      "family": "router_input_s1",
       "thres": 0.0755051076412201,
       "budget": 70,
       "map50": 0.7052364552372702,
@@ -493,9 +493,9 @@
       "energy_mj": 3258.975906017764
     },
     {
-      "name": "policy_input_s4_b80",
+      "name": "router_input_s4_b80",
       "kind": "policy",
-      "family": "policy_input_s4",
+      "family": "router_input_s4",
       "thres": -0.03549338132143021,
       "budget": 80,
       "map50": 0.7044311349894127,
@@ -507,9 +507,9 @@
       "energy_mj": 3285.4616255293768
     },
     {
-      "name": "policy_input_s0_b70",
+      "name": "router_input_s0_b70",
       "kind": "policy",
-      "family": "policy_input_s0",
+      "family": "router_input_s0",
       "thres": 0.05823503434658051,
       "budget": 70,
       "map50": 0.7032152376877988,
@@ -521,9 +521,9 @@
       "energy_mj": 3264.089228070722
     },
     {
-      "name": "policy_input_s3_b80",
+      "name": "router_input_s3_b80",
       "kind": "policy",
-      "family": "policy_input_s3",
+      "family": "router_input_s3",
       "thres": 0.01886886730790138,
       "budget": 80,
       "map50": 0.7045458973780853,
@@ -535,9 +535,9 @@
       "energy_mj": 3331.8810445410827
     },
     {
-      "name": "policy_input_s2_b80",
+      "name": "router_input_s2_b80",
       "kind": "policy",
-      "family": "policy_input_s2",
+      "family": "router_input_s2",
       "thres": 0.044276446104049676,
       "budget": 80,
       "map50": 0.7034830961388291,
@@ -549,9 +549,9 @@
       "energy_mj": 3335.1541755949775
     },
     {
-      "name": "policy_input_s1_b80",
+      "name": "router_input_s1_b80",
       "kind": "policy",
-      "family": "policy_input_s1",
+      "family": "router_input_s1",
       "thres": 0.04317189380526541,
       "budget": 80,
       "map50": 0.7050630194997192,
@@ -563,9 +563,9 @@
       "energy_mj": 3347.9100616801843
     },
     {
-      "name": "policy_input_s0_b80",
+      "name": "router_input_s0_b80",
       "kind": "policy",
-      "family": "policy_input_s0",
+      "family": "router_input_s0",
       "thres": 0.02102670818567272,
       "budget": 80,
       "map50": 0.7035818814659075,
@@ -577,9 +577,9 @@
       "energy_mj": 3371.604721095757
     },
     {
-      "name": "policy_input_s4_b90",
+      "name": "router_input_s4_b90",
       "kind": "policy",
-      "family": "policy_input_s4",
+      "family": "router_input_s4",
       "thres": -0.08855732902884486,
       "budget": 90,
       "map50": 0.7038118398297644,
@@ -591,9 +591,9 @@
       "energy_mj": 3381.079324735397
     },
     {
-      "name": "policy_input_s3_b90",
+      "name": "router_input_s3_b90",
       "kind": "policy",
-      "family": "policy_input_s3",
+      "family": "router_input_s3",
       "thres": -0.013326147571206095,
       "budget": 90,
       "map50": 0.7044826910594427,
@@ -605,9 +605,9 @@
       "energy_mj": 3419.3751260828244
     },
     {
-      "name": "policy_input_s2_b90",
+      "name": "router_input_s2_b90",
       "kind": "policy",
-      "family": "policy_input_s2",
+      "family": "router_input_s2",
       "thres": -0.00995565392076972,
       "budget": 90,
       "map50": 0.7038958733498347,
@@ -619,9 +619,9 @@
       "energy_mj": 3419.864452949053
     },
     {
-      "name": "policy_input_s0_b90",
+      "name": "router_input_s0_b90",
       "kind": "policy",
-      "family": "policy_input_s0",
+      "family": "router_input_s0",
       "thres": -0.021990604698657993,
       "budget": 90,
       "map50": 0.7036250274209896,
@@ -633,9 +633,9 @@
       "energy_mj": 3441.3120239722757
     },
     {
-      "name": "policy_input_s1_b90",
+      "name": "router_input_s1_b90",
       "kind": "policy",
-      "family": "policy_input_s1",
+      "family": "router_input_s1",
       "thres": -0.005091045051813144,
       "budget": 90,
       "map50": 0.7041858542781577,

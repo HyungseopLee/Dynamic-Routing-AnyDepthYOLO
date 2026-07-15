@@ -12,7 +12,7 @@ deployed cost of routing, not a replay.
 
     python method_advantage_regress/jetson/trt_video_eval.py --base method_advantage_regress/jetson/onnx/bdd/base.fp16.engine \
         --super method_advantage_regress/jetson/onnx/bdd/super.fp16.engine \
-        --policy method_advantage_regress/outputs/bdd100k/policy_scenario_s0.pt \
+        --router method_advantage_regress/outputs/bdd100k/router_scenario_s0.pt \
         --mot_root /media/data/bdd100k_mot/val --imgsz 720 1280 --limit 20
 """
 import argparse
@@ -31,7 +31,7 @@ from ultralytics.utils import ops
 
 from method_advantage_regress.router.feature_tap import INPUT_LEVEL_LAYERS
 from method_advantage_regress.eval.eval_video import (
-    parse_box_track, labeled_frames, load_policy)
+    parse_box_track, labeled_frames, load_router)
 
 TRT_LOGGER = trt.Logger(trt.Logger.ERROR)
 
@@ -76,7 +76,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--base", required=True)
     ap.add_argument("--super", required=True)
-    ap.add_argument("--policy", required=True)
+    ap.add_argument("--router", required=True)
     ap.add_argument("--mot_root", default="/media/data/bdd100k_mot/val")
     ap.add_argument("--imgsz", type=int, nargs=2, default=[720, 1280])
     ap.add_argument("--grid", type=int, default=2)
@@ -93,7 +93,7 @@ def main():
     lb = LetterBox((H, W), auto=False, stride=32)
 
     eng = {"base": Engine(args.base, dev), "super": Engine(args.super, dev)}
-    net, ckpt, feat, is_gap = load_policy(args.policy, dev)
+    net, ckpt, feat, is_gap = load_router(args.router, dev)
     net.load_state_dict(ckpt["state_dict"]); net.eval()
     pid = {"base": torch.zeros(1, dtype=torch.long, device=dev),
            "super": torch.ones(1, dtype=torch.long, device=dev)}

@@ -29,7 +29,7 @@ import torch
 from ultralytics import YOLO
 
 from method_advantage_regress.train.build_cache import num_skippable, parse_grid
-from method_advantage_regress.router.policy_net import PolicyNetwork
+from method_advantage_regress.router.router_net import RouterNetwork
 
 
 class Power:
@@ -92,7 +92,7 @@ def main():
 
     # router overhead: time net.logit on a representative input grid (G x G)
     G = parse_grid(args.grid)
-    net = PolicyNetwork(group_dim=64, path_dim=8, hidden_dim=128,
+    net = RouterNetwork(group_dim=64, path_dim=8, hidden_dim=128,
                         feat="input", norm="batch", dropout=0.0).to(dev).eval()
     Cin = sum(c for c in (256, 512, 512))  # placeholder; materialized below
     # materialize lazily with a dummy of the real channel count by one base forward hook

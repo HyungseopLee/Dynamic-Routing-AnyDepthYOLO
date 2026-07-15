@@ -10,7 +10,7 @@ Five analyses:
 Usage:
     python -m method_advantage_regress.analysis.analyze_router_behavior \
         --cache method_advantage_regress/outputs/bdd100k/cache_val_both.pt \
-        --policy method_advantage_regress/outputs/bdd100k/policy_both_0.pt \
+        --router method_advantage_regress/outputs/bdd100k/router_both_0.pt \
         --labels /media/data/bdd100k_yolo/val/labels \
         --attrs /media/data/bdd100k_yolo/val/attributes.json \
         --images /media/data/bdd100k_yolo/val/images \
@@ -41,11 +41,11 @@ SCENE = {0: "city street", 1: "highway", 2: "residential",
 
 # ── helpers ───────────────────────────────────────────────────────────────────
 
-def load_policy(policy_path: str):
+def load_router(router_path: str):
     import sys
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-    from method_advantage_regress.router.policy_net import PolicyNetwork, GapMlpNet
-    ckpt = torch.load(policy_path, map_location="cpu")
+    from method_advantage_regress.router.router_net import RouterNetwork, GapMlpNet
+    ckpt = torch.load(router_path, map_location="cpu")
     sd = ckpt.get("state_dict", ckpt.get("model_state", ckpt))
     is_gap = not any(k.endswith("weight") and v.dim() == 4 for k, v in sd.items())
     # infer group_dim and head_dim from checkpoint shapes
@@ -56,7 +56,7 @@ def load_policy(policy_path: str):
     else:
         group_dim  = sd["input_proj.depth.weight"].shape[0]
         hidden_dim = sd["head.0.weight"].shape[0]
-        net = PolicyNetwork(group_dim=group_dim, hidden_dim=hidden_dim)
+        net = RouterNetwork(group_dim=group_dim, hidden_dim=hidden_dim)
     net.load_state_dict(sd)
     net.eval()
     return net
@@ -64,7 +64,7 @@ def load_policy(policy_path: str):
 
 def predict_advantage(net, input_feats: torch.Tensor, pred_feats: torch.Tensor) -> np.ndarray:
     """input_feats/pred_feats: [N, C, G, G]. Returns predicted logit [N]."""
-    from method_advantage_regress.router.policy_net import GapMlpNet
+    from method_advantage_regress.router.router_net import GapMlpNet
     is_gap = isinstance(net, GapMlpNet)
     path_id = torch.zeros(input_feats.shape[0], dtype=torch.long)
     with torch.no_grad():
@@ -96,33 +96,47 @@ def plot_attribute_correlation(adv_true: np.ndarray,
     fig, axes = plt.subplots(1, 3, figsize=(18, 5))
 
     for ax, (key, mapping, title) in zip(axes, attr_defs):
-        groups = {}
+        groups_true, groups_pred = {}, {}
         for i, f in enumerate(im_files):
             vid = stem(f)
             attr = attrs.get(vid, {}).get(key, -1)
             label = mapping.get(attr, "unknown")
-            groups.setdefault(label, []).append(adv_true[i])
+            groups_true.setdefault(label, []).append(adv_true[i])
+            groups_pred.setdefault(label, []).append(adv_pred[i])
 
-        # sort by median
-        labels_sorted = sorted(groups, key=lambda k: np.median(groups[k]))
-        data = [groups[k] for k in labels_sorted]
-        counts = [len(groups[k]) for k in labels_sorted]
+        # sort by true advantage median
+        labels_sorted = sorted(groups_true, key=lambda k: np.median(groups_true[k]))
+        counts = [len(groups_true[k]) for k in labels_sorted]
+        x = np.arange(len(labels_sorted))
 
-        bp = ax.boxplot(data, patch_artist=True, notch=False,
-                        medianprops=dict(color="crimson", linewidth=2))
-        colors = plt.cm.Set2(np.linspace(0, 1, len(labels_sorted)))
-        for patch, c in zip(bp["boxes"], colors):
-            patch.set_facecolor(c)
-            patch.set_alpha(0.7)
+        # true advantage: box
+        bp_t = ax.boxplot([groups_true[k] for k in labels_sorted],
+                          positions=x - 0.2, widths=0.35, patch_artist=True,
+                          medianprops=dict(color="crimson", linewidth=2),
+                          whiskerprops=dict(linewidth=0.8), capprops=dict(linewidth=0.8),
+                          flierprops=dict(marker='.', markersize=1, alpha=0.3))
+        # predicted advantage: box
+        bp_p = ax.boxplot([groups_pred[k] for k in labels_sorted],
+                          positions=x + 0.2, widths=0.35, patch_artist=True,
+                          medianprops=dict(color="navy", linewidth=2),
+                          whiskerprops=dict(linewidth=0.8), capprops=dict(linewidth=0.8),
+                          flierprops=dict(marker='.', markersize=1, alpha=0.3))
+        for patch in bp_t["boxes"]:
+            patch.set_facecolor("tomato"); patch.set_alpha(0.6)
+        for patch in bp_p["boxes"]:
+            patch.set_facecolor("steelblue"); patch.set_alpha(0.6)
 
+        ax.set_xticks(x)
         ax.set_xticklabels([f"{l}\n(n={c})" for l, c in zip(labels_sorted, counts)],
                            fontsize=8, rotation=20, ha="right")
         ax.axhline(0, color="gray", linestyle="--", linewidth=0.8)
-        ax.set_ylabel("True Advantage  A = L_base − L_super")
+        ax.set_ylabel("Predicted Advantage")
         ax.set_title(title, fontweight="bold")
         ax.grid(axis="y", alpha=0.3)
+        ax.legend([bp_t["boxes"][0], bp_p["boxes"][0]],
+                  ["True A", "Predicted Â"], fontsize=8, loc="upper left")
 
-    fig.suptitle("True Advantage Distribution by Scene Attribute (BDD100K val)",
+    fig.suptitle("True vs Predicted Advantage by Scene Attribute (BDD100K val)",
                  fontsize=13, fontweight="bold")
     plt.tight_layout()
     out_path = out.with_suffix("") / "1_attribute_correlation.png"
@@ -135,6 +149,7 @@ def plot_attribute_correlation(adv_true: np.ndarray,
 # ── analysis 2: object density correlation ────────────────────────────────────
 
 def plot_density_correlation(adv_true: np.ndarray,
+                             adv_pred: np.ndarray,
                              im_files: list,
                              labels_dir: Path,
                              out: Path):
@@ -152,46 +167,55 @@ def plot_density_correlation(adv_true: np.ndarray,
     # bin by box count
     bins = [0, 5, 10, 20, 40, 10000]
     bin_labels = ["0–4", "5–9", "10–19", "20–39", "40+"]
-    groups = []
+    groups_true, groups_pred = [], []
     for lo, hi in zip(bins[:-1], bins[1:]):
         mask = (n_boxes >= lo) & (n_boxes < hi)
-        groups.append(adv_true[mask])
+        groups_true.append(adv_true[mask])
+        groups_pred.append(adv_pred[mask])
 
-    fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+    fig, axes = plt.subplots(1, 2, figsize=(13, 5))
 
-    # boxplot
-    bp = axes[0].boxplot(groups, patch_artist=True,
-                         medianprops=dict(color="crimson", linewidth=2))
-    colors = plt.cm.Blues(np.linspace(0.3, 0.9, len(bin_labels)))
-    for patch, c in zip(bp["boxes"], colors):
-        patch.set_facecolor(c); patch.set_alpha(0.8)
-    axes[0].set_xticklabels([f"{bl}\n(n={len(g)})" for bl, g in zip(bin_labels, groups)],
-                            fontsize=9)
+    # boxplot: true vs predicted side by side
+    x = np.arange(len(bin_labels))
+    bp_t = axes[0].boxplot(groups_true, positions=x - 0.2, widths=0.35,
+                           patch_artist=True, medianprops=dict(color="crimson", linewidth=2),
+                           flierprops=dict(marker='.', markersize=1, alpha=0.3))
+    bp_p = axes[0].boxplot(groups_pred, positions=x + 0.2, widths=0.35,
+                           patch_artist=True, medianprops=dict(color="navy", linewidth=2),
+                           flierprops=dict(marker='.', markersize=1, alpha=0.3))
+    for patch in bp_t["boxes"]:
+        patch.set_facecolor("tomato"); patch.set_alpha(0.6)
+    for patch in bp_p["boxes"]:
+        patch.set_facecolor("steelblue"); patch.set_alpha(0.6)
+    axes[0].set_xticks(x)
+    axes[0].set_xticklabels([f"{bl}\n(n={len(g)})" for bl, g in zip(bin_labels, groups_true)], fontsize=9)
     axes[0].axhline(0, color="gray", linestyle="--", linewidth=0.8)
     axes[0].set_xlabel("GT box count")
-    axes[0].set_ylabel("True Advantage")
-    axes[0].set_title("Advantage vs Object Density (binned)", fontweight="bold")
+    axes[0].set_ylabel("Advantage")
+    axes[0].set_title("True vs Predicted Advantage by Object Density", fontweight="bold")
+    axes[0].legend([bp_t["boxes"][0], bp_p["boxes"][0]], ["True A", "Predicted Â"], fontsize=9)
     axes[0].grid(axis="y", alpha=0.3)
 
-    # scatter with running mean
+    # scatter: both running means
     sort_idx = np.argsort(n_boxes)
     x_sorted = n_boxes[sort_idx]
-    y_sorted = adv_true[sort_idx]
     window = 200
-    running_mean = np.convolve(y_sorted, np.ones(window) / window, mode="valid")
-    x_mean = x_sorted[window // 2: window // 2 + len(running_mean)]
-
-    axes[1].scatter(n_boxes, adv_true, alpha=0.15, s=4, c="steelblue")
-    axes[1].plot(x_mean, running_mean, color="crimson", linewidth=2, label=f"running mean (w={window})")
+    for y_arr, color, label in [(adv_true, "crimson", "True A"),
+                                 (adv_pred, "steelblue", "Predicted Â")]:
+        y_sorted = y_arr[sort_idx]
+        rm = np.convolve(y_sorted, np.ones(window) / window, mode="valid")
+        xm = x_sorted[window // 2: window // 2 + len(rm)]
+        axes[1].scatter(n_boxes, y_arr, alpha=0.08, s=3, c=color)
+        axes[1].plot(xm, rm, color=color, linewidth=2, label=f"{label} (w={window})")
     axes[1].axhline(0, color="gray", linestyle="--", linewidth=0.8)
     axes[1].set_xlabel("GT box count")
-    axes[1].set_ylabel("True Advantage")
-    axes[1].set_title("Advantage vs Object Count (scatter)", fontweight="bold")
-    axes[1].legend()
+    axes[1].set_ylabel("Advantage")
+    axes[1].set_title("Running Mean vs Object Count", fontweight="bold")
+    axes[1].legend(fontsize=9)
     axes[1].set_xlim(-1, min(100, n_boxes.max() + 1))
     axes[1].grid(alpha=0.3)
 
-    fig.suptitle("Router Advantage vs Object Density (BDD100K val)",
+    fig.suptitle("True vs Predicted Advantage by Object Density (BDD100K val)",
                  fontsize=13, fontweight="bold")
     plt.tight_layout()
     out_path = out.with_suffix("") / "2_density_correlation.png"
@@ -377,6 +401,7 @@ def plot_calibration(adv_true: np.ndarray,
     plt.tight_layout()
     out_path = out.with_suffix("") / "5_calibration.png"
     fig.savefig(out_path, dpi=150, bbox_inches="tight")
+    fig.savefig(out_path.with_suffix(".pdf"), bbox_inches="tight")
     plt.close(fig)
 
     print(f"[5] Saved: {out_path}")
@@ -388,7 +413,7 @@ def plot_calibration(adv_true: np.ndarray,
 def parse_args():
     p = argparse.ArgumentParser()
     p.add_argument("--cache",   default="method_advantage_regress/outputs/bdd100k/cache_val_both.pt")
-    p.add_argument("--policy",  default="method_advantage_regress/outputs/bdd100k/policy_both_0.pt")
+    p.add_argument("--router",  default="method_advantage_regress/outputs/bdd100k/router_both_0.pt")
     p.add_argument("--labels",  default="/media/data/bdd100k_yolo/val/labels")
     p.add_argument("--attrs",   default="/media/data/bdd100k_yolo/val/attributes.json")
     p.add_argument("--images",  default="/media/data/bdd100k_yolo/val/images")
@@ -413,8 +438,8 @@ def main():
     input_feats = cache["input_base"]         # [N, C, G, G]
     pred_feats  = cache["pred_base"]          # [N, C, G, G]
 
-    print("Loading policy network...")
-    net = load_policy(args.policy)
+    print("Loading router network...")
+    net = load_router(args.router)
 
     print("Running inference...")
     batch = 512
@@ -431,7 +456,7 @@ def main():
     plot_attribute_correlation(adv_true, adv_pred, im_files, attrs, out)
 
     print("\n=== Analysis 2: Object Density Correlation ===")
-    plot_density_correlation(adv_true, im_files, labels_dir, out)
+    plot_density_correlation(adv_true, adv_pred, im_files, labels_dir, out)
 
     print("\n=== Analysis 3: Spatial Feature Heatmap ===")
     plot_spatial_heatmap(input_feats, pred_feats, adv_true, net, out)

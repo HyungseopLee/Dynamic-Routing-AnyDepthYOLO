@@ -1,13 +1,37 @@
 """Main-result Pareto figure (paper style): AP vs SUPER usage (bottom x) with a twin
-GFLOPs/frame top axis. The learned policy is drawn as a mean+/-std band over seeds;
-no-train baselines (random, luminance, edge density, confidence) are dashed lines.
+GFLOPs/frame top axis. The learned router is drawn as a mean+/-std band over seeds;
+heuristic baselines (random, luminance, edge density, confidence) are optional dashed lines.
 
-Reproduces fig_main_*_ap5095.pdf with the learned policy = the chosen feature source
-(default: the capacity-strengthened both-feature router) and the confidence baseline
-included.
+By default, produces TWO files from a single run:
+  <out>_with_baselines.pdf  — random + lum + edge + conftop20 + ours
+  <out>_router_only.pdf     — random + ours only
 
+Use --dataset to auto-select curve path, router_fam, and out for each dataset.
+Pass --show_baselines / --no_baselines to force a single output to --out.
+
+Usage:
+    # dataset shortcut (auto curve + router_fam + out)
+    python -m method_advantage_regress.analysis.make_main_figure --dataset kitti
+    python -m method_advantage_regress.analysis.make_main_figure --dataset bdd100k
+    python -m method_advantage_regress.analysis.make_main_figure --dataset waymo
+
+    # all heuristic baselines + ours → single file
+    python -m method_advantage_regress.analysis.make_main_figure --dataset bdd100k \
+        --show_baselines
+
+    # random + ours only → single file
+    python -m method_advantage_regress.analysis.make_main_figure --dataset bdd100k \
+        --no_baselines
+
+    # shared legend strip (all baselines)
+    python -m method_advantage_regress.analysis.make_main_figure --dataset bdd100k \
+        --legend_only --out method_advantage_regress/outputs/figures/fig_legend.pdf
+
+    # manual override (legacy)
     python -m method_advantage_regress.analysis.make_main_figure \
-        --curve method_advantage_regress/outputs/bdd100k/eval/video_curve_archabl.json
+        --curve method_advantage_regress/outputs/bdd100k/eval/video_curve_archabl.json \
+        --router_fam "router_bn(\\d+)" \
+        --out method_advantage_regress/outputs/figures/fig_main_bdd_ap5095.pdf
 """
 import argparse
 import json
@@ -29,20 +53,119 @@ BASE_STYLE = {
 }
 
 
+def _out_path(base_out: str, suffix: str) -> Path:
+    p = Path(base_out)
+    return p.parent / (p.stem + suffix + p.suffix)
+
+
+def _draw_figure(ax, pol, anchors, bases, gb, gs, show_baselines: bool, no_legend: bool):
+    """Draw one panel into ax. Returns nseed."""
+    # random is always shown; full heuristics only when show_baselines=True
+    extra_fams = ("lum", "edge", "conftop20") if show_baselines else ()
+    for fam in ("random",) + extra_fams:
+        if fam not in bases:
+            continue
+        pts = sorted(bases[fam])
+        c, mk, ls, lbl = BASE_STYLE[fam]
+        ax.plot([p[0] * 100 for p in pts], [p[1] for p in pts],
+                marker=mk, color=c, ls=ls, label=lbl,
+                markersize=4, linewidth=1.3, alpha=0.85)
+
+    pts = []
+    for key, seeds in pol.items():
+        a = np.array(seeds)
+        pts.append((a[:, 0].mean() * 100, a[:, 1].mean(), a[:, 1].std(), len(seeds)))
+    pts.sort()
+    nseed = pts[0][3] if pts else 0
+    if "always_base" in anchors:
+        pts.insert(0, (0.0, anchors["always_base"][1], 0.0, nseed))
+    if "always_super" in anchors:
+        pts.append((100.0, anchors["always_super"][1], 0.0, nseed))
+    xs = np.array([p[0] for p in pts]); ym = np.array([p[1] for p in pts])
+    ys = np.array([p[2] for p in pts])
+    ax.fill_between(xs, ym - ys, ym + ys, color="tab:red", alpha=0.18, zorder=3)
+    ax.plot(xs, ym, "o-", color="tab:red", label="ours", markersize=4.5,
+            linewidth=1.9, zorder=4)
+
+    for nm, (x, y) in anchors.items():
+        ax.scatter([x * 100], [y], marker="*", s=90, zorder=5, color="black")
+    if "always_super" in anchors:
+        ax.axhline(anchors["always_super"][1], color="0.4", ls=":", lw=1, alpha=0.6)
+
+    ax.set_xlabel("SUPER usage (\\%)" if matplotlib.rcParams["text.usetex"]
+                  else "SUPER usage (%)")
+    ax.set_ylabel(r"AP$_{50:95}$")
+    ax.set_xlim(-3, 103)
+    if not no_legend:
+        ax.legend(frameon=False, fontsize=11, loc="lower right")
+
+    def s2g(s):
+        return gb + (s / 100.0) * (gs - gb)
+
+    def g2s(g):
+        return (g - gb) / (gs - gb) * 100.0
+
+    sec = ax.secondary_xaxis("top", functions=(s2g, g2s))
+    sec.set_xlabel("GFLOPs / frame")
+    return nseed
+
+
+# per-dataset defaults: (curve_path, router_fam_regex, out_path)
+DATASET_DEFAULTS = {
+    "kitti": (
+        "method_advantage_regress/outputs/kitti/eval/video_curve_main_both_g2.json",
+        r"router_both_s(\d+)",
+        "method_advantage_regress/outputs/figures/fig_main_kitti_ap5095.pdf",
+    ),
+    "bdd100k": (
+        "method_advantage_regress/outputs/bdd100k/eval/video_curve_archabl.json",
+        r"router_bn(\d+)",
+        "method_advantage_regress/outputs/figures/fig_main_bdd_ap5095.pdf",
+    ),
+    "waymo": (
+        "method_advantage_regress/outputs/waymo/eval_both/video_curve.json",
+        r"router_seed(\d+)",
+        "method_advantage_regress/outputs/figures/fig_main_waymo_ap5095.pdf",
+    ),
+}
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--curve", required=True)
-    ap.add_argument("--policy_fam", default=r"policy_bn(\d+)",
-                    help="regex matching the policy family; group(1) = seed id")
+    ap.add_argument("--dataset", choices=list(DATASET_DEFAULTS), default=None,
+                    help="auto-select curve, router_fam, and out for a dataset")
+    ap.add_argument("--curve", default=None)
+    ap.add_argument("--router_fam", default=None,
+                    help="regex matching the router family; group(1) = seed id")
     ap.add_argument("--metric", default="map", choices=["map", "map50"])
-    ap.add_argument("--out", default="method_advantage_regress/outputs/figures/fig_main_bdd_ap5095.pdf")
-    ap.add_argument("--no_legend", action="store_true",
-                    help="omit the per-panel legend (use with a shared --legend_only strip)")
+    ap.add_argument("--out", default=None)
+    ap.add_argument("--no_legend", action="store_true")
     ap.add_argument("--legend_only", action="store_true",
                     help="render ONLY a shared horizontal legend strip to --out and exit")
+    mode = ap.add_mutually_exclusive_group()
+    mode.add_argument("--show_baselines", action="store_true",
+                      help="force single output WITH heuristic baselines to --out")
+    mode.add_argument("--no_baselines", action="store_true",
+                      help="force single output WITHOUT heuristic baselines to --out")
     args = ap.parse_args()
 
-    # larger fonts: panels are packed 3-up in the figure*, so default to readable sizes
+    # resolve dataset defaults; explicit flags override
+    if args.dataset:
+        d_curve, d_fam, d_out = DATASET_DEFAULTS[args.dataset]
+        if args.curve is None:
+            args.curve = d_curve
+        if args.router_fam is None:
+            args.router_fam = d_fam
+        if args.out is None:
+            args.out = d_out
+    else:
+        if args.curve is None:
+            ap.error("--curve is required when --dataset is not specified")
+        if args.router_fam is None:
+            args.router_fam = r"router_bn(\d+)"
+        if args.out is None:
+            args.out = "method_advantage_regress/outputs/figures/fig_main_ap5095.pdf"
+
     plt.rcParams.update({"pdf.fonttype": 42, "ps.fonttype": 42,
                          "font.family": "serif",
                          "font.serif": ["Times New Roman", "Times", "DejaVu Serif"],
@@ -66,14 +189,18 @@ def main():
         print(f"[*] shared legend -> {args.out}")
         return
 
-    data = json.loads(Path(args.curve).read_text())
+    curve_path = Path(args.curve)
+    if not curve_path.exists():
+        ap.error(f"curve file not found: {args.curve}\n"
+                 f"  Run eval_video.py first to generate it.")
+    data = json.loads(curve_path.read_text())
     rows = data["rows"]
     gb, gs = data["gflops_base"], data["gflops_super"]
-    pol_re = re.compile(args.policy_fam)
-    AP = lambda r: r[args.metric] * 100.0   # AP in percent (e.g. 22.4, not 0.224)
+    pol_re = re.compile(args.router_fam)
+    AP = lambda r: r[args.metric] * 100.0
 
-    bases = defaultdict(list)        # family -> [(super_rate, metric)]
-    pol = defaultdict(list)          # sweep-key -> [(super_rate, metric) over seeds]
+    bases = defaultdict(list)
+    pol = defaultdict(list)
     anchors = {}
     for r in rows:
         nm = r["name"]
@@ -86,62 +213,29 @@ def main():
         if fam in BASE_STYLE:
             bases[fam].append((r["super_rate"], AP(r)))
 
-    fig, ax = plt.subplots(figsize=(5.0, 3.7))
-
-    # baselines (under the policy)
-    for fam in ("random", "lum", "edge", "conftop20"):
-        if fam not in bases:
-            continue
-        pts = sorted(bases[fam])
-        c, mk, ls, lbl = BASE_STYLE[fam]
-        ax.plot([p[0] * 100 for p in pts], [p[1] for p in pts], marker=mk, color=c,
-                ls=ls, label=lbl, markersize=4, linewidth=1.3, alpha=0.85)
-
-    # learned policy: mean +/- std over seeds, sorted by mean super usage
-    pts = []
-    for key, seeds in pol.items():
-        a = np.array(seeds)
-        pts.append((a[:, 0].mean() * 100, a[:, 1].mean(), a[:, 1].std(), len(seeds)))
-    pts.sort()
-    nseed = pts[0][3] if pts else 0
-    # The router's tau->+-inf extremes ARE the always-base / always-super anchors, so
-    # extend the policy curve to span the full 0-100% SUPER-usage range (std=0 there).
-    if "always_base" in anchors:
-        pts.insert(0, (0.0, anchors["always_base"][1], 0.0, nseed))
-    if "always_super" in anchors:
-        pts.append((100.0, anchors["always_super"][1], 0.0, nseed))
-    xs = np.array([p[0] for p in pts]); ym = np.array([p[1] for p in pts])
-    ys = np.array([p[2] for p in pts])
-    ax.fill_between(xs, ym - ys, ym + ys, color="tab:red", alpha=0.18, zorder=3)
-    ax.plot(xs, ym, "o-", color="tab:red", label="ours", markersize=4.5,
-            linewidth=1.9, zorder=4)
-
-    # anchors: endpoints + dotted super ceiling
-    for nm, (x, y) in anchors.items():
-        ax.scatter([x * 100], [y], marker="*", s=90, zorder=5, color="black")
-    if "always_super" in anchors:
-        ax.axhline(anchors["always_super"][1], color="0.4", ls=":", lw=1, alpha=0.6)
-
-    ax.set_xlabel("SUPER usage (\\%)" if matplotlib.rcParams["text.usetex"]
-                  else "SUPER usage (%)")
-    ax.set_ylabel(r"AP$_{50:95}$")
-    ax.set_xlim(-3, 103)
-    if not args.no_legend:
-        ax.legend(frameon=False, fontsize=11, loc="lower right")
-
-    # twin top axis: GFLOPs/frame (linear in SUPER usage)
-    def s2g(s):  # super% -> gflops
-        return gb + (s / 100.0) * (gs - gb)
-
-    def g2s(g):
-        return (g - gb) / (gs - gb) * 100.0
-    sec = ax.secondary_xaxis("top", functions=(s2g, g2s))
-    sec.set_xlabel("GFLOPs / frame")
-
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
-    fig.tight_layout()
-    fig.savefig(args.out, bbox_inches="tight", pad_inches=0.02)
-    print(f"[*] policy seeds={nseed}, points={len(pts)} -> {args.out}")
+
+    if args.show_baselines or args.no_baselines:
+        # forced single-output mode
+        fig, ax = plt.subplots(figsize=(5.0, 3.7))
+        nseed = _draw_figure(ax, pol, anchors, bases, gb, gs,
+                             show_baselines=not args.no_baselines,
+                             no_legend=args.no_legend)
+        fig.tight_layout()
+        fig.savefig(args.out, bbox_inches="tight", pad_inches=0.02)
+        plt.close(fig)
+        print(f"[*] router seeds={nseed} -> {args.out}")
+    else:
+        # default: produce both variants
+        for show, suffix in ((True, "_with_baselines"), (False, "_router_only")):
+            fig, ax = plt.subplots(figsize=(5.0, 3.7))
+            nseed = _draw_figure(ax, pol, anchors, bases, gb, gs,
+                                 show_baselines=show, no_legend=args.no_legend)
+            fig.tight_layout()
+            out = _out_path(args.out, suffix)
+            fig.savefig(out, bbox_inches="tight", pad_inches=0.02)
+            plt.close(fig)
+            print(f"[*] router seeds={nseed} -> {out}")
 
 
 if __name__ == "__main__":

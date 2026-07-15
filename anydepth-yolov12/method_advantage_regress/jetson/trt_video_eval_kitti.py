@@ -15,7 +15,7 @@ taus (decode-once), so the disk/decode cost is not paid 11x.
     python method_advantage_regress/jetson/trt_video_eval_kitti.py \
         --base method_advantage_regress/jetson/onnx/kitti/base.fp16.engine \
         --super method_advantage_regress/jetson/onnx/kitti/super.fp16.engine \
-        --policy method_advantage_regress/outputs/kitti/policy.pt \
+        --router method_advantage_regress/outputs/kitti/router.pt \
         --kitti_root /media/data/kitti-tracking --imgsz 384 1248
 """
 import argparse
@@ -35,7 +35,7 @@ from ultralytics.data.augment import LetterBox
 
 from method_advantage_regress.router.feature_tap import (
     INPUT_LEVEL_LAYERS, PRED_LEVEL_LAYERS)
-from method_advantage_regress.eval.eval_video import load_policy
+from method_advantage_regress.eval.eval_video import load_router
 
 TRT_LOGGER = trt.Logger(trt.Logger.ERROR)
 
@@ -80,7 +80,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--base", required=True)
     ap.add_argument("--super", required=True)
-    ap.add_argument("--policy", required=True)
+    ap.add_argument("--router", required=True)
     ap.add_argument("--kitti_root", default="/media/data/kitti-tracking")
     ap.add_argument("--sequences", type=str, nargs="*", default=None)
     ap.add_argument("--imgsz", type=int, nargs=2, default=[384, 1248])
@@ -99,7 +99,7 @@ def main():
     lb = LetterBox((H, W), auto=False, stride=32)
 
     eng = {"base": Engine(args.base, dev), "super": Engine(args.super, dev)}
-    net, ckpt, feat, is_gap = load_policy(args.policy, dev)
+    net, ckpt, feat, is_gap = load_router(args.router, dev)
     pid = {"base": torch.zeros(1, dtype=torch.long, device=dev),
            "super": torch.ones(1, dtype=torch.long, device=dev)}
     use_pred = feat in ("both", "pred")

@@ -15,13 +15,13 @@ O=$PKG/outputs/bdd100k
 W=finetuning_AnyDepthYOLO/weights/bdd100k/best.pt
 mkdir -p "$O/eval"
 
-# TinyConv 2x2 (policy_bn*) and GAP-MLP (policy_gmbn*) already exist in
+# TinyConv 2x2 (router_bn*) and GAP-MLP (policy_gmbn*) already exist in
 # video_curve_archabl.json — no need to re-eval. Only grid=8 is new.
 
 # ── [1/2] grid=8: TinyConv 8x8 ───────────────────────────────────────────────
 POL_G8=""
 for S in 0 1 2 3 4; do
-  POL_G8+="tinyconv_g8_s${S}=$O/policy_tinyconv_g8_both_s${S}.pt,"
+  POL_G8+="tinyconv_g8_s${S}=$O/router_tinyconv_g8_both_s${S}.pt,"
 done
 POL_G8="${POL_G8%,}"
 

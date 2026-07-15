@@ -1,9 +1,11 @@
-"""Fig 10: Router design & grid resolution ablation (BDD100K, feat=both).
-GAP-MLP vs TinyConv 2x2 vs TinyConv 8x8, mean±std over seeds.
+"""Fig 10: Router grid-resolution ablation (BDD100K, feat=both).
+Our router with G=1x1 vs 2x2 vs 8x8 pooled grids, mean±std over seeds.
+(1x1 is the GAP-MLP variant: at G=1 the TinyConv projection degenerates to
+BN -> Linear -> ReLU, so it is plotted as the 1x1 point of the same family.)
 
 Sources:
-  - TinyConv 2x2 (policy_bn*)  + GAP-MLP (policy_gmbn*): video_curve_archabl.json
-  - TinyConv 8x8 (policy_tinyconv_g8_s*): video_curve_router_grid_bdd.json
+  - 2x2 (router_bn*)  + 1x1/GAP-MLP (router_gmbn*): video_curve_archabl.json
+  - 8x8 (router_tinyconv_g8_s*): video_curve_router_grid_bdd.json
 
     python -m method_advantage_regress.ablation.make_router_grid_figure
 """
@@ -61,9 +63,9 @@ def main():
 
     # family regex -> (color, marker, label)
     CURVES = [
-        (archabl["rows"], r"^policy_bn\d+$",            "tab:blue",  "s", r"TinyConv $2\times2$ (default)"),
-        (g8["rows"],      r"^policy$|^policy_tinyconv",  "tab:green", "^", r"TinyConv $8\times8$"),
-        (archabl["rows"], r"^policy_gmbn\d+$",           "tab:red",   "o", "GAP-MLP"),
+        (archabl["rows"], r"^router_gmbn\d+$",           "tab:red",   "o", r"$G=1\times1$"),
+        (archabl["rows"], r"^router_bn\d+$",            "tab:blue",  "s", r"$G=2\times2$ (default)"),
+        (g8["rows"],      r"^(policy|router)$|^router_tinyconv",  "tab:green", "^", r"$G=8\times8$"),
     ]
 
     plt.rcParams.update(STYLE)
@@ -90,7 +92,7 @@ def main():
         ax.axhline(anchors["always_super"][1], color="0.4", ls=":", lw=1, alpha=0.6)
 
     ax.set_xlabel("SUPER usage (%)")
-    ax.set_ylabel(r"AP$_{50:95}$")
+    ax.set_ylabel(r"AP$_{50}$" if metric == "map50" else r"AP$_{50:95}$")
     ax.set_xlim(-3, 103)
     ax.legend(frameon=False, fontsize=13, loc="lower right")
 
