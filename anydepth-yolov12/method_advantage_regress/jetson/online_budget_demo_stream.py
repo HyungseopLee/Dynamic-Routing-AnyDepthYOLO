@@ -479,6 +479,17 @@ def main():
         l_tgt0 = ctrl[0]
         init_pct = float(np.clip((l_tgt0 - l_base) / (l_super - l_base), 0.0, 1.0))
         tau_init = float(np.clip(np.quantile(wa_fam, 1.0 - init_pct), TAU_LO, TAU_HI))
+        # Feedforward tau: invert the linear latency<->tau relationship for fps/energy modes
+        # super_rate_ff = (ctrl_tgt - l_base) / (l_super - l_base), then quantile of wa_fam
+        if args.mode in ("fps", "energy"):
+            if args.mode == "energy":
+                ff_pct = np.clip((ctrl - e_base) / max(e_super - e_base, 1e-6), 0.0, 1.0)
+            else:
+                ff_pct = np.clip((ctrl - l_base) / max(l_super - l_base, 1e-6), 0.0, 1.0)
+            tau_ff = np.array([float(np.clip(np.quantile(wa_fam, 1.0 - p), TAU_LO, TAU_HI))
+                               for p in ff_pct])
+        else:
+            tau_ff = np.full(n, tau0)
         config = "base"; tau = tau_init; integ = 0.0
         sig_ema = float(ctrl[0])
         realized = np.full(n, np.nan); n_super = 0; produced = 0

@@ -82,8 +82,9 @@ def _kitti_frames(seq, args):
 
 
 def _kitti_gt(seq, args):
+    import method_advantage_regress.eval.eval_utils as _B
     lpath = Path(args.data_root) / "training" / "label_02" / f"{seq}.txt"
-    gt, dc = B.parse_kitti_labels(lpath)
+    gt, dc = _B.parse_kitti_labels(lpath)
     return gt, dc
 
 
@@ -226,6 +227,17 @@ def load_router(path, device):
     net = cls(group_dim=a.get("group_dim", 64), path_dim=a.get("path_dim", 8),
               hidden_dim=a.get("hidden", 64), feat=a.get("feat", "both"),
               norm=a.get("norm", "batch"), dropout=a.get("dropout", 0.0)).to(device)
+    # remap legacy GapMlpNet keys: input_proj.0/* -> input_proj.norm/fc
+    if is_gap and any(k.startswith("input_proj.0.") for k in sd):
+        remap = {}
+        for k, v in sd.items():
+            nk = k.replace("input_proj.0.", "input_proj.norm.") \
+                   .replace("input_proj.1.", "input_proj.fc.") \
+                   .replace("pred_proj.0.",  "pred_proj.norm.") \
+                   .replace("pred_proj.1.",  "pred_proj.fc.")
+            remap[nk] = v
+        sd = remap
+        ckpt = dict(ckpt, state_dict=sd)
     return net, ckpt, a.get("feat", "both"), is_gap
 
 

@@ -21,7 +21,7 @@ Usage:
 
     # random + ours only → single file
     python -m method_advantage_regress.analysis.make_main_figure --dataset bdd100k \
-        --no_baselines
+        --no_baseline
 
     # shared legend strip (all baselines)
     python -m method_advantage_regress.analysis.make_main_figure --dataset bdd100k \
@@ -87,17 +87,15 @@ def _draw_figure(ax, pol, anchors, bases, gb, gs, show_baselines: bool, no_legen
     ax.plot(xs, ym, "o-", color="tab:red", label="ours", markersize=4.5,
             linewidth=1.9, zorder=4)
 
-    for nm, (x, y) in anchors.items():
-        ax.scatter([x * 100], [y], marker="*", s=90, zorder=5, color="black")
     if "always_super" in anchors:
         ax.axhline(anchors["always_super"][1], color="0.4", ls=":", lw=1, alpha=0.6)
 
-    ax.set_xlabel("SUPER usage (\\%)" if matplotlib.rcParams["text.usetex"]
-                  else "SUPER usage (%)")
+    ax.set_xlabel("Super usage (\\%)" if matplotlib.rcParams["text.usetex"]
+                  else "Super usage (%)")
     ax.set_ylabel(r"AP$_{50:95}$")
     ax.set_xlim(-3, 103)
     if not no_legend:
-        ax.legend(frameon=False, fontsize=11, loc="lower right")
+        ax.legend(frameon=False, fontsize=16, loc="lower right")
 
     def s2g(s):
         return gb + (s / 100.0) * (gs - gb)
