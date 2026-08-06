@@ -18,8 +18,8 @@ import matplotlib.pyplot as plt
 
 # feature tag (family prefix) -> (color, marker, label)
 FEATS = [
-    ("policy_bb", "tab:red",  "o", "backbone"),
-    ("policy_pn", "tab:blue", "s", "neck"),
+    ("router_bb", "tab:red",  "o", "backbone"),
+    ("router_pn", "tab:blue", "s", "neck"),
     ("router_bn", "tab:green", "^", "both (default)"),
 ]
 
