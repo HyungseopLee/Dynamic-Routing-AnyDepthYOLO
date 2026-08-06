@@ -43,32 +43,33 @@ Step 1b — PyTorch eager backend:
         --out  method_advantage_regress/outputs/figures/fig_scenario_budget.pdf
         
 # FPS   
+sudo jetson_clocks
 PYTHONPATH=. python3 method_advantage_regress/jetson/online_budget_demo_stream.py \
     --base trt_bench/onnx/bdd_pooled/base.fp16.engine \
     --super trt_bench/onnx/bdd_pooled/super.fp16.engine \
     --router_engine trt_bench/onnx/bdd_pooled/router.fp16.engine \
-    --policy method_advantage_regress/outputs/bdd100k/policy_both_0.pt \
+    --router method_advantage_regress/outputs/bdd100k/policy_both_0.pt \
     --mode fps \
-    --kp 2.0 --ki 0.33 --beta 0.85 --warmup 60 --win 30 \
-    --dump method_advantage_regress/outputs/bdd100k/jetson_fps_mode.json \
-    --out  method_advantage_regress/outputs/bdd100k/jetson_fps_mode.pdf
+    --kp 2.0 --ki 0.33 --beta 0.85 --warmup 60 --win 30
 
 
 # Energy        
-method_advantage_regress/jetson/online_budget_demo_stream.py \
+sudo jetson_clocks
+PYTHONPATH=. python3 method_advantage_regress/jetson/online_budget_demo_stream.py \
     --base trt_bench/onnx/bdd_pooled/base.fp16.engine \
     --super trt_bench/onnx/bdd_pooled/super.fp16.engine \
     --router_engine trt_bench/onnx/bdd_pooled/router.fp16.engine \
+    --router method_advantage_regress/outputs/bdd100k/policy_both_0.pt \
     --mode energy \
-    --kp 2.0 --ki 0.33 --beta 0.85 --warmup 60 --win 30 \
-    --dump method_advantage_regress/outputs/bdd100k/jetson_energy_mode.json \
-    --out  method_advantage_regress/outputs/bdd100k/jetson_energy_mode.pdf
+    --kp 2.0 --ki 0.33 --beta 0.85 --warmup 60 --win 30
+    
 
 Step 2 — re-render from saved dump (instant, no inference):
 
-    python -m method_advantage_regress.jetson.online_budget_demo_stream \\
-        --dump method_advantage_regress/outputs/bdd100k/online_budget_demo_trt_b0.93_kp0.28_ki0.06_warmup60_window60.json \\
-        --replot [--win 60]
+    python -m method_advantage_regress.jetson.online_budget_demo_stream \
+        --dump /home/hslee/context-anydepth-det/anydepth-yolov12/method_advantage_regress/outputs/bdd100k/jetson_trtengine_720×1280_b0.85_kp2.0_ki0.33_warmup60_window30_fps.json \
+        --dump /home/hslee/context-anydepth-det/anydepth-yolov12/method_advantage_regress/outputs/bdd100k/jetson_trtengine_720×1280_b0.85_kp2.0_ki0.33_warmup60_window30_energy.json \
+        --replot --win 30
         # --out can be specified to override the default PDF path
 
 The printed MAE is computed on the smoothed (centered moving-average, --win frames)
@@ -128,26 +129,32 @@ def render_fps(dump, win, out):
                            alpha=0.07, zorder=0)
                 ax.text((x0 + x1) / 2, fps_hi + 0.8,
                         SHORT.get(labels[k], labels[k]),
-                        ha="center", va="bottom", fontsize=6.5, color="0.3")
+                        # ha="center", va="bottom", fontsize=6.5, color="0.3")
+                        ha="center", va="bottom", fontsize=12, color="0.3")
                 if k > 0:
                     ax.axvline(x0, color="0.6", ls="-", lw=0.6, alpha=0.5, zorder=1)
             ax.plot(fps_tgt, color="black", ls="--", lw=1.3, zorder=6)
             ax.plot(sm_fps, color="tab:red", lw=1.5, zorder=5)
             ax.set_ylim(ylo, yhi); ax.set_xlim(0, n)
-            ax.grid(alpha=0.2, ls="--"); ax.tick_params(labelsize=7)
+            # ax.grid(alpha=0.2, ls="--"); ax.tick_params(labelsize=7)
+            ax.grid(alpha=0.2, ls="--"); ax.tick_params(labelsize=12)
             if r == 0:
-                ax.set_title(btitle, fontsize=9)
+                # ax.set_title(btitle, fontsize=9)
+                ax.set_title(btitle, fontsize=12)
             if c == 0:
-                ax.set_ylabel(f"{TITLES.get(fam, fam)}\nFPS", fontsize=7.5)
+                # ax.set_ylabel(f"{TITLES.get(fam, fam)}\nFPS", fontsize=7.5)
+                ax.set_ylabel(f"{TITLES.get(fam, fam)}\nFPS", fontsize=13)
             if r == len(fams) - 1:
-                ax.set_xlabel("frame", fontsize=8)
+                ax.set_xlabel("frame", fontsize=14)
             ax.text(0.02, 0.04, f"MAE={mae:.2f} fps", transform=ax.transAxes,
-                    va="bottom", ha="left", fontsize=7,
+                    # va="bottom", ha="left", fontsize=7,
+                    va="bottom", ha="left", fontsize=13,
                     bbox=dict(boxstyle="round,pad=0.2", fc="white", ec="0.8", alpha=0.9))
     handles = [Line2D([0], [0], color="black", ls="--", lw=1.3, label="target FPS $F^\\star(t)$"),
                Line2D([0], [0], color="tab:red", lw=1.5, label="realized mean FPS")]
     fig.legend(handles=handles, loc="lower center", ncol=2, frameon=False,
-               fontsize=8.5, bbox_to_anchor=(0.5, -0.02))
+            #    fontsize=8.5, bbox_to_anchor=(0.5, -0.02))
+               fontsize=14, bbox_to_anchor=(0.5, -0.02))
     fig.tight_layout(pad=0.4, rect=(0, 0.03, 1, 1))
     Path(out).parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out, bbox_inches="tight", pad_inches=0.02)
@@ -190,26 +197,32 @@ def render_energy(dump, win, out):
                            alpha=0.07, zorder=0)
                 ax.text((x0 + x1) / 2, e_hi + 15.0,
                         SHORT.get(labels[k], labels[k]),
-                        ha="center", va="bottom", fontsize=6.5, color="0.3")
+                        # ha="center", va="bottom", fontsize=6.5, color="0.3")
+                        ha="center", va="bottom", fontsize=12, color="0.3")
                 if k > 0:
                     ax.axvline(x0, color="0.6", ls="-", lw=0.6, alpha=0.5, zorder=1)
             ax.plot(Etgt, color="black", ls="--", lw=1.3, zorder=6)
             ax.plot(sm, color="tab:red", lw=1.5, zorder=5)
             ax.set_ylim(ylo, yhi); ax.set_xlim(0, n)
-            ax.grid(alpha=0.2, ls="--"); ax.tick_params(labelsize=7)
+            # ax.grid(alpha=0.2, ls="--"); ax.tick_params(labelsize=7)
+            ax.grid(alpha=0.2, ls="--"); ax.tick_params(labelsize=12)
             if r == 0:
-                ax.set_title(btitle, fontsize=9)
+                # ax.set_title(btitle, fontsize=9)
+                ax.set_title(btitle, fontsize=12)
             if c == 0:
-                ax.set_ylabel(f"{TITLES.get(fam, fam)}\nenergy (mJ)", fontsize=7.5)
+                # ax.set_ylabel(f"{TITLES.get(fam, fam)}\nenergy (mJ)", fontsize=7.5)
+                ax.set_ylabel(f"{TITLES.get(fam, fam)}\nenergy (mJ)", fontsize=13)
             if r == len(fams) - 1:
-                ax.set_xlabel("frame", fontsize=8)
+                ax.set_xlabel("frame", fontsize=14)
             ax.text(0.02, 0.04, f"MAE={mae:.1f} mJ", transform=ax.transAxes,
-                    va="bottom", ha="left", fontsize=7,
+                    # va="bottom", ha="left", fontsize=7,
+                    va="bottom", ha="left", fontsize=13,
                     bbox=dict(boxstyle="round,pad=0.2", fc="white", ec="0.8", alpha=0.9))
     handles = [Line2D([0], [0], color="black", ls="--", lw=1.3, label="target energy $E^\\star(t)$"),
                Line2D([0], [0], color="tab:red", lw=1.5, label="realized mean energy")]
     fig.legend(handles=handles, loc="lower center", ncol=2, frameon=False,
-               fontsize=8.5, bbox_to_anchor=(0.5, -0.02))
+            #    fontsize=8.5, bbox_to_anchor=(0.5, -0.02))
+               fontsize=14, bbox_to_anchor=(0.5, -0.02))
     fig.tight_layout(pad=0.4, rect=(0, 0.03, 1, 1))
     Path(out).parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out, bbox_inches="tight", pad_inches=0.02)
@@ -240,20 +253,17 @@ def main():
     ap.add_argument("--mode", default="latency", choices=["latency", "fps", "energy"],
                     help="tracking target space: latency (ms), fps, or energy (mJ/frame)")
     ap.add_argument("--replot", action="store_true")
-    ap.add_argument("--mode", default="latency", choices=["latency", "fps", "energy"],
-                    help="control target: latency (ms), fps, or energy (mJ/frame)")
     args = ap.parse_args()
 
-    # Auto-name outputs so every run is fully traceable
+    # Auto-name outputs: jetson_trtengine_HxW_b{beta}_kp{kp}_ki{ki}_warmup{N}_window{N}[_{mode}]
+    res_tag = f"{args.imgsz[0]}×{args.imgsz[1]}"   # 720×1280 (Unicode ×)
+    hp_tag = (f"b{args.beta}_kp{args.kp}_ki{args.ki}"
+              f"_warmup{args.warmup}_window{args.win}")
+    mode_suffix = f"_{args.mode}" if args.mode != "latency" else ""
     if args.base and args.super:
-        # e.g. "bdd_pooled" from the engine directory name
-        eng_name = Path(args.base).parent.name
-        backend_tag = f"trt_{eng_name}"
+        stem = f"jetson_trtengine_{res_tag}_{hp_tag}{mode_suffix}"
     else:
-        backend_tag = "torch"
-    res_tag = f"{args.imgsz[0]}x{args.imgsz[1]}"
-    hp_tag = f"b{args.beta}_kp{args.kp}_ki{args.ki}_win{args.win}"
-    stem = f"online_budget_demo_{backend_tag}_{res_tag}_{args.mode}_{hp_tag}"
+        stem = f"jetson_torch_{res_tag}_{hp_tag}{mode_suffix}"
     if args.out is None:
         args.out = str(OUT / f"bdd100k/{stem}.pdf")
     if args.dump is None:
@@ -329,27 +339,40 @@ def main():
             cuda_sync(); rtr_ms = (time.perf_counter() - t0) * 1000.0
             return det_ms + rtr_ms, ahat
 
-    # Energy mode: per-frame cost = GPU power (NVML) x latency, in mJ. Energy/frame is
-    # linear in the SUPER rate (like latency, unlike FPS), so the whole latency-mode
-    # pipeline (anchors, feedforward, PI) is reused with mJ anchors instead of ms.
+    # Energy mode: per-frame cost = power (W) × latency (ms) = mJ.
+    # Try NVML first (RTX GPU), fall back to Jetson INA3221, then fixed benchmark anchors.
     if args.mode == "energy":
-        import pynvml
-        pynvml.nvmlInit()
-        gpu_idx = int(dev.split(":")[1]) if ":" in dev else 0
-        nvml_h = pynvml.nvmlDeviceGetHandleByIndex(gpu_idx)
+        _power_fn = None
+        try:
+            import pynvml
+            pynvml.nvmlInit()
+            gpu_idx = int(dev.split(":")[1]) if ":" in dev else 0
+            nvml_h = pynvml.nvmlDeviceGetHandleByIndex(gpu_idx)
+            _power_fn = lambda: pynvml.nvmlDeviceGetPowerUsage(nvml_h) / 1000.0  # mW→W
+            print("[*] energy: using NVML power", flush=True)
+        except Exception:
+            try:
+                from method_advantage_regress.jetson.bench_trt_jetson import JetsonPower
+                _jp = JetsonPower()
+                if _jp.available:
+                    _power_fn = lambda: _jp.mw("VDD_IN") / 1000.0  # mW→W
+                    print("[*] energy: using INA3221 power", flush=True)
+            except Exception:
+                pass
+        if _power_fn is None:
+            # Fixed anchor from bdd100k_720x1280.log: ~20850 mW module power
+            _P_fixed_W = 20.85
+            _power_fn = lambda: _P_fixed_W
+            print("[*] energy: using fixed power anchor 20.85 W", flush=True)
 
         def frame_cost(lat):
-            pw = pynvml.nvmlDeviceGetPowerUsage(nvml_h) / 1000.0   # mW -> W
-            return pw * lat                                        # W * ms = mJ
-    else:
-        def frame_cost(lat):
-            return lat
+            return _power_fn() * lat   # W × ms = mJ
 
-    _run_frame_raw = run_frame
+        _run_frame_raw = run_frame
 
-    def run_frame(bgr, config):
-        lat, ahat = _run_frame_raw(bgr, config)
-        return frame_cost(lat), ahat
+        def run_frame(bgr, config):
+            lat, ahat = _run_frame_raw(bgr, config)
+            return frame_cost(lat), ahat
 
     scen = json.loads(Path(args.scenarios).read_text())
     label_dir = Path(args.mot_root) / "labels"
@@ -381,16 +404,8 @@ def main():
     # first family is too narrow: the controller then saturates at a rail in other scenes
     # and cannot reach the operating point its budget needs (a scene-dependent tracking
     # bias). Spanning every family's Ahat range lets tau reach any scene's operating point.
-    # For energy mode: read board power via INA3221 during warmup (sparse sampling)
-    if args.mode == "energy":
-        from method_advantage_regress.jetson.bench_trt_jetson import JetsonPower
-        jp = JetsonPower()
-        if not jp.available:
-            print("[!] INA3221 not found; energy mode will use latency-proportional estimates")
-
     fam0 = next(iter(scen))
     wb, ws = [], []
-    pb, ps = [], []   # power samples for energy mode
     wa_per_fam = {}   # per-family advantages for accurate tau initialisation
     wa_fam0 = []
     for i, (bgr, _) in enumerate(stream_family(meta[fam0]["order"])):
@@ -398,36 +413,24 @@ def main():
             break
         lb, ab = run_frame(bgr, "base"); wb.append(lb); wa_fam0.append(ab)
         ls, as_ = run_frame(bgr, "super"); ws.append(ls); wa_fam0.append(as_)
-        if args.mode == "energy" and i % 5 == 0:
-            pb.append(jp.mw("VDD_IN") if jp.available else 0.0)
-            ps.append(jp.mw("VDD_IN") if jp.available else 0.0)
     wa_per_fam[fam0] = wa_fam0
     wa = list(wa_fam0)   # global range still spans all families
+    # l_base/l_super are in the control domain (ms for latency/fps, mJ for energy)
     l_base = float(np.median(wb[len(wb) // 2:]))
     l_super = float(np.median(ws[len(ws) // 2:]))
 
-    # Compute per-frame energy anchors (mJ) for energy mode
-    # Power is ~constant per engine under locked clocks, so E = P_mean * L_mean
-    if args.mode == "energy" and jp.available and pb:
-        p_base_mw = float(np.mean(pb)); p_super_mw = float(np.mean(ps))
-    else:
-        # Fallback: use benchmark-measured ratio (SUPER draws ~1.70x BASE power on Orin)
-        p_base_mw = 20700.0; p_super_mw = 20950.0  # mW, from bdd100k_720x1280.log
-    e_base = p_base_mw * l_base / 1000.0   # mJ/frame
-    e_super = p_super_mw * l_super / 1000.0
-
     if args.mode == "fps":
+        # fps_hi/lo derived from latency anchors (frame_cost=identity for fps mode)
         fps_hi = 1000.0 / (l_base + 0.10 * (l_super - l_base))
         fps_lo = 1000.0 / (l_super - 0.10 * (l_super - l_base))
         lo = fps_lo; hi = fps_hi
-    elif args.mode == "energy":
-        lo = e_base + 0.10 * (e_super - e_base)
-        hi = e_super - 0.10 * (e_super - e_base)
-        print(f"[*] energy anchors: BASE={e_base:.1f}  SUPER={e_super:.1f} mJ  "
-              f"band [{lo:.1f}, {hi:.1f}]", flush=True)
     else:
+        # latency (ms) or energy (mJ) — l_base/l_super already in correct units
         lo = l_base + 0.10 * (l_super - l_base)
         hi = l_super - 0.10 * (l_super - l_base)
+        if args.mode == "energy":
+            print(f"[*] energy anchors: BASE={l_base:.1f}  SUPER={l_super:.1f} mJ  "
+                  f"band [{lo:.1f}, {hi:.1f}]", flush=True)
     # extend the Ahat probe over the remaining families (latency anchors stay from fam0)
     for fam in scen:
         if fam == fam0:
@@ -450,13 +453,11 @@ def main():
     # makes "a full-scale latency error moves tau ~across its band", dataset-robust.
     # gscale normalises PI gains to the actuator band:
     # error is in the control domain (ms / fps / mJ), tau lives in [TAU_LO, TAU_HI].
-    if args.mode == "energy":
-        ctrl_span = max(e_super - e_base, 1e-6)  # mJ range
-    else:
-        ctrl_span = max(l_super - l_base, 1e-6)  # ms range (fps mode also controls in latency space)
+    ctrl_span = max(l_super - l_base, 1e-6)  # ms (latency/fps) or mJ (energy)
     gscale = (TAU_HI - TAU_LO) / ctrl_span
     kp = args.kp * gscale; ki = args.ki * gscale
-    print(f"[*] measured anchors: BASE={l_base:.2f}  SUPER={l_super:.2f} ms  "
+    _unit = "mJ" if args.mode == "energy" else ("fps" if args.mode == "fps" else "ms")
+    print(f"[*] measured anchors: BASE={l_base:.2f}  SUPER={l_super:.2f} {_unit}  "
           f"band [{lo:.2f}, {hi:.2f}] ({args.mode});  tau in [{TAU_LO:.3f}, {TAU_HI:.3f}]  "
           f"gscale={gscale:.4f} -> kp={kp:.2e} ki={ki:.2e}", flush=True)
 
@@ -473,10 +474,9 @@ def main():
         ctrl = to_ctrl(tgt)   # internal control signal array
         wa_fam = wa_per_fam.get(fam, wa)
         # Convert first target to latency fraction for tau initialisation
-        if args.mode == "energy":
-            l_tgt0 = l_base + (ctrl[0] - e_base) / max(e_super - e_base, 1e-6) * (l_super - l_base)
-        else:
-            l_tgt0 = ctrl[0]  # already in ms for latency and fps modes
+        # ctrl[0] is in the control domain (ms for latency/fps, mJ for energy)
+        # l_base/l_super are also in the control domain, so the fraction is universal
+        l_tgt0 = ctrl[0]
         init_pct = float(np.clip((l_tgt0 - l_base) / (l_super - l_base), 0.0, 1.0))
         tau_init = float(np.clip(np.quantile(wa_fam, 1.0 - init_pct), TAU_LO, TAU_HI))
         config = "base"; tau = tau_init; integ = 0.0
@@ -487,22 +487,24 @@ def main():
                 config = "base"
             lat, ahat = run_frame(bgr, config)
             produced = t + 1; n_super += (config == "super")
-            # Realized signal in the control domain
-            if args.mode == "energy":
-                sig_realized = e_base if config == "base" else e_super
-                realized[t] = sig_realized
-            else:
-                sig_realized = lat   # latency (ms) for both latency and fps modes
-                realized[t] = lat
+            # lat is already in the control domain (ms for latency/fps, mJ for energy)
+            sig_realized = lat
+            realized[t] = lat
             sig_ema = args.beta * sig_ema + (1 - args.beta) * sig_realized
-            # Flush integrator on sudden budget tightening (ctrl drops in latency/energy = budget tightens)
-            if t > 0 and (ctrl[t] - ctrl[t - 1]) < -1.0:
-                integ = 0.0
+            # Flush integrator on sudden budget change (sawtooth snap):
+            # latency/energy: budget tightens when ctrl drops → reset
+            # fps→latency: budget loosens when ctrl jumps up → reset (opposite sawtooth direction)
+            if t > 0:
+                delta = ctrl[t] - ctrl[t - 1]
+                if args.mode == "fps":
+                    if delta > 1.0:   # l_tgt jumped up = fps dropped = budget loosened
+                        integ = 0.0
+                else:
+                    if delta < -1.0:  # latency/energy dropped = budget tightened
+                        integ = 0.0
             e = ctrl[t] - sig_ema
             integ += e
-            # fps/energy mode: feedforward tau from the known target + PI residual correction
-            base_tau = tau_ff[t] if args.mode in ("fps", "energy") else tau0
-            tau_un = base_tau - kp * e - ki * integ
+            tau_un = tau0 - kp * e - ki * integ
             tau = float(np.clip(tau_un, TAU_LO, TAU_HI))
             if ki:
                 integ += (tau_un - tau) / ki
@@ -529,21 +531,14 @@ def main():
 
     dump = {"l_base": l_base, "l_super": l_super, "win": args.win,
             "kp": args.kp, "ki": args.ki, "mode": args.mode,
-            "kp": args.kp, "ki": args.ki, "mode": args.mode,
             "fam_order": fams, "families": families_meta, "cells": results}
     if args.mode == "fps":
         dump["fps_lo"] = fps_lo; dump["fps_hi"] = fps_hi
     elif args.mode == "energy":
-        dump["e_base"] = e_base; dump["e_super"] = e_super
+        dump["e_base"] = l_base; dump["e_super"] = l_super
     Path(args.dump).parent.mkdir(parents=True, exist_ok=True)
     json.dump(dump, open(args.dump, "w"))
     print(f"[*] -> {args.dump}", flush=True)
-    if args.mode == "fps":
-        render_fps(dump, args.win, args.out)
-    elif args.mode == "energy":
-        render_energy(dump, args.win, args.out)
-    else:
-        render(dump, args.win, args.out)
     if args.mode == "fps":
         render_fps(dump, args.win, args.out)
     elif args.mode == "energy":
