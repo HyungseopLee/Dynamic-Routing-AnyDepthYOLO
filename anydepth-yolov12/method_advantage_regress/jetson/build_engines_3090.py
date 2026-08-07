@@ -1,10 +1,11 @@
-"""Build FP16 TRT engines from ONNX for RTX 3090.
+"""Build TRT engines from ONNX for RTX 3090 (FP16 by default, FP32 with --no-fp16).
 
 Usage:
     python -m method_advantage_regress.jetson.build_engines_3090 --dataset bdd100k
     python -m method_advantage_regress.jetson.build_engines_3090 --dataset kitti
     python -m method_advantage_regress.jetson.build_engines_3090 --dataset waymo
     python -m method_advantage_regress.jetson.build_engines_3090  # all
+    python -m method_advantage_regress.jetson.build_engines_3090 --no-fp16  # FP32
 """
 import sys, os, ctypes
 from pathlib import Path
@@ -36,7 +37,8 @@ ENGINE_DIRS = {
 }
 
 
-def build_engine(onnx_path: Path, engine_path: Path, fp16: bool = True):
+def build_engine(onnx_path: Path, engine_path: Path, fp16: bool = True,
+                 fp32_shuffle: bool = False):
     logger = trt.Logger(trt.Logger.WARNING)
     builder = trt.Builder(logger)
     network = builder.create_network(1 << int(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH))
@@ -52,8 +54,19 @@ def build_engine(onnx_path: Path, engine_path: Path, fp16: bool = True):
     config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, 4 << 30)  # 4 GB
     if fp16:
         config.set_flag(trt.BuilderFlag.FP16)
-    # level 1: conservative tactic selection to avoid cuTensor FP16 bug on sm_86 (RTX 3090)
-    config.builder_optimization_level = 1
+
+    # Workaround for cuTensor permutate bug on sm_86 (RTX 3090) at large feature maps:
+    # force Shuffle layers (transpose/reshape ops used in attention) to FP32.
+    if fp16 and fp32_shuffle:
+        config.set_flag(trt.BuilderFlag.OBEY_PRECISION_CONSTRAINTS)
+        n_forced = 0
+        for i in range(network.num_layers):
+            layer = network.get_layer(i)
+            if layer.type == trt.LayerType.SHUFFLE:
+                layer.precision = trt.DataType.FLOAT
+                layer.set_output_type(0, trt.DataType.FLOAT)
+                n_forced += 1
+        print(f"  [mixed] forced {n_forced} Shuffle layers to FP32", flush=True)
 
     print(f"  Building {engine_path.name} ...", flush=True)
     serialized = builder.build_serialized_network(network, config)
@@ -68,9 +81,14 @@ def build_engine(onnx_path: Path, engine_path: Path, fp16: bool = True):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dataset", choices=list(ONNX_DIRS), default=None)
-    ap.add_argument("--fp16", action="store_true", default=True)
+    ap.add_argument("--no-fp16", dest="fp16", action="store_false", default=True)
+    ap.add_argument("--fp32-shuffle", action="store_true",
+                    help="force Shuffle layers to FP32 (workaround for cuTensor sm_86 bug)")
     args = ap.parse_args()
 
+    prec = "fp16" if args.fp16 else "fp32"
+    if args.fp16 and args.fp32_shuffle:
+        prec = "fp16_shfl32"
     datasets = [args.dataset] if args.dataset else list(ONNX_DIRS.keys())
 
     for ds in datasets:
@@ -79,14 +97,15 @@ def main():
         if not onnx_dir.exists():
             print(f"[skip] ONNX dir not found: {onnx_dir}")
             continue
-        print(f"\n[{ds}] {onnx_dir} -> {eng_dir}")
+        print(f"\n[{ds}] {onnx_dir} -> {eng_dir}  ({prec})")
         for name in ["base", "super", "router"]:
             onnx_path = onnx_dir / f"{name}.onnx"
             if not onnx_path.exists():
                 print(f"  [skip] {onnx_path} not found")
                 continue
-            engine_path = eng_dir / f"{name}.fp16.engine"
-            build_engine(onnx_path, engine_path, fp16=args.fp16)
+            engine_path = eng_dir / f"{name}.{prec}.engine"
+            build_engine(onnx_path, engine_path, fp16=args.fp16,
+                         fp32_shuffle=args.fp32_shuffle)
 
 
 if __name__ == "__main__":

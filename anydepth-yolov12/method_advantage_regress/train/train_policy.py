@@ -7,41 +7,42 @@ Per step (image i, batch B):
   - sample prev_action ~ Uniform{0,1}  (simulates the path the previous frame
     used at eval time; selects which cached feature vector feeds the router and
     sets path_id).
-  - p_super = router(input_vec[prev], pred_vec[prev], path_id=prev)
-  - L = -mean(p_super * A) + lambda_flops*L_flops + lambda_uni*L_uni
-    with A = (loss_base - loss_super).detach()
+  - A_hat = router(input_vec[prev], pred_vec[prev], path_id=prev)
+  - L = regress_loss(A_hat, A)   with A = (loss_base - loss_super).detach()
+    The router directly regresses the advantage; there is no FLOPs term. The
+    compute/AP trade-off is set at eval time by thresholding A_hat.
   - update router only.
 
 Usage (run from repo root):
     # KITTI  (reads outputs/kitti/cache_{train,val}.pt)
-    python -m method_advantage_regress.train.train_router \
+    python -m method_advantage_regress.train.train_policy \
         --dataset kitti --feat both --norm batch \
         --cache method_advantage_regress/outputs/kitti/cache_train_both.pt \
         --val_cache method_advantage_regress/outputs/kitti/cache_val_both.pt \
-        --epochs 50 --select val_corr --mode regress --seed 0
+        --epochs 50 --select val_corr --seed 0
 
     # BDD100K  (reads outputs/bdd100k/cache_{train,val}_both.pt)
-    python -m method_advantage_regress.train.train_router \
+    python -m method_advantage_regress.train.train_policy \
         --dataset bdd100k --feat both --norm batch \
         --cache method_advantage_regress/outputs/bdd100k/cache_train_both.pt \
         --val_cache method_advantage_regress/outputs/bdd100k/cache_val_both.pt \
-        --epochs 30 --select val_corr --mode regress --seed 0 \
+        --epochs 30 --select val_corr --seed 0 \
         --out method_advantage_regress/outputs/bdd100k/router_s0.pt
 
     # Waymo  (reads outputs/waymo/cache_{train,val}_both.pt; fp16 cache)
-    python -m method_advantage_regress.train.train_router \
+    python -m method_advantage_regress.train.train_policy \
         --dataset waymo --feat both --norm batch \
         --cache method_advantage_regress/outputs/waymo/cache_train_both.pt \
         --val_cache method_advantage_regress/outputs/waymo/cache_val_both.pt \
-        --epochs 50 --select val_corr --mode regress --seed 0 \
+        --epochs 50 --select val_corr --seed 0 \
         --out method_advantage_regress/outputs/waymo/router_both_0.pt
 
     # GAP-MLP router (--arch gapmpl; same cache, spatial dims are pooled internally)
-    python -m method_advantage_regress.train.train_router \
+    python -m method_advantage_regress.train.train_policy \
         --dataset bdd100k --arch gapmpl --feat both --norm batch \
         --cache method_advantage_regress/outputs/bdd100k/cache_train_both.pt \
         --val_cache method_advantage_regress/outputs/bdd100k/cache_val_both.pt \
-        --epochs 30 --select val_corr --mode regress --seed 0
+        --epochs 30 --select val_corr --seed 0
 """
 
 import argparse
@@ -156,8 +157,9 @@ def run_epoch(net, cache, loader, lossfn, opt=None, prev_p=0.5):
         lb, ls = cache["loss_base"][idx], cache["loss_super"][idx]
 
         with torch.set_grad_enabled(train):
-            # regress mode predicts advantage directly (linear logit); others use prob
-            out = net.logit(inp, prd, prev) if lossfn.mode == "regress" else net(inp, prd, prev)
+            # the router regresses the advantage directly, so use the raw linear
+            # logit rather than the sigmoid-squashed forward()
+            out = net.logit(inp, prd, prev)
             total, comp = lossfn(out, lb, ls)
         if train:
             opt.zero_grad(); total.backward(); opt.step()
@@ -179,8 +181,6 @@ def main():
     ap.add_argument("--epochs", type=int, default=50)
     ap.add_argument("--batch", type=int, default=256)
     ap.add_argument("--lr", type=float, default=1e-3)
-    ap.add_argument("--lambda_flops", type=float, default=1.0)
-    ap.add_argument("--lambda_uni", type=float, default=0.1)
     ap.add_argument("--hidden", type=int, default=64)
     ap.add_argument("--group_dim", type=int, default=64)
     ap.add_argument("--path_dim", type=int, default=8,
@@ -197,11 +197,8 @@ def main():
                     help="checkpoint selection: val_mse=min val MSE(A-hat,A); "
                          "val_corr=max val corr(A-hat,A) (ranking, matches eval thresholding); "
                          "last=final epoch (no early stop)")
-    ap.add_argument("--mode", default="advantage", choices=["advantage", "bce", "regress"])
     ap.add_argument("--regress_loss", default="mse", choices=["mse", "mae", "huber", "corr"],
-                    help="regression loss form (regress mode): mse/mae/huber (magnitude) or corr (ranking)")
-    ap.add_argument("--margin", type=float, default=0.0,
-                    help="bce mode: exclude |A|<margin images from L_acc")
+                    help="regression loss form: mse/mae/huber (magnitude) or corr (ranking)")
     ap.add_argument("--prev_p", type=float, default=0.5,
                     help="Bernoulli prob that prev_action=SUPER during training (0.5 = 1:1 default)")
     ap.add_argument("--seed", type=int, default=0, help="random seed (weight init + prev_action sampling)")
@@ -247,7 +244,8 @@ def main():
             for k in list(val_cache.keys()):
                 if isinstance(val_cache[k], torch.Tensor) and val_cache[k].dim() == 4:
                     val_cache[k] = val_cache[k].mean(dim=(2, 3))
-        net = GapMlpNet(feat=args.feat).to(device)
+        net = GapMlpNet(group_dim=args.group_dim, path_dim=args.path_dim, hidden_dim=args.hidden,
+                        feat=args.feat, norm=args.norm, dropout=args.dropout).to(device)
     else:
         net = RouterNetwork(group_dim=args.group_dim, path_dim=args.path_dim, hidden_dim=args.hidden,
                             feat=args.feat, norm=args.norm, dropout=args.dropout).to(device)
@@ -259,8 +257,7 @@ def main():
         net(train_cache["input_base"][:2].to(device, dtype=torch.float32), dummy_pred,
             torch.zeros(2, dtype=torch.long, device=device))
 
-    lossfn = RouterLoss(args.flops, lambda_flops=args.lambda_flops, lambda_uni=args.lambda_uni,
-                        mode=args.mode, margin=args.margin, regress_loss=args.regress_loss)
+    lossfn = RouterLoss(args.flops, regress_loss=args.regress_loss)
     opt = torch.optim.Adam(net.parameters(), lr=args.lr, weight_decay=args.weight_decay)
 
     train_loader = make_loader(train_cache, args.batch, shuffle=True)
@@ -272,11 +269,11 @@ def main():
     if log_on:
         logdir = Path(args.logdir); logdir.mkdir(parents=True, exist_ok=True)
         stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        name = f"{stamp}_lf{args.lambda_flops}_lu{args.lambda_uni}" + (f"_{args.tag}" if args.tag else "")
+        name = f"{stamp}_{args.regress_loss}" + (f"_{args.tag}" if args.tag else "")
         logpath = logdir / f"{name}.log"
         with open(logpath, "w") as f:
             f.write(f"# {json.dumps(vars(args))}\n")
-            f.write("epoch\ttotal\tl_acc\tl_flops\tl_uni\tp_super\tval_p_super\tval_l_acc\n")
+            f.write("epoch\ttotal\tl_acc\tpred_mean\tval_pred_mean\tval_l_acc\n")
     history = []
 
     # track the val-best checkpoint (lowest val l_acc); falls back to train l_acc
@@ -292,11 +289,10 @@ def main():
     for ep in range(args.epochs):
         tr = run_epoch(net, train_cache, train_loader, lossfn, opt, prev_p=args.prev_p)
         msg = (f"ep {ep:3d} | train total {tr['total']:.4f} "
-               f"acc {tr['l_acc']:.4f} flops {tr['l_flops']:.4f} "
-               f"p_super {tr['p_super_mean']:.3f}")
+               f"acc {tr['l_acc']:.4f} pred {tr['p_super_mean']:.3f}")
         va = run_epoch(net, val_cache, val_loader, lossfn, None) if val_loader else {}
         if va:
-            msg += f" || val p_super {va['p_super_mean']:.3f} acc {va['l_acc']:.4f}"
+            msg += f" || val pred {va['p_super_mean']:.3f} acc {va['l_acc']:.4f}"
         # selection objective (lower=better)
         if args.select == "last":
             obj, metric = -ep, float(ep)
@@ -315,8 +311,7 @@ def main():
                         **{f"va_{k}": v for k, v in va.items()}})
         if log_on:
             with open(logpath, "a") as f:
-                f.write(f"{ep}\t{tr['total']:.5f}\t{tr['l_acc']:.5f}\t{tr['l_flops']:.5f}\t"
-                        f"{tr['l_uni']:.5f}\t{tr['p_super_mean']:.4f}\t"
+                f.write(f"{ep}\t{tr['total']:.5f}\t{tr['l_acc']:.5f}\t{tr['p_super_mean']:.4f}\t"
                         f"{va.get('p_super_mean', float('nan')):.4f}\t{va.get('l_acc', float('nan')):.5f}\n")
     if log_on:
         (logdir / f"{name}.json").write_text(json.dumps(history, indent=2))
