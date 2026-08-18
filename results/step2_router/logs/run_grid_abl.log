@@ -1,0 +1,1660 @@
+=== [1/3] Train GAP-MLP (feat=both, arch=gapmpl) seeds 0-4 ===
+  GAP-MLP seed=0
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:54: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/nn/modules/lazy.py:181: UserWarning: Lazy modules are a new feature under heavy development so changes to the API or functionality can happen at any moment.
+  warnings.warn('Lazy modules are a new feature under heavy development '
+
+ep   0 | train total 0.6679 acc -0.0045 flops 0.6491 p_super 0.021 || val p_super 0.018 acc -0.0121 corr 0.072  *best*
+ep   1 | train total 0.6538 acc -0.0254 flops 0.6588 p_super 0.048 || val p_super 0.057 acc -0.0284 corr 0.123  *best*
+ep   2 | train total 0.6516 acc -0.0293 flops 0.6610 p_super 0.055 || val p_super 0.046 acc -0.0267 corr 0.124  *best*
+ep   3 | train total 0.6491 acc -0.0346 flops 0.6648 p_super 0.065 || val p_super 0.067 acc -0.0292 corr 0.124
+ep   4 | train total 0.6467 acc -0.0384 flops 0.6667 p_super 0.070 || val p_super 0.068 acc -0.0304 corr 0.147  *best*
+ep   5 | train total 0.6459 acc -0.0370 flops 0.6637 p_super 0.062 || val p_super 0.069 acc -0.0326 corr 0.154  *best*
+ep   6 | train total 0.6475 acc -0.0374 flops 0.6663 p_super 0.069 || val p_super 0.069 acc -0.0352 corr 0.163  *best*
+ep   7 | train total 0.6452 acc -0.0388 flops 0.6652 p_super 0.066 || val p_super 0.061 acc -0.0321 corr 0.163
+ep   8 | train total 0.6446 acc -0.0405 flops 0.6667 p_super 0.070 || val p_super 0.065 acc -0.0338 corr 0.143
+ep   9 | train total 0.6470 acc -0.0347 flops 0.6621 p_super 0.058 || val p_super 0.037 acc -0.0215 corr 0.118
+ep  10 | train total 0.6441 acc -0.0398 flops 0.6650 p_super 0.066 || val p_super 0.067 acc -0.0335 corr 0.162
+ep  11 | train total 0.6436 acc -0.0393 flops 0.6637 p_super 0.062 || val p_super 0.070 acc -0.0327 corr 0.155
+ep  12 | train total 0.6446 acc -0.0384 flops 0.6638 p_super 0.062 || val p_super 0.071 acc -0.0339 corr 0.166  *best*
+ep  13 | train total 0.6436 acc -0.0410 flops 0.6659 p_super 0.068 || val p_super 0.060 acc -0.0317 corr 0.153
+ep  14 | train total 0.6438 acc -0.0410 flops 0.6663 p_super 0.069 || val p_super 0.057 acc -0.0306 corr 0.163
+ep  15 | train total 0.6435 acc -0.0407 flops 0.6654 p_super 0.067 || val p_super 0.064 acc -0.0308 corr 0.162
+ep  16 | train total 0.6418 acc -0.0430 flops 0.6663 p_super 0.069 || val p_super 0.055 acc -0.0292 corr 0.163
+ep  17 | train total 0.6430 acc -0.0409 flops 0.6651 p_super 0.066 || val p_super 0.077 acc -0.0326 corr 0.160
+ep  18 | train total 0.6423 acc -0.0422 flops 0.6658 p_super 0.068 || val p_super 0.064 acc -0.0301 corr 0.155
+ep  19 | train total 0.6421 acc -0.0406 flops 0.6634 p_super 0.061 || val p_super 0.071 acc -0.0310 corr 0.136
+ep  20 | train total 0.6437 acc -0.0415 flops 0.6667 p_super 0.070 || val p_super 0.062 acc -0.0295 corr 0.153
+ep  21 | train total 0.6416 acc -0.0444 flops 0.6677 p_super 0.073 || val p_super 0.069 acc -0.0290 corr 0.143
+ep  22 | train total 0.6417 acc -0.0424 flops 0.6652 p_super 0.066 || val p_super 0.031 acc -0.0140 corr 0.073
+ep  23 | train total 0.6418 acc -0.0420 flops 0.6649 p_super 0.065 || val p_super 0.060 acc -0.0287 corr 0.154
+ep  24 | train total 0.6400 acc -0.0441 flops 0.6652 p_super 0.066 || val p_super 0.048 acc -0.0284 corr 0.163
+ep  25 | train total 0.6413 acc -0.0449 flops 0.6680 p_super 0.074 || val p_super 0.059 acc -0.0305 corr 0.148
+ep  26 | train total 0.6407 acc -0.0444 flops 0.6665 p_super 0.070 || val p_super 0.072 acc -0.0351 corr 0.166
+ep  27 | train total 0.6398 acc -0.0449 flops 0.6661 p_super 0.069 || val p_super 0.091 acc -0.0336 corr 0.141
+ep  28 | train total 0.6417 acc -0.0440 flops 0.6674 p_super 0.072 || val p_super 0.058 acc -0.0287 corr 0.142
+ep  29 | train total 0.6396 acc -0.0457 flops 0.6669 p_super 0.071 || val p_super 0.072 acc -0.0312 corr 0.155
+[*] best val_corr=0.16576 @ epoch 12 (of 30)
+[*] saved policy (val-best) -> method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s0.pt
+
+  GAP-MLP seed=1
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:54: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/nn/modules/lazy.py:181: UserWarning: Lazy modules are a new feature under heavy development so changes to the API or functionality can happen at any moment.
+  warnings.warn('Lazy modules are a new feature under heavy development '
+
+ep   0 | train total 0.6629 acc -0.0159 flops 0.6576 p_super 0.045 || val p_super 0.061 acc -0.0271 corr 0.129  *best*
+ep   1 | train total 0.6521 acc -0.0268 flops 0.6583 p_super 0.047 || val p_super 0.057 acc -0.0293 corr 0.137  *best*
+ep   2 | train total 0.6489 acc -0.0319 flops 0.6609 p_super 0.054 || val p_super 0.050 acc -0.0273 corr 0.151  *best*
+ep   3 | train total 0.6481 acc -0.0342 flops 0.6629 p_super 0.060 || val p_super 0.059 acc -0.0311 corr 0.132
+ep   4 | train total 0.6461 acc -0.0377 flops 0.6649 p_super 0.065 || val p_super 0.049 acc -0.0272 corr 0.153  *best*
+ep   5 | train total 0.6467 acc -0.0376 flops 0.6655 p_super 0.067 || val p_super 0.042 acc -0.0273 corr 0.161  *best*
+ep   6 | train total 0.6458 acc -0.0376 flops 0.6643 p_super 0.064 || val p_super 0.077 acc -0.0345 corr 0.158
+ep   7 | train total 0.6457 acc -0.0375 flops 0.6641 p_super 0.063 || val p_super 0.045 acc -0.0280 corr 0.148
+ep   8 | train total 0.6443 acc -0.0406 flops 0.6663 p_super 0.069 || val p_super 0.055 acc -0.0309 corr 0.151
+ep   9 | train total 0.6431 acc -0.0408 flops 0.6650 p_super 0.066 || val p_super 0.058 acc -0.0295 corr 0.156
+ep  10 | train total 0.6441 acc -0.0396 flops 0.6649 p_super 0.065 || val p_super 0.071 acc -0.0334 corr 0.145
+ep  11 | train total 0.6435 acc -0.0418 flops 0.6669 p_super 0.071 || val p_super 0.049 acc -0.0274 corr 0.153
+ep  12 | train total 0.6439 acc -0.0391 flops 0.6639 p_super 0.063 || val p_super 0.053 acc -0.0272 corr 0.143
+ep  13 | train total 0.6451 acc -0.0371 flops 0.6628 p_super 0.059 || val p_super 0.080 acc -0.0379 corr 0.150
+ep  14 | train total 0.6435 acc -0.0406 flops 0.6652 p_super 0.066 || val p_super 0.066 acc -0.0295 corr 0.144
+ep  15 | train total 0.6421 acc -0.0434 flops 0.6672 p_super 0.072 || val p_super 0.051 acc -0.0296 corr 0.158
+ep  16 | train total 0.6432 acc -0.0409 flops 0.6652 p_super 0.066 || val p_super 0.060 acc -0.0321 corr 0.165  *best*
+ep  17 | train total 0.6407 acc -0.0441 flops 0.6662 p_super 0.069 || val p_super 0.077 acc -0.0299 corr 0.145
+ep  18 | train total 0.6436 acc -0.0398 flops 0.6644 p_super 0.064 || val p_super 0.061 acc -0.0300 corr 0.156
+ep  19 | train total 0.6425 acc -0.0442 flops 0.6686 p_super 0.076 || val p_super 0.064 acc -0.0314 corr 0.158
+ep  20 | train total 0.6419 acc -0.0436 flops 0.6671 p_super 0.072 || val p_super 0.056 acc -0.0270 corr 0.149
+ep  21 | train total 0.6405 acc -0.0453 flops 0.6676 p_super 0.073 || val p_super 0.089 acc -0.0350 corr 0.155
+ep  22 | train total 0.6411 acc -0.0447 flops 0.6675 p_super 0.073 || val p_super 0.060 acc -0.0311 corr 0.155
+ep  23 | train total 0.6422 acc -0.0415 flops 0.6647 p_super 0.065 || val p_super 0.070 acc -0.0291 corr 0.136
+ep  24 | train total 0.6399 acc -0.0460 flops 0.6677 p_super 0.073 || val p_super 0.064 acc -0.0320 corr 0.151
+ep  25 | train total 0.6392 acc -0.0471 flops 0.6683 p_super 0.075 || val p_super 0.060 acc -0.0294 corr 0.147
+ep  26 | train total 0.6403 acc -0.0455 flops 0.6675 p_super 0.073 || val p_super 0.069 acc -0.0304 corr 0.147
+ep  27 | train total 0.6407 acc -0.0450 flops 0.6673 p_super 0.072 || val p_super 0.073 acc -0.0298 corr 0.138
+ep  28 | train total 0.6407 acc -0.0458 flops 0.6683 p_super 0.075 || val p_super 0.066 acc -0.0296 corr 0.141
+ep  29 | train total 0.6389 acc -0.0469 flops 0.6676 p_super 0.073 || val p_super 0.064 acc -0.0330 corr 0.151
+[*] best val_corr=0.16513 @ epoch 16 (of 30)
+[*] saved policy (val-best) -> method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s1.pt
+
+  GAP-MLP seed=2
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:54: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/nn/modules/lazy.py:181: UserWarning: Lazy modules are a new feature under heavy development so changes to the API or functionality can happen at any moment.
+  warnings.warn('Lazy modules are a new feature under heavy development '
+
+ep   0 | train total 0.6651 acc -0.0100 flops 0.6527 p_super 0.031 || val p_super 0.056 acc -0.0244 corr 0.121  *best*
+ep   1 | train total 0.6517 acc -0.0307 flops 0.6630 p_super 0.060 || val p_super 0.044 acc -0.0268 corr 0.130  *best*
+ep   2 | train total 0.6515 acc -0.0318 flops 0.6642 p_super 0.063 || val p_super 0.067 acc -0.0321 corr 0.148  *best*
+ep   3 | train total 0.6479 acc -0.0349 flops 0.6636 p_super 0.062 || val p_super 0.057 acc -0.0252 corr 0.117
+ep   4 | train total 0.6485 acc -0.0334 flops 0.6625 p_super 0.059 || val p_super 0.078 acc -0.0302 corr 0.133
+ep   5 | train total 0.6460 acc -0.0380 flops 0.6653 p_super 0.066 || val p_super 0.062 acc -0.0304 corr 0.144
+ep   6 | train total 0.6506 acc -0.0287 flops 0.6589 p_super 0.049 || val p_super 0.021 acc -0.0114 corr 0.089
+ep   7 | train total 0.6469 acc -0.0354 flops 0.6629 p_super 0.060 || val p_super 0.067 acc -0.0250 corr 0.113
+ep   8 | train total 0.6470 acc -0.0375 flops 0.6658 p_super 0.068 || val p_super 0.045 acc -0.0225 corr 0.128
+ep   9 | train total 0.6473 acc -0.0349 flops 0.6628 p_super 0.059 || val p_super 0.060 acc -0.0293 corr 0.141
+ep  10 | train total 0.6451 acc -0.0393 flops 0.6657 p_super 0.068 || val p_super 0.071 acc -0.0309 corr 0.153  *best*
+ep  11 | train total 0.6454 acc -0.0403 flops 0.6673 p_super 0.072 || val p_super 0.047 acc -0.0280 corr 0.157  *best*
+ep  12 | train total 0.6458 acc -0.0359 flops 0.6621 p_super 0.058 || val p_super 0.084 acc -0.0350 corr 0.160  *best*
+ep  13 | train total 0.6454 acc -0.0385 flops 0.6651 p_super 0.066 || val p_super 0.048 acc -0.0304 corr 0.169  *best*
+ep  14 | train total 0.6442 acc -0.0406 flops 0.6662 p_super 0.069 || val p_super 0.052 acc -0.0285 corr 0.154
+ep  15 | train total 0.6450 acc -0.0393 flops 0.6656 p_super 0.067 || val p_super 0.057 acc -0.0272 corr 0.142
+ep  16 | train total 0.6458 acc -0.0360 flops 0.6622 p_super 0.058 || val p_super 0.068 acc -0.0330 corr 0.164
+ep  17 | train total 0.6442 acc -0.0396 flops 0.6649 p_super 0.065 || val p_super 0.065 acc -0.0310 corr 0.152
+ep  18 | train total 0.6429 acc -0.0416 flops 0.6657 p_super 0.068 || val p_super 0.062 acc -0.0317 corr 0.160
+ep  19 | train total 0.6424 acc -0.0428 flops 0.6667 p_super 0.070 || val p_super 0.066 acc -0.0311 corr 0.154
+ep  20 | train total 0.6404 acc -0.0437 flops 0.6653 p_super 0.066 || val p_super 0.064 acc -0.0320 corr 0.158
+ep  21 | train total 0.6412 acc -0.0435 flops 0.6660 p_super 0.069 || val p_super 0.053 acc -0.0289 corr 0.147
+ep  22 | train total 0.6430 acc -0.0393 flops 0.6630 p_super 0.060 || val p_super 0.061 acc -0.0291 corr 0.126
+ep  23 | train total 0.6416 acc -0.0431 flops 0.6661 p_super 0.069 || val p_super 0.071 acc -0.0331 corr 0.160
+ep  24 | train total 0.6413 acc -0.0426 flops 0.6650 p_super 0.066 || val p_super 0.040 acc -0.0220 corr 0.108
+ep  25 | train total 0.6431 acc -0.0397 flops 0.6636 p_super 0.062 || val p_super 0.054 acc -0.0289 corr 0.145
+ep  26 | train total 0.6412 acc -0.0426 flops 0.6648 p_super 0.065 || val p_super 0.061 acc -0.0288 corr 0.141
+ep  27 | train total 0.6410 acc -0.0432 flops 0.6654 p_super 0.067 || val p_super 0.065 acc -0.0302 corr 0.130
+ep  28 | train total 0.6410 acc -0.0440 flops 0.6664 p_super 0.070 || val p_super 0.051 acc -0.0276 corr 0.145
+ep  29 | train total 0.6405 acc -0.0436 flops 0.6653 p_super 0.067 || val p_super 0.062 acc -0.0306 corr 0.145
+[*] best val_corr=0.16871 @ epoch 13 (of 30)
+[*] saved policy (val-best) -> method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s2.pt
+
+  GAP-MLP seed=3
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:54: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/nn/modules/lazy.py:181: UserWarning: Lazy modules are a new feature under heavy development so changes to the API or functionality can happen at any moment.
+  warnings.warn('Lazy modules are a new feature under heavy development '
+
+ep   0 | train total 0.6637 acc -0.0148 flops 0.6573 p_super 0.044 || val p_super 0.071 acc -0.0300 corr 0.137  *best*
+ep   1 | train total 0.6525 acc -0.0304 flops 0.6636 p_super 0.062 || val p_super 0.060 acc -0.0292 corr 0.142  *best*
+ep   2 | train total 0.6491 acc -0.0345 flops 0.6647 p_super 0.065 || val p_super 0.032 acc -0.0225 corr 0.127
+ep   3 | train total 0.6494 acc -0.0305 flops 0.6597 p_super 0.051 || val p_super 0.041 acc -0.0261 corr 0.147  *best*
+ep   4 | train total 0.6475 acc -0.0357 flops 0.6641 p_super 0.063 || val p_super 0.050 acc -0.0292 corr 0.147
+ep   5 | train total 0.6469 acc -0.0354 flops 0.6628 p_super 0.060 || val p_super 0.073 acc -0.0310 corr 0.147  *best*
+ep   6 | train total 0.6459 acc -0.0361 flops 0.6625 p_super 0.059 || val p_super 0.096 acc -0.0345 corr 0.144
+ep   7 | train total 0.6458 acc -0.0373 flops 0.6640 p_super 0.063 || val p_super 0.042 acc -0.0274 corr 0.164  *best*
+ep   8 | train total 0.6460 acc -0.0375 flops 0.6645 p_super 0.064 || val p_super 0.042 acc -0.0241 corr 0.147
+ep   9 | train total 0.6448 acc -0.0383 flops 0.6639 p_super 0.063 || val p_super 0.081 acc -0.0362 corr 0.162
+ep  10 | train total 0.6460 acc -0.0361 flops 0.6626 p_super 0.059 || val p_super 0.057 acc -0.0232 corr 0.108
+ep  11 | train total 0.6455 acc -0.0355 flops 0.6611 p_super 0.055 || val p_super 0.057 acc -0.0281 corr 0.138
+ep  12 | train total 0.6445 acc -0.0401 flops 0.6660 p_super 0.068 || val p_super 0.055 acc -0.0293 corr 0.135
+ep  13 | train total 0.6431 acc -0.0417 flops 0.6662 p_super 0.069 || val p_super 0.059 acc -0.0298 corr 0.143
+ep  14 | train total 0.6448 acc -0.0397 flops 0.6657 p_super 0.068 || val p_super 0.077 acc -0.0320 corr 0.146
+ep  15 | train total 0.6428 acc -0.0423 flops 0.6667 p_super 0.070 || val p_super 0.062 acc -0.0310 corr 0.156
+ep  16 | train total 0.6431 acc -0.0403 flops 0.6644 p_super 0.064 || val p_super 0.066 acc -0.0298 corr 0.142
+ep  17 | train total 0.6425 acc -0.0416 flops 0.6653 p_super 0.067 || val p_super 0.055 acc -0.0286 corr 0.151
+ep  18 | train total 0.6406 acc -0.0435 flops 0.6654 p_super 0.067 || val p_super 0.073 acc -0.0320 corr 0.152
+ep  19 | train total 0.6423 acc -0.0431 flops 0.6670 p_super 0.071 || val p_super 0.061 acc -0.0284 corr 0.156
+ep  20 | train total 0.6420 acc -0.0429 flops 0.6663 p_super 0.069 || val p_super 0.071 acc -0.0315 corr 0.158
+ep  21 | train total 0.6406 acc -0.0453 flops 0.6678 p_super 0.073 || val p_super 0.074 acc -0.0352 corr 0.153
+ep  22 | train total 0.6415 acc -0.0443 flops 0.6676 p_super 0.073 || val p_super 0.072 acc -0.0285 corr 0.141
+ep  23 | train total 0.6421 acc -0.0443 flops 0.6684 p_super 0.075 || val p_super 0.075 acc -0.0307 corr 0.147
+ep  24 | train total 0.6420 acc -0.0436 flops 0.6672 p_super 0.072 || val p_super 0.075 acc -0.0326 corr 0.159
+ep  25 | train total 0.6415 acc -0.0430 flops 0.6658 p_super 0.068 || val p_super 0.057 acc -0.0318 corr 0.160
+ep  26 | train total 0.6414 acc -0.0433 flops 0.6661 p_super 0.069 || val p_super 0.064 acc -0.0321 corr 0.162
+ep  27 | train total 0.6413 acc -0.0440 flops 0.6668 p_super 0.071 || val p_super 0.078 acc -0.0322 corr 0.150
+ep  28 | train total 0.6403 acc -0.0468 flops 0.6692 p_super 0.077 || val p_super 0.061 acc -0.0303 corr 0.156
+ep  29 | train total 0.6404 acc -0.0455 flops 0.6676 p_super 0.073 || val p_super 0.072 acc -0.0322 corr 0.154
+[*] best val_corr=0.16369 @ epoch 7 (of 30)
+[*] saved policy (val-best) -> method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s3.pt
+
+  GAP-MLP seed=4
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:54: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/nn/modules/lazy.py:181: UserWarning: Lazy modules are a new feature under heavy development so changes to the API or functionality can happen at any moment.
+  warnings.warn('Lazy modules are a new feature under heavy development '
+
+ep   0 | train total 0.6615 acc -0.0195 flops 0.6607 p_super 0.054 || val p_super 0.032 acc -0.0190 corr 0.113  *best*
+ep   1 | train total 0.6522 acc -0.0293 flops 0.6618 p_super 0.057 || val p_super 0.049 acc -0.0267 corr 0.142  *best*
+ep   2 | train total 0.6493 acc -0.0338 flops 0.6639 p_super 0.063 || val p_super 0.097 acc -0.0377 corr 0.149  *best*
+ep   3 | train total 0.6462 acc -0.0375 flops 0.6648 p_super 0.065 || val p_super 0.059 acc -0.0291 corr 0.131
+ep   4 | train total 0.6475 acc -0.0364 flops 0.6650 p_super 0.066 || val p_super 0.090 acc -0.0336 corr 0.144
+ep   5 | train total 0.6472 acc -0.0362 flops 0.6643 p_super 0.064 || val p_super 0.076 acc -0.0321 corr 0.152  *best*
+ep   6 | train total 0.6447 acc -0.0390 flops 0.6648 p_super 0.065 || val p_super 0.066 acc -0.0310 corr 0.148
+ep   7 | train total 0.6450 acc -0.0382 flops 0.6642 p_super 0.063 || val p_super 0.073 acc -0.0356 corr 0.155  *best*
+ep   8 | train total 0.6444 acc -0.0418 flops 0.6680 p_super 0.074 || val p_super 0.059 acc -0.0312 corr 0.145
+ep   9 | train total 0.6444 acc -0.0412 flops 0.6673 p_super 0.072 || val p_super 0.088 acc -0.0352 corr 0.157  *best*
+ep  10 | train total 0.6447 acc -0.0405 flops 0.6668 p_super 0.071 || val p_super 0.081 acc -0.0328 corr 0.139
+ep  11 | train total 0.6445 acc -0.0404 flops 0.6664 p_super 0.070 || val p_super 0.052 acc -0.0294 corr 0.146
+ep  12 | train total 0.6442 acc -0.0387 flops 0.6637 p_super 0.062 || val p_super 0.057 acc -0.0318 corr 0.162  *best*
+ep  13 | train total 0.6432 acc -0.0408 flops 0.6650 p_super 0.066 || val p_super 0.048 acc -0.0246 corr 0.120
+ep  14 | train total 0.6428 acc -0.0411 flops 0.6650 p_super 0.066 || val p_super 0.065 acc -0.0311 corr 0.142
+ep  15 | train total 0.6424 acc -0.0423 flops 0.6662 p_super 0.069 || val p_super 0.069 acc -0.0328 corr 0.159
+ep  16 | train total 0.6428 acc -0.0424 flops 0.6667 p_super 0.070 || val p_super 0.058 acc -0.0328 corr 0.164  *best*
+ep  17 | train total 0.6432 acc -0.0422 flops 0.6671 p_super 0.071 || val p_super 0.057 acc -0.0289 corr 0.146
+ep  18 | train total 0.6436 acc -0.0411 flops 0.6661 p_super 0.069 || val p_super 0.063 acc -0.0304 corr 0.150
+ep  19 | train total 0.6418 acc -0.0437 flops 0.6672 p_super 0.072 || val p_super 0.055 acc -0.0282 corr 0.156
+ep  20 | train total 0.6411 acc -0.0452 flops 0.6681 p_super 0.074 || val p_super 0.057 acc -0.0296 corr 0.143
+ep  21 | train total 0.6408 acc -0.0449 flops 0.6673 p_super 0.072 || val p_super 0.062 acc -0.0311 corr 0.147
+ep  22 | train total 0.6424 acc -0.0453 flops 0.6701 p_super 0.080 || val p_super 0.061 acc -0.0302 corr 0.153
+ep  23 | train total 0.6418 acc -0.0450 flops 0.6689 p_super 0.077 || val p_super 0.076 acc -0.0337 corr 0.163
+ep  24 | train total 0.6426 acc -0.0417 flops 0.6656 p_super 0.067 || val p_super 0.092 acc -0.0388 corr 0.157
+ep  25 | train total 0.6411 acc -0.0445 flops 0.6672 p_super 0.072 || val p_super 0.069 acc -0.0331 corr 0.157
+ep  26 | train total 0.6418 acc -0.0430 flops 0.6661 p_super 0.069 || val p_super 0.091 acc -0.0405 corr 0.165  *best*
+ep  27 | train total 0.6403 acc -0.0468 flops 0.6693 p_super 0.078 || val p_super 0.077 acc -0.0340 corr 0.165  *best*
+ep  28 | train total 0.6402 acc -0.0483 flops 0.6710 p_super 0.082 || val p_super 0.055 acc -0.0302 corr 0.157
+ep  29 | train total 0.6405 acc -0.0439 flops 0.6657 p_super 0.068 || val p_super 0.074 acc -0.0341 corr 0.159
+[*] best val_corr=0.16462 @ epoch 27 (of 30)
+[*] saved policy (val-best) -> method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s4.pt
+
+
+=== [2/3] Build cache grid=8 (feat=both) ===
+FlashAttention is not available on this device. Using scaled_dot_product_attention instead.
+task: detect
+Detected YOLOv12AnyDepth model from weights, switching to AnyDepth task_map
+[34m[1mval: [0mWARNING ⚠️ /media/data/bdd100k_yolo/train/images/75055858-7d04a650.jpg: 1 duplicate labels removed
+[0] cached 8 images
+[20] cached 168 images
+[40] cached 328 images
+[60] cached 488 images
+[80] cached 648 images
+[100] cached 808 images
+[120] cached 968 images
+[140] cached 1128 images
+[160] cached 1288 images
+[180] cached 1448 images
+[200] cached 1608 images
+[220] cached 1768 images
+[240] cached 1928 images
+[260] cached 2088 images
+[280] cached 2248 images
+[300] cached 2408 images
+[320] cached 2568 images
+[340] cached 2728 images
+[360] cached 2888 images
+[380] cached 3048 images
+[400] cached 3208 images
+[420] cached 3368 images
+[440] cached 3528 images
+[460] cached 3688 images
+[480] cached 3848 images
+[500] cached 4008 images
+[520] cached 4168 images
+[540] cached 4328 images
+[560] cached 4488 images
+[580] cached 4648 images
+[600] cached 4808 images
+[620] cached 4968 images
+[640] cached 5128 images
+[660] cached 5288 images
+[680] cached 5448 images
+[700] cached 5608 images
+[720] cached 5768 images
+[740] cached 5928 images
+[760] cached 6088 images
+[780] cached 6248 images
+[800] cached 6408 images
+[820] cached 6568 images
+[840] cached 6728 images
+[860] cached 6888 images
+[880] cached 7048 images
+[900] cached 7208 images
+[920] cached 7368 images
+[940] cached 7528 images
+[960] cached 7688 images
+[980] cached 7848 images
+[1000] cached 8008 images
+[1020] cached 8168 images
+[1040] cached 8328 images
+[1060] cached 8488 images
+[1080] cached 8648 images
+[1100] cached 8808 images
+[1120] cached 8968 images
+[1140] cached 9128 images
+[1160] cached 9288 images
+[1180] cached 9448 images
+[1200] cached 9608 images
+[1220] cached 9768 images
+[1240] cached 9928 images
+[1260] cached 10088 images
+[1280] cached 10248 images
+[1300] cached 10408 images
+[1320] cached 10568 images
+[1340] cached 10728 images
+[1360] cached 10888 images
+[1380] cached 11048 images
+[1400] cached 11208 images
+[1420] cached 11368 images
+[1440] cached 11528 images
+[1460] cached 11688 images
+[1480] cached 11848 images
+[1500] cached 12008 images
+[1520] cached 12168 images
+[1540] cached 12328 images
+[1560] cached 12488 images
+[1580] cached 12648 images
+[1600] cached 12808 images
+[1620] cached 12968 images
+[1640] cached 13128 images
+[1660] cached 13288 images
+[1680] cached 13448 images
+[1700] cached 13608 images
+[1720] cached 13768 images
+[1740] cached 13928 images
+[1760] cached 14088 images
+[1780] cached 14248 images
+[1800] cached 14408 images
+[1820] cached 14568 images
+[1840] cached 14728 images
+[1860] cached 14888 images
+[1880] cached 15048 images
+[1900] cached 15208 images
+[1920] cached 15368 images
+[1940] cached 15528 images
+[1960] cached 15688 images
+[1980] cached 15848 images
+[2000] cached 16008 images
+[2020] cached 16168 images
+[2040] cached 16328 images
+[2060] cached 16488 images
+[2080] cached 16648 images
+[2100] cached 16808 images
+[2120] cached 16968 images
+[2140] cached 17128 images
+[2160] cached 17288 images
+[2180] cached 17448 images
+[2200] cached 17608 images
+[2220] cached 17768 images
+[2240] cached 17928 images
+[2260] cached 18088 images
+[2280] cached 18248 images
+[2300] cached 18408 images
+[2320] cached 18568 images
+[2340] cached 18728 images
+[2360] cached 18888 images
+[2380] cached 19048 images
+[2400] cached 19208 images
+[2420] cached 19368 images
+[2440] cached 19528 images
+[2460] cached 19688 images
+[2480] cached 19848 images
+[2500] cached 20008 images
+[2520] cached 20168 images
+[2540] cached 20328 images
+[2560] cached 20488 images
+[2580] cached 20648 images
+[2600] cached 20808 images
+[2620] cached 20968 images
+[2640] cached 21128 images
+[2660] cached 21288 images
+[2680] cached 21448 images
+[2700] cached 21608 images
+[2720] cached 21768 images
+[2740] cached 21928 images
+[2760] cached 22088 images
+[2780] cached 22248 images
+[2800] cached 22408 images
+[2820] cached 22568 images
+[2840] cached 22728 images
+[2860] cached 22888 images
+[2880] cached 23048 images
+[2900] cached 23208 images
+[2920] cached 23368 images
+[2940] cached 23528 images
+[2960] cached 23688 images
+[2980] cached 23848 images
+[3000] cached 24008 images
+[3020] cached 24168 images
+[3040] cached 24328 images
+[3060] cached 24488 images
+[3080] cached 24648 images
+[3100] cached 24808 images
+[3120] cached 24968 images
+[3140] cached 25128 images
+[3160] cached 25288 images
+[3180] cached 25448 images
+[3200] cached 25608 images
+[3220] cached 25768 images
+[3240] cached 25928 images
+[3260] cached 26088 images
+[3280] cached 26248 images
+[3300] cached 26408 images
+[3320] cached 26568 images
+[3340] cached 26728 images
+[3360] cached 26888 images
+[3380] cached 27048 images
+[3400] cached 27208 images
+[3420] cached 27368 images
+[3440] cached 27528 images
+[3460] cached 27688 images
+[3480] cached 27848 images
+[3500] cached 28008 images
+[3520] cached 28168 images
+[3540] cached 28328 images
+[3560] cached 28488 images
+[3580] cached 28648 images
+[3600] cached 28808 images
+[3620] cached 28968 images
+[3640] cached 29128 images
+[3660] cached 29288 images
+[3680] cached 29448 images
+[3700] cached 29608 images
+[3720] cached 29768 images
+[3740] cached 29928 images
+[3760] cached 30088 images
+[3780] cached 30248 images
+[3800] cached 30408 images
+[3820] cached 30568 images
+[3840] cached 30728 images
+[3860] cached 30888 images
+[3880] cached 31048 images
+[3900] cached 31208 images
+[3920] cached 31368 images
+[3940] cached 31528 images
+[3960] cached 31688 images
+[3980] cached 31848 images
+[4000] cached 32008 images
+[4020] cached 32168 images
+[4040] cached 32328 images
+[4060] cached 32488 images
+[4080] cached 32648 images
+[4100] cached 32808 images
+[4120] cached 32968 images
+[4140] cached 33128 images
+[4160] cached 33288 images
+[4180] cached 33448 images
+[4200] cached 33608 images
+[4220] cached 33768 images
+[4240] cached 33928 images
+[4260] cached 34088 images
+[4280] cached 34248 images
+[4300] cached 34408 images
+[4320] cached 34568 images
+[4340] cached 34728 images
+[4360] cached 34888 images
+[4380] cached 35048 images
+[4400] cached 35208 images
+[4420] cached 35368 images
+[4440] cached 35528 images
+[4460] cached 35688 images
+[4480] cached 35848 images
+[4500] cached 36008 images
+[4520] cached 36168 images
+[4540] cached 36328 images
+[4560] cached 36488 images
+[4580] cached 36648 images
+[4600] cached 36808 images
+[4620] cached 36968 images
+[4640] cached 37128 images
+[4660] cached 37288 images
+[4680] cached 37448 images
+[4700] cached 37608 images
+[4720] cached 37768 images
+[4740] cached 37928 images
+[4760] cached 38088 images
+[4780] cached 38248 images
+[4800] cached 38408 images
+[4820] cached 38568 images
+[4840] cached 38728 images
+[4860] cached 38888 images
+[4880] cached 39048 images
+[4900] cached 39208 images
+[4920] cached 39368 images
+[4940] cached 39528 images
+[4960] cached 39688 images
+[4980] cached 39848 images
+[5000] cached 40008 images
+[5020] cached 40168 images
+[5040] cached 40328 images
+[5060] cached 40488 images
+[5080] cached 40648 images
+[5100] cached 40808 images
+[5120] cached 40968 images
+[5140] cached 41128 images
+[5160] cached 41288 images
+[5180] cached 41448 images
+[5200] cached 41608 images
+[5220] cached 41768 images
+[5240] cached 41928 images
+[5260] cached 42088 images
+[5280] cached 42248 images
+[5300] cached 42408 images
+[5320] cached 42568 images
+[5340] cached 42728 images
+[5360] cached 42888 images
+[5380] cached 43048 images
+[5400] cached 43208 images
+[5420] cached 43368 images
+[5440] cached 43528 images
+[5460] cached 43688 images
+[5480] cached 43848 images
+[5500] cached 44008 images
+[5520] cached 44168 images
+[5540] cached 44328 images
+[5560] cached 44488 images
+[5580] cached 44648 images
+[5600] cached 44808 images
+[5620] cached 44968 images
+[5640] cached 45128 images
+[5660] cached 45288 images
+[5680] cached 45448 images
+[5700] cached 45608 images
+[5720] cached 45768 images
+[5740] cached 45928 images
+[5760] cached 46088 images
+[5780] cached 46248 images
+[5800] cached 46408 images
+[5820] cached 46568 images
+[5840] cached 46728 images
+[5860] cached 46888 images
+[5880] cached 47048 images
+[5900] cached 47208 images
+[5920] cached 47368 images
+[5940] cached 47528 images
+[5960] cached 47688 images
+[5980] cached 47848 images
+[6000] cached 48008 images
+[6020] cached 48168 images
+[6040] cached 48328 images
+[6060] cached 48488 images
+[6080] cached 48648 images
+[6100] cached 48808 images
+[6120] cached 48968 images
+[6140] cached 49128 images
+[6160] cached 49288 images/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:54: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s][34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s]
+/tmp/tmpvh5c705n: line 3: 145610 Killed                  python -m method02_advantage_regress_tinyConv.build_cache --weight finetuned_bdd100k/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.2_orig_mAP35.1_33.8.pt --data ultralytics/cfg/datasets/bdd100k.yaml --dataset bdd100k --split train --feat both --grid 8 --batch 8 --imgsz 720 1280 --out method02_advantage_regress_tinyConv/outputs/bdd100k/cache_train_g8_both.pt
+
+ERROR conda.cli.main_run:execute(124): `conda run python -m method02_advantage_regress_tinyConv.build_cache --weight finetuned_bdd100k/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.2_orig_mAP35.1_33.8.pt --data ultralytics/cfg/datasets/bdd100k.yaml --dataset bdd100k --split train --feat both --grid 8 --batch 8 --imgsz 720 1280 --out method02_advantage_regress_tinyConv/outputs/bdd100k/cache_train_g8_both.pt` failed. (See above for error)
+
+=== [1/3] Train GAP-MLP (feat=both, arch=gapmpl) seeds 0-4 ===
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s0.pt
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s1.pt
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s2.pt
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s3.pt
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s4.pt
+
+=== [2/3] Build cache grid=8 (feat=both) ===
+FlashAttention is not available on this device. Using scaled_dot_product_attention instead.
+task: detect
+Detected YOLOv12AnyDepth model from weights, switching to AnyDepth task_map
+[34m[1mval: [0mWARNING ⚠️ /media/data/bdd100k_yolo/train/images/75055858-7d04a650.jpg: 1 duplicate labels removed
+[0] cached 8 images
+[20] cached 168 images
+[40] cached 328 images
+[60] cached 488 images
+[80] cached 648 images
+[100] cached 808 images
+[120] cached 968 images
+[140] cached 1128 images
+[160] cached 1288 images
+[180] cached 1448 images
+[200] cached 1608 images
+[220] cached 1768 images
+[240] cached 1928 images
+[260] cached 2088 images
+[280] cached 2248 images
+[300] cached 2408 images
+[320] cached 2568 images
+[340] cached 2728 images
+[360] cached 2888 images
+[380] cached 3048 images
+[400] cached 3208 images
+[420] cached 3368 images
+[440] cached 3528 images
+[460] cached 3688 images
+[480] cached 3848 images
+[500] cached 4008 images
+[520] cached 4168 images
+[540] cached 4328 images
+[560] cached 4488 images
+[580] cached 4648 images
+[600] cached 4808 images
+[620] cached 4968 images
+[640] cached 5128 images
+[660] cached 5288 images
+[680] cached 5448 images
+[700] cached 5608 images
+[720] cached 5768 images
+[740] cached 5928 images
+[760] cached 6088 images
+[780] cached 6248 images
+[800] cached 6408 images
+[820] cached 6568 images
+[840] cached 6728 images
+[860] cached 6888 images
+[880] cached 7048 images
+[900] cached 7208 images
+[920] cached 7368 images
+[940] cached 7528 images
+[960] cached 7688 images
+[980] cached 7848 images
+[1000] cached 8008 images
+[1020] cached 8168 images
+[1040] cached 8328 images
+[1060] cached 8488 images
+[1080] cached 8648 images
+[1100] cached 8808 images
+[1120] cached 8968 images
+[1140] cached 9128 images
+[1160] cached 9288 images
+[1180] cached 9448 images
+[1200] cached 9608 images
+[1220] cached 9768 images
+[1240] cached 9928 images
+[1260] cached 10088 images
+[1280] cached 10248 images
+[1300] cached 10408 images
+[1320] cached 10568 images
+[1340] cached 10728 images
+[1360] cached 10888 images
+[1380] cached 11048 images
+[1400] cached 11208 images
+[1420] cached 11368 images
+[1440] cached 11528 images
+[1460] cached 11688 images
+[1480] cached 11848 images
+[1500] cached 12008 images
+[1520] cached 12168 images
+[1540] cached 12328 images
+[1560] cached 12488 images
+[1580] cached 12648 images
+[1600] cached 12808 images
+[1620] cached 12968 images
+[1640] cached 13128 images
+[1660] cached 13288 images
+[1680] cached 13448 images
+[1700] cached 13608 images
+[1720] cached 13768 images
+[1740] cached 13928 images
+[1760] cached 14088 images
+[1780] cached 14248 images
+[1800] cached 14408 images
+[1820] cached 14568 images
+[1840] cached 14728 images
+[1860] cached 14888 images
+[1880] cached 15048 images
+[1900] cached 15208 images
+[1920] cached 15368 images
+[1940] cached 15528 images
+[1960] cached 15688 images
+[1980] cached 15848 images
+[2000] cached 16008 images
+[2020] cached 16168 images
+[2040] cached 16328 images
+[2060] cached 16488 images
+[2080] cached 16648 images
+[2100] cached 16808 images
+[2120] cached 16968 images
+[2140] cached 17128 images
+[2160] cached 17288 images
+[2180] cached 17448 images
+[2200] cached 17608 images
+[2220] cached 17768 images
+[2240] cached 17928 images
+[2260] cached 18088 images
+[2280] cached 18248 images
+[2300] cached 18408 images
+[2320] cached 18568 images
+[2340] cached 18728 images
+[2360] cached 18888 images
+[2380] cached 19048 images
+[2400] cached 19208 images
+[2420] cached 19368 images
+[2440] cached 19528 images
+[2460] cached 19688 images
+[2480] cached 19848 images
+[2500] cached 20008 images
+[2520] cached 20168 images
+[2540] cached 20328 images
+[2560] cached 20488 images
+[2580] cached 20648 images
+[2600] cached 20808 images
+[2620] cached 20968 images
+[2640] cached 21128 images
+[2660] cached 21288 images
+[2680] cached 21448 images
+[2700] cached 21608 images
+[2720] cached 21768 images
+[2740] cached 21928 images
+[2760] cached 22088 images
+[2780] cached 22248 images
+[2800] cached 22408 images
+[2820] cached 22568 images
+[2840] cached 22728 images
+[2860] cached 22888 images
+[2880] cached 23048 images
+[2900] cached 23208 images
+[2920] cached 23368 images
+[2940] cached 23528 images
+[2960] cached 23688 images
+[2980] cached 23848 images
+[3000] cached 24008 images
+[3020] cached 24168 images
+[3040] cached 24328 images
+[3060] cached 24488 images
+[3080] cached 24648 images
+[3100] cached 24808 images
+[3120] cached 24968 images
+[3140] cached 25128 images
+[3160] cached 25288 images
+[3180] cached 25448 images
+[3200] cached 25608 images
+[3220] cached 25768 images
+[3240] cached 25928 images
+[3260] cached 26088 images
+[3280] cached 26248 images
+[3300] cached 26408 images
+[3320] cached 26568 images
+[3340] cached 26728 images
+[3360] cached 26888 images
+[3380] cached 27048 images
+[3400] cached 27208 images
+[3420] cached 27368 images
+[3440] cached 27528 images
+[3460] cached 27688 images
+[3480] cached 27848 images
+[3500] cached 28008 images
+[3520] cached 28168 images
+[3540] cached 28328 images
+[3560] cached 28488 images
+[3580] cached 28648 images
+[3600] cached 28808 images
+[3620] cached 28968 images
+[3640] cached 29128 images
+[3660] cached 29288 images
+[3680] cached 29448 images
+[3700] cached 29608 images
+[3720] cached 29768 images
+[3740] cached 29928 images
+[3760] cached 30088 images
+[3780] cached 30248 images
+[3800] cached 30408 images
+[3820] cached 30568 images
+[3840] cached 30728 images
+[3860] cached 30888 images
+[3880] cached 31048 images
+[3900] cached 31208 images
+[3920] cached 31368 images
+[3940] cached 31528 images
+[3960] cached 31688 images
+[3980] cached 31848 images
+[4000] cached 32008 images
+[4020] cached 32168 images
+[4040] cached 32328 images
+[4060] cached 32488 images
+[4080] cached 32648 images
+[4100] cached 32808 images
+[4120] cached 32968 images
+[4140] cached 33128 images
+[4160] cached 33288 images
+[4180] cached 33448 images
+[4200] cached 33608 images
+[4220] cached 33768 images
+[4240] cached 33928 images
+[4260] cached 34088 images
+[4280] cached 34248 images
+[4300] cached 34408 images
+[4320] cached 34568 images
+[4340] cached 34728 images
+[4360] cached 34888 images
+[4380] cached 35048 images
+[4400] cached 35208 images
+[4420] cached 35368 images
+[4440] cached 35528 images
+[4460] cached 35688 images
+[4480] cached 35848 images
+[4500] cached 36008 images
+[4520] cached 36168 images
+[4540] cached 36328 images
+[4560] cached 36488 images
+[4580] cached 36648 images
+[4600] cached 36808 images
+[4620] cached 36968 images
+[4640] cached 37128 images
+[4660] cached 37288 images
+[4680] cached 37448 images
+[4700] cached 37608 images
+[4720] cached 37768 images
+[4740] cached 37928 images
+[4760] cached 38088 images
+[4780] cached 38248 images
+[4800] cached 38408 images
+[4820] cached 38568 images
+[4840] cached 38728 images
+[4860] cached 38888 images
+[4880] cached 39048 images
+[4900] cached 39208 images
+[4920] cached 39368 images
+[4940] cached 39528 images
+[4960] cached 39688 images
+[4980] cached 39848 images
+[5000] cached 40008 images
+[5020] cached 40168 images
+[5040] cached 40328 images
+[5060] cached 40488 images
+[5080] cached 40648 images
+[5100] cached 40808 images
+[5120] cached 40968 images
+[5140] cached 41128 images
+[5160] cached 41288 images
+[5180] cached 41448 images
+[5200] cached 41608 images
+[5220] cached 41768 images
+[5240] cached 41928 images
+[5260] cached 42088 images
+[5280] cached 42248 images
+[5300] cached 42408 images
+[5320] cached 42568 images
+[5340] cached 42728 images
+[5360] cached 42888 images
+[5380] cached 43048 images
+[5400] cached 43208 images
+[5420] cached 43368 images
+[5440] cached 43528 images
+[5460] cached 43688 images
+[5480] cached 43848 images
+[5500] cached 44008 images
+[5520] cached 44168 images
+[5540] cached 44328 images
+[5560] cached 44488 images
+[5580] cached 44648 images
+[5600] cached 44808 images
+[5620] cached 44968 images
+[5640] cached 45128 images
+[5660] cached 45288 images
+[5680] cached 45448 images
+[5700] cached 45608 images
+[5720] cached 45768 images
+[5740] cached 45928 images
+[5760] cached 46088 images
+[5780] cached 46248 images
+[5800] cached 46408 images
+[5820] cached 46568 images
+[5840] cached 46728 images
+[5860] cached 46888 images
+[5880] cached 47048 images
+[5900] cached 47208 images
+[5920] cached 47368 images
+[5940] cached 47528 images
+[5960] cached 47688 images
+[5980] cached 47848 images
+[6000] cached 48008 images
+[6020] cached 48168 images
+[6040] cached 48328 images
+[6060] cached 48488 images
+[6080] cached 48648 images
+[6100] cached 48808 images
+[6120] cached 48968 images
+[6140] cached 49128 images
+[6160] cached 49288 images/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:54: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s][34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s]
+/tmp/tmp3eck5v7o: line 3: 159825 Killed                  python -m method02_advantage_regress_tinyConv.build_cache --weight finetuned_bdd100k/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.2_orig_mAP35.1_33.8.pt --data ultralytics/cfg/datasets/bdd100k.yaml --dataset bdd100k --split train --feat both --grid 8 --batch 8 --fp16 --imgsz 720 1280 --out method02_advantage_regress_tinyConv/outputs/bdd100k/cache_train_g8_both.pt
+
+ERROR conda.cli.main_run:execute(124): `conda run python -m method02_advantage_regress_tinyConv.build_cache --weight finetuned_bdd100k/30e_SGD0900_bs32_nbs256_1e-3_1e-5_1280-720_singleScale_augNothing_alpha0.2_orig_mAP35.1_33.8.pt --data ultralytics/cfg/datasets/bdd100k.yaml --dataset bdd100k --split train --feat both --grid 8 --batch 8 --fp16 --imgsz 720 1280 --out method02_advantage_regress_tinyConv/outputs/bdd100k/cache_train_g8_both.pt` failed. (See above for error)
+
+=== [1/3] Train GAP-MLP (feat=both, arch=gapmpl) seeds 0-4 ===
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s0.pt
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s1.pt
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s2.pt
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s3.pt
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s4.pt
+
+=== [2/3] Build cache grid=8 (feat=both) ===
+FlashAttention is not available on this device. Using scaled_dot_product_attention instead.
+task: detect
+Detected YOLOv12AnyDepth model from weights, switching to AnyDepth task_map
+[34m[1mval: [0mWARNING ⚠️ /media/data/bdd100k_yolo/train/images/75055858-7d04a650.jpg: 1 duplicate labels removed
+[0] cached 8 images (chunk 0)
+[20] cached 168 images (chunk 0)
+[40] cached 328 images (chunk 0)
+[60] cached 488 images (chunk 0)
+[80] cached 648 images (chunk 0)
+[100] cached 808 images (chunk 0)
+[120] cached 968 images (chunk 0)
+[140] cached 1128 images (chunk 0)
+[160] cached 1288 images (chunk 0)
+[180] cached 1448 images (chunk 0)
+[200] cached 8 images (chunk 1)
+[220] cached 168 images (chunk 1)
+[240] cached 328 images (chunk 1)
+[260] cached 488 images (chunk 1)
+[280] cached 648 images (chunk 1)
+[300] cached 808 images (chunk 1)
+[320] cached 968 images (chunk 1)
+[340] cached 1128 images (chunk 1)
+[360] cached 1288 images (chunk 1)
+[380] cached 1448 images (chunk 1)
+[400] cached 8 images (chunk 2)
+[420] cached 168 images (chunk 2)
+[440] cached 328 images (chunk 2)
+[460] cached 488 images (chunk 2)
+[480] cached 648 images (chunk 2)
+[500] cached 808 images (chunk 2)
+[520] cached 968 images (chunk 2)
+[540] cached 1128 images (chunk 2)
+[560] cached 1288 images (chunk 2)
+[580] cached 1448 images (chunk 2)
+[600] cached 8 images (chunk 3)
+[620] cached 168 images (chunk 3)
+[640] cached 328 images (chunk 3)
+[660] cached 488 images (chunk 3)
+[680] cached 648 images (chunk 3)
+[700] cached 808 images (chunk 3)
+[720] cached 968 images (chunk 3)
+[740] cached 1128 images (chunk 3)
+[760] cached 1288 images (chunk 3)
+[780] cached 1448 images (chunk 3)
+[800] cached 8 images (chunk 4)
+[820] cached 168 images (chunk 4)
+[840] cached 328 images (chunk 4)
+[860] cached 488 images (chunk 4)
+[880] cached 648 images (chunk 4)
+[900] cached 808 images (chunk 4)
+[920] cached 968 images (chunk 4)
+[940] cached 1128 images (chunk 4)
+[960] cached 1288 images (chunk 4)
+[980] cached 1448 images (chunk 4)
+[1000] cached 8 images (chunk 5)
+[1020] cached 168 images (chunk 5)
+[1040] cached 328 images (chunk 5)
+[1060] cached 488 images (chunk 5)
+[1080] cached 648 images (chunk 5)
+[1100] cached 808 images (chunk 5)
+[1120] cached 968 images (chunk 5)
+[1140] cached 1128 images (chunk 5)
+[1160] cached 1288 images (chunk 5)
+[1180] cached 1448 images (chunk 5)
+[1200] cached 8 images (chunk 6)
+[1220] cached 168 images (chunk 6)
+[1240] cached 328 images (chunk 6)
+[1260] cached 488 images (chunk 6)
+[1280] cached 648 images (chunk 6)
+[1300] cached 808 images (chunk 6)
+[1320] cached 968 images (chunk 6)
+[1340] cached 1128 images (chunk 6)
+[1360] cached 1288 images (chunk 6)
+[1380] cached 1448 images (chunk 6)
+[1400] cached 8 images (chunk 7)
+[1420] cached 168 images (chunk 7)
+[1440] cached 328 images (chunk 7)
+[1460] cached 488 images (chunk 7)
+[1480] cached 648 images (chunk 7)
+[1500] cached 808 images (chunk 7)
+[1520] cached 968 images (chunk 7)
+[1540] cached 1128 images (chunk 7)
+[1560] cached 1288 images (chunk 7)
+[1580] cached 1448 images (chunk 7)
+[1600] cached 8 images (chunk 8)
+[1620] cached 168 images (chunk 8)
+[1640] cached 328 images (chunk 8)
+[1660] cached 488 images (chunk 8)
+[1680] cached 648 images (chunk 8)
+[1700] cached 808 images (chunk 8)
+[1720] cached 968 images (chunk 8)
+[1740] cached 1128 images (chunk 8)
+[1760] cached 1288 images (chunk 8)
+[1780] cached 1448 images (chunk 8)
+[1800] cached 8 images (chunk 9)
+[1820] cached 168 images (chunk 9)
+[1840] cached 328 images (chunk 9)
+[1860] cached 488 images (chunk 9)
+[1880] cached 648 images (chunk 9)
+[1900] cached 808 images (chunk 9)
+[1920] cached 968 images (chunk 9)
+[1940] cached 1128 images (chunk 9)
+[1960] cached 1288 images (chunk 9)
+[1980] cached 1448 images (chunk 9)
+[2000] cached 8 images (chunk 10)
+[2020] cached 168 images (chunk 10)
+[2040] cached 328 images (chunk 10)
+[2060] cached 488 images (chunk 10)
+[2080] cached 648 images (chunk 10)
+[2100] cached 808 images (chunk 10)
+[2120] cached 968 images (chunk 10)
+[2140] cached 1128 images (chunk 10)
+[2160] cached 1288 images (chunk 10)
+[2180] cached 1448 images (chunk 10)
+[2200] cached 8 images (chunk 11)
+[2220] cached 168 images (chunk 11)
+[2240] cached 328 images (chunk 11)
+[2260] cached 488 images (chunk 11)
+[2280] cached 648 images (chunk 11)
+[2300] cached 808 images (chunk 11)
+[2320] cached 968 images (chunk 11)
+[2340] cached 1128 images (chunk 11)
+[2360] cached 1288 images (chunk 11)
+[2380] cached 1448 images (chunk 11)
+[2400] cached 8 images (chunk 12)
+[2420] cached 168 images (chunk 12)
+[2440] cached 328 images (chunk 12)
+[2460] cached 488 images (chunk 12)
+[2480] cached 648 images (chunk 12)
+[2500] cached 808 images (chunk 12)
+[2520] cached 968 images (chunk 12)
+[2540] cached 1128 images (chunk 12)
+[2560] cached 1288 images (chunk 12)
+[2580] cached 1448 images (chunk 12)
+[2600] cached 8 images (chunk 13)
+[2620] cached 168 images (chunk 13)
+[2640] cached 328 images (chunk 13)
+[2660] cached 488 images (chunk 13)
+[2680] cached 648 images (chunk 13)
+[2700] cached 808 images (chunk 13)
+[2720] cached 968 images (chunk 13)
+[2740] cached 1128 images (chunk 13)
+[2760] cached 1288 images (chunk 13)
+[2780] cached 1448 images (chunk 13)
+[2800] cached 8 images (chunk 14)
+[2820] cached 168 images (chunk 14)
+[2840] cached 328 images (chunk 14)
+[2860] cached 488 images (chunk 14)
+[2880] cached 648 images (chunk 14)
+[2900] cached 808 images (chunk 14)
+[2920] cached 968 images (chunk 14)
+[2940] cached 1128 images (chunk 14)
+[2960] cached 1288 images (chunk 14)
+[2980] cached 1448 images (chunk 14)
+[3000] cached 8 images (chunk 15)
+[3020] cached 168 images (chunk 15)
+[3040] cached 328 images (chunk 15)
+[3060] cached 488 images (chunk 15)
+[3080] cached 648 images (chunk 15)
+[3100] cached 808 images (chunk 15)
+[3120] cached 968 images (chunk 15)
+[3140] cached 1128 images (chunk 15)
+[3160] cached 1288 images (chunk 15)
+[3180] cached 1448 images (chunk 15)
+[3200] cached 8 images (chunk 16)
+[3220] cached 168 images (chunk 16)
+[3240] cached 328 images (chunk 16)
+[3260] cached 488 images (chunk 16)
+[3280] cached 648 images (chunk 16)
+[3300] cached 808 images (chunk 16)
+[3320] cached 968 images (chunk 16)
+[3340] cached 1128 images (chunk 16)
+[3360] cached 1288 images (chunk 16)
+[3380] cached 1448 images (chunk 16)
+[3400] cached 8 images (chunk 17)
+[3420] cached 168 images (chunk 17)
+[3440] cached 328 images (chunk 17)
+[3460] cached 488 images (chunk 17)
+[3480] cached 648 images (chunk 17)
+[3500] cached 808 images (chunk 17)
+[3520] cached 968 images (chunk 17)
+[3540] cached 1128 images (chunk 17)
+[3560] cached 1288 images (chunk 17)
+[3580] cached 1448 images (chunk 17)
+[3600] cached 8 images (chunk 18)
+[3620] cached 168 images (chunk 18)
+[3640] cached 328 images (chunk 18)
+[3660] cached 488 images (chunk 18)
+[3680] cached 648 images (chunk 18)
+[3700] cached 808 images (chunk 18)
+[3720] cached 968 images (chunk 18)
+[3740] cached 1128 images (chunk 18)
+[3760] cached 1288 images (chunk 18)
+[3780] cached 1448 images (chunk 18)
+[3800] cached 8 images (chunk 19)
+[3820] cached 168 images (chunk 19)
+[3840] cached 328 images (chunk 19)
+[3860] cached 488 images (chunk 19)
+[3880] cached 648 images (chunk 19)
+[3900] cached 808 images (chunk 19)
+[3920] cached 968 images (chunk 19)
+[3940] cached 1128 images (chunk 19)
+[3960] cached 1288 images (chunk 19)
+[3980] cached 1448 images (chunk 19)
+[4000] cached 8 images (chunk 20)
+[4020] cached 168 images (chunk 20)
+[4040] cached 328 images (chunk 20)
+[4060] cached 488 images (chunk 20)
+[4080] cached 648 images (chunk 20)
+[4100] cached 808 images (chunk 20)
+[4120] cached 968 images (chunk 20)
+[4140] cached 1128 images (chunk 20)
+[4160] cached 1288 images (chunk 20)
+[4180] cached 1448 images (chunk 20)
+[4200] cached 8 images (chunk 21)
+[4220] cached 168 images (chunk 21)
+[4240] cached 328 images (chunk 21)
+[4260] cached 488 images (chunk 21)
+[4280] cached 648 images (chunk 21)
+[4300] cached 808 images (chunk 21)
+[4320] cached 968 images (chunk 21)
+[4340] cached 1128 images (chunk 21)
+[4360] cached 1288 images (chunk 21)
+[4380] cached 1448 images (chunk 21)
+[4400] cached 8 images (chunk 22)
+[4420] cached 168 images (chunk 22)
+[4440] cached 328 images (chunk 22)
+[4460] cached 488 images (chunk 22)
+[4480] cached 648 images (chunk 22)
+[4500] cached 808 images (chunk 22)
+[4520] cached 968 images (chunk 22)
+[4540] cached 1128 images (chunk 22)
+[4560] cached 1288 images (chunk 22)
+[4580] cached 1448 images (chunk 22)
+[4600] cached 8 images (chunk 23)
+[4620] cached 168 images (chunk 23)
+[4640] cached 328 images (chunk 23)
+[4660] cached 488 images (chunk 23)
+[4680] cached 648 images (chunk 23)
+[4700] cached 808 images (chunk 23)
+[4720] cached 968 images (chunk 23)
+[4740] cached 1128 images (chunk 23)
+[4760] cached 1288 images (chunk 23)
+[4780] cached 1448 images (chunk 23)
+[4800] cached 8 images (chunk 24)
+[4820] cached 168 images (chunk 24)
+[4840] cached 328 images (chunk 24)
+[4860] cached 488 images (chunk 24)
+[4880] cached 648 images (chunk 24)
+[4900] cached 808 images (chunk 24)
+[4920] cached 968 images (chunk 24)
+[4940] cached 1128 images (chunk 24)
+[4960] cached 1288 images (chunk 24)
+[4980] cached 1448 images (chunk 24)
+[5000] cached 8 images (chunk 25)
+[5020] cached 168 images (chunk 25)
+[5040] cached 328 images (chunk 25)
+[5060] cached 488 images (chunk 25)
+[5080] cached 648 images (chunk 25)
+[5100] cached 808 images (chunk 25)
+[5120] cached 968 images (chunk 25)
+[5140] cached 1128 images (chunk 25)
+[5160] cached 1288 images (chunk 25)
+[5180] cached 1448 images (chunk 25)
+[5200] cached 8 images (chunk 26)
+[5220] cached 168 images (chunk 26)
+[5240] cached 328 images (chunk 26)
+[5260] cached 488 images (chunk 26)
+[5280] cached 648 images (chunk 26)
+[5300] cached 808 images (chunk 26)
+[5320] cached 968 images (chunk 26)
+[5340] cached 1128 images (chunk 26)
+[5360] cached 1288 images (chunk 26)
+[5380] cached 1448 images (chunk 26)
+[5400] cached 8 images (chunk 27)
+[5420] cached 168 images (chunk 27)
+[5440] cached 328 images (chunk 27)
+[5460] cached 488 images (chunk 27)
+[5480] cached 648 images (chunk 27)
+[5500] cached 808 images (chunk 27)
+[5520] cached 968 images (chunk 27)
+[5540] cached 1128 images (chunk 27)
+[5560] cached 1288 images (chunk 27)
+[5580] cached 1448 images (chunk 27)
+[5600] cached 8 images (chunk 28)
+[5620] cached 168 images (chunk 28)
+[5640] cached 328 images (chunk 28)
+[5660] cached 488 images (chunk 28)
+[5680] cached 648 images (chunk 28)
+[5700] cached 808 images (chunk 28)
+[5720] cached 968 images (chunk 28)
+[5740] cached 1128 images (chunk 28)
+[5760] cached 1288 images (chunk 28)
+[5780] cached 1448 images (chunk 28)
+[5800] cached 8 images (chunk 29)
+[5820] cached 168 images (chunk 29)
+[5840] cached 328 images (chunk 29)
+[5860] cached 488 images (chunk 29)
+[5880] cached 648 images (chunk 29)
+[5900] cached 808 images (chunk 29)
+[5920] cached 968 images (chunk 29)
+[5940] cached 1128 images (chunk 29)
+[5960] cached 1288 images (chunk 29)
+[5980] cached 1448 images (chunk 29)
+[6000] cached 8 images (chunk 30)
+[6020] cached 168 images (chunk 30)
+[6040] cached 328 images (chunk 30)
+[6060] cached 488 images (chunk 30)
+[6080] cached 648 images (chunk 30)
+[6100] cached 808 images (chunk 30)
+[6120] cached 968 images (chunk 30)
+[6140] cached 1128 images (chunk 30)
+[6160] cached 1288 images (chunk 30)
+[6180] cached 1448 images (chunk 30)
+[6200] cached 8 images (chunk 31)
+[6220] cached 168 images (chunk 31)
+[6240] cached 328 images (chunk 31)
+[6260] cached 488 images (chunk 31)
+[6280] cached 648 images (chunk 31)
+[6300] cached 808 images (chunk 31)
+[6320] cached 968 images (chunk 31)
+[6340] cached 1128 images (chunk 31)
+[6360] cached 1288 images (chunk 31)
+[6380] cached 1448 images (chunk 31)
+[6400] cached 8 images (chunk 32)
+[6420] cached 168 images (chunk 32)
+[6440] cached 328 images (chunk 32)
+[6460] cached 488 images (chunk 32)
+[6480] cached 648 images (chunk 32)
+[6500] cached 808 images (chunk 32)
+[6520] cached 968 images (chunk 32)
+[6540] cached 1128 images (chunk 32)
+[6560] cached 1288 images (chunk 32)
+[6580] cached 1448 images (chunk 32)
+[6600] cached 8 images (chunk 33)
+[6620] cached 168 images (chunk 33)
+[6640] cached 328 images (chunk 33)
+[6660] cached 488 images (chunk 33)
+[6680] cached 648 images (chunk 33)
+[6700] cached 808 images (chunk 33)
+[6720] cached 968 images (chunk 33)
+[6740] cached 1128 images (chunk 33)
+[6760] cached 1288 images (chunk 33)
+[6780] cached 1448 images (chunk 33)
+[6800] cached 8 images (chunk 34)
+[6820] cached 168 images (chunk 34)
+[6840] cached 328 images (chunk 34)
+[6860] cached 488 images (chunk 34)
+[6880] cached 648 images (chunk 34)
+[6900] cached 808 images (chunk 34)
+[6920] cached 968 images (chunk 34)
+[6940] cached 1128 images (chunk 34)
+[6960] cached 1288 images (chunk 34)
+[6980] cached 1448 images (chunk 34)
+[7000] cached 8 images (chunk 35)
+[7020] cached 168 images (chunk 35)
+[7040] cached 328 images (chunk 35)
+[7060] cached 488 images (chunk 35)
+[7080] cached 648 images (chunk 35)
+[7100] cached 808 images (chunk 35)
+[7120] cached 968 images (chunk 35)
+[7140] cached 1128 images (chunk 35)
+[7160] cached 1288 images (chunk 35)
+[7180] cached 1448 images (chunk 35)
+[7200] cached 8 images (chunk 36)
+[7220] cached 168 images (chunk 36)
+[7240] cached 328 images (chunk 36)
+[7260] cached 488 images (chunk 36)
+[7280] cached 648 images (chunk 36)
+[7300] cached 808 images (chunk 36)
+[7320] cached 968 images (chunk 36)
+[7340] cached 1128 images (chunk 36)
+[7360] cached 1288 images (chunk 36)
+[7380] cached 1448 images (chunk 36)
+[7400] cached 8 images (chunk 37)
+[7420] cached 168 images (chunk 37)
+[7440] cached 328 images (chunk 37)
+[7460] cached 488 images (chunk 37)
+[7480] cached 648 images (chunk 37)
+[7500] cached 808 images (chunk 37)
+[7520] cached 968 images (chunk 37)
+[7540] cached 1128 images (chunk 37)
+[7560] cached 1288 images (chunk 37)
+[7580] cached 1448 images (chunk 37)
+[7600] cached 8 images (chunk 38)
+[7620] cached 168 images (chunk 38)
+[7640] cached 328 images (chunk 38)
+[7660] cached 488 images (chunk 38)
+[7680] cached 648 images (chunk 38)
+[7700] cached 808 images (chunk 38)
+[7720] cached 968 images (chunk 38)
+[7740] cached 1128 images (chunk 38)
+[7760] cached 1288 images (chunk 38)
+[7780] cached 1448 images (chunk 38)
+[7800] cached 8 images (chunk 39)
+[7820] cached 168 images (chunk 39)
+[7840] cached 328 images (chunk 39)
+[7860] cached 488 images (chunk 39)
+[7880] cached 648 images (chunk 39)
+[7900] cached 808 images (chunk 39)
+[7920] cached 968 images (chunk 39)
+[7940] cached 1128 images (chunk 39)
+[7960] cached 1288 images (chunk 39)
+[7980] cached 1448 images (chunk 39)
+[8000] cached 8 images (chunk 40)
+[8020] cached 168 images (chunk 40)
+[8040] cached 328 images (chunk 40)
+[8060] cached 488 images (chunk 40)
+[8080] cached 648 images (chunk 40)
+[8100] cached 808 images (chunk 40)
+[8120] cached 968 images (chunk 40)
+[8140] cached 1128 images (chunk 40)
+[8160] cached 1288 images (chunk 40)
+[8180] cached 1448 images (chunk 40)
+[8200] cached 8 images (chunk 41)
+[8220] cached 168 images (chunk 41)
+[8240] cached 328 images (chunk 41)
+[8260] cached 488 images (chunk 41)
+[8280] cached 648 images (chunk 41)
+[8300] cached 808 images (chunk 41)
+[8320] cached 968 images (chunk 41)
+[8340] cached 1128 images (chunk 41)
+[8360] cached 1288 images (chunk 41)
+[8380] cached 1448 images (chunk 41)
+[8400] cached 8 images (chunk 42)
+[8420] cached 168 images (chunk 42)
+[8440] cached 328 images (chunk 42)
+[8460] cached 488 images (chunk 42)
+[8480] cached 648 images (chunk 42)
+[8500] cached 808 images (chunk 42)
+[8520] cached 968 images (chunk 42)
+[8540] cached 1128 images (chunk 42)
+[8560] cached 1288 images (chunk 42)
+[8580] cached 1448 images (chunk 42)
+[8600] cached 8 images (chunk 43)
+[8620] cached 168 images (chunk 43)
+[8640] cached 328 images (chunk 43)
+[8660] cached 488 images (chunk 43)
+[8680] cached 648 images (chunk 43)
+[8700] cached 808 images (chunk 43)
+[8720] cached 968 images (chunk 43)
+[8740] cached 1128 images (chunk 43)
+[*] merging 44 chunks ...
+[*] cached 70000 images (feat=both) -> method02_advantage_regress_tinyConv/outputs/bdd100k/cache_train_g8_both.pt
+[*] input grid=(768, 8, 8)
+[*] pred grid=(640, 8, 8)
+[*] mean L_base=3.336, mean L_super=3.279, mean A=0.0566
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:54: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s][34m[1mval: [0mScanning /media/data/bdd100k_yolo/train/labels.cache... 70000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 70000/70000 [00:00<?, ?it/s]
+
+
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:54: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s][34m[1mval: [0mScanning /media/data/bdd100k_yolo/val/labels.cache... 10000 images, 0 backgrounds, 0 corrupt: 100%|██████████| 10000/10000 [00:00<?, ?it/s]
+
+FlashAttention is not available on this device. Using scaled_dot_product_attention instead.
+task: detect
+Detected YOLOv12AnyDepth model from weights, switching to AnyDepth task_map
+[0] cached 8 images (chunk 0)
+[20] cached 168 images (chunk 0)
+[40] cached 328 images (chunk 0)
+[60] cached 488 images (chunk 0)
+[80] cached 648 images (chunk 0)
+[100] cached 808 images (chunk 0)
+[120] cached 968 images (chunk 0)
+[140] cached 1128 images (chunk 0)
+[160] cached 1288 images (chunk 0)
+[180] cached 1448 images (chunk 0)
+[200] cached 8 images (chunk 1)
+[220] cached 168 images (chunk 1)
+[240] cached 328 images (chunk 1)
+[260] cached 488 images (chunk 1)
+[280] cached 648 images (chunk 1)
+[300] cached 808 images (chunk 1)
+[320] cached 968 images (chunk 1)
+[340] cached 1128 images (chunk 1)
+[360] cached 1288 images (chunk 1)
+[380] cached 1448 images (chunk 1)
+[400] cached 8 images (chunk 2)
+[420] cached 168 images (chunk 2)
+[440] cached 328 images (chunk 2)
+[460] cached 488 images (chunk 2)
+[480] cached 648 images (chunk 2)
+[500] cached 808 images (chunk 2)
+[520] cached 968 images (chunk 2)
+[540] cached 1128 images (chunk 2)
+[560] cached 1288 images (chunk 2)
+[580] cached 1448 images (chunk 2)
+[600] cached 8 images (chunk 3)
+[620] cached 168 images (chunk 3)
+[640] cached 328 images (chunk 3)
+[660] cached 488 images (chunk 3)
+[680] cached 648 images (chunk 3)
+[700] cached 808 images (chunk 3)
+[720] cached 968 images (chunk 3)
+[740] cached 1128 images (chunk 3)
+[760] cached 1288 images (chunk 3)
+[780] cached 1448 images (chunk 3)
+[800] cached 8 images (chunk 4)
+[820] cached 168 images (chunk 4)
+[840] cached 328 images (chunk 4)
+[860] cached 488 images (chunk 4)
+[880] cached 648 images (chunk 4)
+[900] cached 808 images (chunk 4)
+[920] cached 968 images (chunk 4)
+[940] cached 1128 images (chunk 4)
+[960] cached 1288 images (chunk 4)
+[980] cached 1448 images (chunk 4)
+[1000] cached 8 images (chunk 5)
+[1020] cached 168 images (chunk 5)
+[1040] cached 328 images (chunk 5)
+[1060] cached 488 images (chunk 5)
+[1080] cached 648 images (chunk 5)
+[1100] cached 808 images (chunk 5)
+[1120] cached 968 images (chunk 5)
+[1140] cached 1128 images (chunk 5)
+[1160] cached 1288 images (chunk 5)
+[1180] cached 1448 images (chunk 5)
+[1200] cached 8 images (chunk 6)
+[1220] cached 168 images (chunk 6)
+[1240] cached 328 images (chunk 6)
+[*] merging 7 chunks ...
+[*] cached 10000 images (feat=both) -> method02_advantage_regress_tinyConv/outputs/bdd100k/cache_val_g8_both.pt
+[*] input grid=(768, 8, 8)
+[*] pred grid=(640, 8, 8)
+[*] mean L_base=3.349, mean L_super=3.303, mean A=0.0458
+
+
+=== [3/3] Train TinyConv 8x8 (feat=both) seeds 0-4 ===
+  TinyConv 8x8 seed=0
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:54: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/hslee/Desktop/Embedded_AI/context-anydepth-det/anydepth-yolov12/method02_advantage_regress_tinyConv/train_policy.py", line 304, in <module>
+    main()
+  File "/home/hslee/Desktop/Embedded_AI/context-anydepth-det/anydepth-yolov12/method02_advantage_regress_tinyConv/train_policy.py", line 195, in main
+    train_cache = load_cache(args.cache, device)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/Desktop/Embedded_AI/context-anydepth-det/anydepth-yolov12/method02_advantage_regress_tinyConv/train_policy.py", line 71, in load_cache
+    "input_super": c["input_super"].float().to(device),
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 12.82 GiB. GPU 0 has a total capacity of 23.56 GiB of which 10.47 GiB is free. Including non-PyTorch memory, this process has 13.07 GiB memory in use. Of the allocated memory 12.82 GiB is allocated by PyTorch, and 0 bytes is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+
+ERROR conda.cli.main_run:execute(124): `conda run python -m method02_advantage_regress_tinyConv.train_policy --dataset bdd100k --cache method02_advantage_regress_tinyConv/outputs/bdd100k/cache_train_g8_both.pt --val_cache method02_advantage_regress_tinyConv/outputs/bdd100k/cache_val_g8_both.pt --epochs 30 --batch 256 --lr 1e-3 --feat both --arch tinyconv --group_dim 256 --path_dim 8 --hidden 512 --norm batch --dropout 0.0 --weight_decay 1e-4 --select val_corr --prev_p 0.5 --seed 0 --out method02_advantage_regress_tinyConv/outputs/bdd100k/policy_tinyconv_g8_both_s0.pt --tag tinyconv_g8_both_s0` failed. (See above for error)
+=== [1/3] Train GAP-MLP (feat=both, arch=gapmpl) seeds 0-4 ===
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s0.pt
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s1.pt
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s2.pt
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s3.pt
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s4.pt
+
+=== [2/3] Build cache grid=8 (feat=both) ===
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/cache_train_g8_both.pt exists
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/cache_val_g8_both.pt exists
+
+=== [3/3] Train TinyConv 8x8 (feat=both) seeds 0-4 ===
+  TinyConv 8x8 seed=0
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:54: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/tmp/tmpzqpzo2hf: line 3: 186697 Killed                  python -m method02_advantage_regress_tinyConv.train_policy --dataset bdd100k --cache method02_advantage_regress_tinyConv/outputs/bdd100k/cache_train_g8_both.pt --val_cache method02_advantage_regress_tinyConv/outputs/bdd100k/cache_val_g8_both.pt --epochs 30 --batch 256 --lr 1e-3 --feat both --arch tinyconv --group_dim 256 --path_dim 8 --hidden 512 --norm batch --dropout 0.0 --weight_decay 1e-4 --select val_corr --prev_p 0.5 --seed 0 --out method02_advantage_regress_tinyConv/outputs/bdd100k/policy_tinyconv_g8_both_s0.pt --tag tinyconv_g8_both_s0
+
+ERROR conda.cli.main_run:execute(124): `conda run python -m method02_advantage_regress_tinyConv.train_policy --dataset bdd100k --cache method02_advantage_regress_tinyConv/outputs/bdd100k/cache_train_g8_both.pt --val_cache method02_advantage_regress_tinyConv/outputs/bdd100k/cache_val_g8_both.pt --epochs 30 --batch 256 --lr 1e-3 --feat both --arch tinyconv --group_dim 256 --path_dim 8 --hidden 512 --norm batch --dropout 0.0 --weight_decay 1e-4 --select val_corr --prev_p 0.5 --seed 0 --out method02_advantage_regress_tinyConv/outputs/bdd100k/policy_tinyconv_g8_both_s0.pt --tag tinyconv_g8_both_s0` failed. (See above for error)
+=== [1/3] Train GAP-MLP (feat=both, arch=gapmpl) seeds 0-4 ===
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s0.pt
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s1.pt
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s2.pt
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s3.pt
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s4.pt
+
+=== [2/3] Build cache grid=8 (feat=both) ===
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/cache_train_g8_both.pt exists
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/cache_val_g8_both.pt exists
+
+=== [3/3] Train TinyConv 8x8 (feat=both) seeds 0-4 ===
+  TinyConv 8x8 seed=0
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:54: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/nn/modules/lazy.py:181: UserWarning: Lazy modules are a new feature under heavy development so changes to the API or functionality can happen at any moment.
+  warnings.warn('Lazy modules are a new feature under heavy development '
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/hslee/Desktop/Embedded_AI/context-anydepth-det/anydepth-yolov12/method02_advantage_regress_tinyConv/train_policy.py", line 318, in <module>
+    main()
+  File "/home/hslee/Desktop/Embedded_AI/context-anydepth-det/anydepth-yolov12/method02_advantage_regress_tinyConv/train_policy.py", line 276, in main
+    tr = run_epoch(net, train_cache, train_loader, lossfn, opt, prev_p=args.prev_p)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/Desktop/Embedded_AI/context-anydepth-det/anydepth-yolov12/method02_advantage_regress_tinyConv/train_policy.py", line 138, in run_epoch
+    inp, prd = gather(cache, idx, prev)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/Desktop/Embedded_AI/context-anydepth-det/anydepth-yolov12/method02_advantage_regress_tinyConv/train_policy.py", line 94, in gather
+    inp_b = cache["input_base"][idx].to(device, dtype=torch.float32)
+            ~~~~~~~~~~~~~~~~~~~^^^^^
+RuntimeError: indices should be either on cpu or on the same device as the indexed tensor (cpu)
+
+ERROR conda.cli.main_run:execute(124): `conda run python -m method02_advantage_regress_tinyConv.train_policy --dataset bdd100k --cache method02_advantage_regress_tinyConv/outputs/bdd100k/cache_train_g8_both.pt --val_cache method02_advantage_regress_tinyConv/outputs/bdd100k/cache_val_g8_both.pt --epochs 30 --batch 256 --lr 1e-3 --feat both --arch tinyconv --group_dim 256 --path_dim 8 --hidden 512 --norm batch --dropout 0.0 --weight_decay 1e-4 --select val_corr --prev_p 0.5 --seed 0 --out method02_advantage_regress_tinyConv/outputs/bdd100k/policy_tinyconv_g8_both_s0.pt --tag tinyconv_g8_both_s0` failed. (See above for error)
+=== [1/3] Train GAP-MLP (feat=both, arch=gapmpl) seeds 0-4 ===
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s0.pt
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s1.pt
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s2.pt
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s3.pt
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/policy_gapmpl_both_s4.pt
+
+=== [2/3] Build cache grid=8 (feat=both) ===
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/cache_train_g8_both.pt exists
+  [skip] method02_advantage_regress_tinyConv/outputs/bdd100k/cache_val_g8_both.pt exists
+
+=== [3/3] Train TinyConv 8x8 (feat=both) seeds 0-4 ===
+  TinyConv 8x8 seed=0
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:54: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/nn/modules/lazy.py:181: UserWarning: Lazy modules are a new feature under heavy development so changes to the API or functionality can happen at any moment.
+  warnings.warn('Lazy modules are a new feature under heavy development '
+
+ep   0 | train total 0.6683 acc -0.0000 flops 0.6437 p_super 0.006 || val p_super 0.000 acc -0.0000 corr 0.094  *best*
+ep   1 | train total 0.6637 acc -0.0056 flops 0.6453 p_super 0.011 || val p_super 0.067 acc -0.0230 corr 0.101  *best*
+ep   2 | train total 0.6461 acc -0.0366 flops 0.6632 p_super 0.061 || val p_super 0.059 acc -0.0297 corr 0.142  *best*
+ep   3 | train total 0.6392 acc -0.0490 flops 0.6704 p_super 0.081 || val p_super 0.154 acc -0.0425 corr 0.140
+ep   4 | train total 0.6382 acc -0.0464 flops 0.6659 p_super 0.068 || val p_super 0.074 acc -0.0332 corr 0.140
+ep   5 | train total 0.6351 acc -0.0558 flops 0.6741 p_super 0.091 || val p_super 0.083 acc -0.0376 corr 0.156  *best*
+ep   6 | train total 0.6335 acc -0.0556 flops 0.6718 p_super 0.085 || val p_super 0.084 acc -0.0373 corr 0.155
+ep   7 | train total 0.6340 acc -0.0566 flops 0.6736 p_super 0.090 || val p_super 0.091 acc -0.0404 corr 0.157  *best*
+ep   8 | train total 0.6326 acc -0.0583 flops 0.6741 p_super 0.091 || val p_super 0.100 acc -0.0437 corr 0.152
+ep   9 | train total 0.6337 acc -0.0550 flops 0.6712 p_super 0.083 || val p_super 0.072 acc -0.0376 corr 0.157  *best*
+ep  10 | train total 0.6318 acc -0.0584 flops 0.6733 p_super 0.089 || val p_super 0.064 acc -0.0358 corr 0.151
+ep  11 | train total 0.6319 acc -0.0590 flops 0.6741 p_super 0.091 || val p_super 0.081 acc -0.0401 corr 0.158  *best*
+ep  12 | train total 0.6311 acc -0.0598 flops 0.6741 p_super 0.091 || val p_super 0.076 acc -0.0381 corr 0.152
+ep  13 | train total 0.6303 acc -0.0616 flops 0.6755 p_super 0.095 || val p_super 0.098 acc -0.0404 corr 0.151
+ep  14 | train total 0.6301 acc -0.0625 flops 0.6763 p_super 0.097 || val p_super 0.071 acc -0.0372 corr 0.149
+ep  15 | train total 0.6290 acc -0.0623 flops 0.6746 p_super 0.093 || val p_super 0.068 acc -0.0380 corr 0.154
+ep  16 | train total 0.6295 acc -0.0626 flops 0.6756 p_super 0.095 || val p_super 0.083 acc -0.0379 corr 0.150
+ep  17 | train total 0.6291 acc -0.0636 flops 0.6764 p_super 0.098 || val p_super 0.104 acc -0.0399 corr 0.147
+ep  18 | train total 0.6285 acc -0.0638 flops 0.6760 p_super 0.096 || val p_super 0.103 acc -0.0403 corr 0.148
+ep  19 | train total 0.6287 acc -0.0625 flops 0.6744 p_super 0.092 || val p_super 0.115 acc -0.0450 corr 0.153
+ep  20 | train total 0.6284 acc -0.0636 flops 0.6755 p_super 0.095 || val p_super 0.069 acc -0.0375 corr 0.155
+ep  21 | train total 0.6281 acc -0.0636 flops 0.6752 p_super 0.094 || val p_super 0.135 acc -0.0454 corr 0.153
+ep  22 | train total 0.6276 acc -0.0656 flops 0.6772 p_super 0.100 || val p_super 0.106 acc -0.0410 corr 0.145
+ep  23 | train total 0.6270 acc -0.0646 flops 0.6751 p_super 0.094 || val p_super 0.072 acc -0.0364 corr 0.150
+ep  24 | train total 0.6280 acc -0.0640 flops 0.6754 p_super 0.095 || val p_super 0.115 acc -0.0457 corr 0.157
+ep  25 | train total 0.6268 acc -0.0641 flops 0.6741 p_super 0.091 || val p_super 0.093 acc -0.0385 corr 0.149
+ep  26 | train total 0.6268 acc -0.0649 flops 0.6752 p_super 0.094 || val p_super 0.103 acc -0.0408 corr 0.151
+ep  27 | train total 0.6270 acc -0.0663 flops 0.6773 p_super 0.100 || val p_super 0.065 acc -0.0380 corr 0.149
+ep  28 | train total 0.6264 acc -0.0654 flops 0.6752 p_super 0.094 || val p_super 0.095 acc -0.0406 corr 0.154
+ep  29 | train total 0.6260 acc -0.0661 flops 0.6757 p_super 0.096 || val p_super 0.094 acc -0.0403 corr 0.151
+[*] best val_corr=0.15767 @ epoch 11 (of 30)
+[*] saved policy (val-best) -> method02_advantage_regress_tinyConv/outputs/bdd100k/policy_tinyconv_g8_both_s0.pt
+
+  TinyConv 8x8 seed=1
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:54: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/nn/modules/lazy.py:181: UserWarning: Lazy modules are a new feature under heavy development so changes to the API or functionality can happen at any moment.
+  warnings.warn('Lazy modules are a new feature under heavy development '
+
+ep   0 | train total 0.6681 acc -0.0000 flops 0.6436 p_super 0.006 || val p_super 0.000 acc -0.0000 corr 0.081  *best*
+ep   1 | train total 0.6647 acc -0.0038 flops 0.6442 p_super 0.008 || val p_super 0.015 acc -0.0112 corr 0.114  *best*
+ep   2 | train total 0.6447 acc -0.0396 flops 0.6654 p_super 0.067 || val p_super 0.047 acc -0.0246 corr 0.114
+ep   3 | train total 0.6395 acc -0.0447 flops 0.6653 p_super 0.067 || val p_super 0.057 acc -0.0301 corr 0.142  *best*
+ep   4 | train total 0.6372 acc -0.0504 flops 0.6699 p_super 0.079 || val p_super 0.103 acc -0.0394 corr 0.147  *best*
+ep   5 | train total 0.6357 acc -0.0528 flops 0.6710 p_super 0.082 || val p_super 0.066 acc -0.0360 corr 0.149  *best*
+ep   6 | train total 0.6342 acc -0.0545 flops 0.6713 p_super 0.083 || val p_super 0.047 acc -0.0293 corr 0.143
+ep   7 | train total 0.6332 acc -0.0569 flops 0.6731 p_super 0.088 || val p_super 0.082 acc -0.0371 corr 0.145
+ep   8 | train total 0.6330 acc -0.0581 flops 0.6744 p_super 0.092 || val p_super 0.077 acc -0.0387 corr 0.148
+ep   9 | train total 0.6315 acc -0.0595 flops 0.6743 p_super 0.092 || val p_super 0.077 acc -0.0360 corr 0.148
+ep  10 | train total 0.6323 acc -0.0578 flops 0.6730 p_super 0.088 || val p_super 0.076 acc -0.0390 corr 0.149
+ep  11 | train total 0.6319 acc -0.0582 flops 0.6731 p_super 0.088 || val p_super 0.083 acc -0.0389 corr 0.147
+ep  12 | train total 0.6311 acc -0.0598 flops 0.6740 p_super 0.091 || val p_super 0.104 acc -0.0408 corr 0.145
+ep  13 | train total 0.6309 acc -0.0586 flops 0.6723 p_super 0.086 || val p_super 0.074 acc -0.0368 corr 0.145
+ep  14 | train total 0.6294 acc -0.0621 flops 0.6749 p_super 0.093 || val p_super 0.077 acc -0.0408 corr 0.147
+ep  15 | train total 0.6295 acc -0.0628 flops 0.6759 p_super 0.096 || val p_super 0.058 acc -0.0353 corr 0.148
+ep  16 | train total 0.6302 acc -0.0609 flops 0.6745 p_super 0.092 || val p_super 0.104 acc -0.0442 corr 0.149
+ep  17 | train total 0.6294 acc -0.0615 flops 0.6741 p_super 0.091 || val p_super 0.099 acc -0.0415 corr 0.145
+ep  18 | train total 0.6298 acc -0.0619 flops 0.6751 p_super 0.094 || val p_super 0.106 acc -0.0411 corr 0.147
+ep  19 | train total 0.6288 acc -0.0631 flops 0.6754 p_super 0.095 || val p_super 0.098 acc -0.0419 corr 0.147
+ep  20 | train total 0.6283 acc -0.0640 flops 0.6759 p_super 0.096 || val p_super 0.068 acc -0.0369 corr 0.144
+ep  21 | train total 0.6292 acc -0.0614 flops 0.6738 p_super 0.090 || val p_super 0.076 acc -0.0378 corr 0.146
+ep  22 | train total 0.6283 acc -0.0649 flops 0.6771 p_super 0.099 || val p_super 0.083 acc -0.0410 corr 0.151  *best*
+ep  23 | train total 0.6284 acc -0.0627 flops 0.6743 p_super 0.092 || val p_super 0.090 acc -0.0424 corr 0.144
+ep  24 | train total 0.6269 acc -0.0660 flops 0.6767 p_super 0.098 || val p_super 0.102 acc -0.0418 corr 0.144
+ep  25 | train total 0.6285 acc -0.0625 flops 0.6743 p_super 0.091 || val p_super 0.090 acc -0.0409 corr 0.147
+ep  26 | train total 0.6277 acc -0.0652 flops 0.6766 p_super 0.098 || val p_super 0.102 acc -0.0431 corr 0.148
+ep  27 | train total 0.6269 acc -0.0654 flops 0.6761 p_super 0.097 || val p_super 0.083 acc -0.0377 corr 0.143
+ep  28 | train total 0.6273 acc -0.0648 flops 0.6756 p_super 0.095 || val p_super 0.082 acc -0.0403 corr 0.141
+ep  29 | train total 0.6270 acc -0.0664 flops 0.6773 p_super 0.100 || val p_super 0.082 acc -0.0414 corr 0.146
+[*] best val_corr=0.15084 @ epoch 22 (of 30)
+[*] saved policy (val-best) -> method02_advantage_regress_tinyConv/outputs/bdd100k/policy_tinyconv_g8_both_s1.pt
+
+  TinyConv 8x8 seed=2
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:54: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/nn/modules/lazy.py:181: UserWarning: Lazy modules are a new feature under heavy development so changes to the API or functionality can happen at any moment.
+  warnings.warn('Lazy modules are a new feature under heavy development '
+
+ep   0 | train total 0.6683 acc -0.0000 flops 0.6437 p_super 0.006 || val p_super 0.000 acc -0.0000 corr 0.080  *best*
+ep   1 | train total 0.6665 acc -0.0000 flops 0.6415 p_super 0.000 || val p_super 0.000 acc -0.0000 corr 0.075
+ep   2 | train total 0.6665 acc -0.0000 flops 0.6415 p_super 0.000 || val p_super 0.001 acc -0.0002 corr 0.068
+ep   3 | train total 0.6504 acc -0.0310 flops 0.6616 p_super 0.056 || val p_super 0.028 acc -0.0197 corr 0.150  *best*
+ep   4 | train total 0.6400 acc -0.0473 flops 0.6693 p_super 0.078 || val p_super 0.042 acc -0.0275 corr 0.154  *best*
+ep   5 | train total 0.6370 acc -0.0518 flops 0.6714 p_super 0.083 || val p_super 0.097 acc -0.0384 corr 0.151
+ep   6 | train total 0.6351 acc -0.0546 flops 0.6726 p_super 0.087 || val p_super 0.086 acc -0.0379 corr 0.156  *best*
+ep   7 | train total 0.6351 acc -0.0536 flops 0.6711 p_super 0.083 || val p_super 0.075 acc -0.0351 corr 0.152
+ep   8 | train total 0.6336 acc -0.0579 flops 0.6748 p_super 0.093 || val p_super 0.137 acc -0.0411 corr 0.151
+ep   9 | train total 0.6338 acc -0.0556 flops 0.6721 p_super 0.086 || val p_super 0.094 acc -0.0394 corr 0.152
+ep  10 | train total 0.6324 acc -0.0575 flops 0.6729 p_super 0.088 || val p_super 0.085 acc -0.0400 corr 0.158  *best*
+ep  11 | train total 0.6325 acc -0.0604 flops 0.6767 p_super 0.098 || val p_super 0.105 acc -0.0409 corr 0.154
+ep  12 | train total 0.6315 acc -0.0585 flops 0.6730 p_super 0.088 || val p_super 0.115 acc -0.0418 corr 0.154
+ep  13 | train total 0.6307 acc -0.0611 flops 0.6753 p_super 0.095 || val p_super 0.109 acc -0.0415 corr 0.154
+ep  14 | train total 0.6306 acc -0.0614 flops 0.6756 p_super 0.095 || val p_super 0.074 acc -0.0367 corr 0.154
+ep  15 | train total 0.6304 acc -0.0628 flops 0.6771 p_super 0.099 || val p_super 0.089 acc -0.0388 corr 0.156
+ep  16 | train total 0.6297 acc -0.0635 flops 0.6772 p_super 0.100 || val p_super 0.086 acc -0.0379 corr 0.154
+ep  17 | train total 0.6301 acc -0.0631 flops 0.6771 p_super 0.100 || val p_super 0.106 acc -0.0412 corr 0.156
+ep  18 | train total 0.6299 acc -0.0636 flops 0.6775 p_super 0.101 || val p_super 0.096 acc -0.0402 corr 0.154
+ep  19 | train total 0.6291 acc -0.0628 flops 0.6753 p_super 0.094 || val p_super 0.120 acc -0.0417 corr 0.155
+ep  20 | train total 0.6297 acc -0.0616 flops 0.6747 p_super 0.093 || val p_super 0.105 acc -0.0421 corr 0.157
+ep  21 | train total 0.6291 acc -0.0634 flops 0.6761 p_super 0.097 || val p_super 0.115 acc -0.0421 corr 0.155
+ep  22 | train total 0.6298 acc -0.0634 flops 0.6771 p_super 0.099 || val p_super 0.106 acc -0.0410 corr 0.154
+ep  23 | train total 0.6291 acc -0.0635 flops 0.6763 p_super 0.097 || val p_super 0.054 acc -0.0313 corr 0.153
+ep  24 | train total 0.6302 acc -0.0610 flops 0.6745 p_super 0.092 || val p_super 0.119 acc -0.0427 corr 0.155
+ep  25 | train total 0.6283 acc -0.0641 flops 0.6760 p_super 0.096 || val p_super 0.088 acc -0.0394 corr 0.157
+ep  26 | train total 0.6288 acc -0.0648 flops 0.6776 p_super 0.101 || val p_super 0.113 acc -0.0403 corr 0.154
+ep  27 | train total 0.6285 acc -0.0636 flops 0.6757 p_super 0.096 || val p_super 0.082 acc -0.0369 corr 0.156
+ep  28 | train total 0.6275 acc -0.0663 flops 0.6780 p_super 0.102 || val p_super 0.103 acc -0.0403 corr 0.152
+ep  29 | train total 0.6272 acc -0.0648 flops 0.6754 p_super 0.095 || val p_super 0.122 acc -0.0416 corr 0.158
+[*] best val_corr=0.15822 @ epoch 10 (of 30)
+[*] saved policy (val-best) -> method02_advantage_regress_tinyConv/outputs/bdd100k/policy_tinyconv_g8_both_s2.pt
+
+  TinyConv 8x8 seed=3
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:54: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/nn/modules/lazy.py:181: UserWarning: Lazy modules are a new feature under heavy development so changes to the API or functionality can happen at any moment.
+  warnings.warn('Lazy modules are a new feature under heavy development '
+
+ep   0 | train total 0.6683 acc -0.0000 flops 0.6437 p_super 0.006 || val p_super 0.000 acc -0.0000 corr 0.079  *best*
+ep   1 | train total 0.6665 acc -0.0000 flops 0.6415 p_super 0.000 || val p_super 0.000 acc -0.0000 corr 0.077
+ep   2 | train total 0.6658 acc -0.0016 flops 0.6428 p_super 0.004 || val p_super 0.001 acc -0.0008 corr 0.092  *best*
+ep   3 | train total 0.6463 acc -0.0370 flops 0.6640 p_super 0.063 || val p_super 0.087 acc -0.0334 corr 0.138  *best*
+ep   4 | train total 0.6392 acc -0.0464 flops 0.6672 p_super 0.072 || val p_super 0.038 acc -0.0236 corr 0.141  *best*
+ep   5 | train total 0.6374 acc -0.0503 flops 0.6699 p_super 0.079 || val p_super 0.058 acc -0.0309 corr 0.152  *best*
+ep   6 | train total 0.6359 acc -0.0533 flops 0.6718 p_super 0.085 || val p_super 0.105 acc -0.0374 corr 0.147
+ep   7 | train total 0.6346 acc -0.0558 flops 0.6734 p_super 0.089 || val p_super 0.188 acc -0.0476 corr 0.145
+ep   8 | train total 0.6336 acc -0.0567 flops 0.6733 p_super 0.089 || val p_super 0.073 acc -0.0363 corr 0.152  *best*
+ep   9 | train total 0.6331 acc -0.0567 flops 0.6726 p_super 0.087 || val p_super 0.087 acc -0.0397 corr 0.152
+ep  10 | train total 0.6319 acc -0.0582 flops 0.6732 p_super 0.088 || val p_super 0.105 acc -0.0422 corr 0.150
+ep  11 | train total 0.6330 acc -0.0589 flops 0.6754 p_super 0.095 || val p_super 0.115 acc -0.0404 corr 0.145
+ep  12 | train total 0.6311 acc -0.0602 flops 0.6747 p_super 0.093 || val p_super 0.090 acc -0.0383 corr 0.142
+ep  13 | train total 0.6318 acc -0.0590 flops 0.6741 p_super 0.091 || val p_super 0.072 acc -0.0379 corr 0.152
+ep  14 | train total 0.6310 acc -0.0602 flops 0.6744 p_super 0.092 || val p_super 0.086 acc -0.0392 corr 0.150
+ep  15 | train total 0.6306 acc -0.0591 flops 0.6726 p_super 0.087 || val p_super 0.067 acc -0.0348 corr 0.148
+ep  16 | train total 0.6298 acc -0.0603 flops 0.6731 p_super 0.088 || val p_super 0.089 acc -0.0409 corr 0.146
+ep  17 | train total 0.6295 acc -0.0613 flops 0.6740 p_super 0.091 || val p_super 0.080 acc -0.0412 corr 0.155  *best*
+ep  18 | train total 0.6294 acc -0.0610 flops 0.6735 p_super 0.089 || val p_super 0.079 acc -0.0376 corr 0.147
+ep  19 | train total 0.6286 acc -0.0639 flops 0.6762 p_super 0.097 || val p_super 0.112 acc -0.0434 corr 0.147
+ep  20 | train total 0.6306 acc -0.0586 flops 0.6719 p_super 0.085 || val p_super 0.087 acc -0.0386 corr 0.143
+ep  21 | train total 0.6285 acc -0.0618 flops 0.6734 p_super 0.089 || val p_super 0.108 acc -0.0419 corr 0.147
+ep  22 | train total 0.6285 acc -0.0639 flops 0.6761 p_super 0.097 || val p_super 0.084 acc -0.0392 corr 0.145
+ep  23 | train total 0.6286 acc -0.0622 flops 0.6739 p_super 0.091 || val p_super 0.092 acc -0.0399 corr 0.146
+ep  24 | train total 0.6284 acc -0.0633 flops 0.6751 p_super 0.094 || val p_super 0.083 acc -0.0394 corr 0.147
+ep  25 | train total 0.6284 acc -0.0620 flops 0.6734 p_super 0.089 || val p_super 0.059 acc -0.0348 corr 0.142
+ep  26 | train total 0.6277 acc -0.0632 flops 0.6742 p_super 0.091 || val p_super 0.068 acc -0.0358 corr 0.145
+ep  27 | train total 0.6283 acc -0.0638 flops 0.6757 p_super 0.096 || val p_super 0.091 acc -0.0425 corr 0.148
+ep  28 | train total 0.6277 acc -0.0633 flops 0.6742 p_super 0.091 || val p_super 0.100 acc -0.0423 corr 0.149
+ep  29 | train total 0.6272 acc -0.0642 flops 0.6747 p_super 0.093 || val p_super 0.102 acc -0.0419 corr 0.146
+[*] best val_corr=0.15494 @ epoch 17 (of 30)
+[*] saved policy (val-best) -> method02_advantage_regress_tinyConv/outputs/bdd100k/policy_tinyconv_g8_both_s3.pt
+
+  TinyConv 8x8 seed=4
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/cuda/__init__.py:54: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/home/hslee/anaconda3/envs/yolov12/lib/python3.11/site-packages/torch/nn/modules/lazy.py:181: UserWarning: Lazy modules are a new feature under heavy development so changes to the API or functionality can happen at any moment.
+  warnings.warn('Lazy modules are a new feature under heavy development '
+
+ep   0 | train total 0.6682 acc -0.0000 flops 0.6436 p_super 0.006 || val p_super 0.000 acc -0.0000 corr 0.078  *best*
+ep   1 | train total 0.6665 acc -0.0000 flops 0.6415 p_super 0.000 || val p_super 0.000 acc -0.0000 corr 0.045
+ep   2 | train total 0.6566 acc -0.0175 flops 0.6517 p_super 0.029 || val p_super 0.090 acc -0.0322 corr 0.129  *best*
+ep   3 | train total 0.6400 acc -0.0471 flops 0.6691 p_super 0.077 || val p_super 0.088 acc -0.0331 corr 0.139  *best*
+ep   4 | train total 0.6366 acc -0.0520 flops 0.6711 p_super 0.083 || val p_super 0.089 acc -0.0355 corr 0.141  *best*
+ep   5 | train total 0.6354 acc -0.0556 flops 0.6742 p_super 0.091 || val p_super 0.068 acc -0.0330 corr 0.145  *best*
+ep   6 | train total 0.6341 acc -0.0561 flops 0.6732 p_super 0.088 || val p_super 0.110 acc -0.0396 corr 0.142
+ep   7 | train total 0.6354 acc -0.0530 flops 0.6708 p_super 0.082 || val p_super 0.075 acc -0.0346 corr 0.146  *best*
+ep   8 | train total 0.6328 acc -0.0584 flops 0.6745 p_super 0.092 || val p_super 0.109 acc -0.0433 corr 0.147  *best*
+ep   9 | train total 0.6317 acc -0.0610 flops 0.6765 p_super 0.098 || val p_super 0.114 acc -0.0421 corr 0.146
+ep  10 | train total 0.6334 acc -0.0567 flops 0.6730 p_super 0.088 || val p_super 0.134 acc -0.0452 corr 0.144
+ep  11 | train total 0.6300 acc -0.0623 flops 0.6760 p_super 0.096 || val p_super 0.086 acc -0.0360 corr 0.146
+ep  12 | train total 0.6313 acc -0.0610 flops 0.6760 p_super 0.096 || val p_super 0.066 acc -0.0374 corr 0.148  *best*
+ep  13 | train total 0.6299 acc -0.0621 flops 0.6756 p_super 0.095 || val p_super 0.089 acc -0.0400 corr 0.147
+ep  14 | train total 0.6307 acc -0.0628 flops 0.6775 p_super 0.101 || val p_super 0.111 acc -0.0418 corr 0.148
+ep  15 | train total 0.6301 acc -0.0624 flops 0.6762 p_super 0.097 || val p_super 0.087 acc -0.0389 corr 0.142
+ep  16 | train total 0.6293 acc -0.0625 flops 0.6753 p_super 0.095 || val p_super 0.063 acc -0.0354 corr 0.141
+ep  17 | train total 0.6296 acc -0.0649 flops 0.6788 p_super 0.104 || val p_super 0.073 acc -0.0374 corr 0.145
+ep  18 | train total 0.6304 acc -0.0620 flops 0.6760 p_super 0.096 || val p_super 0.070 acc -0.0369 corr 0.147
+ep  19 | train total 0.6306 acc -0.0613 flops 0.6755 p_super 0.095 || val p_super 0.090 acc -0.0401 corr 0.144
+ep  20 | train total 0.6286 acc -0.0648 flops 0.6774 p_super 0.100 || val p_super 0.114 acc -0.0431 corr 0.143
+ep  21 | train total 0.6295 acc -0.0643 flops 0.6779 p_super 0.102 || val p_super 0.075 acc -0.0365 corr 0.145
+ep  22 | train total 0.6298 acc -0.0621 flops 0.6754 p_super 0.095 || val p_super 0.075 acc -0.0386 corr 0.149  *best*
+ep  23 | train total 0.6287 acc -0.0647 flops 0.6774 p_super 0.100 || val p_super 0.092 acc -0.0415 corr 0.147
+ep  24 | train total 0.6283 acc -0.0640 flops 0.6760 p_super 0.096 || val p_super 0.093 acc -0.0415 corr 0.146
+ep  25 | train total 0.6283 acc -0.0648 flops 0.6770 p_super 0.099 || val p_super 0.097 acc -0.0441 corr 0.148
+ep  26 | train total 0.6277 acc -0.0669 flops 0.6788 p_super 0.104 || val p_super 0.088 acc -0.0408 corr 0.148
+ep  27 | train total 0.6278 acc -0.0652 flops 0.6769 p_super 0.099 || val p_super 0.071 acc -0.0391 corr 0.148
+ep  28 | train total 0.6294 acc -0.0624 flops 0.6752 p_super 0.094 || val p_super 0.066 acc -0.0391 corr 0.149
+ep  29 | train total 0.6275 acc -0.0649 flops 0.6760 p_super 0.096 || val p_super 0.094 acc -0.0423 corr 0.148
+[*] best val_corr=0.14943 @ epoch 22 (of 30)
+[*] saved policy (val-best) -> method02_advantage_regress_tinyConv/outputs/bdd100k/policy_tinyconv_g8_both_s4.pt
+
+
+=== All training done. Run video eval next. ===

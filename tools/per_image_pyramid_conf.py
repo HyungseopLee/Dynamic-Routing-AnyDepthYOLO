@@ -25,7 +25,7 @@ Writes one wide CSV; downstream analysis script reads from it.
 
 Usage:
     PYTHONPATH=$PWD python tools/per_image_pyramid_conf.py \
-        --weight ./pretraining_AnyDepthYOLO/weights/yolo-ad-v12-orig_small_0.479_0.451.pt \
+        --weight ./results/step1_finetune/pretrained_coco/yolo-ad-v12-orig_small_0.479_0.451.pt \
         --data bdd100k.yaml --imgsz 1280 \
         --out ./analysis/bdd100k-AnyDepth/per_image_pyramid_conf.csv
 """

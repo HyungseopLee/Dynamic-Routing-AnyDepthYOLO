@@ -1,19 +1,24 @@
-.vscode
-per_frame_predictions*/
-*.mp4
-summary*.json
-*latency*
-*energy*
-*.csv
-*.npy
-# paper
-# _extracted
-# regenerable training-history logs (train_policy --logdir is opt-in)
-**/outputs/**/logs/
-**/outputs/**/logs_*/
-**/outputs/**/sweep_*/logs/
-**/outputs/**/*.log
+__pycache__/
+*.py[cod]
 
+# ── Large artifacts: distributed via Google Drive, not git ──────────────────
+# model weights & routers
+*.pt
+*.pth
+# offline feature/loss caches (tens of GB)
+*.pkl
+results/step2_router/cache/
+# deployment binaries
 *.onnx
 *.engine
-*.mov
+# demo videos
+*.mp4
+
+# training logs & curve dumps (regenerable, ~160MB)
+results/step1_finetune/logs/
+
+# scratch
+*.out
+*.err
+predictions.json
+runs/
