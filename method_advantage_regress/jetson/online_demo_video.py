@@ -21,7 +21,7 @@ Usage (TRT backend, RTX 3090):
         --router_engine method_advantage_regress/jetson/onnx/bdd_pooled/router.fp16.engine \
         --scenarios method_advantage_regress/outputs/bdd100k/scenarios.json \
         --mot_root  /media/data/bdd100k_mot/val \
-        --kp 1.0 --ki 0.10 --beta 0.75
+        --kp 1.0 --ki 0.10 --beta 0.85
         # output auto-named per family: demo_video_<family>_fps<lo>-<hi>.mp4
 
 Usage (PyTorch eager backend):
@@ -49,6 +49,17 @@ from method_advantage_regress.router.feature_tap import (
     INPUT_LEVEL_LAYERS, PRED_LEVEL_LAYERS, STATE_LAYERS)
 from method_advantage_regress.eval.eval_video import (
     load_router, grid_vec, parse_box_track, labeled_frames)
+
+
+def all_frames(video_path):
+    """Yield every frame from a video file (no annotation filtering)."""
+    cap = cv2.VideoCapture(str(video_path))
+    while True:
+        ok, frame = cap.read()
+        if not ok:
+            break
+        yield frame
+    cap.release()
 from method_advantage_regress.jetson.online_budget_demo import OUT, cond_label, target_schedule
 
 # Must match the training class order of finetuning_AnyDepthYOLO/weights/bdd100k/best.pt
@@ -62,9 +73,9 @@ CLASS_COLORS = [
     (160, 0, 255), (0, 255, 255), (255, 0, 200), (255, 220, 0), (0, 180, 255),
 ]
 FAMILY_TITLES = {
-    "night_dawn":    "Night ↔ Daytime",
-    "city_highway":  "City ↔ Highway",
-    "clear_rainy":   "Clear ↔ Rainy",
+    "night_dawn":    "Night <-> Daytime",
+    "city_highway":  "City <-> Highway",
+    "clear_rainy":   "Clear <-> Rainy",
 }
 
 
@@ -85,8 +96,8 @@ def draw_overlay(frame, boxes, config, fps_realized, fps_target,
                     cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 0), 1, cv2.LINE_AA)
 
     # config badge (top-left)
-    badge_color = (60, 60, 220) if config == "super" else (60, 180, 60)
-    badge_text  = "SUPER (heavy)" if config == "super" else "BASE  (light)"
+    badge_color = (90, 90, 90)
+    badge_text  = "SUPER (deep)  " if config == "super" else "BASE  (shallow)"
     cv2.rectangle(frame, (8, 8), (240, 50), badge_color, -1)
     cv2.putText(frame, badge_text, (14, 38),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.85, (255, 255, 255), 2, cv2.LINE_AA)
@@ -99,7 +110,7 @@ def draw_overlay(frame, boxes, config, fps_realized, fps_target,
                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, (240, 240, 240), 2, cv2.LINE_AA)
 
     # FPS readout (top-right)
-    fps_text = f"realized {fps_realized:5.1f} fps  |  target {fps_target:5.1f} fps"
+    fps_text = f"measured {fps_realized:5.1f} fps  |  target {fps_target:5.1f} fps"
     (tw, _), _ = cv2.getTextSize(fps_text, cv2.FONT_HERSHEY_SIMPLEX, 0.6, 1)
     cv2.rectangle(frame, (W - tw - 16, 8), (W - 4, 44), (30, 30, 30), -1)
     cv2.putText(frame, fps_text, (W - tw - 10, 34),
@@ -150,10 +161,10 @@ def main():
     ap.add_argument("--grid",       type=int, default=2)
     ap.add_argument("--kp",         type=float, default=1.0)
     ap.add_argument("--ki",         type=float, default=0.10)
-    ap.add_argument("--beta",       type=float, default=0.75)
+    ap.add_argument("--beta",       type=float, default=0.85)
     ap.add_argument("--warmup",     type=int, default=30)
-    ap.add_argument("--out_fps",    type=float, default=5.0,
-                    help="output video FPS (BDD annotations are at 5fps)")
+    ap.add_argument("--out_fps",    type=float, default=30.0,
+                    help="output video FPS")
     ap.add_argument("--out_dir",    default=str(OUT / "figures"),
                     help="directory for output mp4 files")
     ap.add_argument("--families",   nargs="*", default=None,
@@ -239,9 +250,8 @@ def main():
 
     def stream_family(order):
         for seg in order:
-            gt = parse_box_track(label_dir / f"{seg['seq']}.json")
             first = True
-            for _fidx, bgr in labeled_frames(video_dir / f"{seg['seq']}.mov", gt):
+            for bgr in all_frames(video_dir / f"{seg['seq']}.mov"):
                 yield bgr, first, cond_label(seg.get("cond", {}))
                 first = False
 
@@ -282,8 +292,12 @@ def main():
 
     for fam in fams:
         order = scen[fam]
-        # count total labeled frames
-        counts = [len(parse_box_track(label_dir / f"{seg['seq']}.json")) for seg in order]
+        # count total frames (all frames, not just annotated)
+        counts = []
+        for seg in order:
+            cap = cv2.VideoCapture(str(video_dir / f"{seg['seq']}.mov"))
+            counts.append(int(cap.get(cv2.CAP_PROP_FRAME_COUNT)))
+            cap.release()
         n_total = sum(counts)
 
         # sawtooth FPS target for this family (continuously varying)
