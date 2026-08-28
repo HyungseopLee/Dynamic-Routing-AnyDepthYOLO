@@ -9,30 +9,38 @@ a single seed is shown below for brevity. Defaults match the paper: --grid 2 ove
 feat=both routers.
 
 Usage:
+The three differ only in --dataset, --imgsz and the cache/weight paths.
+
     # KITTI
     python -m step3_eval.eval_video \
         --dataset kitti --weight results/step1_finetune/weights/kitti/best.pt \
-        --policies "s0=results/step3_eval/ablation/kitti/router_both_g2_s0.pt" \
-        --val_cache results/step2_router/cache/kitti/cache_val_g2.pt \
-        --imgsz 384 1248 --conf 0.25 --budgets 10,20,30,40,50,60,70,80,90 \
-        --out results/step3_eval/kitti/eval/video_curve_main_both_g2.json
+        --policies  "s0=results/step2_router/weights/kitti/router_g2x2_both_s0.pt" \
+        --val_cache results/step2_router/cache/kitti/cache_val_g2x2_both.pt \
+        --grid 2 --imgsz 384 1248 --conf 0.25 \
+        --budgets 10,20,30,40,50,60,70,80,90 \
+        --out results/step3_eval/kitti/eval/video_curve.json
 
     # BDD100K
     python -m step3_eval.eval_video \
         --dataset bdd100k --weight results/step1_finetune/weights/bdd100k/best.pt \
-        --policies "s0=results/step2_router/weights/bdd100k/router_both_0.pt" \
-        --val_cache results/step2_router/cache/bdd100k/cache_val_both.pt \
-        --imgsz 720 1280 --conf 0.25 --budgets 10,20,30,40,50,60,70,80,90 \
-        --out results/step3_eval/bdd100k/eval/video_curve_archabl.json
+        --policies  "s0=results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt" \
+        --val_cache results/step2_router/cache/bdd100k/cache_val_g2x2_both.pt \
+        --grid 2 --imgsz 720 1280 --conf 0.25 \
+        --budgets 10,20,30,40,50,60,70,80,90 \
+        --out results/step3_eval/bdd100k/eval/video_curve.json
 
-    # Waymo (4 shards across 2 GPUs — see step3_eval/run_waymo_eval_both_robust.sh)
+    # Waymo
     python -m step3_eval.eval_video \
         --dataset waymo --weight results/step1_finetune/weights/waymo/best.pt \
-        --policies "s3=results/step2_router/weights/waymo/router_both_3.pt" \
-        --val_cache results/step2_router/cache/waymo/cache_val_both.pt \
-        --imgsz 1280 1920 --conf 0.25 --pi --router_only \
-        --num_shards 4 --shard_id 0 \
-        --raw_out results/step3_eval/waymo/eval_both/shard_n0.pt
+        --policies  "s0=results/step2_router/weights/waymo/router_g2x2_both_s3.pt" \
+        --val_cache results/step2_router/cache/waymo/cache_val_g2x2_both.pt \
+        --grid 2 --imgsz 1280 1920 --conf 0.25 \
+        --budgets 10,20,30,40,50,60,70,80,90 \
+        --out results/step3_eval/waymo/eval/video_curve.json
+
+Waymo at 1280x1920 is heavy enough to want sharding: add --num_shards N --shard_id I
+with --raw_out results/step3_eval/waymo/eval/shard_<I>.pt, then merge the shards with
+step3_eval/merge_video_shards.py (see step3_eval/run_waymo_eval_both_robust.sh).
 """
 import argparse
 import json

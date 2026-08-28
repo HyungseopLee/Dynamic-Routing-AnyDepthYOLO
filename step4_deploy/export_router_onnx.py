@@ -14,7 +14,7 @@ After export, build the TRT engine with build_engine.py and pass it via --router
 to online_budget_demo_stream.py.
 
     python -m step4_deploy.export_router_onnx \
-        --router results/step2_router/weights/bdd100k/router_both_0.pt \
+        --router results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt \
         --base_engine results/step4_deploy/onnx/bdd_pooled/base.fp16.engine \
         --out results/step4_deploy/onnx/bdd_pooled/router.onnx
 

@@ -13,7 +13,7 @@ set -uo pipefail   # -e removed: continue to next experiment even on OOM/crash
 BASE="trt_bench/onnx/bdd_pooled/base.fp16.engine"
 SUPER="trt_bench/onnx/bdd_pooled/super.fp16.engine"
 ROUTER_ENG="trt_bench/onnx/bdd_pooled/router.fp16.engine"
-ROUTER="results/step2_router/weights/bdd100k/policy_both_0.pt"
+ROUTER="results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt"
 
 COMMON="--base $BASE --super $SUPER --router_engine $ROUTER_ENG --router $ROUTER \
         --mode latency --warmup 60 --win 30"

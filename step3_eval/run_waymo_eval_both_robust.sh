@@ -21,7 +21,7 @@ shard() {  # gpu, shard_id(0..3)
   echo "[$(date +%T)] shard $SID on GPU$GPU -> $RAW"
   CUDA_VISIBLE_DEVICES=$GPU python -u -m step3_eval.eval_video --dataset waymo \
     --weight "$W" --policies "$POL" --waymo_root /media/data/waymo_yolo/val \
-    --grid 2 --imgsz 1280 1920 --conf 0.001 --val_cache "$CACHE/cache_val_both.pt" \
+    --grid 2 --imgsz 1280 1920 --conf 0.001 --val_cache "$CACHE/cache_val_g2x2_both.pt" \
     --budgets 10,20,30,40,50,60,70,80,90 --pi \
     --num_shards 4 --shard_id "$SID" --device cuda:0 \
     --raw_out "$RAW" > "$O/eval_both/video_shard_n${SID}.log" 2>&1

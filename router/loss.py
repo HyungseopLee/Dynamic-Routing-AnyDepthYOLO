@@ -9,33 +9,19 @@
   - The regression form is ablatable: magnitude losses (mse/mae/huber) vs the
     scale-invariant ranking loss (corr).
 
-There is no FLOPs or uniformity term. The compute/AP trade-off is set entirely
-at eval time by thresholding R(F), so a single trained router sweeps the whole
-Pareto curve. (An earlier variant folded a lambda_flops*L_flops term into the
-objective; on KITTI that term dominates and collapses the router to always-BASE,
-so it was removed.)
 """
-
-import json
-from pathlib import Path
 
 import torch
 import torch.nn.functional as F
 
 
 class RouterLoss:
-    def __init__(self, flops_table_path: str, regress_loss: str = "mse"):
+    def __init__(self, regress_loss: str = "mse"):
         """
         Args:
-            flops_table_path: offline FLOPs table; read for the reported
-                base/super GFLOPs constants (not used by the loss itself).
             regress_loss: mse | mae | huber | corr
         """
         self.regress_loss = regress_loss
-
-        table = json.loads(Path(flops_table_path).read_text())
-        self.g_base = float(table["actions"]["0_base"]["gflops"])
-        self.g_super = float(table["actions"]["1_super"]["gflops"])
 
     def __call__(self, pred: torch.Tensor,
                  l_base: torch.Tensor, l_super: torch.Tensor):

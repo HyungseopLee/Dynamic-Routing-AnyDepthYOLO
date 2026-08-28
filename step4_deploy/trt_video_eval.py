@@ -12,7 +12,7 @@ deployed cost of routing, not a replay.
 
     python step4_deploy/trt_video_eval.py --base results/step4_deploy/onnx/bdd_pooled/base.fp16.engine \
         --super results/step4_deploy/onnx/bdd_pooled/super.fp16.engine \
-        --router results/step2_router/weights/bdd100k/router_scenario_s0.pt \
+        --router results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt \
         --mot_root /media/data/bdd100k_mot/val --imgsz 720 1280 --limit 20
 """
 import argparse

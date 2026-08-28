@@ -27,7 +27,7 @@ Step 2 — build TRT engines (see build_engine.py):
 Step 3 — (optional) export router ONNX (see export_router_onnx.py):
 
     python -m step4_deploy.export_router_onnx \
-        --router results/step2_router/weights/bdd100k/router_both_0.pt \
+        --router results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt \
         --base_engine results/step4_deploy/onnx/bdd_pooled/base.fp16.engine \
         --out results/step4_deploy/onnx/bdd_pooled/router.onnx
     python -m step4_deploy.build_engine \
@@ -38,7 +38,7 @@ Step 4 — run TRT budget-tracking demo (see online_budget_demo_stream.py):
     python -m step4_deploy.online_budget_demo_stream \
     --base  results/step4_deploy/onnx/bdd_pooled/base.fp16.engine \
     --super results/step4_deploy/onnx/bdd_pooled/super.fp16.engine \
-    --router results/step2_router/weights/bdd100k/router_both_0.pt \
+    --router results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt \
     --router_engine results/step4_deploy/onnx/bdd_pooled/router.fp16.engine \
     --scenarios results/step3_eval/bdd100k/scenarios.json \
     --mot_root /media/data/bdd100k_mot/val \
@@ -50,7 +50,7 @@ Step 4 — run TRT budget-tracking demo (see online_budget_demo_stream.py):
     python -m step4_deploy.online_budget_demo_stream \
     --base  results/step4_deploy/onnx/bdd_pooled/base.fp16.engine \
     --super results/step4_deploy/onnx/bdd_pooled/super.fp16.engine \
-    --router results/step2_router/weights/bdd100k/router_both_0.pt \
+    --router results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt \
     --router_engine results/step4_deploy/onnx/bdd_pooled/router.fp16.engine \
     --scenarios results/step3_eval/bdd100k/scenarios.json \
     --mot_root /media/data/bdd100k_mot/val \

@@ -22,7 +22,7 @@ mkdir -p "$EVAL_DIR/eval"
 # ── [1/2] grid=8: TinyConv 8x8 ───────────────────────────────────────────────
 POL_G8=""
 for S in 0 1 2 3 4; do
-  POL_G8+="tinyconv_g8_s${S}=$O/router_tinyconv_g8_both_s${S}.pt,"
+  POL_G8+="tinyconv_g8_s${S}=$O/router_g8x8_both_s${S}.pt,"
 done
 POL_G8="${POL_G8%,}"
 
@@ -32,7 +32,7 @@ python -m step3_eval.eval_video --dataset bdd100k \
     --weight "$W" \
     --policies "$POL_G8" \
     --grid 8 --imgsz 720 1280 --conf 0.25 \
-    --val_cache "$CACHE_DIR/cache_val_g8_both.pt" \
+    --val_cache "$CACHE_DIR/cache_val_g8x8_both.pt" \
     --budgets 1,5,10,20,30,40,50,60,70,80,90,95,99 \
     --num_shards 1 --shard_id 0 \
     --raw_out "$EVAL_DIR/eval/grid_abl_g8_shard_0.pt" \

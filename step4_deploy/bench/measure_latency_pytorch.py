@@ -2,10 +2,8 @@
 then print the Pareto table in the same format as measure_latency_3090.py.
 
 Usage:
-    /home/hslee/anaconda3/envs/yolov12/bin/python \
-        -m step4_deploy.bench.measure_latency_pytorch
-    /home/hslee/anaconda3/envs/yolov12/bin/python \
-        -m step4_deploy.bench.measure_latency_pytorch --compile
+    python -m step4_deploy.bench.measure_latency_pytorch
+    python -m step4_deploy.bench.measure_latency_pytorch --compile
 """
 import json, re, sys
 from pathlib import Path

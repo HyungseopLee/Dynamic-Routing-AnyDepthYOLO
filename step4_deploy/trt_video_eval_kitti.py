@@ -15,7 +15,7 @@ taus (decode-once), so the disk/decode cost is not paid 11x.
     python step4_deploy/trt_video_eval_kitti.py \
         --base results/step4_deploy/onnx/kitti/base.fp16.engine \
         --super results/step4_deploy/onnx/kitti/super.fp16.engine \
-        --router results/step2_router/weights/kitti/router.pt \
+        --router results/step2_router/weights/kitti/router_g2x2_both_s0.pt \
         --kitti_root /media/data/kitti-tracking --imgsz 384 1248
 """
 import argparse

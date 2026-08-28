@@ -17,7 +17,7 @@ Usage (TRT backend, RTX 3090):
     python -m step4_deploy.online_demo_video \
         --base   results/step4_deploy/onnx/bdd_pooled/base.fp16.engine \
         --super  results/step4_deploy/onnx/bdd_pooled/super.fp16.engine \
-        --router results/step2_router/weights/bdd100k/router_both_0.pt \
+        --router results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt \
         --router_engine results/step4_deploy/onnx/bdd_pooled/router.fp16.engine \
         --scenarios results/step3_eval/bdd100k/scenarios.json \
         --mot_root  /media/data/bdd100k_mot/val \
@@ -27,7 +27,7 @@ Usage (TRT backend, RTX 3090):
 Usage (PyTorch eager backend):
     python -m step4_deploy.online_demo_video \
         --weight    results/step1_finetune/weights/bdd100k/best.pt \
-        --router    results/step2_router/weights/bdd100k/router_both_0.pt \
+        --router    results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt \
         --scenarios results/step3_eval/bdd100k/scenarios.json \
         --mot_root  /media/data/bdd100k_mot/val
 """
@@ -61,6 +61,8 @@ def all_frames(video_path):
         yield frame
     cap.release()
 from step4_deploy.online_budget_demo import OUT, cond_label, target_schedule
+
+DEMO_OUT = Path(__file__).resolve().parents[1] / "results/step4_deploy/demo_videos"
 
 # Must match the training class order of results/step1_finetune/weights/bdd100k/best.pt
 # (checked via ckpt model.names): NOT the BDD-MOT order.
@@ -165,7 +167,7 @@ def main():
     ap.add_argument("--warmup",     type=int, default=30)
     ap.add_argument("--out_fps",    type=float, default=30.0,
                     help="output video FPS")
-    ap.add_argument("--out_dir",    default=str(OUT / "figures"),
+    ap.add_argument("--out_dir",    default=str(DEMO_OUT),
                     help="directory for output mp4 files")
     ap.add_argument("--families",   nargs="*", default=None,
                     help="subset of scenario families to render")

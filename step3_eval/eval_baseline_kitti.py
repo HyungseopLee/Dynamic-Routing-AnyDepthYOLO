@@ -67,9 +67,8 @@ BDD_NAMES = {0: "car", 1: "van", 2: "truck", 3: "pedestrian",
 EVAL_CLS = sorted(set(KITTI_TO_BDD.values()))   # [0, 1, 2, 3, 4, 5, 6]
 
 # Rule-based parameters
-# Confidence features used by rule strategies. Mirrors the offline analysis CSV
-# (tools/per_image_loss_pr_conf.py): same thresholds, same top-K's, so plot
-# tooling can pick any feature without having to re-run the eval.
+# Confidence features used by rule strategies. Every threshold and top-K is computed
+# up front so plot tooling can pick any feature without having to re-run the eval.
 #   - top{K}_mean_conf  : mean of top-K highest post-NMS confidences
 #   - mean_conf_ge_{T}  : mean of post-NMS confidences >= T (T = 0.01 ... 0.75)
 #   - mean_conf_all     : mean of all post-NMS confidences (no threshold)

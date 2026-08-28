@@ -14,39 +14,37 @@ Per step (image i, batch B):
   - update router only.
 
 Defaults match the paper's configuration: --arch tinyconv over a 2x2 grid with
---feat both (backbone + neck taps). The gapmpl architecture and the input/pred
-feature subsets exist for the ablations in step3_eval/ablation/.
+--feat both (backbone + neck taps). 
+The gapmpl architecture and the input/pred feature subsets exist for the ablations in step3_eval/ablation/.
 
-Usage (run from repo root):
-    # KITTI  (reads results/step2_router/cache/kitti/cache_{train,val}_g2.pt)
+Usage (run from repo root). The three differ only in --dataset, the cache paths and
+--epochs; every other flag is the paper's configuration.
+
+    # KITTI
     python -m step2_train_router.train_policy \
         --dataset kitti --feat both --norm batch \
-        --cache results/step2_router/cache/kitti/cache_train_g2.pt \
-        --val_cache results/step2_router/cache/kitti/cache_val_g2.pt \
-        --epochs 50 --select val_corr --seed 0
+        --cache     results/step2_router/cache/kitti/cache_train_g2x2_both.pt \
+        --val_cache results/step2_router/cache/kitti/cache_val_g2x2_both.pt \
+        --epochs 50 --select val_corr --seed 0 \
+        --out results/step2_router/weights/kitti/router_g2x2_both_s0.pt
 
-    # BDD100K  (reads results/step2_router/cache/bdd100k/cache_{train,val}_both.pt)
+    # BDD100K
     python -m step2_train_router.train_policy \
         --dataset bdd100k --feat both --norm batch \
-        --cache results/step2_router/cache/bdd100k/cache_train_both.pt \
-        --val_cache results/step2_router/cache/bdd100k/cache_val_both.pt \
+        --cache     results/step2_router/cache/bdd100k/cache_train_g2x2_both.pt \
+        --val_cache results/step2_router/cache/bdd100k/cache_val_g2x2_both.pt \
         --epochs 30 --select val_corr --seed 0 \
-        --out results/step2_router/weights/bdd100k/router_both_0.pt
+        --out results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt
 
-    # Waymo  (reads results/step2_router/cache/waymo/cache_{train,val}_both.pt; fp16 cache)
+    # Waymo  (fp16 cache)
     python -m step2_train_router.train_policy \
         --dataset waymo --feat both --norm batch \
-        --cache results/step2_router/cache/waymo/cache_train_both.pt \
-        --val_cache results/step2_router/cache/waymo/cache_val_both.pt \
+        --cache     results/step2_router/cache/waymo/cache_train_g2x2_both.pt \
+        --val_cache results/step2_router/cache/waymo/cache_val_g2x2_both.pt \
         --epochs 50 --select val_corr --seed 0 \
-        --out results/step2_router/weights/waymo/router_both_3.pt
+        --out results/step2_router/weights/waymo/router_g2x2_both_s3.pt
 
-    # GAP-MLP router (--arch gapmpl; same cache, spatial dims are pooled internally)
-    python -m step2_train_router.train_policy \
-        --dataset bdd100k --arch gapmpl --feat both --norm batch \
-        --cache results/step2_router/cache/bdd100k/cache_train_both.pt \
-        --val_cache results/step2_router/cache/bdd100k/cache_val_both.pt \
-        --epochs 30 --select val_corr --seed 0
+The paper reports the mean over seeds 0-4; rerun with --seed S --out ..._S.pt.
 """
 
 import argparse
@@ -62,7 +60,7 @@ from torch.utils.data import DataLoader, TensorDataset
 
 from router.loss import RouterLoss
 from router.router_net import GapMlpNet, RouterNetwork
-from router.feature_tap import INPUT_LEVEL_LAYERS
+from router.feature_tap import INPUT_LEVEL_LAYERS, FEAT_CHOICES, normalize_feat
 
 
 def slice_levels(cache, keep):
@@ -182,7 +180,6 @@ def main():
                     help="output scope: results/step2_router/weights/<dataset>/")
     ap.add_argument("--cache", default=None)
     ap.add_argument("--val_cache", default=None)
-    ap.add_argument("--flops", default=None)
     ap.add_argument("--epochs", type=int, default=50)
     ap.add_argument("--batch", type=int, default=256)
     ap.add_argument("--lr", type=float, default=1e-3)
@@ -190,7 +187,7 @@ def main():
     ap.add_argument("--group_dim", type=int, default=64)
     ap.add_argument("--path_dim", type=int, default=8,
                     help="prev-action embedding dim (0 = no path embedding)")
-    ap.add_argument("--feat", default="both", choices=["input", "pred", "both"],
+    ap.add_argument("--feat", default="both", choices=list(FEAT_CHOICES),
                     help="which context feature(s) the router uses. Paper default: both "
                          "(backbone + neck); input/pred are for the feature ablation")
     ap.add_argument("--arch", default="tinyconv", choices=["tinyconv", "gapmpl"],
@@ -217,10 +214,10 @@ def main():
                     "layers to keep (e.g. '4' / '6' / '8'); empty = all. Channel-slices the "
                     "input grid for single-level ablation (no cache rebuild). feat=input only.")
     args = ap.parse_args()
+    args.feat = normalize_feat(args.feat)
     base = OUT / args.dataset
     if args.cache is None:     args.cache = str(base / "cache_train.pt")
     if args.val_cache is None: args.val_cache = str(base / "cache_val.pt")
-    if args.flops is None:     args.flops = str(base / "flops_table.json")
     if args.out is None:       args.out = str(base / "router.pt")
     # per-run .log/.json are opt-in: only written when --logdir is given (avoids
     # littering results/ with regenerable training-history files by default).
@@ -264,7 +261,7 @@ def main():
         net(train_cache["input_base"][:2].to(device, dtype=torch.float32), dummy_pred,
             torch.zeros(2, dtype=torch.long, device=device))
 
-    lossfn = RouterLoss(args.flops, regress_loss=args.regress_loss)
+    lossfn = RouterLoss(regress_loss=args.regress_loss)
     opt = torch.optim.Adam(net.parameters(), lr=args.lr, weight_decay=args.weight_decay)
 
     train_loader = make_loader(train_cache, args.batch, shuffle=True)

@@ -1,64 +1,45 @@
-# Dynamic Depth Routing for Budget-Adaptive Object Detection in ADAS
+# Dynamic-Depth Routing for Budget-Adaptive Object Detection in ADAS
 
-A lightweight router predicts, per frame, the **advantage** of running the deep (SUPER) path
-over the shallow (BASE) path of a frozen [AnyDepth-YOLO](https://github.com/AnyDepth/AnyDepth-YOLO)
-detector. Routing then reduces to a single threshold test on that prediction — sweep the
-threshold to trade accuracy for efficiency **without retraining**. A feedforward + PI
-controller turns the threshold into a live knob that tracks a time-varying latency / FPS /
-energy budget on-device.
 
-> **Paper:** *Dynamic Depth Routing for Budget-Adaptive Object Detection in ADAS*, IEEE Access.
-> PDF: [`results/paper/`](results/paper/)
 
-| | KITTI | BDD100K | Waymo |
-|---|---|---|---|
-| **Latency saved** | −12.9% | −17.9% | −20.5% |
-| **Energy saved** | −13.0% | −18.2% | −20.5% |
-| **AP drop** | < 0.1 | < 0.1 | < 0.1 |
+> A lightweight, per-frame router that dynamically switches between the shallow (**BASE**) and deep (**SUPER**) inference paths of [AnyDepth-YOLO](https://arxiv.org/abs/2605.09407). 
+> Control your Latency, FPS, or Energy on-the-fly using a live PI controller—**without retraining.**
 
-Budget tracking on Jetson Orin Nano (TensorRT FP16, BDD100K 720×1280) holds step and
-sawtooth targets to **< 1 ms MAE**.
+![Budget-adaptive routing demo](docs/demo_teaser.gif)
+
+![Main results](docs/main_results.png)
+
+## 🏆 Uncompromising Efficiency
+Achieve massive compute savings with virtually **zero accuracy drop** (< 0.1 AP).
+
+| Metrics Saved | KITTI | BDD100K | Waymo |
+|---|:---:|:---:|:---:|
+| ⚡ **Latency** | −12.9% | −17.9% | −20.5% |
+| 🔋 **Energy** | −13.0% | −18.2% | −20.5% |
 
 ---
 
-## Setup
+## 🚀 Setup
 
 ```bash
-pip install -r requirements.txt
-pip install -e .
+pip install -r requirements.txt && pip install -e .
 ```
-
-Edit `ultralytics/cfg/datasets/{kitti,bdd100k,waymo}.yaml` to point at your dataset roots.
-All commands run from the repo root.
-
-### Pretrained weights
-
-Weights and TensorRT engines are distributed via Google Drive (too large for git).
-Download and place them as shown:
-
-| Download | Destination |
-|---|---|
-| Finetuned detector `best.pt` | `results/step1_finetune/weights/<dataset>/` |
-| Router `router_both_0.pt` | `results/step2_router/weights/<dataset>/` |
-| TensorRT engines (BDD100K) | `results/step4_deploy/onnx/bdd_pooled/` |
-
-With these you can skip straight to [Step 3](#step-3--evaluate) or [Step 4](#step-4--deploy).
-Steps 1–2 are only needed to retrain from scratch.
+*(Note: Point `ultralytics/cfg/datasets/{kitti,bdd100k,waymo}.yaml` to your dataset roots and run everything from the repo root. BDD100K is the running example below.)*
 
 ---
 
-The pipeline has four stages, and `results/` mirrors them. BDD100K is used as the running
-example below; substitute `<dataset>` and `<imgsz>` from this table for the others.
+## Step 1. Finetune AnyDepth-YOLO
+[AnyDepth-YOLO](https://arxiv.org/abs/2605.09407) operates at multiple depths using skippable blocks, sharing weights between a shallow **BASE** path and a full-depth **SUPER** path. Since the detector must be frozen during router training, we first finetune the COCO-pretrained model.
 
-| Dataset | `<imgsz>` | epochs (detector / router) |
+Download the COCO-pretrained weights into `results/step1_finetune/pretrained_coco/`:
+
+| Model | COCO AP<sub>50:95</sub> (super / base) | Download |
 |---|---|---|
-| KITTI | `384 1248` | 20 / 50 |
-| BDD100K | `720 1280` | 30 / 30 |
-| Waymo | `1280 1920` | 30 / 50 |
+| AnyDepth-YOLOv12**s** (used in paper) | 0.479 / 0.451 | [Link](https://drive.google.com/open?id=1Pkc2Bpna6cvqta4f1XDAvWV0r1zg572c) |
+| AnyDepth-YOLOv12**l** | 0.539 / 0.520 | [Link](https://drive.google.com/open?id=14v0eVIYNkpFmB0nz1d9_YaXhYgYFf3hi) |
 
-## Step 1 — Finetune the detector
-
-The router needs a **frozen** detector, so this comes first.
+<details>
+<summary><b>Finetuning recipe (Click to expand)</b></summary>
 
 ```bash
 python -m torch.distributed.run --nproc_per_node 2 step1_finetune/finetune.py \
@@ -67,132 +48,107 @@ python -m torch.distributed.run --nproc_per_node 2 step1_finetune/finetune.py \
     --data ultralytics/cfg/datasets/bdd100k.yaml --dataset bdd100k \
     --imgsz 720 1280
 ```
+*Note: `--dataset` also selects the dataset's `epochs` / `batch` / `lr0`. KITTI and Waymo start from the BDD100K checkpoint rather than COCO; the head is re-initialised when the class count differs.*
+</details>
 
-→ `results/step1_finetune/weights/bdd100k/best.pt`
+**Or skip this step:** Download the finetuned detector into `results/step1_finetune/weights/<dataset>/best.pt`:
 
-> Waymo starts from the BDD100K checkpoint instead of COCO (closer driving domain); its
-> head is re-initialized for the 4-class taxonomy.
+| KITTI | BDD100K | Waymo |
+|:---:|:---:|:---:|
+| [best.pt](https://drive.google.com/open?id=15TRZFWedlFlbQ0wWIaB1p1_Rg_PU9bQk) | [best.pt](https://drive.google.com/open?id=1UOK6alCcM-919xFa7Vjy7ql4Ppe5cgEQ) | [best.pt](https://drive.google.com/open?id=1WT1o9GV5Z08P7fHTllsHpESOB7YZuXNc) |
 
-## Step 2 — Train the router
 
-Cache the router features and both paths' per-image losses once (their difference is the
-regression target), then fit the router on that cache.
+## Step 2. Train the Router
+Caching runs the frozen detector over the dataset twice. To save time, we highly recommend **downloading the caches** into `results/step2_router/cache/<dataset>/`:
+
+| Dataset | train | val |
+|---|---|---|
+| **KITTI** | [cache_train_g2x2_both.pt](https://drive.google.com/open?id=1_ZLnp48fXWyFOoNP_16nXgV2j8Nv7XZ0) | [cache_val_g2x2_both.pt](https://drive.google.com/open?id=1U9iSPHxrWmaQptu_q13_9azOIazrH6rn) |
+| **BDD100K** | [cache_train_g2x2_both.pt](https://drive.google.com/open?id=1MZDgVF2IwEGed96oSw4OzC-vzKa9FBjR) | [cache_val_g2x2_both.pt](https://drive.google.com/open?id=1UXvxgdpROLfyb17zYq0mWUD7AkzZ7A3I) |
+| **Waymo** | [cache_train_g2x2_both.pt](https://drive.google.com/open?id=1RveUTmhNWfINIg6mSdTkhFWGgAByeMnT) | [cache_val_g2x2_both.pt](https://drive.google.com/open?id=1BUxT4Heb3Ham8Q_W1woP5-oN71avJIEk) |
+
+<details>
+<summary><b>Router training recipe (Click to expand)</b></summary>
 
 ```bash
-# 2a. offline cache (repeat with --split val; Waymo also needs --fp16)
+# 1. Build cache (repeat with --split val; Waymo adds --fp16)
 python -m step2_train_router.build_cache \
     --weight results/step1_finetune/weights/bdd100k/best.pt \
     --data ultralytics/cfg/datasets/bdd100k.yaml --dataset bdd100k \
-    --split train --imgsz 720 1280 --feat both --grid 2 --batch 16
+    --split train --imgsz 720 1280 --feat both --grid 2 --batch 16 \
+    --out results/step2_router/cache/bdd100k/cache_train_g2x2_both.pt
 
-# 2b. advantage regression
+# 2. Fit the router (takes a few minutes on one GPU)
 python -m step2_train_router.train_policy --dataset bdd100k \
-    --cache     results/step2_router/cache/bdd100k/cache_train_both.pt \
-    --val_cache results/step2_router/cache/bdd100k/cache_val_both.pt \
-    --feat both --norm batch --select val_corr --mode regress \
-    --epochs 30 --seed 0 \
-    --out results/step2_router/weights/bdd100k/router_both_0.pt
+    --cache     results/step2_router/cache/bdd100k/cache_train_g2x2_both.pt \
+    --val_cache results/step2_router/cache/bdd100k/cache_val_g2x2_both.pt \
+    --feat both --norm batch --select val_corr --epochs 30 --seed 0 \
+    --out results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt
 ```
+*Note: Weights are named `router_g<H>x<W>_<feat>_s<seed>.pt`. `--feat` supports `backbone`, `neck`, or `both`. Use `--arch gapmlp` to swap TinyConv for the GAP-MLP ablation.*
+</details>
 
-→ `results/step2_router/weights/bdd100k/router_both_0.pt`
+**Or skip this step:** Download the trained router into `results/step2_router/weights/<dataset>/`:
 
-## Step 3 — Evaluate
+| KITTI | BDD100K | Waymo |
+|:---:|:---:|:---:|
+| [router_g2x2_both_s0.pt](https://drive.google.com/open?id=11HLB7qsu6uLC0iOvFgrhqVCIhaSEH1oU) | [router_g2x2_both_s0.pt](https://drive.google.com/open?id=1503mJt7hkaue41Irp22Ol1NJEpOZRYwH) | [router_g2x2_both_s0.pt](https://drive.google.com/open?id=1nMj0XQpLlFj1IcR94XN-zL9T8hCxAlwM) |
 
-Routing is evaluated **causally**: the advantage predicted at frame *t−1* selects the path
-run at frame *t*, so no future information leaks in.
+
+## Step 3. Evaluate the Router
+Routing is **causal**: the advantage predicted at frame *t−1* selects the path run at frame *t*.
+
+<details>
+<summary><b>Evaluation recipe (Click to expand)</b></summary>
 
 ```bash
 python -m step3_eval.eval_video --dataset bdd100k \
     --weight    results/step1_finetune/weights/bdd100k/best.pt \
-    --policies  "s0=results/step2_router/weights/bdd100k/router_both_0.pt" \
-    --val_cache results/step2_router/cache/bdd100k/cache_val_both.pt \
+    --policies  "s0=results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt" \
+    --val_cache results/step2_router/cache/bdd100k/cache_val_g2x2_both.pt \
     --grid 2 --imgsz 720 1280 --conf 0.25 \
     --budgets 10,20,30,40,50,60,70,80,90 \
-    --raw_out results/step3_eval/bdd100k/eval/shard_0.pt
-
-python -m step3_eval.merge_video_shards \
-    --shards results/step3_eval/bdd100k/eval/shard_0.pt \
-    --out    results/step3_eval/bdd100k/eval/video_curve.json
+    --out results/step3_eval/bdd100k/eval/video_curve.json
 ```
+*Note: The paper averages seeds 0–4 — pass them as a comma-separated `--policies` list. Ablation drivers live in [`step3_eval/ablation/`](step3_eval/ablation/).*
+</details>
 
-The paper reports the mean over seeds 0–4 — pass them as a comma-separated `--policies`
-list to reproduce that. Ablations live in [`step3_eval/ablation/`](step3_eval/ablation/).
 
-## Step 4 — Deploy
+## Step 4. Deploy
+TensorRT cannot skip layers inside a single static engine. Therefore, each depth path becomes its own engine, and the router dynamically selects one per frame.
 
-TensorRT cannot skip layers inside one static engine, so each depth path is exported as its
-own engine and the router picks which one to run per frame.
+<details>
+<summary><b>Export, build engines, and track a budget (Click to expand)</b></summary>
 
 ```bash
-# 4a. export + build (--pool bakes the 2x2 tap pooling in: ~2 ms/frame on Jetson)
-python -m step4_deploy.export_onnx \
-    --weight results/step1_finetune/weights/bdd100k/best.pt \
-    --imgsz 720 1280 --pool \
-    --out_dir results/step4_deploy/onnx/bdd_pooled
-
+# 1. Export + Build
+python -m step4_deploy.export_onnx --weight results/step1_finetune/weights/bdd100k/best.pt \
+    --imgsz 720 1280 --pool --out_dir results/step4_deploy/onnx/bdd_pooled
+    
 python -m step4_deploy.export_router_onnx \
-    --router results/step2_router/weights/bdd100k/router_both_0.pt \
+    --router results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt \
     --out_dir results/step4_deploy/onnx/bdd_pooled
-
+    
 for m in base super router; do
-    python -m step4_deploy.build_engine \
-        --onnx results/step4_deploy/onnx/bdd_pooled/$m.onnx --fp16
+    python -m step4_deploy.build_engine --onnx results/step4_deploy/onnx/bdd_pooled/$m.onnx --fp16
 done
-```
 
-```bash
-# 4b. track a time-varying budget with the PI controller
+# 2. Track a moving budget (renders the demo clip above)
 python -m step4_deploy.online_budget_demo_stream \
     --base   results/step4_deploy/onnx/bdd_pooled/base.fp16.engine \
     --super  results/step4_deploy/onnx/bdd_pooled/super.fp16.engine \
-    --router results/step2_router/weights/bdd100k/router_both_0.pt \
+    --router results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt \
     --router_engine results/step4_deploy/onnx/bdd_pooled/router.fp16.engine \
-    --scenarios results/step3_eval/bdd100k/scenarios.json \
-    --mot_root  /media/data/bdd100k_mot/val \
-    --mode fps --kp 1.0 --ki 0.10 --beta 0.75 --warmup 60 --win 30
+    --mode fps --kp 1.0 --ki 1.5 --beta 0.75 --warmup 60 --win 30
 ```
+*Notes:*
+* `--mode` is `latency` (ms, default), `fps`, or `energy` (mJ/frame via NVML). 
+* *Controller gains:* `--kp 2.0 --ki 0.33 --beta 0.85 --win 30` on Jetson Orin Nano (0.38 fps MAE), and `--kp 1.0 --ki 1.5 --beta 0.75 --win 30` on RTX 3090.
+</details>
 
-`--mode` is `latency` (ms, default), `fps`, or `energy` (mJ/frame via NVML).
-Results land in `results/step4_deploy/control/`. Controller gains, per device:
-
-| Device | Resolution | Gains |
-|---|---|---|
-| Jetson Orin Nano | 576×1024 | `--kp 1.1 --ki 0.18 --beta 0.95 --win 60` |
-| Jetson Orin Nano | 720×1280 | `--kp 2.0 --ki 0.33 --beta 0.85 --win 30` |
-| RTX 3090 | 720×1280 | `--kp 1.0 --ki 0.10 --beta 0.85 --win 60` |
-
-```bash
-# 4c. demo video: detections + BASE/SUPER badge + realized-vs-target FPS
-python -m step4_deploy.online_demo_video \
-    --base   results/step4_deploy/onnx/bdd_pooled/base.fp16.engine \
-    --super  results/step4_deploy/onnx/bdd_pooled/super.fp16.engine \
-    --router results/step2_router/weights/bdd100k/router_both_0.pt \
-    --router_engine results/step4_deploy/onnx/bdd_pooled/router.fp16.engine \
-    --scenarios results/step3_eval/bdd100k/scenarios.json \
-    --mot_root  /media/data/bdd100k_mot/val \
-    --kp 1.0 --ki 0.10 --beta 0.85
-```
-
-→ `results/step4_deploy/demo_videos/demo_video_<family>_fps<lo>-<hi>.mp4`
-
-For the true deployed cost of routing (only one path runs per frame), use
-`step4_deploy.trt_video_eval`.
+*(Every script's module docstring carries a runnable `Usage` example!)*
 
 ---
 
-## Layout
-
-```
-step1_finetune/  step2_train_router/  step3_eval/  step4_deploy/   pipeline stages
-router/          router architecture, feature taps, loss
-analysis/        paper figures and tables  ->  results/figures/
-tools/           dataset conversion (KITTI / BDD100K / Waymo -> YOLO)
-ultralytics/     modified YOLOv12 backbone with skip-layer depth control
-results/         mirrors the four stages, plus figures/ and paper/
-```
-
-Each script's module docstring carries a runnable `Usage` example.
-
-## License
-
+## 📄 License
 [AGPL-3.0](LICENSE), inherited from Ultralytics.

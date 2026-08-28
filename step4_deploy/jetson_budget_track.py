@@ -26,14 +26,14 @@ Usage (TRT):
     python step4_deploy/jetson_budget_track.py \
         --base  results/step4_deploy/onnx/kitti/base.fp16.engine \
         --super results/step4_deploy/onnx/kitti/super.fp16.engine \
-        --router results/step3_eval/ablation/kitti/router_both_g2_s0.pt \
+        --router results/step2_router/weights/kitti/router_g2x2_both_s0.pt \
         --kitti_root /media/data/kitti-tracking --imgsz 384 1248 \
         --out results/step4_deploy/jetson_budget.pdf
 
 Usage (PyTorch):
     python step4_deploy/jetson_budget_track.py \
         --weight results/step1_finetune/weights/kitti/best.pt \
-        --router results/step3_eval/ablation/kitti/router_both_g2_s0.pt \
+        --router results/step2_router/weights/kitti/router_g2x2_both_s0.pt \
         --kitti_root /media/data/kitti-tracking --imgsz 384 1248 \
         --out results/step4_deploy/jetson_budget.pdf
 """

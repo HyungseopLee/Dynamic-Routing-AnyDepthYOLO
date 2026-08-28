@@ -39,10 +39,10 @@ run() {
 }
 
 run kitti  384 1248  kitti.log    results/step1_finetune/weights/kitti/best.pt \
-    results/step3_eval/ablation/kitti/router_both_g2_s0.pt
+    results/step2_router/weights/kitti/router_g2x2_both_s0.pt
 
 run bdd    736 1280  bdd100k.log  results/step1_finetune/weights/bdd100k/best.pt \
-    results/step2_router/weights/bdd100k/router_both_0.pt
+    results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt
 
 run waymo 1280 1920  waymo.log    results/step1_finetune/weights/waymo/best.pt \
-    results/step2_router/weights/waymo/router_both_3.pt
+    results/step2_router/weights/waymo/router_g2x2_both_s3.pt

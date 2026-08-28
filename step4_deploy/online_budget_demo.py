@@ -15,7 +15,7 @@ Step 1 — run live inference and save dump:
 
     python -m step4_deploy.online_budget_demo \
         --weight  results/step1_finetune/weights/bdd100k/best.pt \
-        --router  results/step2_router/weights/bdd100k/router_both_0.pt \
+        --router  results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt \
         --scenarios results/step3_eval/bdd100k/scenarios.json \
         --mot_root  /media/data/bdd100k_mot/val \
         --dump results/step4_deploy/control/online_budget_demo.json \
@@ -47,7 +47,7 @@ from router.feature_tap import INPUT_LEVEL_LAYERS, PRED_LEVEL_LAYERS, STATE_LAYE
 from step3_eval.eval_video import (  # noqa
     parse_box_track, labeled_frames, load_router, grid_vec)
 
-OUT = Path(__file__).resolve().parents[1] / "outputs"  # results/step3_eval
+OUT = Path(__file__).resolve().parents[1] / "results/step3_eval"
 TITLES = {"night_dawn": "night $\\leftrightarrow$ daytime",
           "city_highway": "city $\\leftrightarrow$ highway",
           "clear_rainy": "clear $\\leftrightarrow$ rainy"}

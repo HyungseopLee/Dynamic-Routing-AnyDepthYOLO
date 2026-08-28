@@ -31,7 +31,7 @@ Usage (run from repo root):
         --data ultralytics/cfg/datasets/waymo.yaml \
         --dataset waymo --epoch 30 --imgsz 1920 --batch 16 --lr0 1e-3
 
-Checkpoints are saved under step1_finetune/logs/<dataset>/detect/<run_name>/.
+Checkpoints are saved under results/step1_finetune/logs/<dataset>/detect/<run_name>/.
 """
 import argparse
 
@@ -51,7 +51,7 @@ ap.add_argument("--weight",  default="",     help="Pretrained .pt to load; leave
 ap.add_argument("--data",    required=True,  help="Dataset yaml path")
 ap.add_argument("--dataset", default="",     help="One of {bdd100k,kitti,waymo} — loads default hparams")
 ap.add_argument("--task",    default="detect")
-ap.add_argument("--project", default="",     help="Output dir (default: step1_finetune/logs/<dataset>/detect)")
+ap.add_argument("--project", default="",     help="Output dir (default: results/step1_finetune/logs/<dataset>/detect)")
 ap.add_argument("--epoch",       type=int,   default=None)
 ap.add_argument("--imgsz",       type=int,   default=None)
 ap.add_argument("--batch",       type=int,   default=None)
@@ -72,7 +72,7 @@ batch      = args.batch      if args.batch      is not None else defs.get("batch
 nbs        = args.nbs        if args.nbs        is not None else defs.get("nbs",        256)
 lr0        = args.lr0        if args.lr0        is not None else defs.get("lr0",        1e-3)
 alpha_base = args.alpha_base if args.alpha_base is not None else defs.get("alpha_base", 0.2)
-project    = args.project or f"step1_finetune/logs/{args.dataset or 'custom'}/detect"
+project    = args.project or f"results/step1_finetune/logs/{args.dataset or 'custom'}/detect"
 
 if RANK in {-1, 0}:
     print(f"[*] dataset={args.dataset}  imgsz={imgsz}  epoch={epoch}  "

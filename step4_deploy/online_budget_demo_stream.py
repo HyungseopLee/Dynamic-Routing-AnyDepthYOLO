@@ -22,7 +22,7 @@ Step 1a — TRT backend (base + super + router engines, RTX 3090):
     python -m step4_deploy.online_budget_demo_stream \
         --base   results/step4_deploy/onnx/bdd_pooled/base.fp16.engine \
         --super  results/step4_deploy/onnx/bdd_pooled/super.fp16.engine \
-        --router results/step2_router/weights/bdd100k/router_both_0.pt \
+        --router results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt \
         --router_engine results/step4_deploy/onnx/bdd_pooled/router.fp16.engine \
         --scenarios results/step3_eval/bdd100k/scenarios.json \
         --mot_root  /media/data/bdd100k_mot/val \
@@ -36,7 +36,7 @@ Step 1b — PyTorch eager backend:
 
     python -m step4_deploy.online_budget_demo_stream \
         --weight  results/step1_finetune/weights/bdd100k/best.pt \
-        --router  results/step2_router/weights/bdd100k/router_both_0.pt \
+        --router  results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt \
         --scenarios results/step3_eval/bdd100k/scenarios.json \
         --mot_root  /media/data/bdd100k_mot/val \
         --dump results/step4_deploy/control/online_budget_demo.json \
@@ -49,7 +49,7 @@ Step 1c — Jetson Orin Nano (lock clocks first; --mode fps or energy):
         --base   results/step4_deploy/onnx/bdd_pooled/base.fp16.engine \
         --super  results/step4_deploy/onnx/bdd_pooled/super.fp16.engine \
         --router_engine results/step4_deploy/onnx/bdd_pooled/router.fp16.engine \
-        --router results/step2_router/weights/bdd100k/router_both_0.pt \
+        --router results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt \
         --scenarios results/step3_eval/bdd100k/scenarios.json \
         --mot_root  /media/data/bdd100k_mot/val \
         --mode fps \
@@ -86,6 +86,20 @@ from step3_eval.eval_video import (  # noqa
     parse_box_track, labeled_frames, load_router, grid_vec)
 from step4_deploy.online_budget_demo import (  # noqa
     OUT, cond_label, target_schedule, render)
+
+CONTROL_OUT = Path(__file__).resolve().parents[1] / "results/step4_deploy/control"
+
+
+def load_cost_profile(path):
+    """Load a video_curve*.json from step3_eval.eval_video and return sorted, deduped
+    (super_rate, thres) arrays for the offline tau <-> budget interpolation described in
+    the paper (Eq. tau_ff): linearly interpolating the offline cost profile table.
+    """
+    rows = json.loads(Path(path).read_text())["rows"]
+    pairs = sorted({(float(r["super_rate"]), float(r["thres"])) for r in rows
+                     if r.get("kind") == "policy"})
+    sr = np.array([p[0] for p in pairs]); th = np.array([p[1] for p in pairs])
+    return sr, th
 
 
 def render_fps(dump, win, out):
@@ -246,6 +260,13 @@ def main():
     ap.add_argument("--mode", default="latency", choices=["latency", "fps", "energy"],
                     help="tracking target space: latency (ms), fps, or energy (mJ/frame)")
     ap.add_argument("--replot", action="store_true")
+    ap.add_argument("--cost_profile", default=None,
+                    help="video_curve*.json from step3_eval.eval_video (thres <-> super_rate "
+                         "offline table); when set, feedforward tau_ff interpolates this table "
+                         "instead of the online per-family warmup quantile (default). Off by "
+                         "default: the offline table averages over the whole validation set, "
+                         "but ahat is scene-dependent, so it under/over-shoots per-family "
+                         "targets -- verified worse than the online quantile on BDD100K.")
     args = ap.parse_args()
 
     # Auto-name outputs: jetson_trtengine_HxW_b{beta}_kp{kp}_ki{ki}_warmup{N}_window{N}[_{mode}]
@@ -258,9 +279,9 @@ def main():
     else:
         stem = f"jetson_torch_{res_tag}_{hp_tag}{mode_suffix}"
     if args.out is None:
-        args.out = str(OUT / f"bdd100k/{stem}.pdf")
+        args.out = str(CONTROL_OUT / f"{stem}.pdf")
     if args.dump is None:
-        args.dump = str(OUT / f"bdd100k/{stem}.json")
+        args.dump = str(CONTROL_OUT / f"{stem}.json")
 
     if args.replot:
         dump = json.loads(Path(args.dump).read_text())
@@ -436,8 +457,24 @@ def main():
             wa_fam.append(run_frame(bgr, "super")[1])
         wa_per_fam[fam] = wa_fam
         wa.extend(wa_fam)
-    TAU_HI = float(max(wa)) + 0.03
-    TAU_LO = float(min(wa)) - 0.03
+    # NOT defaulted to DEFAULT_COST_PROFILE: the offline table is a single validation-set-wide
+    # average, but ahat is scene-dependent (day/night/weather segments shift its distribution),
+    # so mapping a family's local target through the global table is measurably miscalibrated
+    # (verified: requesting ff_pct=0.35 vs 0.43 on night_dawn realized 12% vs 2.5% SUPER -- both
+    # far off and even non-monotonic). The online per-family warmup quantile remains the default.
+    cp_path = args.cost_profile
+    if cp_path is not None:
+        cp_sr, cp_th = load_cost_profile(cp_path)
+        TAU_HI = float(cp_th.max()) + 0.01
+        TAU_LO = float(cp_th.min()) - 0.01
+        print(f"[*] feedforward: offline cost profile {cp_path}  "
+              f"({len(cp_sr)} pts, super_rate [{cp_sr.min():.3f},{cp_sr.max():.3f}])", flush=True)
+    else:
+        cp_sr = cp_th = None
+        TAU_HI = float(max(wa)) + 0.03
+        TAU_LO = float(min(wa)) - 0.03
+        print("[*] feedforward: no offline cost profile found, falling back to the online "
+              "warmup-quantile approximation (pass --cost_profile to fix)", flush=True)
     tau0 = 0.5 * (TAU_HI + TAU_LO)
     # Auto-scale the PI gains to the actuator: tau lives in a band of width
     # (TAU_HI-TAU_LO) but the error is in ms over a span of ~(l_super-l_base). On BDD
@@ -469,18 +506,26 @@ def main():
         # Convert first target to latency fraction for tau initialisation
         # ctrl[0] is in the control domain (ms for latency/fps, mJ for energy)
         # l_base/l_super are also in the control domain, so the fraction is universal
+        def pct_to_tau(pct):
+            """Invert desired SUPER-rate pct -> tau, per Eq. (pi_positional): linear
+            interpolation of the offline cost profile if available, else an online
+            quantile of the warmup ahat sample as a fallback."""
+            if cp_sr is not None:
+                return float(np.clip(np.interp(pct, cp_sr, cp_th), TAU_LO, TAU_HI))
+            return float(np.clip(np.quantile(wa_fam, 1.0 - pct), TAU_LO, TAU_HI))
+
         l_tgt0 = ctrl[0]
         init_pct = float(np.clip((l_tgt0 - l_base) / (l_super - l_base), 0.0, 1.0))
-        tau_init = float(np.clip(np.quantile(wa_fam, 1.0 - init_pct), TAU_LO, TAU_HI))
+        tau_init = pct_to_tau(init_pct)
         # Feedforward tau: invert the linear latency<->tau relationship for fps/energy modes
-        # super_rate_ff = (ctrl_tgt - l_base) / (l_super - l_base), then quantile of wa_fam
+        # super_rate_ff = (ctrl_tgt - l_base) / (l_super - l_base), then map through the
+        # offline cost profile (or the online quantile fallback)
         if args.mode in ("fps", "energy"):
             if args.mode == "energy":
                 ff_pct = np.clip((ctrl - e_base) / max(e_super - e_base, 1e-6), 0.0, 1.0)
             else:
                 ff_pct = np.clip((ctrl - l_base) / max(l_super - l_base, 1e-6), 0.0, 1.0)
-            tau_ff = np.array([float(np.clip(np.quantile(wa_fam, 1.0 - p), TAU_LO, TAU_HI))
-                               for p in ff_pct])
+            tau_ff = np.array([pct_to_tau(p) for p in ff_pct])
         else:
             tau_ff = np.full(n, tau0)
         config = "base"; tau = tau_init; integ = 0.0
@@ -508,7 +553,7 @@ def main():
                         integ = 0.0
             e = ctrl[t] - sig_ema
             integ += e
-            tau_un = tau0 - kp * e - ki * integ
+            tau_un = tau_ff[t] - kp * e - ki * integ
             tau = float(np.clip(tau_un, TAU_LO, TAU_HI))
             if ki:
                 integ += (tau_un - tau) / ki

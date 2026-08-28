@@ -11,7 +11,7 @@ SUPER-usage rate p has  cost(p) = (1-p)*cost_base + p*cost_super + cost_router,
 exactly as the KITTI table is built. This script prints the anchors and a small
 blended table for the SUPER-rates that appear on the BDD Pareto curve.
 
-    python -m analysis.bench_device_bdd \
+    python -m step4_deploy.bench.bench_device_bdd \
         --weight results/step1_finetune/weights/bdd100k/best.pt \
         --images /media/data/bdd100k_yolo/val/images --n 600 --warmup 40
 """
@@ -21,7 +21,7 @@ import sys
 import time
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 import numpy as np
 import torch

@@ -1,18 +1,18 @@
 """Per-frame routing dump for BDD100K MOT, grouped by sequence and tagged with the
 scene condition (time-of-day / scene / weather from the detection attributes, which
-share the MOT video IDs). Feeds the realistic condition-drift budget-tracking
-experiment (make_scenario_figures_bdd.py): sequences are concatenated in a chosen
-condition order so the PI controller is exercised under night<->dawn, city<->highway,
-clear<->rainy drift rather than abrupt KITTI boundaries.
+share the MOT video IDs). Produces the scenario definition consumed by the
+on-device budget-tracking runs (step4_deploy/online_budget_demo_stream.py via
+--scenarios): sequences are concatenated in a chosen condition order so the PI
+controller is exercised under night<->dawn, city<->highway, clear<->rainy drift.
 
-Per labeled (5 fps) frame we store exactly what the simulator replays:
+Per labeled (5 fps) frame we store:
   ahat_base / ahat_super : router advantage when the previous path was base / super
   match_base / match_super : AP-match records of each path vs GT (poolable)
   gt_count : per-class GT count (path-independent)
 
     python -m step3_eval.dump_perframe_bdd \
         --weight results/step1_finetune/weights/bdd100k/<alpha0.2>.pt \
-        --router results/step2_router/weights/bdd100k/router_scenario_s0.pt \
+        --router results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt \
         --grid 2 --imgsz 720 1280 --sequences seqA,seqB,...
 """
 import argparse

@@ -22,3 +22,15 @@ results/step1_finetune/logs/
 *.err
 predictions.json
 runs/
+
+# assistant working notes: local paths, personal Drive remote, tuning logs
+CLAUDE.md
+
+# run logs: contain local absolute paths, not needed to reproduce
+*.log
+
+# paper figure/table generators: for the manuscript, not needed to use the method
+paper_figures/
+
+# staging area for weights copied in from other machines
+_incoming/

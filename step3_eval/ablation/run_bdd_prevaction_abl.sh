@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Train BDD100K routers for prev-action ablation: feat=both, p in {0.0, 1.0}, seeds 0-4.
-# (p=0.5 already exists as router_both_{0-4}.pt)
+# (p=0.5 already exists as router_g2x2_both_s{0-4}.pt)
 # Then eval video on BDD val, producing video_curve_prevp_both_bdd.json for Fig 11.
 #
 # Usage (from repo root):
@@ -13,14 +13,14 @@ PY=$(which python3)
 OUT=results/step2_router/weights/bdd100k
 CACHE_DIR=results/step2_router/cache/bdd100k
 EVAL_DIR=results/step3_eval/bdd100k
-CACHE=$CACHE_DIR/cache_train_both.pt
-VAL=$CACHE_DIR/cache_val_both.pt
+CACHE=$CACHE_DIR/cache_train_g2x2_both.pt
+VAL=$CACHE_DIR/cache_val_g2x2_both.pt
 
 echo "=== [1/2] Train: feat=both, prev_p in {0.0, 1.0}, seeds 0-4 ==="
 for PP in 0.0 1.0; do
   TAG="p$(echo $PP | tr -d '.')"   # p00 / p10
   for S in 0 1 2 3 4; do
-    PT="$OUT/router_both_prevp${TAG}_s${S}.pt"
+    PT="$OUT/router_g2x2_both_s${S}_prevp${TAG}.pt"
     if [ -f "$PT" ]; then
       echo "  [skip] $PT exists"
       continue
@@ -43,15 +43,15 @@ done
 
 echo ""
 echo "=== [2/2] Video eval: all three p values ==="
-# p=0.5: existing router_both_0~4
+# p=0.5: existing router_g2x2_both_s0~4
 POLS=""
 for S in 0 1 2 3 4; do
-  POLS+="both_p05_s${S}=$OUT/router_both_${S}.pt,"
+  POLS+="both_p05_s${S}=$OUT/router_g2x2_both_s${S}.pt,"
 done
 for PP in 0.0 1.0; do
   TAG="p$(echo $PP | tr -d '.')"
   for S in 0 1 2 3 4; do
-    POLS+="both_${TAG}_s${S}=$OUT/router_both_prevp${TAG}_s${S}.pt,"
+    POLS+="both_${TAG}_s${S}=$OUT/router_g2x2_both_s${S}_prevp${TAG}.pt,"
   done
 done
 POLS="${POLS%,}"

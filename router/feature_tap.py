@@ -19,9 +19,25 @@ from typing import List, Sequence
 
 import torch
 
-INPUT_LEVEL_LAYERS = (4, 6, 8)
-PRED_LEVEL_LAYERS = (14, 17, 20)
+INPUT_LEVEL_LAYERS = (4, 6, 8)      # backbone taps
+PRED_LEVEL_LAYERS = (14, 17, 20)    # neck taps
 STATE_LAYERS = INPUT_LEVEL_LAYERS + PRED_LEVEL_LAYERS  # (4,6,8,14,17,20)
+
+# --feat is spelled after the tap location (backbone/neck); "input"/"pred" are the
+# original internal names, kept as accepted aliases so older checkpoints -- which
+# store the raw string in ckpt["args"] -- still load. normalize_feat() maps the
+# user-facing spelling onto the internal one, which stays "input"/"pred"/"both".
+FEAT_CHOICES = ("backbone", "neck", "both", "input", "pred")
+_FEAT_CANON = {"backbone": "input", "neck": "pred", "both": "both",
+               "input": "input", "pred": "pred"}
+
+
+def normalize_feat(feat: str) -> str:
+    """Map a user-facing --feat value onto the internal one."""
+    try:
+        return _FEAT_CANON[feat]
+    except KeyError:
+        raise ValueError(f"unknown --feat {feat!r}; choose from {FEAT_CHOICES}")
 
 
 def split_features(features: List[torch.Tensor], save: Sequence[int]):

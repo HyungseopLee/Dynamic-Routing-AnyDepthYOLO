@@ -16,31 +16,38 @@ Defaults match the paper's configuration: --grid 2 (2x2 pooling) and --feat both
 step3_eval/ablation/.
 
 Usage (run from repo root):
+Run once per --split; --out is given explicitly because the default name carries no
+--feat/--grid suffix, and step2_train_router/train_policy.py reads the suffixed paths.
+
     # KITTI  (384x1248)
+    for split in train val; do
     python -m step2_train_router.build_cache \
         --weight results/step1_finetune/weights/kitti/best.pt \
         --data ultralytics/cfg/datasets/kitti.yaml --dataset kitti \
-        --split train --imgsz 384 1248 --batch 16
+        --split $split --imgsz 384 1248 --feat both --grid 2 --batch 16 \
+        --out results/step2_router/cache/kitti/cache_${split}_g2x2_both.pt
+    done
 
     # BDD100K  (720x1280)
+    for split in train val; do
     python -m step2_train_router.build_cache \
         --weight results/step1_finetune/weights/bdd100k/best.pt \
         --data ultralytics/cfg/datasets/bdd100k.yaml --dataset bdd100k \
-        --split train --imgsz 720 1280 --feat both --batch 16
-    python -m step2_train_router.build_cache \
-        --weight results/step1_finetune/weights/bdd100k/best.pt \
-        --data ultralytics/cfg/datasets/bdd100k.yaml --dataset bdd100k \
-        --split val --imgsz 720 1280 --feat both --batch 16
+        --split $split --imgsz 720 1280 --feat both --grid 2 --batch 16 \
+        --out results/step2_router/cache/bdd100k/cache_${split}_g2x2_both.pt
+    done
 
-    # Waymo  (1280x1920; large -- use --fp16 to halve disk usage)
+    # Waymo  (1280x1920; large -- --fp16 halves disk usage)
+    for split in train val; do
     python -m step2_train_router.build_cache \
         --weight results/step1_finetune/weights/waymo/best.pt \
         --data ultralytics/cfg/datasets/waymo.yaml --dataset waymo \
-        --split train --imgsz 1280 1920 --feat both --fp16 --batch 16
-    python -m step2_train_router.build_cache \
-        --weight results/step1_finetune/weights/waymo/best.pt \
-        --data ultralytics/cfg/datasets/waymo.yaml --dataset waymo \
-        --split val --imgsz 1280 1920 --feat both --fp16 --batch 16
+        --split $split --imgsz 1280 1920 --feat both --grid 2 --fp16 --batch 16 \
+        --out results/step2_router/cache/waymo/cache_${split}_g2x2_both.pt
+    done
+
+Caches are named cache_<split>_g<H>x<W>_<feat>.pt; the build flags are identical
+across the three datasets.
 """
 
 import argparse
@@ -61,6 +68,7 @@ import torch.nn.functional as F
 
 from router.feature_tap import (
     STATE_LAYERS, INPUT_LEVEL_LAYERS, PRED_LEVEL_LAYERS,
+    FEAT_CHOICES, normalize_feat,
 )
 
 SKIPPABLE_TYPES = None  # resolved lazily from tasks.py
@@ -133,14 +141,15 @@ def main():
     ap.add_argument("--grid", default="2", help="spatial grid: 'G' (square GxG) or 'HxW' "
                     "(rectangular, e.g. '2x6' to preserve KITTI aspect ratio). "
                     "Paper default: 2 (2x2 pooling); other values are for the grid ablation")
-    ap.add_argument("--feat", default="both", choices=["input", "pred", "both"],
-                    help="which feature group(s) to cache. Paper default: both "
-                         "(backbone + neck); 'input' (backbone-only) skips caching the "
-                         "neck/pred grids to roughly halve cache size")
+    ap.add_argument("--feat", default="both", choices=list(FEAT_CHOICES),
+                    help="which taps to cache: backbone (layers 4/6/8), neck (14/17/20), "
+                         "or both. Paper default: both. 'input'/'pred' are accepted as "
+                         "aliases for backbone/neck")
     ap.add_argument("--fp16", action="store_true",
                     help="store feature grids as float16 to halve RAM/disk usage")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
+    args.feat = normalize_feat(args.feat)
     if args.out is None:
         args.out = str(Path(__file__).resolve().parent.parent / "results/step2_router/cache"
                        / args.dataset / f"cache_{args.split}.pt")

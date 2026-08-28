@@ -3,10 +3,8 @@ Pareto table in the same format as the Jetson table, using AP/GFLOPs/super_rate
 from existing eval_video JSON files.
 
 Usage:
-    /home/hslee/anaconda3/envs/yolov12/bin/python \
-        -m step4_deploy.bench.measure_latency_3090
-    /home/hslee/anaconda3/envs/yolov12/bin/python \
-        -m step4_deploy.bench.measure_latency_3090 --fp32
+    python -m step4_deploy.bench.measure_latency_3090
+    python -m step4_deploy.bench.measure_latency_3090 --fp32
 """
 import json, re, sys
 from pathlib import Path
