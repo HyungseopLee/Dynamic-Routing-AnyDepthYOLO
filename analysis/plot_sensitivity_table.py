@@ -9,7 +9,7 @@ Columns match the paper table format:
   α | k_p | k_i | Rise↑/↓ | Settling↑/↓ | OS↑/↓ | SSE Step/Saw
 
 Usage:
-    python -m step4_deploy.plot_sensitivity_table \
+    python -m analysis.plot_sensitivity_table \
         --out results/step4_deploy/control/sensitivity_table.pdf
 """
 import argparse
@@ -23,7 +23,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-OUTPUTS = Path(__file__).resolve().parent.parent / "outputs" / "bdd100k"
+OUTPUTS = Path(__file__).resolve().parent.parent / "results/step4_deploy/control"
 
 # ── table row definitions ─────────────────────────────────────────────────────
 # Each entry: (alpha, kp, ki, json_path, is_chosen)  or  None = group separator

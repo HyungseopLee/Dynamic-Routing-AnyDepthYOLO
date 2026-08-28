@@ -31,7 +31,7 @@ from router.feature_tap import INPUT_LEVEL_LAYERS, STATE_LAYERS  # noqa
 from step3_eval.eval_video import (  # noqa
     parse_box_track, labeled_frames, load_router, grid_vec, BDD_MOT_EVAL_CLS)
 
-OUT = Path(__file__).resolve().parent / "outputs"
+OUT = Path(__file__).resolve().parent.parent / "results/step3_eval"
 
 
 def main():

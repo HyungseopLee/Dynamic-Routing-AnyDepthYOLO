@@ -60,7 +60,7 @@ OUT_JSON=$EVAL_DIR/eval/video_curve_prevp_both_bdd.json
 echo "  out: $OUT_JSON"
 
 $PY -m step3_eval.eval_video --dataset bdd100k \
-  --weight results/step1_finetune/weights/bdd100k/anydepth_best.pt \
+  --weight results/step1_finetune/weights/bdd100k/best.pt \
   --policies "$POLS" \
   --grid 2 \
   --conf 0.25 \

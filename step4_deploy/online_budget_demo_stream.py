@@ -34,35 +34,28 @@ Step 1a — TRT backend (base + super + router engines, RTX 3090):
 
 Step 1b — PyTorch eager backend:
 
-    python -m step4_deploy.online_budget_demo_stream \\
-        --weight  results/step1_finetune/weights/bdd100k/best.pt \\
-        --router  results/step2_router/weights/bdd100k/router_both_0.pt \\
-        --scenarios results/step3_eval/bdd100k/scenarios.json \\
-        --mot_root  /media/data/bdd100k_mot/val \\
-        --dump results/step3_eval/bdd100k/online_budget_demo.json \\
+    python -m step4_deploy.online_budget_demo_stream \
+        --weight  results/step1_finetune/weights/bdd100k/best.pt \
+        --router  results/step2_router/weights/bdd100k/router_both_0.pt \
+        --scenarios results/step3_eval/bdd100k/scenarios.json \
+        --mot_root  /media/data/bdd100k_mot/val \
+        --dump results/step4_deploy/control/online_budget_demo.json \
         --out  results/figures/fig_scenario_budget.pdf
-        
-# FPS   
-sudo jetson_clocks
-PYTHONPATH=. python3 step4_deploy/online_budget_demo_stream.py \
-    --base trt_bench/onnx/bdd_pooled/base.fp16.engine \
-    --super trt_bench/onnx/bdd_pooled/super.fp16.engine \
-    --router_engine trt_bench/onnx/bdd_pooled/router.fp16.engine \
-    --router results/step2_router/weights/bdd100k/policy_both_0.pt \
-    --mode fps \
-    --kp 2.0 --ki 0.33 --beta 0.85 --warmup 60 --win 30
 
+Step 1c — Jetson Orin Nano (lock clocks first; --mode fps or energy):
 
-# Energy        
-sudo jetson_clocks
-PYTHONPATH=. python3 step4_deploy/online_budget_demo_stream.py \
-    --base trt_bench/onnx/bdd_pooled/base.fp16.engine \
-    --super trt_bench/onnx/bdd_pooled/super.fp16.engine \
-    --router_engine trt_bench/onnx/bdd_pooled/router.fp16.engine \
-    --router results/step2_router/weights/bdd100k/policy_both_0.pt \
-    --mode energy \
-    --kp 2.0 --ki 0.33 --beta 0.85 --warmup 60 --win 30
-    
+    sudo jetson_clocks
+    python -m step4_deploy.online_budget_demo_stream \
+        --base   results/step4_deploy/onnx/bdd_pooled/base.fp16.engine \
+        --super  results/step4_deploy/onnx/bdd_pooled/super.fp16.engine \
+        --router_engine results/step4_deploy/onnx/bdd_pooled/router.fp16.engine \
+        --router results/step2_router/weights/bdd100k/router_both_0.pt \
+        --scenarios results/step3_eval/bdd100k/scenarios.json \
+        --mot_root  /media/data/bdd100k_mot/val \
+        --mode fps \
+        --kp 2.0 --ki 0.33 --beta 0.85 --warmup 60 --win 30
+        # --mode energy for mJ/frame (needs pynvml)
+
 
 Step 2 — re-render from saved dump (instant, no inference):
 

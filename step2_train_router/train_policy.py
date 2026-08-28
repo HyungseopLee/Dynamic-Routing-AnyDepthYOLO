@@ -1,6 +1,6 @@
 """Train the depth router on cached features.
 
-Reads the offline cache (train/build_cache.py) so no detector forward happens
+Reads the offline cache (step2_train_router/build_cache.py) so no detector forward happens
 here -- each epoch is a cheap MLP/TinyConv pass over precomputed vectors.
 
 Per step (image i, batch B):
@@ -13,29 +13,33 @@ Per step (image i, batch B):
     compute/AP trade-off is set at eval time by thresholding A_hat.
   - update router only.
 
+Defaults match the paper's configuration: --arch tinyconv over a 2x2 grid with
+--feat both (backbone + neck taps). The gapmpl architecture and the input/pred
+feature subsets exist for the ablations in step3_eval/ablation/.
+
 Usage (run from repo root):
-    # KITTI  (reads outputs/kitti/cache_{train,val}.pt)
+    # KITTI  (reads results/step2_router/cache/kitti/cache_{train,val}_g2.pt)
     python -m step2_train_router.train_policy \
         --dataset kitti --feat both --norm batch \
-        --cache results/step2_router/cache/kitti/cache_train_both.pt \
-        --val_cache results/step2_router/cache/kitti/cache_val_both.pt \
+        --cache results/step2_router/cache/kitti/cache_train_g2.pt \
+        --val_cache results/step2_router/cache/kitti/cache_val_g2.pt \
         --epochs 50 --select val_corr --seed 0
 
-    # BDD100K  (reads outputs/bdd100k/cache_{train,val}_both.pt)
+    # BDD100K  (reads results/step2_router/cache/bdd100k/cache_{train,val}_both.pt)
     python -m step2_train_router.train_policy \
         --dataset bdd100k --feat both --norm batch \
         --cache results/step2_router/cache/bdd100k/cache_train_both.pt \
         --val_cache results/step2_router/cache/bdd100k/cache_val_both.pt \
         --epochs 30 --select val_corr --seed 0 \
-        --out results/step2_router/weights/bdd100k/router_s0.pt
+        --out results/step2_router/weights/bdd100k/router_both_0.pt
 
-    # Waymo  (reads outputs/waymo/cache_{train,val}_both.pt; fp16 cache)
+    # Waymo  (reads results/step2_router/cache/waymo/cache_{train,val}_both.pt; fp16 cache)
     python -m step2_train_router.train_policy \
         --dataset waymo --feat both --norm batch \
         --cache results/step2_router/cache/waymo/cache_train_both.pt \
         --val_cache results/step2_router/cache/waymo/cache_val_both.pt \
         --epochs 50 --select val_corr --seed 0 \
-        --out results/step2_router/weights/waymo/router_both_0.pt
+        --out results/step2_router/weights/waymo/router_both_3.pt
 
     # GAP-MLP router (--arch gapmpl; same cache, spatial dims are pooled internally)
     python -m step2_train_router.train_policy \
@@ -169,12 +173,13 @@ def run_epoch(net, cache, loader, lossfn, opt=None, prev_p=0.5):
     return {k: v / n for k, v in agg.items()}
 
 
-OUT = Path(__file__).resolve().parent / "outputs"
+OUT = Path(__file__).resolve().parent.parent / "results/step2_router/weights"
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dataset", default="kitti", help="output scope: outputs/<dataset>/")
+    ap.add_argument("--dataset", default="kitti",
+                    help="output scope: results/step2_router/weights/<dataset>/")
     ap.add_argument("--cache", default=None)
     ap.add_argument("--val_cache", default=None)
     ap.add_argument("--flops", default=None)
@@ -186,9 +191,11 @@ def main():
     ap.add_argument("--path_dim", type=int, default=8,
                     help="prev-action embedding dim (0 = no path embedding)")
     ap.add_argument("--feat", default="both", choices=["input", "pred", "both"],
-                    help="which context feature(s) the router uses")
+                    help="which context feature(s) the router uses. Paper default: both "
+                         "(backbone + neck); input/pred are for the feature ablation")
     ap.add_argument("--arch", default="tinyconv", choices=["tinyconv", "gapmpl"],
-                    help="router architecture: tinyconv (spatial conv) or gapmpl (GAP then MLP)")
+                    help="router architecture. Paper default: tinyconv (spatial conv over "
+                         "the 2x2 grid); gapmpl (GAP then MLP) is the architecture ablation")
     ap.add_argument("--norm", default="batch", choices=["batch", "layer", "none"],
                     help="GAP normalisation before projection (batch=BatchNorm1d, layer=LayerNorm, none=Identity)")
     ap.add_argument("--dropout", type=float, default=0.0, help="dropout in the head (regularisation)")
@@ -216,7 +223,7 @@ def main():
     if args.flops is None:     args.flops = str(base / "flops_table.json")
     if args.out is None:       args.out = str(base / "router.pt")
     # per-run .log/.json are opt-in: only written when --logdir is given (avoids
-    # littering outputs/ with regenerable training-history files by default).
+    # littering results/ with regenerable training-history files by default).
 
     torch.manual_seed(args.seed)
     device = args.device if torch.cuda.is_available() else "cpu"

@@ -23,9 +23,9 @@ Energy: Jetson exposes no NVML power, so we read the on-board INA3221 rails via 
 (VDD_IN = total module, VDD_CPU_GPU_CV = compute); power_mW = volt_mV * curr_mA / 1000.
 
     python step4_deploy/bench/bench_trt_jetson.py \
-        --base  results/step4_deploy/onnx/kitti_pooled/base.fp16.engine \
-        --super results/step4_deploy/onnx/kitti_pooled/super.fp16.engine \
-        --router_engine results/step4_deploy/onnx/kitti/router.fp16.engine \
+        --base  results/step4_deploy/onnx/kitti/base.fp16.engine \
+        --super results/step4_deploy/onnx/kitti/super.fp16.engine \
+        --router_engine results/step4_deploy/onnx/kitti_3090/router.fp16.engine \
         --iters 1000 --warmup 100
 """
 import argparse

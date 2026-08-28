@@ -19,7 +19,7 @@ Usage (run from repo root):
     export CUDA_VISIBLE_DEVICES=0
     python step1_finetune/finetune.py \
         --config ultralytics/cfg/models/v12/yolo-ad-v12s-orig.yaml \
-        --weight results/step1_finetune/weights/bdd100k/anydepth_best.pt \
+        --weight results/step1_finetune/weights/bdd100k/best.pt \
         --data ultralytics/cfg/datasets/kitti.yaml \
         --dataset kitti --epoch 20 --imgsz 1248 --batch 16 --lr0 1e-4
 
@@ -27,7 +27,7 @@ Usage (run from repo root):
     export CUDA_VISIBLE_DEVICES=0,1
     python -m torch.distributed.run --nproc_per_node 2 step1_finetune/finetune.py \
         --config ultralytics/cfg/models/v12/yolo-ad-v12s-orig.yaml \
-        --weight results/step1_finetune/weights/bdd100k/anydepth_best.pt \
+        --weight results/step1_finetune/weights/bdd100k/best.pt \
         --data ultralytics/cfg/datasets/waymo.yaml \
         --dataset waymo --epoch 30 --imgsz 1920 --batch 16 --lr0 1e-3
 

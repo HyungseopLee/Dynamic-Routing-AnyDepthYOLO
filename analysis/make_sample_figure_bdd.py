@@ -21,7 +21,7 @@ sys.path.insert(0, str(ROOT))
 from ultralytics import YOLO  # noqa
 from step3_eval.eval_video import BDD_MOT_EVAL_CLS  # noqa
 
-OUT = Path(__file__).resolve().parent.parent / "outputs/figures"
+OUT = ROOT / "results/figures"
 
 
 def boxes_at(r, conf, cls_keep):

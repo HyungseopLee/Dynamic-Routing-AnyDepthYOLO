@@ -8,7 +8,7 @@ Demonstrates that beta is the dominant parameter and that within-range gain vari
 causes only modest (<0.1 ms) changes in tracking MAE.
 
 Usage:
-    python -m step4_deploy.plot_ablation \
+    python -m analysis.plot_ablation \
         --out results/step4_deploy/control/ablation_controller.pdf
 """
 import argparse
@@ -23,7 +23,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-OUTPUTS = Path(__file__).resolve().parent.parent / "outputs" / "bdd100k"
+OUTPUTS = Path(__file__).resolve().parent.parent / "results/step4_deploy/control"
 
 JSONS = {
     "b0.83_kp2.0_ki0.33": OUTPUTS / "jetson_trtengine_720x1280_b0.83_kp2.0_ki0.33_win45.json",

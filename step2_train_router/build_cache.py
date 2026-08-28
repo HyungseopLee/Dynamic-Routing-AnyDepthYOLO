@@ -11,6 +11,10 @@ of each image and is precomputed once here:
 Saved to a single .pt so router training reads tensors only (no detector
 forward), making epochs trivially cheap and lambda sweeps fast.
 
+Defaults match the paper's configuration: --grid 2 (2x2 pooling) and --feat both
+(backbone + neck taps). Other --grid / --feat values exist for the ablations in
+step3_eval/ablation/.
+
 Usage (run from repo root):
     # KITTI  (384x1248)
     python -m step2_train_router.build_cache \
@@ -18,7 +22,7 @@ Usage (run from repo root):
         --data ultralytics/cfg/datasets/kitti.yaml --dataset kitti \
         --split train --imgsz 384 1248 --batch 16
 
-    # BDD100K  (720x1280; --feat both for TinyConv router)
+    # BDD100K  (720x1280)
     python -m step2_train_router.build_cache \
         --weight results/step1_finetune/weights/bdd100k/best.pt \
         --data ultralytics/cfg/datasets/bdd100k.yaml --dataset bdd100k \
@@ -124,18 +128,22 @@ def main():
                          "the super path keeps --imgsz. Default: same as --imgsz (depth-only).")
     ap.add_argument("--batch", type=int, default=16)
     ap.add_argument("--device", default="cuda:0")
-    ap.add_argument("--dataset", default="kitti", help="output scope: outputs/<dataset>/")
-    ap.add_argument("--grid", default="4", help="spatial grid: 'G' (square GxG) or 'HxW' "
-                    "(rectangular, e.g. '2x6' to preserve KITTI aspect ratio)")
+    ap.add_argument("--dataset", default="kitti",
+                    help="output scope: results/step2_router/cache/<dataset>/")
+    ap.add_argument("--grid", default="2", help="spatial grid: 'G' (square GxG) or 'HxW' "
+                    "(rectangular, e.g. '2x6' to preserve KITTI aspect ratio). "
+                    "Paper default: 2 (2x2 pooling); other values are for the grid ablation")
     ap.add_argument("--feat", default="both", choices=["input", "pred", "both"],
-                    help="which feature group(s) to cache; 'input' (backbone-only) skips "
-                         "caching the neck/pred grids to roughly halve cache size")
+                    help="which feature group(s) to cache. Paper default: both "
+                         "(backbone + neck); 'input' (backbone-only) skips caching the "
+                         "neck/pred grids to roughly halve cache size")
     ap.add_argument("--fp16", action="store_true",
                     help="store feature grids as float16 to halve RAM/disk usage")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
     if args.out is None:
-        args.out = str(Path(__file__).resolve().parent / "outputs" / args.dataset / f"cache_{args.split}.pt")
+        args.out = str(Path(__file__).resolve().parent.parent / "results/step2_router/cache"
+                       / args.dataset / f"cache_{args.split}.pt")
 
     device = args.device if torch.cuda.is_available() else "cpu"
     yolo = YOLO(args.weight, task="detect")

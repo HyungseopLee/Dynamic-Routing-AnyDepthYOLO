@@ -1,34 +1,38 @@
 """Unified video evaluation for KITTI / BDD100K / Waymo.
 
 Recursive temporal routing: the path used for frame t is decided from frame
-t-1's chosen-path signal. Every scored frame runs BOTH BASE and SUPER so all
-strategies share one detection pool.
+t-1's chosen-path signal (causal -- no future information). Every scored frame
+runs BOTH BASE and SUPER so all strategies share one detection pool.
+
+Pass one --policies entry per seed to reproduce the paper's seed-averaged curves;
+a single seed is shown below for brevity. Defaults match the paper: --grid 2 over
+feat=both routers.
 
 Usage:
     # KITTI
     python -m step3_eval.eval_video \
         --dataset kitti --weight results/step1_finetune/weights/kitti/best.pt \
-        --policies "s0=.../router_s0.pt,s1=.../router_s1.pt" \
+        --policies "s0=results/step3_eval/ablation/kitti/router_both_g2_s0.pt" \
         --val_cache results/step2_router/cache/kitti/cache_val_g2.pt \
         --imgsz 384 1248 --conf 0.25 --budgets 10,20,30,40,50,60,70,80,90 \
-        --out results/step3_eval/kitti/eval/video_curve.json
+        --out results/step3_eval/kitti/eval/video_curve_main_both_g2.json
 
     # BDD100K
     python -m step3_eval.eval_video \
         --dataset bdd100k --weight results/step1_finetune/weights/bdd100k/best.pt \
-        --policies "s0=.../router_s0.pt,s1=.../router_s1.pt" \
+        --policies "s0=results/step2_router/weights/bdd100k/router_both_0.pt" \
         --val_cache results/step2_router/cache/bdd100k/cache_val_both.pt \
         --imgsz 720 1280 --conf 0.25 --budgets 10,20,30,40,50,60,70,80,90 \
-        --out results/step3_eval/bdd100k/eval/video_curve.json
+        --out results/step3_eval/bdd100k/eval/video_curve_archabl.json
 
-    # Waymo (4 shards across 2 GPUs — see eval/run_waymo_eval_both_robust.sh)
+    # Waymo (4 shards across 2 GPUs — see step3_eval/run_waymo_eval_both_robust.sh)
     python -m step3_eval.eval_video \
         --dataset waymo --weight results/step1_finetune/weights/waymo/best.pt \
-        --policies "s0=.../router_s0.pt,..." \
+        --policies "s3=results/step2_router/weights/waymo/router_both_3.pt" \
         --val_cache results/step2_router/cache/waymo/cache_val_both.pt \
         --imgsz 1280 1920 --conf 0.25 --pi --router_only \
         --num_shards 4 --shard_id 0 \
-        --raw_out results/step3_eval/waymo/eval/shard_0.pt
+        --raw_out results/step3_eval/waymo/eval_both/shard_n0.pt
 """
 import argparse
 import json
@@ -283,7 +287,8 @@ def main():
     ap.add_argument("--imgsz", type=int, nargs=2, default=None,
                     help="inference size HxW (default: dataset preset)")
     ap.add_argument("--grid", default="2",
-                    help="spatial grid G or HxW; must match build_cache --grid")
+                    help="spatial grid G or HxW; must match build_cache --grid "
+                         "(paper default: 2)")
     ap.add_argument("--conf", type=float, default=0.25)
     ap.add_argument("--device", default="cuda:0")
     ap.add_argument("--limit", type=int, default=0)
@@ -319,7 +324,7 @@ def main():
         args.imgsz = IMGSZ[args.dataset]
     args.grid = (lambda s: tuple(int(x) for x in s.split("x")) if "x" in s
                  else (int(s), int(s)))(str(args.grid))
-    _base = Path(__file__).resolve().parent.parent / "outputs" / args.dataset
+    _base = Path(__file__).resolve().parent.parent / "results/step3_eval" / args.dataset
     if args.out is None:
         args.out = str(_base / "eval" / "video_curve.json")
 

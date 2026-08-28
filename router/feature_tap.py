@@ -1,4 +1,4 @@
-"""Feature tap for the 2-level Gumbel binary router (method01).
+"""Feature tap for the 2-level depth router.
 
 Stateless (no learnable params): decides *which* detector layers feed the
 router and slices the detector's `return_features=True` output into the two
@@ -6,6 +6,9 @@ context groups. All learnable projection/fusion lives in RouterNetwork.
 
   - input-level context : GAP of backbone layers {4, 6, 8}  (S2/S3/S4 == P3/P4/P5)
   - pred-level  context : GAP of neck-fusion layers {14, 17, 20} (Detect inputs)
+
+The paper uses BOTH groups (`--feat both`); the input-only and pred-only subsets
+exist for the feature ablation in step3_eval/ablation/.
 
 The pooled (GAP) vectors are produced by the detector's
 `_predict_once(..., return_features=True)`, which returns one [B, C] vector per

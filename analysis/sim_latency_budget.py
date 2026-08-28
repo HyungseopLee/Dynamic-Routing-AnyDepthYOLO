@@ -126,9 +126,9 @@ def smooth(x, w=150, causal=False):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dump", default=str(Path(__file__).resolve().parent /
-                    "outputs/kitti/perframe_dump.pkl"))
-    ap.add_argument("--out", default=str(Path(__file__).resolve().parent.parent.parent /
+    ap.add_argument("--dump", default=str(Path(__file__).resolve().parent.parent /
+                    "results/step3_eval/kitti/perframe_dump.pkl"))
+    ap.add_argument("--out", default=str(Path(__file__).resolve().parent.parent /
                     "results/figures/fig_latency_budget.pdf"))
     args = ap.parse_args()
     frames = pickle.load(open(args.dump, "rb"))["frames"]

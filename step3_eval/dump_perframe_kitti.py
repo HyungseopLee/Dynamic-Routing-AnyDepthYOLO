@@ -41,7 +41,7 @@ from router.feature_tap import INPUT_LEVEL_LAYERS, STATE_LAYERS
 from step3_eval.eval_video import load_router, grid_vec
 from step2_train_router.build_cache import num_skippable
 
-BASE = Path(__file__).resolve().parent / "outputs"
+BASE = Path(__file__).resolve().parent.parent / "results/step3_eval"
 
 
 def main():

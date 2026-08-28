@@ -12,8 +12,8 @@ next shard. Peak memory = one raw shard + the compact arrays.
 
 Usage:
     python -m step3_eval.merge_video_shards \
-        --shards outputs/bdd100k/eval/shard_*.pt \
-        --out    outputs/bdd100k/eval/video_curve.json
+        --shards results/step3_eval/bdd100k/eval/shard_*.pt \
+        --out    results/step3_eval/bdd100k/eval/video_curve.json
 """
 
 import argparse

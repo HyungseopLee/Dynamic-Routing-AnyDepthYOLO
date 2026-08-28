@@ -12,7 +12,7 @@ exactly as the KITTI table is built. This script prints the anchors and a small
 blended table for the SUPER-rates that appear on the BDD Pareto curve.
 
     python -m analysis.bench_device_bdd \
-        --weight results/step1_finetune/weights/bdd100k/anydepth_best.pt \
+        --weight results/step1_finetune/weights/bdd100k/best.pt \
         --images /media/data/bdd100k_yolo/val/images --n 600 --warmup 40
 """
 
@@ -63,7 +63,7 @@ def bench_path(yolo, imgs, skip, imgsz, conf, power, warmup):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--weight", default="results/step1_finetune/weights/bdd100k/anydepth_best.pt")
+    ap.add_argument("--weight", default="results/step1_finetune/weights/bdd100k/best.pt")
     ap.add_argument("--images", default="/media/data/bdd100k_yolo/val/images")
     ap.add_argument("--imgsz", type=int, nargs=2, default=[720, 1280])
     ap.add_argument("--conf", type=float, default=0.25)

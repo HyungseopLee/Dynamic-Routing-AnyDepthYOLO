@@ -5,7 +5,7 @@ target differs per dataset (because the advantage distribution differs) and is s
 in the first column, interpolated from that dataset's video Pareto curve.
 
 Latency/FPS/energy reuse the device anchors already measured by bench_device.py
-(outputs/device_table.json); AP and GFLOPs are interpolated from the curve at each
+(results/step3_eval/device_table.json); AP and GFLOPs are interpolated from the curve at each
 target SUPER% (both are device-independent). No GPU needed.
 
     python -m analysis.unify_device_table
@@ -17,8 +17,8 @@ from pathlib import Path
 
 import numpy as np
 
-ROOT = Path(__file__).resolve().parent
-OUT = ROOT / "outputs"
+ROOT = Path(__file__).resolve().parent.parent
+OUT = ROOT / "results/step3_eval"
 TARGETS = [10, 20, 30, 40, 50, 60, 70, 80, 90]   # interior; 0/100 are the anchors
 
 CURVES = {

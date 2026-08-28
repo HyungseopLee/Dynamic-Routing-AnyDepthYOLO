@@ -1,17 +1,24 @@
 """Router networks for 2-level depth routing.
 
+The router regresses the per-frame advantage of the SUPER path over the BASE path
+from pooled detector feature grids plus the previous path taken.
+
 Two architectures:
 
-RouterNetwork (TinyConv):
-    Keeps spatial structure of pooled feature grids [B, C, G, G].
+RouterNetwork (TinyConv) -- the paper's choice, used everywhere outside the ablation:
+    Keeps spatial structure of pooled feature grids [B, C, G, G] (G=2, i.e. 2x2 pooling).
     Per group: BN2d -> 1x1 conv -> ReLU -> 3x3 depthwise -> ReLU -> GAP -> [B, d]
     Concat groups + path embed -> FC -> ReLU -> FC -> logit [B, 1].
 
-GapMlpNet (GAP-MLP):
-    Operates on spatially pre-averaged features [B, C] (G=1 equivalent).
+GapMlpNet (GAP-MLP) -- architecture ablation only (see step3_eval/ablation/):
+    Operates on spatially pre-averaged features [B, C] (G=1 equivalent), i.e. it
+    discards the spatial structure TinyConv exploits.
     Per group: BN1d -> Linear(C->d) -> ReLU -> [B, d]
     Concat groups + path embed -> FC -> ReLU -> FC -> logit [B, 1].
     Callers must pool 4D grids to [B, C] before passing to this network.
+
+Both consume the `both` feature set (backbone taps 4/6/8 + neck taps 14/17/20), which
+is the paper's choice; `input`/`pred` subsets exist for the feature ablation.
 """
 
 from typing import List, Union

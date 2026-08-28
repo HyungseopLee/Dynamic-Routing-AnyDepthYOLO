@@ -1,9 +1,0 @@
-[19:09:18] shard 0 on GPU0 -> method02_advantage_regress_tinyConv/outputs/waymo/eval_both/shard_n0.pt
-[19:09:18] shard 1 on GPU1 -> method02_advantage_regress_tinyConv/outputs/waymo/eval_both/shard_n1.pt
-method02_advantage_regress_tinyConv/run_waymo_eval_both_robust.sh: line 19: 2655110 Killed                  CUDA_VISIBLE_DEVICES=$GPU python -u method02_advantage_regress_tinyConv/eval_video_waymo.py --weight "$W" --policies "$POL" --waymo_root /media/data/waymo_yolo/val --grid 2 --imgsz 1280 1920 --conf 0.001 --val_cache "$O/cache_val_both.pt" --budgets 10,20,30,40,50,60,70,80,90 --pi --num_shards 4 --shard_id "$SID" --device cuda:0 --raw_out "$RAW" > "$O/eval_both/video_shard_n${SID}.log" 2>&1
-[21:17:45] shard 2 on GPU0 -> method02_advantage_regress_tinyConv/outputs/waymo/eval_both/shard_n2.pt
-[21:17:45] shard 3 on GPU1 -> method02_advantage_regress_tinyConv/outputs/waymo/eval_both/shard_n3.pt
-method02_advantage_regress_tinyConv/run_waymo_eval_both_robust.sh: line 19: 2689942 Killed                  CUDA_VISIBLE_DEVICES=$GPU python -u method02_advantage_regress_tinyConv/eval_video_waymo.py --weight "$W" --policies "$POL" --waymo_root /media/data/waymo_yolo/val --grid 2 --imgsz 1280 1920 --conf 0.001 --val_cache "$O/cache_val_both.pt" --budgets 10,20,30,40,50,60,70,80,90 --pi --num_shards 4 --shard_id "$SID" --device cuda:0 --raw_out "$RAW" > "$O/eval_both/video_shard_n${SID}.log" 2>&1
-MISSING method02_advantage_regress_tinyConv/outputs/waymo/eval_both/shard_n1.pt
-MISSING method02_advantage_regress_tinyConv/outputs/waymo/eval_both/shard_n2.pt
-[23:23:53] some shards missing; re-run this script to finish them.

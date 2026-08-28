@@ -18,12 +18,12 @@ Step 1 — run live inference and save dump:
         --router  results/step2_router/weights/bdd100k/router_both_0.pt \
         --scenarios results/step3_eval/bdd100k/scenarios.json \
         --mot_root  /media/data/bdd100k_mot/val \
-        --dump results/step3_eval/bdd100k/online_budget_demo.json \
+        --dump results/step4_deploy/control/online_budget_demo.json \
         --out  results/figures/fig_scenario_budget.pdf
 
 Step 2 — re-render from saved dump (instant, no inference):
     python -m step4_deploy.online_budget_demo \
-        --dump results/step3_eval/bdd100k/online_budget_demo.json \
+        --dump results/step4_deploy/control/online_budget_demo.json \
         --out  results/figures/fig_scenario_budget.pdf \
         --replot [--win 60]
 

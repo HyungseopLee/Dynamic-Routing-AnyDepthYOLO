@@ -43,7 +43,7 @@ Step 4 — run TRT budget-tracking demo (see online_budget_demo_stream.py):
     --scenarios results/step3_eval/bdd100k/scenarios.json \
     --mot_root /media/data/bdd100k_mot/val \
     --kp 0.28 --ki 0.06 --beta 0.93 --warmup 60 --win 60 \
-    --dump results/step3_eval/bdd100k/online_budget_demo_trt.json \
+    --dump results/step4_deploy/control/online_budget_demo_trt.json \
     --out  results/figures/fig_scenario_budget_trt.pdf
     
     # Jetson Orin Nano (576×1024)
@@ -55,7 +55,7 @@ Step 4 — run TRT budget-tracking demo (see online_budget_demo_stream.py):
     --scenarios results/step3_eval/bdd100k/scenarios.json \
     --mot_root /media/data/bdd100k_mot/val \
     --kp 0.28 --ki 0.06 --beta 0.93 --warmup 60 --win 60 \
-    --dump results/step3_eval/bdd100k/online_budget_demo_trt.json \
+    --dump results/step4_deploy/control/online_budget_demo_trt.json \
     --out  results/figures/fig_scenario_budget_trt.pdf
     
     

@@ -8,7 +8,7 @@ Metrics computed from stored raw realized latencies:
   - Centered MA(30) for SSE           (matches paper tracking figures)
 
 Usage:
-    python -m step4_deploy.plot_hyperparameter_table \
+    python -m analysis.plot_hyperparameter_table \
         --out results/step4_deploy/control/hyperparameter_table.pdf
 """
 import argparse
@@ -22,7 +22,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-OUTPUTS = Path(__file__).resolve().parent.parent / "outputs" / "bdd100k"
+OUTPUTS = Path(__file__).resolve().parent.parent / "results/step4_deploy/control"
 
 # ── configs to evaluate ───────────────────────────────────────────────────────
 CONFIGS = [

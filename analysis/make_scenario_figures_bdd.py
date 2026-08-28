@@ -19,10 +19,10 @@ import analysis.sim_latency_budget as S
 # BDD anchors (Table tab:device BDD column): base/super per-frame latency (ms).
 S.L_BASE, S.L_SUPER, S.L_ROUTER = 24.76, 39.16, 0.40
 
-OUT = Path(__file__).resolve().parent / "outputs/bdd100k"
+OUT = Path(__file__).resolve().parent.parent / "results/step3_eval/bdd100k"
 DUMP = OUT / "perframe_scenarios.pkl"
 SCEN = OUT / "scenarios.json"
-FIG = Path(__file__).resolve().parent.parent / "outputs/figures/fig_scenario_budget.pdf"
+FIG = Path(__file__).resolve().parent.parent / "results/figures/fig_scenario_budget.pdf"
 
 TITLES = {"night_dawn": "night $\\leftrightarrow$ daytime",
           "city_highway": "city $\\leftrightarrow$ highway",

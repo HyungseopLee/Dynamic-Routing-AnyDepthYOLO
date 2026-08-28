@@ -7,9 +7,9 @@ grouped by time of day, weather, scene type, crowd density).
 import json
 from pathlib import Path
 
-OUT = Path(__file__).resolve().parent / "outputs"
+OUT = Path(__file__).resolve().parent.parent / "results/step3_eval"
 SRC = OUT / "bdd100k/eval/condition_stratified.json"
-DST = Path(__file__).resolve().parent.parent / "outputs/figures/tab_condition_stratified.tex"
+DST = Path(__file__).resolve().parent.parent / "results/figures/tab_condition_stratified.tex"
 
 # pretty display names for crowd labels carry the median inline already
 NICE = {"daytime": "Daytime", "night": "Night", "dawn/dusk": "Dawn/Dusk",

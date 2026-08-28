@@ -10,7 +10,7 @@ Panels:
   (d) Disturbance rejection — worst-case condition change (night->day) within constant target
 
 Usage:
-    python -m step4_deploy.plot_control_analysis \
+    python -m analysis.plot_control_analysis \
         --out results/step4_deploy/control/control_analysis.pdf
 """
 import argparse
@@ -26,7 +26,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-OUTPUTS = Path(__file__).resolve().parent.parent / "outputs" / "bdd100k"
+OUTPUTS = Path(__file__).resolve().parent.parent / "results/step4_deploy/control"
 
 JSONS_BETA = {
     r"$\beta{=}0.83$": OUTPUTS / "jetson_trtengine_720x1280_b0.83_kp2.0_ki0.33_win45.json",
