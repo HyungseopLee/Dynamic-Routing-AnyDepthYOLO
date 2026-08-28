@@ -73,6 +73,7 @@ python -m torch.distributed.run --nproc_per_node 2 step1_finetune/finetune.py \
 *Note: `--dataset` also selects the dataset's `epochs` / `batch` / `lr0`. KITTI and Waymo start from the BDD100K checkpoint rather than COCO; the head is re-initialised when the class count differs.*
 </details>
 
+---
 
 ### Step 2. Train the Router
 The lightweight router is trained to predict the frame-by-frame advantage of running the deep path.
@@ -113,6 +114,7 @@ python -m step2_train_router.train_policy --dataset bdd100k \
 *Note: Weights are named `router_g<H>x<W>_<feat>_s<seed>.pt`. `--feat` supports `backbone`, `neck`, or `both`. Use `--arch gapmlp` to swap TinyConv for the GAP-MLP ablation.*
 </details>
 
+---
 
 ### Step 3. Evaluate the Router
 Routing is **causal**: the advantage predicted at frame *t−1* selects the path run at frame *t*.
@@ -132,6 +134,7 @@ python -m step3_eval.eval_video --dataset bdd100k \
 *Note: The paper averages seeds 0-4; pass them as a comma-separated `--policies` list. Ablation drivers live in [`step3_eval/ablation/`](step3_eval/ablation/).*
 </details>
 
+---
 
 ### Step 4. Deploy
 TensorRT cannot skip layers inside a single static engine. Therefore, each depth path becomes its own engine, and the router dynamically selects one per frame.
@@ -170,3 +173,10 @@ python -m step4_deploy.online_budget_demo_stream \
 
 ## 📄 License
 [AGPL-3.0](LICENSE), inherited from Ultralytics.
+
+
+---
+
+## 🙏 Acknowledgements
+The code is based on [AnyDepth-YOLO](https://arxiv.org/abs/2605.09407), [YOLOv12](https://github.com/sunsmarterjie/yolov12), [Ultralytics](https://github.com/ultralytics/ultralytics).
+Thanks for their excellent work!
