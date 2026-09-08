@@ -40,6 +40,7 @@ def compact_map_multi_iou(cls_arr, conf_arr, tp_arr, gt_count, iou_grid=B.IOU_GR
     order = np.argsort(-conf_arr, kind="stable")     # sort by conf desc once
     cls_s, tp_s = cls_arr[order], tp_arr[order]
     ap_iou_cls = {ti: {} for ti in range(len(iou_grid))}
+    rec_iou_cls = {ti: {} for ti in range(len(iou_grid))}
     for cls in B.EVAL_CLS:
         n_gt = gt_count.get(cls, 0)
         if n_gt == 0:
@@ -48,6 +49,7 @@ def compact_map_multi_iou(cls_arr, conf_arr, tp_arr, gt_count, iou_grid=B.IOU_GR
         if not m.any():
             for ti in range(len(iou_grid)):
                 ap_iou_cls[ti][cls] = 0.0
+                rec_iou_cls[ti][cls] = 0.0
             continue
         tp_c = tp_s[m]                                # [Nc, n_iou], conf-desc order
         for ti in range(len(iou_grid)):
@@ -57,11 +59,14 @@ def compact_map_multi_iou(cls_arr, conf_arr, tp_arr, gt_count, iou_grid=B.IOU_GR
             precs = tp_cum / np.maximum(tp_cum + fp_cum, 1e-12)
             recs = tp_cum / n_gt
             ap_iou_cls[ti][cls] = B.compute_ap(precs, recs)
+            rec_iou_cls[ti][cls] = float(recs[-1]) if len(recs) else 0.0
     ap50 = ap_iou_cls[0]
     map50 = float(np.mean(list(ap50.values()))) if ap50 else 0.0
     per_iou = [float(np.mean(list(ap_iou_cls[ti].values()))) if ap_iou_cls[ti] else 0.0
                for ti in range(len(iou_grid))]
-    return ap50, map50, float(np.mean(per_iou))
+    per_iou_rec = [float(np.mean(list(rec_iou_cls[ti].values()))) if rec_iou_cls[ti] else 0.0
+                   for ti in range(len(iou_grid))]
+    return ap50, map50, float(np.mean(per_iou)), float(np.mean(per_iou_rec))
 
 
 def main():
@@ -115,7 +120,7 @@ def main():
         cls_arr = np.concatenate(cls_parts[name]) if cls_parts[name] else np.empty(0, np.int16)
         conf_arr = np.concatenate(conf_parts[name]) if conf_parts[name] else np.empty(0, np.float32)
         tp_arr = np.concatenate(tp_parts[name]) if tp_parts[name] else np.empty((0, n_iou), bool)
-        _, map50, map5095 = compact_map_multi_iou(cls_arr, conf_arr, tp_arr, gt_count[name])
+        _, map50, map5095, ar5095 = compact_map_multi_iou(cls_arr, conf_arr, tp_arr, gt_count[name])
         # free this strategy's arrays before the next
         cls_parts[name] = conf_parts[name] = tp_parts[name] = None
         n = n_super[name] + n_base[name]
@@ -129,7 +134,7 @@ def main():
             family = meta[name]["kind"]
         rows.append({"name": name, "kind": meta[name]["kind"], "family": family,
                      "thres": meta[name]["thres"], "budget": meta[name].get("budget"),
-                     "map50": map50, "map": map5095,
+                     "map50": map50, "map": map5095, "ar": ar5095,
                      "super_rate": super_rate, "gflops": gflops})
     rows.sort(key=lambda r: r["gflops"])
 

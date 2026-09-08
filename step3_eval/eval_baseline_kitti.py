@@ -226,8 +226,10 @@ def compute_ap(precisions, recalls):
 def dataset_map_multi_iou(all_matches_multi, all_gt_counts, iou_grid=IOU_GRID):
     """all_matches_multi: list of (cls, conf, [is_tp@iou for iou in iou_grid])."""
     ap_iou_cls = {}                          # iou_idx -> {cls: ap}
+    rec_iou_cls = {}                         # iou_idx -> {cls: recall at max dets}
     for ti, iou_th in enumerate(iou_grid):
         ap_iou_cls[ti] = {}
+        rec_iou_cls[ti] = {}
         for cls in EVAL_CLS:
             items = [(c, flags[ti]) for (cl, c, flags) in all_matches_multi if cl == cls]
             n_gt = all_gt_counts.get(cls, 0)
@@ -240,6 +242,7 @@ def dataset_map_multi_iou(all_matches_multi, all_gt_counts, iou_grid=IOU_GRID):
                 precs.append(tp_c / (tp_c + fp_c))
                 recs.append(tp_c / n_gt)
             ap_iou_cls[ti][cls] = compute_ap(np.array(precs), np.array(recs))
+            rec_iou_cls[ti][cls] = recs[-1] if recs else 0.0
     # AP@50 per class = ap_iou_cls[0]
     ap50_per_cls = ap_iou_cls[0]
     map50 = float(np.mean(list(ap50_per_cls.values()))) if ap50_per_cls else 0.0
@@ -250,7 +253,12 @@ def dataset_map_multi_iou(all_matches_multi, all_gt_counts, iou_grid=IOU_GRID):
         if d: per_iou_map.append(float(np.mean(list(d.values()))))
         else: per_iou_map.append(0.0)
     map5095 = float(np.mean(per_iou_map))
-    return ap50_per_cls, map50, map5095
+    # AR@[0.5:0.95]: recall at the end of each class/IoU curve (all detections kept),
+    # averaged over classes then over IoU thresholds -- same reduction order as mAP.
+    per_iou_rec = [float(np.mean(list(rec_iou_cls[ti].values()))) if rec_iou_cls[ti] else 0.0
+                   for ti in range(len(iou_grid))]
+    ar5095 = float(np.mean(per_iou_rec))
+    return ap50_per_cls, map50, map5095, ar5095
 
 
 def dataset_map50(all_matches, all_gt_counts):
@@ -574,7 +582,7 @@ def run_sequence(yolo, seq, kitti_root, args, strategies, rng, energy_monitor,
 
 
 def state_to_summary(st, gflops_super=0.0, gflops_base=0.0):
-    ap50_per_cls, m_ap50, m_ap5095 = dataset_map_multi_iou(st.matches_multi, dict(st.gt_count))
+    ap50_per_cls, m_ap50, m_ap5095, m_ar5095 = dataset_map_multi_iou(st.matches_multi, dict(st.gt_count))
     n_total = st.n_super + st.n_base
     pct_base = 100.0 * st.n_base / max(n_total, 1)
     mean_lat = float(np.mean(st.latency_ms)) if st.latency_ms else 0.0

@@ -588,7 +588,7 @@ def main():
     rows = []
     for st in strategies:
         s = state[st["name"]]
-        _, map50, map5095 = B.dataset_map_multi_iou(s.matches_multi, s.gt_count)
+        _, map50, map5095, ar5095 = B.dataset_map_multi_iou(s.matches_multi, s.gt_count)
         n = s.n_super + s.n_base
         super_rate = s.n_super / max(n, 1)
         gflops = super_rate * gs + (1 - super_rate) * gb
@@ -603,7 +603,7 @@ def main():
             family = st["kind"]
         rows.append({"name": nm, "kind": st["kind"], "family": family,
                      "thres": st["thres"], "budget": st.get("budget"),
-                     "map50": map50, "map": map5095,
+                     "map50": map50, "map": map5095, "ar": ar5095,
                      "super_rate": super_rate, "gflops": gflops})
     rows.sort(key=lambda r: r["gflops"])
 
