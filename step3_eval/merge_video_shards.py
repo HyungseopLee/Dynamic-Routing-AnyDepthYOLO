@@ -31,7 +31,15 @@ import numpy as np
 import torch
 
 from step3_eval import eval_baseline_kitti as B
-from step3_eval.eval_video import BDD_MOT_EVAL_CLS
+from step3_eval.eval_video import BDD_EVAL_CLS, WAYMO_EVAL_CLS
+
+# EVAL_CLS per dataset -- must match what eval_video.py used when writing the shards,
+# otherwise mAP/AR are averaged over the wrong class set.
+_DATASET_CLS = {
+    "kitti": list(range(8)),
+    "bdd100k": BDD_EVAL_CLS,
+    "waymo": WAYMO_EVAL_CLS,
+}
 
 
 def compact_map_multi_iou(cls_arr, conf_arr, tp_arr, gt_count, iou_grid=B.IOU_GRID):
@@ -70,11 +78,14 @@ def compact_map_multi_iou(cls_arr, conf_arr, tp_arr, gt_count, iou_grid=B.IOU_GR
 
 
 def main():
-    B.EVAL_CLS = BDD_MOT_EVAL_CLS
     ap = argparse.ArgumentParser()
     ap.add_argument("--shards", nargs="+", required=True, help="raw shard .pt files (globs ok)")
     ap.add_argument("--out", required=True)
+    ap.add_argument("--dataset", default="bdd100k", choices=sorted(_DATASET_CLS),
+                    help="selects the evaluation class set; must match the shards' run")
     args = ap.parse_args()
+    B.EVAL_CLS = _DATASET_CLS[args.dataset]
+    print(f"[*] EVAL_CLS={B.EVAL_CLS}")
 
     paths = sorted({p for g in args.shards for p in glob.glob(g)})
     if not paths:

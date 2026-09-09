@@ -220,15 +220,6 @@ def grid_vec(captured, layers, G):
         [F.adaptive_avg_pool2d(captured[i].float(), G).squeeze(0) for i in layers], dim=0)
 
 
-def pixel_signals(bgr):
-    y = cv2.cvtColor(bgr, cv2.COLOR_BGR2YUV)[:, :, 0]
-    lum = float(y.mean())
-    gx = cv2.Sobel(y, cv2.CV_32F, 1, 0, ksize=3)
-    gy = cv2.Sobel(y, cv2.CV_32F, 0, 1, ksize=3)
-    edge = float(np.sqrt(gx * gx + gy * gy).mean())
-    return lum, edge
-
-
 def load_router(path, device):
     from router.router_net import GapMlpNet
     ckpt = torch.load(path, map_location=device, weights_only=False)
@@ -301,7 +292,6 @@ def main():
     ap.add_argument("--device", default="cuda:0")
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--router_only", action="store_true")
-    ap.add_argument("--no_conf", action="store_true")
     ap.add_argument("--router_taus", type=int, default=21)
     ap.add_argument("--val_cache", default=None)
     ap.add_argument("--budgets", default="10,20,30,40,50,60,70,80,90")
@@ -315,7 +305,6 @@ def main():
     ap.add_argument("--shard_id", type=int, default=0)
     ap.add_argument("--raw_out", default=None,
                     help="dump raw shard matches (merge with merge_video_shards.py)")
-    ap.add_argument("--thresh_clips", type=int, default=25)
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
 
@@ -394,20 +383,6 @@ def main():
     seqs = get_segs(args)
     eval_seqs = seqs[args.shard_id::args.num_shards] if args.num_shards > 1 else seqs
 
-    # ── lum/edge percentile thresholds ────────────────────────────────────────
-    lum_taus = edge_taus = None
-    pcts = list(range(5, 100, 5))
-    if not args.router_only:
-        lum_all, edge_all = [], []
-        thr_seqs = seqs if args.thresh_clips <= 0 else seqs[:args.thresh_clips]
-        for seq in thr_seqs:
-            for _, bgr in get_frames(seq, args):
-                l, e = pixel_signals(bgr); lum_all.append(l); edge_all.append(e)
-        if lum_all:
-            lum_taus = np.percentile(lum_all, pcts)
-            edge_taus = np.percentile(edge_all, pcts)
-            print(f"[*] lum/edge thresholds from {len(lum_all)} frames ({len(thr_seqs)} clips)")
-
     # ── val-derived router thresholds ─────────────────────────────────────────
     val_taus = None
     if args.val_cache:
@@ -433,24 +408,12 @@ def main():
         dict(name="always_super", kind="const", thres=0,
              decide=lambda pc, pv, fi: "super"),
     ]
-    if not args.router_only and lum_taus is not None:
+    if not args.router_only:
         for p in range(0, 101, 10):
             ps = p / 100.0
             strategies.append(dict(
                 name=f"random_p{p:03d}", kind="random", thres=ps,
                 decide=lambda pc, pv, fi, ps=ps: "super" if np.random.random() < ps else "base"))
-        for kind, taus in (("lum", lum_taus), ("edge", edge_taus)):
-            for pc, tau in zip(pcts, taus):
-                strategies.append(dict(
-                    name=f"{kind}_p{pc:02d}", kind=kind, thres=float(tau),
-                    decide=lambda pc_, pv, fi, tau=tau: "super" if pv < tau else "base"))
-        if not args.no_conf:
-            conf_taus = [round((i + 1) / 10.0, 2) for i in range(9)]
-            for kind in ("conftop20",):
-                for tau in conf_taus:
-                    strategies.append(dict(
-                        name=f"{kind}_t{int(tau*100):02d}", kind=kind, thres=tau,
-                        decide=lambda pc, pv, fi, tau=tau: "base" if (fi == 0 or pv >= tau) else "super"))
 
     policy_taus = [round(-0.4 + (2.0 / (args.router_taus - 1)) * i, 3)
                    for i in range(args.router_taus)]
@@ -499,7 +462,6 @@ def main():
         for fi_pos, (fidx, bgr) in enumerate(get_frames(seq, args)):
             total_frames += 1; nfr += 1
             H, W = bgr.shape[:2]
-            lum_cur, edge_cur = pixel_signals(bgr)
 
             captured.clear()
             r_super = yolo.predict(source=bgr, imgsz=tuple(args.imgsz), conf=args.conf,
@@ -513,14 +475,6 @@ def main():
             pr_b = grid_vec(captured, PRED_LEVEL_LAYERS, args.grid).unsqueeze(0) if need_pred else None
 
             preds = {"super": B.boxes_to_preds(r_super), "base": B.boxes_to_preds(r_base)}
-            conf_s = r_super.boxes.conf.cpu() if (r_super.boxes is not None and len(r_super.boxes)) else torch.empty(0)
-            conf_b = r_base.boxes.conf.cpu() if (r_base.boxes is not None and len(r_base.boxes)) else torch.empty(0)
-
-            def sig(conf):
-                return {"conftop20": B.conf_top_k_mean(conf, 20) if conf.numel() else 0.0,
-                        "confge10":  B.conf_mean_ge(conf, 0.1)   if conf.numel() else 0.0}
-            sig_super, sig_base = sig(conf_s), sig(conf_b)
-
             with torch.no_grad():
                 av = {}
                 for tag, n in nets.items():
@@ -545,17 +499,10 @@ def main():
             for st in strategies:
                 kind, decide = st["kind"], st["decide"]
                 s = state[st["name"]]
-                if kind in ("conftop20", "confge10"):
-                    pv = ((sig_super[kind] if s.prev_choice == "super" else sig_base[kind])
-                          if s.prev_choice else 0.0)
-                elif kind == "router":
+                if kind == "router":
                     avt = av[st["ptag"]]
                     pv = ((avt["super"] if s.prev_choice == "super" else avt["base"])
                           if s.prev_choice else 0.0)
-                elif kind == "lum":
-                    pv = lum_cur
-                elif kind == "edge":
-                    pv = edge_cur
                 else:
                     pv = 0.0
                 choice = decide(s.prev_choice, pv, fi_pos)
@@ -563,7 +510,7 @@ def main():
                 s.n_super += (choice == "super"); s.n_base += (choice == "base")
                 p = B.filter_dontcare(preds[choice], dc) if dc else preds[choice]
                 m, gtc = B.match_frame_multi_iou(p, gts)
-                s.matches_multi.extend(m)
+                s.add_matches(m)
                 for cls_id, cnt in gtc.items():
                     s.gt_count[cls_id] += cnt
 
@@ -574,10 +521,12 @@ def main():
         raw = {"gflops_super": gs, "gflops_base": gb, "total_frames": total_frames,
                "meta": {s["name"]: {"kind": s["kind"], "thres": s["thres"],
                                     "budget": s.get("budget")} for s in strategies},
-               "state": {s["name"]: {"matches_multi": state[s["name"]].matches_multi,
-                                     "gt_count": dict(state[s["name"]].gt_count),
-                                     "n_super": state[s["name"]].n_super,
-                                     "n_base":  state[s["name"]].n_base}
+               "compact": True,
+               "state": {s["name"]: dict(
+                             zip(("cls", "conf", "tp"), state[s["name"]].compact()),
+                             gt_count=dict(state[s["name"]].gt_count),
+                             n_super=state[s["name"]].n_super,
+                             n_base=state[s["name"]].n_base)
                          for s in strategies}}
         rp = Path(args.raw_out); rp.parent.mkdir(parents=True, exist_ok=True)
         torch.save(raw, rp)
@@ -588,7 +537,9 @@ def main():
     rows = []
     for st in strategies:
         s = state[st["name"]]
-        _, map50, map5095, ar5095 = B.dataset_map_multi_iou(s.matches_multi, s.gt_count)
+        cls_a, conf_a, tp_a = s.compact()
+        _, map50, map5095, ar5095, per_cls = B.dataset_map_ar_compact(
+            cls_a, conf_a, tp_a, s.gt_count)
         n = s.n_super + s.n_base
         super_rate = s.n_super / max(n, 1)
         gflops = super_rate * gs + (1 - super_rate) * gb
@@ -604,6 +555,7 @@ def main():
         rows.append({"name": nm, "kind": st["kind"], "family": family,
                      "thres": st["thres"], "budget": st.get("budget"),
                      "map50": map50, "map": map5095, "ar": ar5095,
+                     "per_class": per_cls,
                      "super_rate": super_rate, "gflops": gflops})
     rows.sort(key=lambda r: r["gflops"])
 
