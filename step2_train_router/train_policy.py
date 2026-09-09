@@ -83,15 +83,23 @@ def slice_levels(cache, keep):
     return cache
 
 
-def load_cache(path, device):
+def load_cache(path, device, advantage="plain"):
+    """advantage='risk' regresses the risk-weighted loss gap stored by build_cache
+    (--risk_classes/--risk_weight); 'plain' is the paper's A = L_base - L_super."""
     c = torch.load(path, map_location="cpu", weights_only=False)
+    lb_key, ls_key = ("loss_base", "loss_super")
+    if advantage == "risk":
+        if "loss_risk_base" not in c:
+            raise SystemExit(f"{path} has no loss_risk_* -- rebuild the cache with "
+                             "--risk_classes/--risk_weight")
+        lb_key, ls_key = "loss_risk_base", "loss_risk_super"
     # Feature tensors are kept on CPU to avoid GPU OOM for large grids (e.g. 8x8).
     # loss tensors are small and go to device; features are moved per-batch in gather().
     out = {
         "input_base": c["input_base"],   # CPU, keep original dtype (fp16 or fp32)
         "input_super": c["input_super"],
-        "loss_base": c["loss_base"].to(device),
-        "loss_super": c["loss_super"].to(device),
+        "loss_base": c[lb_key].to(device),
+        "loss_super": c[ls_key].to(device),
         "_device": device,
     }
     if "pred_base" in c:
@@ -213,6 +221,10 @@ def main():
     ap.add_argument("--keep_layers", default="", help="comma-sep subset of backbone tapped "
                     "layers to keep (e.g. '4' / '6' / '8'); empty = all. Channel-slices the "
                     "input grid for single-level ablation (no cache rebuild). feat=input only.")
+    ap.add_argument("--advantage", default="plain", choices=["plain", "risk"],
+                    help="which loss gap to regress: plain = L_base - L_super (paper), "
+                         "risk = the risk-weighted gap cached by build_cache "
+                         "--risk_classes/--risk_weight")
     args = ap.parse_args()
     args.feat = normalize_feat(args.feat)
     base = OUT / args.dataset
@@ -224,8 +236,9 @@ def main():
 
     torch.manual_seed(args.seed)
     device = args.device if torch.cuda.is_available() else "cpu"
-    train_cache = load_cache(args.cache, device)
-    val_cache = load_cache(args.val_cache, device) if Path(args.val_cache).exists() else None
+    train_cache = load_cache(args.cache, device, args.advantage)
+    val_cache = (load_cache(args.val_cache, device, args.advantage)
+                 if Path(args.val_cache).exists() else None)
 
     keep = [int(x) for x in args.keep_layers.split(",")] if args.keep_layers else []
     if keep:

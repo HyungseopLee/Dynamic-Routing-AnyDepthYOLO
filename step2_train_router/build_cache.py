@@ -107,21 +107,54 @@ def grids(captured, layers, G):
     return torch.cat([F.adaptive_avg_pool2d(captured[l].float(), G) for l in layers], dim=1)
 
 
-def per_image_losses(criterion, preds, batch):
-    """Detection loss for each image in the batch by slicing targets per index."""
+def _loss_on_targets(criterion, preds_i, img_i, cls_i, box_i):
+    """Detection loss of one image against an arbitrary subset of its GT boxes."""
+    sub = {
+        "img": img_i,
+        "batch_idx": torch.zeros(cls_i.shape[0], device=preds_i[0].device),
+        "cls": cls_i,
+        "bboxes": box_i,
+    }
+    loss_sum, _ = criterion(preds_i, sub)
+    return loss_sum.detach().sum()
+
+
+def per_image_losses(criterion, preds, batch, risk_classes=None, risk_weight=1.0):
+    """Detection loss for each image in the batch by slicing targets per index.
+
+    Returns (loss_plain[B], loss_risk[B]). With no risk_classes the two are equal.
+
+    The risk-weighted variant adds an extra penalty on the safety-critical subset:
+
+        L_risk = L(all GT) + (w - 1) * L(safety-critical GT only)
+
+    The router regresses A = L_base - L_super, so weighting the loss this way makes
+    the advantage of the SUPER path spike on frames where the BASE path would miss a
+    pedestrian/cyclist -- which is exactly the behaviour we want to route on. The
+    detector itself stays frozen; only the regression target changes.
+    """
     B = preds[0].shape[0]
-    losses = []
+    plain, risk = [], []
+    rc = None
+    if risk_classes and risk_weight != 1.0:
+        rc = torch.as_tensor(sorted(risk_classes), device=preds[0].device)
     for i in range(B):
-        sub = {
-            "img": batch["img"][i:i + 1],
-            "batch_idx": torch.zeros((batch["batch_idx"] == i).sum(), device=preds[0].device),
-            "cls": batch["cls"][batch["batch_idx"] == i],
-            "bboxes": batch["bboxes"][batch["batch_idx"] == i],
-        }
+        m = batch["batch_idx"] == i
+        cls_i, box_i, img_i = batch["cls"][m], batch["bboxes"][m], batch["img"][i:i + 1]
         preds_i = [p[i:i + 1] for p in preds]
-        loss_sum, _ = criterion(preds_i, sub)
-        losses.append(loss_sum.detach().sum())
-    return torch.stack(losses)  # [B]
+        l_all = _loss_on_targets(criterion, preds_i, img_i, cls_i, box_i)
+        plain.append(l_all)
+        if rc is None:
+            risk.append(l_all)
+            continue
+        sel = torch.isin(cls_i.view(-1).long(), rc)
+        if sel.any():
+            l_sc = _loss_on_targets(criterion, preds_i, img_i,
+                                    cls_i[sel], box_i[sel])
+            risk.append(l_all + (risk_weight - 1.0) * l_sc)
+        else:
+            risk.append(l_all)
+    return torch.stack(plain), torch.stack(risk)
 
 
 def main():
@@ -148,6 +181,13 @@ def main():
     ap.add_argument("--fp16", action="store_true",
                     help="store feature grids as float16 to halve RAM/disk usage")
     ap.add_argument("--out", default=None)
+    ap.add_argument("--risk_classes", type=int, nargs="*", default=None,
+                    help="safety-critical class ids. When set with --risk_weight, the cache "
+                         "additionally stores loss_risk_{base,super} = L(all GT) + "
+                         "(w-1)*L(these classes only). KITTI: 3 4 5 (pedestrian, "
+                         "person_sitting, cyclist)")
+    ap.add_argument("--risk_weight", type=float, default=1.0,
+                    help="w in the risk-weighted loss; 1.0 makes loss_risk == loss")
     args = ap.parse_args()
     args.feat = normalize_feat(args.feat)
     if args.out is None:
@@ -199,7 +239,8 @@ def main():
             shutil.rmtree(chunk_dir)
         chunk_dir.mkdir(parents=True)
 
-    rows = {"loss_base": [], "loss_super": [], "im_file": []}
+    rows = {"loss_base": [], "loss_super": [],
+            "loss_risk_base": [], "loss_risk_super": [], "im_file": []}
     for tag in ("base", "super"):
         if cache_input: rows[f"input_{tag}"] = []
         if cache_pred: rows[f"pred_{tag}"] = []
@@ -218,7 +259,8 @@ def main():
                 chunk[k] = list(v)
         torch.save(chunk, chunk_dir / f"chunk_{chunk_idx:04d}.pt")
         chunk_idx += 1
-        rows = {"loss_base": [], "loss_super": [], "im_file": []}
+        rows = {"loss_base": [], "loss_super": [],
+            "loss_risk_base": [], "loss_risk_super": [], "im_file": []}
         for tag in ("base", "super"):
             if cache_input: rows[f"input_{tag}"] = []
             if cache_pred: rows[f"pred_{tag}"] = []
@@ -240,7 +282,10 @@ def main():
                 rows[f"input_{tag}"].append(grids(captured, INPUT_LEVEL_LAYERS, G).cpu())
             if cache_pred:
                 rows[f"pred_{tag}"].append(grids(captured, PRED_LEVEL_LAYERS, G).cpu())
-            rows[f"loss_{tag}"].append(per_image_losses(criterion, preds, batch_t).cpu())
+            l_plain, l_risk = per_image_losses(criterion, preds, batch_t,
+                                               args.risk_classes, args.risk_weight)
+            rows[f"loss_{tag}"].append(l_plain.cpu())
+            rows[f"loss_risk_{tag}"].append(l_risk.cpu())
 
         rows["im_file"].extend(batch["im_file"])
         if bi % 20 == 0:
@@ -284,7 +329,8 @@ def main():
                 cache[k] = v
     cache["meta"] = {"weight": str(args.weight), "split": args.split,
                      "imgsz": list(args.imgsz), "num_skippable": N, "grid": G,
-                     "feat": args.feat, "base_imgsz": args.base_imgsz}
+                     "feat": args.feat, "base_imgsz": args.base_imgsz,
+                     "risk_classes": args.risk_classes, "risk_weight": args.risk_weight}
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     torch.save(cache, out)

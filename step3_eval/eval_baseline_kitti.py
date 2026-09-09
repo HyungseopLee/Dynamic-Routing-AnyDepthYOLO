@@ -261,6 +261,52 @@ def dataset_map_multi_iou(all_matches_multi, all_gt_counts, iou_grid=IOU_GRID):
     return ap50_per_cls, map50, map5095, ar5095
 
 
+def dataset_map_ar_compact(cls_arr, conf_arr, tp_arr, gt_counts, iou_grid=IOU_GRID):
+    """Vectorised twin of dataset_map_multi_iou over compact arrays.
+
+    cls_arr:int[N]  conf_arr:float[N]  tp_arr:bool[N, len(iou_grid)]
+    Returns (ap50_per_cls, map50, map5095, ar5095) -- identical numbers, but the
+    per-class PR sweep runs as cumulative-sum over numpy instead of a python loop.
+    """
+    order = np.argsort(-conf_arr, kind="stable")   # sort by confidence once
+    cls_s, tp_s = cls_arr[order], tp_arr[order]
+    ap_iou_cls = {ti: {} for ti in range(len(iou_grid))}
+    rec_iou_cls = {ti: {} for ti in range(len(iou_grid))}
+    for cls in EVAL_CLS:
+        n_gt = gt_counts.get(cls, 0)
+        if n_gt == 0:
+            continue
+        m = cls_s == cls
+        tp_c = tp_s[m]                              # [Nc, n_iou], conf-desc order
+        for ti in range(len(iou_grid)):
+            if tp_c.shape[0] == 0:
+                ap_iou_cls[ti][cls] = 0.0
+                rec_iou_cls[ti][cls] = 0.0
+                continue
+            is_tp = tp_c[:, ti].astype(np.float64)
+            tp_cum = np.cumsum(is_tp)
+            fp_cum = np.cumsum(1.0 - is_tp)
+            precs = tp_cum / np.maximum(tp_cum + fp_cum, 1e-12)
+            recs = tp_cum / n_gt
+            ap_iou_cls[ti][cls] = compute_ap(precs, recs)
+            rec_iou_cls[ti][cls] = float(recs[-1])
+    ap50_per_cls = ap_iou_cls[0]
+    map50 = float(np.mean(list(ap50_per_cls.values()))) if ap50_per_cls else 0.0
+    per_iou_map = [float(np.mean(list(ap_iou_cls[ti].values()))) if ap_iou_cls[ti] else 0.0
+                   for ti in range(len(iou_grid))]
+    per_iou_rec = [float(np.mean(list(rec_iou_cls[ti].values()))) if rec_iou_cls[ti] else 0.0
+                   for ti in range(len(iou_grid))]
+    # per-class AP/AR averaged over the IoU sweep -- needed to report safety-critical
+    # classes (pedestrian/cyclist) separately from the global mean.
+    cls_seen = sorted(ap_iou_cls[0])
+    per_cls = {c: {"ap": float(np.mean([ap_iou_cls[ti][c] for ti in range(len(iou_grid))])),
+                   "ap50": float(ap_iou_cls[0][c]),
+                   "ar": float(np.mean([rec_iou_cls[ti][c] for ti in range(len(iou_grid))]))}
+               for c in cls_seen}
+    return (ap50_per_cls, map50, float(np.mean(per_iou_map)),
+            float(np.mean(per_iou_rec)), per_cls)
+
+
 def dataset_map50(all_matches, all_gt_counts):
     """Legacy single-IoU mAP (kept for backward compat)."""
     aps = {}
@@ -418,7 +464,14 @@ def build_strategies(include_learned=False):
 class StrategyState:
     def __init__(self, name):
         self.name = name
+        # Legacy python-tuple pool, still used by this script's own KITTI path.
         self.matches_multi = []  # list of (cls, conf, [is_tp@iou for iou in IOU_GRID])
+        # Compact accumulator used by step3_eval/eval_video.py: one chunk per frame,
+        # concatenated only at the end. A python tuple per detection costs ~252 B
+        # (tuple + int + float + list-of-10); the same row as numpy is 16 B, and at
+        # --conf 0.001 with ~60 strategies the tuple form runs to hundreds of GB.
+        # Same layout Ultralytics' validator keeps (tp / conf / pred_cls arrays).
+        self._cls_parts, self._conf_parts, self._tp_parts = [], [], []
         self.gt_count = defaultdict(int)
         self.latency_ms = []     # per-frame latency
         self.energy_mj  = []     # per-frame energy
@@ -426,6 +479,26 @@ class StrategyState:
         self.n_super = 0
         self.prev_choice = None
         self.prev_feats = {}
+
+    def add_matches(self, matches):
+        """Accumulate one frame's (cls, conf, [is_tp@iou...]) rows compactly."""
+        if not matches:
+            return
+        self._cls_parts.append(np.fromiter((m[0] for m in matches), dtype=np.int16,
+                                           count=len(matches)))
+        self._conf_parts.append(np.fromiter((m[1] for m in matches), dtype=np.float32,
+                                            count=len(matches)))
+        self._tp_parts.append(np.asarray([m[2] for m in matches], dtype=bool))
+
+    def compact(self):
+        """Return (cls[N], conf[N], tp[N, n_iou]) for the whole run."""
+        if not self._cls_parts:
+            n_iou = len(IOU_GRID)
+            return (np.empty(0, np.int16), np.empty(0, np.float32),
+                    np.empty((0, n_iou), bool))
+        return (np.concatenate(self._cls_parts),
+                np.concatenate(self._conf_parts),
+                np.concatenate(self._tp_parts))
 
 
 # ---- main per-sequence loop ----
