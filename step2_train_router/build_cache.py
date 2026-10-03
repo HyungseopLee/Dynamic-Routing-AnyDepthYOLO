@@ -119,42 +119,38 @@ def _loss_on_targets(criterion, preds_i, img_i, cls_i, box_i):
     return loss_sum.detach().sum()
 
 
-def per_image_losses(criterion, preds, batch, risk_classes=None, risk_weight=1.0):
+def per_image_losses(criterion, preds, batch, risk_classes=None):
     """Detection loss for each image in the batch by slicing targets per index.
 
-    Returns (loss_plain[B], loss_risk[B]). With no risk_classes the two are equal.
+    Returns (loss_all[B], loss_sc[B]) where loss_sc is the same loss computed against
+    only the safety-critical GT boxes (0 when the image has none). Storing the two
+    parts separately lets train_policy.py form
 
-    The risk-weighted variant adds an extra penalty on the safety-critical subset:
+        L_risk(w) = loss_all + (w - 1) * loss_sc
 
-        L_risk = L(all GT) + (w - 1) * L(safety-critical GT only)
+    for ANY risk weight w without rebuilding the cache -- a w sweep costs one cache.
 
-    The router regresses A = L_base - L_super, so weighting the loss this way makes
-    the advantage of the SUPER path spike on frames where the BASE path would miss a
-    pedestrian/cyclist -- which is exactly the behaviour we want to route on. The
-    detector itself stays frozen; only the regression target changes.
+    The router regresses A = L_base - L_super, so this weighting makes the advantage
+    of the SUPER path spike on frames where the BASE path would miss a pedestrian or
+    cyclist. The detector itself stays frozen; only the regression target changes.
     """
     B = preds[0].shape[0]
-    plain, risk = [], []
-    rc = None
-    if risk_classes and risk_weight != 1.0:
-        rc = torch.as_tensor(sorted(risk_classes), device=preds[0].device)
+    all_l, sc_l = [], []
+    rc = (torch.as_tensor(sorted(risk_classes), device=preds[0].device)
+          if risk_classes else None)
+    zero = torch.zeros((), device=preds[0].device)
     for i in range(B):
         m = batch["batch_idx"] == i
         cls_i, box_i, img_i = batch["cls"][m], batch["bboxes"][m], batch["img"][i:i + 1]
         preds_i = [p[i:i + 1] for p in preds]
-        l_all = _loss_on_targets(criterion, preds_i, img_i, cls_i, box_i)
-        plain.append(l_all)
+        all_l.append(_loss_on_targets(criterion, preds_i, img_i, cls_i, box_i))
         if rc is None:
-            risk.append(l_all)
+            sc_l.append(zero)
             continue
         sel = torch.isin(cls_i.view(-1).long(), rc)
-        if sel.any():
-            l_sc = _loss_on_targets(criterion, preds_i, img_i,
-                                    cls_i[sel], box_i[sel])
-            risk.append(l_all + (risk_weight - 1.0) * l_sc)
-        else:
-            risk.append(l_all)
-    return torch.stack(plain), torch.stack(risk)
+        sc_l.append(_loss_on_targets(criterion, preds_i, img_i, cls_i[sel], box_i[sel])
+                    if sel.any() else zero)
+    return torch.stack(all_l), torch.stack(sc_l)
 
 
 def main():
@@ -182,12 +178,11 @@ def main():
                     help="store feature grids as float16 to halve RAM/disk usage")
     ap.add_argument("--out", default=None)
     ap.add_argument("--risk_classes", type=int, nargs="*", default=None,
-                    help="safety-critical class ids. When set with --risk_weight, the cache "
-                         "additionally stores loss_risk_{base,super} = L(all GT) + "
-                         "(w-1)*L(these classes only). KITTI: 3 4 5 (pedestrian, "
-                         "person_sitting, cyclist)")
-    ap.add_argument("--risk_weight", type=float, default=1.0,
-                    help="w in the risk-weighted loss; 1.0 makes loss_risk == loss")
+                    help="safety-critical class ids. When set, the cache "
+                         "additionally stores loss_sc_{base,super}: the loss against "
+                         "only these classes. train_policy.py --risk_weight w then forms "
+                         "L_risk = loss + (w-1)*loss_sc, so one cache serves any w. "
+                         "KITTI: 3 4 5 (pedestrian, person_sitting, cyclist)")
     args = ap.parse_args()
     args.feat = normalize_feat(args.feat)
     if args.out is None:
@@ -240,7 +235,7 @@ def main():
         chunk_dir.mkdir(parents=True)
 
     rows = {"loss_base": [], "loss_super": [],
-            "loss_risk_base": [], "loss_risk_super": [], "im_file": []}
+            "loss_sc_base": [], "loss_sc_super": [], "im_file": []}
     for tag in ("base", "super"):
         if cache_input: rows[f"input_{tag}"] = []
         if cache_pred: rows[f"pred_{tag}"] = []
@@ -260,7 +255,7 @@ def main():
         torch.save(chunk, chunk_dir / f"chunk_{chunk_idx:04d}.pt")
         chunk_idx += 1
         rows = {"loss_base": [], "loss_super": [],
-            "loss_risk_base": [], "loss_risk_super": [], "im_file": []}
+            "loss_sc_base": [], "loss_sc_super": [], "im_file": []}
         for tag in ("base", "super"):
             if cache_input: rows[f"input_{tag}"] = []
             if cache_pred: rows[f"pred_{tag}"] = []
@@ -282,10 +277,9 @@ def main():
                 rows[f"input_{tag}"].append(grids(captured, INPUT_LEVEL_LAYERS, G).cpu())
             if cache_pred:
                 rows[f"pred_{tag}"].append(grids(captured, PRED_LEVEL_LAYERS, G).cpu())
-            l_plain, l_risk = per_image_losses(criterion, preds, batch_t,
-                                               args.risk_classes, args.risk_weight)
-            rows[f"loss_{tag}"].append(l_plain.cpu())
-            rows[f"loss_risk_{tag}"].append(l_risk.cpu())
+            l_all, l_sc = per_image_losses(criterion, preds, batch_t, args.risk_classes)
+            rows[f"loss_{tag}"].append(l_all.cpu())
+            rows[f"loss_sc_{tag}"].append(l_sc.cpu())
 
         rows["im_file"].extend(batch["im_file"])
         if bi % 20 == 0:
@@ -304,7 +298,9 @@ def main():
     if use_chunks:
         # merge chunks
         print(f"[*] merging {chunk_idx} chunks ...")
-        parts = {k: [] for k in (list(feat_keys) + ["loss_base", "loss_super", "im_file"])}
+        parts = {k: [] for k in (list(feat_keys) + ["loss_base", "loss_super",
+                                                    "loss_sc_base", "loss_sc_super",
+                                                    "im_file"])}
         for ci in range(chunk_idx):
             ch = torch.load(chunk_dir / f"chunk_{ci:04d}.pt", map_location="cpu", weights_only=False)
             for k in parts:
@@ -330,7 +326,7 @@ def main():
     cache["meta"] = {"weight": str(args.weight), "split": args.split,
                      "imgsz": list(args.imgsz), "num_skippable": N, "grid": G,
                      "feat": args.feat, "base_imgsz": args.base_imgsz,
-                     "risk_classes": args.risk_classes, "risk_weight": args.risk_weight}
+                     "risk_classes": args.risk_classes}
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     torch.save(cache, out)

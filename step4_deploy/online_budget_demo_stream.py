@@ -553,7 +553,11 @@ def main():
                         integ = 0.0
             e = ctrl[t] - sig_ema
             integ += e
-            tau_un = tau_ff[t] - kp * e - ki * integ
+            # tau(t+1) routes frame t+1, so the feedforward term should map that frame's
+            # OWN target C_target(t+1) (already known -- the schedule isn't predicted, just
+            # looked up), not C_target(t) (the frame whose error e was just measured). Only
+            # the feedback term is causally restricted to the most recent error.
+            tau_un = tau_ff[min(t + 1, n - 1)] - kp * e - ki * integ
             tau = float(np.clip(tau_un, TAU_LO, TAU_HI))
             if ki:
                 integ += (tau_un - tau) / ki

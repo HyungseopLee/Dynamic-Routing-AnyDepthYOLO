@@ -83,23 +83,33 @@ def slice_levels(cache, keep):
     return cache
 
 
-def load_cache(path, device, advantage="plain"):
-    """advantage='risk' regresses the risk-weighted loss gap stored by build_cache
-    (--risk_classes/--risk_weight); 'plain' is the paper's A = L_base - L_super."""
+def load_cache(path, device, risk_weight=1.0):
+    """Load a cache and form the regression target's two loss terms.
+
+    With risk_weight w > 1 the safety-critical part cached by build_cache
+    --risk_classes is up-weighted per path:
+
+        L_risk = loss + (w - 1) * loss_sc
+
+    so A = L_risk_base - L_risk_super spikes on frames where the BASE path would
+    miss a pedestrian/cyclist. w = 1.0 is the paper's plain A = L_base - L_super.
+    Because loss and loss_sc are cached separately, sweeping w needs no rebuild.
+    """
     c = torch.load(path, map_location="cpu", weights_only=False)
-    lb_key, ls_key = ("loss_base", "loss_super")
-    if advantage == "risk":
-        if "loss_risk_base" not in c:
-            raise SystemExit(f"{path} has no loss_risk_* -- rebuild the cache with "
-                             "--risk_classes/--risk_weight")
-        lb_key, ls_key = "loss_risk_base", "loss_risk_super"
+    lb, ls = c["loss_base"].to(device), c["loss_super"].to(device)
+    if risk_weight != 1.0:
+        if "loss_sc_base" not in c:
+            raise SystemExit(f"{path} has no loss_sc_* -- rebuild the cache with "
+                             "--risk_classes")
+        lb = lb + (risk_weight - 1.0) * c["loss_sc_base"].to(device)
+        ls = ls + (risk_weight - 1.0) * c["loss_sc_super"].to(device)
     # Feature tensors are kept on CPU to avoid GPU OOM for large grids (e.g. 8x8).
     # loss tensors are small and go to device; features are moved per-batch in gather().
     out = {
         "input_base": c["input_base"],   # CPU, keep original dtype (fp16 or fp32)
         "input_super": c["input_super"],
-        "loss_base": c[lb_key].to(device),
-        "loss_super": c[ls_key].to(device),
+        "loss_base": lb,
+        "loss_super": ls,
         "_device": device,
     }
     if "pred_base" in c:
@@ -221,10 +231,10 @@ def main():
     ap.add_argument("--keep_layers", default="", help="comma-sep subset of backbone tapped "
                     "layers to keep (e.g. '4' / '6' / '8'); empty = all. Channel-slices the "
                     "input grid for single-level ablation (no cache rebuild). feat=input only.")
-    ap.add_argument("--advantage", default="plain", choices=["plain", "risk"],
-                    help="which loss gap to regress: plain = L_base - L_super (paper), "
-                         "risk = the risk-weighted gap cached by build_cache "
-                         "--risk_classes/--risk_weight")
+    ap.add_argument("--risk_weight", type=float, default=1.0,
+                    help="w in L_risk = loss + (w-1)*loss_sc, using the safety-critical "
+                         "losses cached by build_cache --risk_classes. 1.0 (default) is "
+                         "the paper's plain advantage; no cache rebuild needed to change w")
     args = ap.parse_args()
     args.feat = normalize_feat(args.feat)
     base = OUT / args.dataset
@@ -236,8 +246,8 @@ def main():
 
     torch.manual_seed(args.seed)
     device = args.device if torch.cuda.is_available() else "cpu"
-    train_cache = load_cache(args.cache, device, args.advantage)
-    val_cache = (load_cache(args.val_cache, device, args.advantage)
+    train_cache = load_cache(args.cache, device, args.risk_weight)
+    val_cache = (load_cache(args.val_cache, device, args.risk_weight)
                  if Path(args.val_cache).exists() else None)
 
     keep = [int(x) for x in args.keep_layers.split(",")] if args.keep_layers else []

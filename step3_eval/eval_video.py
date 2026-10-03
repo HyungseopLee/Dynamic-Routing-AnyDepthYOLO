@@ -44,7 +44,9 @@ step3_eval/merge_video_shards.py (see step3_eval/run_waymo_eval_both_robust.sh).
 """
 import argparse
 import json
+import gc
 import sys
+import zlib
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
@@ -72,6 +74,14 @@ BDD_MOT_EVAL_CLS = BDD_EVAL_CLS   # alias for backward compatibility
 # ── Waymo class mapping ───────────────────────────────────────────────────────
 WAYMO_EVAL_CLS = [0, 1, 2]   # vehicle, pedestrian, cyclist
 
+# class id -> name, per dataset (only used to label the COCO dump's categories)
+CLASS_NAMES = {
+    "kitti":   {0: "car", 1: "van", 2: "truck", 3: "pedestrian", 4: "person_sitting",
+                5: "cyclist", 6: "tram", 7: "misc"},
+    "bdd100k": {v: k for k, v in _MOT_TO_ID.items()},
+    "waymo":   {0: "vehicle", 1: "pedestrian", 2: "cyclist"},
+}
+
 
 # ── dataset-specific: label parsing & frame iteration ────────────────────────
 
@@ -81,12 +91,93 @@ def _kitti_segments(args):
     return seqs
 
 
+def topk_per_class(preds, k):
+    """Keep the k highest-scoring detections of each class (COCO maxDets)."""
+    if not k or len(preds) <= k:
+        return preds
+    by_cls = defaultdict(list)
+    for p in preds:
+        by_cls[p[0]].append(p)
+    out = []
+    for v in by_cls.values():
+        out.extend(sorted(v, key=lambda x: -x[1])[:k] if len(v) > k else v)
+    return out
+
+
+class FrameDump:
+    """Per-frame, per-path record of everything a routing policy needs.
+
+    The detector is run on both paths for every frame anyway, so one pass can store
+    each path's matched detections plus the router outputs. Scoring a policy then
+    reduces to picking, per frame, which path's rows to pool -- no GPU, milliseconds
+    per policy. That is what makes an exact tau sweep feasible: the realised SUPER
+    usage of a threshold can only be known by replaying the recursion over the whole
+    video, which would otherwise cost a full evaluation run per candidate tau.
+    """
+
+    def __init__(self, tags):
+        self.tags = list(tags)
+        self.rows = []          # one dict per frame
+        self.gt = []            # per-frame {cls: count}
+
+    def add(self, seq, fidx, gts, dc, preds, av, B, max_det, topk):
+        rec = {"seq": seq, "frame": int(fidx)}
+        for pth in ("base", "super"):
+            pp = B.filter_dontcare(preds[pth], dc) if dc else preds[pth]
+            m, gtc = B.match_frame_multi_iou(topk(pp, max_det), gts)
+            rec[f"cls_{pth}"] = np.fromiter((x[0] for x in m), np.int16, len(m))
+            rec[f"conf_{pth}"] = np.fromiter((x[1] for x in m), np.float32, len(m))
+            # a frame can have zero detections; np.asarray([]) is 1-D, and
+            # reshape(0, -1) cannot infer the column count from an empty array
+            flags = [x[2] for x in m]
+            rec[f"tp_{pth}"] = (np.asarray(flags, bool) if flags
+                                else np.empty((0, len(B.IOU_GRID)), bool))
+        self.gt.append(gtc)
+        for t in self.tags:
+            rec[f"ah_{t}_base"] = av[t]["base"]
+            rec[f"ah_{t}_super"] = av[t]["super"]
+        self.rows.append(rec)
+
+    def save(self, path, meta):
+        out = {"seq": np.array([r["seq"] for r in self.rows]),
+               "frame": np.array([r["frame"] for r in self.rows], np.int32)}
+        for pth in ("base", "super"):     # not `path`: that is this method's argument
+            out[f"n_{pth}"] = np.array([len(r[f"cls_{pth}"]) for r in self.rows], np.int32)
+            out[f"cls_{pth}"] = np.concatenate([r[f"cls_{pth}"] for r in self.rows])
+            out[f"conf_{pth}"] = np.concatenate([r[f"conf_{pth}"] for r in self.rows])
+            tp = [r[f"tp_{pth}"] for r in self.rows]
+            n_iou = max((t.shape[1] for t in tp if t.size), default=10)
+            out[f"tp_{pth}"] = np.concatenate(
+                [t if t.size else np.empty((0, n_iou), bool) for t in tp])
+        for t in self.tags:
+            out[f"ah_{t}_base"] = np.array([r[f"ah_{t}_base"] for r in self.rows], np.float32)
+            out[f"ah_{t}_super"] = np.array([r[f"ah_{t}_super"] for r in self.rows], np.float32)
+        cls_ids = sorted({c for g in self.gt for c in g})
+        out["gt_cls"] = np.array(cls_ids, np.int16)
+        out["gt_count"] = np.array([[g.get(c, 0) for c in cls_ids] for g in self.gt], np.int32)
+        out["meta"] = np.array([json.dumps(meta)])
+        p = Path(path); p.parent.mkdir(parents=True, exist_ok=True)
+        np.savez_compressed(p, **out)
+        print(f"[*] frame dump ({len(self.rows)} frames) -> {p}")
+
+
 def _kitti_frames(seq, args):
-    """Yield (frame_idx, bgr) for a KITTI sequence."""
+    """Yield (frame_idx, bgr) for a KITTI sequence.
+
+    With --shuffle_frames the frames are emitted in random order. Each frame is
+    still scored against its own ground truth (the yielded index is the true frame
+    index), so only temporal coherence is destroyed: the routing signal carried
+    from the previous decision now comes from an unrelated scene. That is the
+    worst case for recursive routing -- every frame is a hard scene cut.
+    """
     img_dir = Path(args.data_root) / "training" / "image_02" / seq
     paths = sorted(img_dir.glob("*.png")) or sorted(img_dir.glob("*.jpg"))
     if args.limit > 0:
         paths = paths[:args.limit]
+    if args.shuffle_frames:
+        # crc32, not hash(): python string hashing is salted per process
+        rng = np.random.default_rng(zlib.crc32(f"{seq}:{args.shuffle_seed}".encode()))
+        paths = [paths[i] for i in rng.permutation(len(paths))]
     for p in paths:
         bgr = cv2.imread(str(p))
         if bgr is not None:
@@ -301,18 +392,50 @@ def main():
     ap.add_argument("--pi_ki", type=float, default=0.2)
     ap.add_argument("--pi_beta", type=float, default=0.9)
     ap.add_argument("--pi_tau0", type=float, default=0.0)
+    ap.add_argument("--max_det", type=int, default=100,
+                    help="COCO maxDets: keep the top-N detections per (frame, class) "
+                         "before matching. pycocotools applies its maxDets per image AND "
+                         "per category, so this reproduces the standard AP/AR@100. "
+                         "0 disables the cap (the pre-2026-09 behaviour, AR@inf)")
+    ap.add_argument("--coco_out", default=None,
+                    help="directory for a COCO-format dump + pycocotools summarize() of "
+                         "the strategies named by --coco_strategies")
+    ap.add_argument("--coco_strategies", default="",
+                    help="comma-sep strategy names to dump for pycocotools, e.g. "
+                         "'always_base,always_super,policy_s0_b50'. Empty = the two const "
+                         "strategies plus every router strategy of the first policy")
+    ap.add_argument("--frame_dump", default=None,
+                    help="write per-frame, per-path detection matches and router outputs "
+                         "to this .npz. Any per-frame path-selection policy can then be "
+                         "scored offline without touching the GPU, which is what "
+                         "step3_eval/ablation/tau_sweep.py uses to solve for the tau that "
+                         "realises an exact SUPER usage (10%, 20%, ...)")
+    ap.add_argument("--causal", action="store_true",
+                    help="decide frame t from the A-hat produced while executing frame t-1, "
+                         "matching the deployed controller. Default (off) decides frame t "
+                         "from A-hat computed on frame t itself")
+    ap.add_argument("--random_seeds", type=int, default=5,
+                    help="independent seeds for the random baseline, so it gets the same "
+                         "mean+/-std treatment as the router (was a single realisation)")
+    ap.add_argument("--shuffle_frames", action="store_true",
+                    help="emit each sequence's frames in random order, destroying temporal "
+                         "coherence (KITTI only). Frames are still scored against their own "
+                         "GT; only the recursive routing signal is invalidated")
+    ap.add_argument("--shuffle_seed", type=int, default=0)
     ap.add_argument("--num_shards", type=int, default=1)
     ap.add_argument("--shard_id", type=int, default=0)
     ap.add_argument("--raw_out", default=None,
                     help="dump raw shard matches (merge with merge_video_shards.py)")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
+    if args.shuffle_frames and args.dataset != "kitti":
+        raise SystemExit("--shuffle_frames is implemented for --dataset kitti only")
 
     # ── defaults per dataset ──────────────────────────────────────────────────
     DATA_ROOTS = {
         "kitti":   "/media/data/kitti-tracking",
         "bdd100k": "/media/data/bdd100k_mot/val",
-        "waymo":   "/media/data/waymo/val",
+        "waymo":   "/media/data/waymo_yolo/val",
     }
     IMGSZ = {"kitti": [384, 1248], "bdd100k": [720, 1280], "waymo": [1280, 1920]}
     if args.data_root is None:
@@ -409,11 +532,18 @@ def main():
              decide=lambda pc, pv, fi: "super"),
     ]
     if not args.router_only:
-        for p in range(0, 101, 10):
-            ps = p / 100.0
-            strategies.append(dict(
-                name=f"random_p{p:03d}", kind="random", thres=ps,
-                decide=lambda pc, pv, fi, ps=ps: "super" if np.random.random() < ps else "base"))
+        # One family per seed, mirroring the router: the figure then shows a
+        # mean +/- std band for both curves instead of a single noisy realisation
+        # against a seed-averaged one. Each family owns its Generator so the draws
+        # are reproducible and independent of strategy evaluation order.
+        for si in range(args.random_seeds):
+            rng = np.random.default_rng(si)      # seeds 0..4, matching the routers
+            for p in range(0, 101, 10):
+                ps = p / 100.0
+                strategies.append(dict(
+                    name=f"random_s{si}_p{p:03d}", kind="random", thres=ps,
+                    decide=lambda pc, pv, fi, ps=ps, r=rng: (
+                        "super" if r.random() < ps else "base")))
 
     policy_taus = [round(-0.4 + (2.0 / (args.router_taus - 1)) * i, 3)
                    for i in range(args.router_taus)]
@@ -442,10 +572,39 @@ def main():
 
     print(f"[*] shard {args.shard_id}/{args.num_shards}: "
           f"{len(eval_seqs)}/{len(seqs)} seqs, {len(strategies)} strategies")
+    if not eval_seqs:
+        raise SystemExit(f"no sequences found under --data_root {args.data_root} "
+                         f"(dataset={args.dataset}). Without this check the run would "
+                         f"'succeed' and write an all-zero curve.")
+
+    # ── optional COCO-format dump for pycocotools cross-check ─────────────────
+    dump = None
+    if args.coco_out:
+        from step3_eval.coco_summary import CocoDump
+        if args.coco_strategies:
+            want = [n.strip() for n in args.coco_strategies.split(",") if n.strip()]
+        else:
+            first = next((s["ptag"] for s in strategies if s["kind"] == "router"), None)
+            want = [s["name"] for s in strategies
+                    if s["kind"] == "const" or s.get("ptag") == first]
+        known = {s["name"] for s in strategies}
+        missing = [n for n in want if n not in known]
+        if missing:
+            raise SystemExit(f"--coco_strategies: unknown {missing}; "
+                             f"available e.g. {sorted(known)[:6]}")
+        names = CLASS_NAMES[args.dataset]
+        dump = CocoDump(want, {c: names.get(c, str(c)) for c in B.EVAL_CLS})
+        print(f"[*] COCO dump for {len(want)} strategies -> {args.coco_out}")
 
     # ── eval loop ─────────────────────────────────────────────────────────────
+    # The accumulators below are long-lived and cycle-free; with millions of live
+    # objects the generational collector costs more than it reclaims. Freeze what
+    # already exists and stop automatic passes (memory is still refcount-managed).
+    gc.freeze()
+    gc.disable()
     np.random.seed(0)
     state = {s["name"]: B.StrategyState(s["name"]) for s in strategies}
+    fd = FrameDump(list(nets)) if args.frame_dump else None
     one  = torch.ones(1, dtype=torch.long, device=device)
     zero = torch.zeros(1, dtype=torch.long, device=device)
     total_frames = 0
@@ -454,6 +613,7 @@ def main():
         gt_raw, dc_raw = get_gt(seq, args)
         for s in state.values():
             s.prev_choice = None
+            s.prev_value = 0.0
         for st in strategies:
             if "ctrl" in st:
                 st["ctrl"].reset()
@@ -496,24 +656,45 @@ def main():
                 gts = gt_raw.get(fidx, [])
                 dc  = dc_raw.get(fidx, []) if dc_raw else []
 
+            iid = dump.add_frame(gts, dc, H, W) if dump else None
+
+            if fd is not None:
+                fd.add(seq, fidx, gts, dc, preds, av, B, args.max_det, topk_per_class)
+
             for st in strategies:
                 kind, decide = st["kind"], st["decide"]
                 s = state[st["name"]]
                 if kind == "router":
                     avt = av[st["ptag"]]
-                    pv = ((avt["super"] if s.prev_choice == "super" else avt["base"])
-                          if s.prev_choice else 0.0)
+                    if args.causal:
+                        # Deployment semantics (online_budget_demo_stream.py): frame t is
+                        # executed with the path decided at t-1, and the A-hat it produces
+                        # decides frame t+1. The router therefore never sees the frame it
+                        # is routing. Without this flag the decision for frame t reads
+                        # A-hat computed on frame t itself, which is one frame ahead of
+                        # what a causal system can know.
+                        pv = s.prev_value
+                    else:
+                        pv = ((avt["super"] if s.prev_choice == "super" else avt["base"])
+                              if s.prev_choice else 0.0)
                 else:
                     pv = 0.0
                 choice = decide(s.prev_choice, pv, fi_pos)
+                if kind == "router":
+                    s.prev_value = avt[choice]
                 s.prev_choice = choice
                 s.n_super += (choice == "super"); s.n_base += (choice == "base")
                 p = B.filter_dontcare(preds[choice], dc) if dc else preds[choice]
+                p = topk_per_class(p, args.max_det)
+                if dump:
+                    dump.add_dets(st["name"], iid, p)
                 m, gtc = B.match_frame_multi_iou(p, gts)
                 s.add_matches(m)
                 for cls_id, cnt in gtc.items():
                     s.gt_count[cls_id] += cnt
 
+        for st_ in state.values():
+            st_.consolidate()
         print(f"[{vi+1}/{len(eval_seqs)} {seq}] {nfr} labeled frames")
 
     # ── shard dump ────────────────────────────────────────────────────────────
@@ -544,7 +725,9 @@ def main():
         super_rate = s.n_super / max(n, 1)
         gflops = super_rate * gs + (1 - super_rate) * gb
         nm = st["name"]
-        if "_pi" in nm:
+        if st["kind"] == "random":
+            family = nm.rsplit("_p", 1)[0]        # random_s0_p030 -> random_s0
+        elif "_pi" in nm:
             family = nm.rsplit("_pi", 1)[0] + "_pi"
         elif "_t" in nm:
             family = nm.rsplit("_t", 1)[0]
@@ -559,6 +742,20 @@ def main():
                      "super_rate": super_rate, "gflops": gflops})
     rows.sort(key=lambda r: r["gflops"])
 
+    # ── pycocotools cross-check / COCO-standard summary ───────────────────────
+    if dump:
+        coco = dump.summarize(args.coco_out)
+        ours = {r["name"]: r for r in rows}
+        print("\n=== pycocotools COCOeval vs our matcher ===")
+        print(f"{'strategy':<26}{'AP(coco)':>10}{'AP(ours)':>10}{'d':>8}"
+              f"{'AR100':>10}{'AR(ours)':>10}{'d':>8}")
+        for nm, res in coco.items():
+            st_ = res["stats"]; o = ours[nm]
+            print(f"{nm:<26}{st_['AP']:>10.4f}{o['map']:>10.4f}{st_['AP']-o['map']:>+8.4f}"
+                  f"{st_['AR@100']:>10.4f}{o['ar']:>10.4f}{st_['AR@100']-o['ar']:>+8.4f}")
+            o["coco"] = st_
+        print(f"[*] COCO dump -> {args.coco_out}")
+
     hdr = f"{'strategy':<26}{'super%':>8}{'GFLOPs':>9}{'mAP50':>9}{'mAP':>9}"
     lines = [hdr] + [
         f"{r['name']:<26}{r['super_rate']*100:>7.1f}%{r['gflops']:>9.2f}"
@@ -566,7 +763,13 @@ def main():
     print("\n" + "\n".join(lines))
 
     out = Path(args.out); out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps({"gflops_super": gs, "gflops_base": gb, "rows": rows}, indent=2))
+    if fd is not None:
+        fd.save(args.frame_dump, {"gflops_base": gb, "gflops_super": gs,
+                                  "dataset": args.dataset, "conf": args.conf,
+                                  "max_det": args.max_det})
+
+    out.write_text(json.dumps({"gflops_super": gs, "gflops_base": gb,
+                               "rows": rows}, indent=2))
     with open(out.with_suffix(".log"), "w") as f:
         f.write(f"# eval_video.py {datetime.now().isoformat(timespec='seconds')}\n")
         f.write(f"# args: {json.dumps(vars(args))}\n")

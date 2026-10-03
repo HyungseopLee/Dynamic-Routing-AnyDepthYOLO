@@ -1,0 +1,104 @@
+{
+  "always_base": {
+    "stats": {
+      "AP": 0.23466395185549271,
+      "AP50": 0.414650340058015,
+      "AP75": 0.22527197371524885,
+      "AP_small": 0.07896064605916062,
+      "AP_medium": 0.23917644304994098,
+      "AP_large": 0.4355401410865289,
+      "AR@1": 0.18275300186024085,
+      "AR@10": 0.3161941284797002,
+      "AR@100": 0.3486722586834808,
+      "AR_small": 0.17572020804797683,
+      "AR_medium": 0.37659508324644964,
+      "AR_large": 0.5421059582501828
+    },
+    "summary": " Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.235\n Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.415\n Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.225\n Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.079\n Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.239\n Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.436\n Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.183\n Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.316\n Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.349\n Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.176\n Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.377\n Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.542\n",
+    "per_class": {
+      "0": {
+        "ap": 0.23626145223608847,
+        "ar": 0.41815401099091004
+      },
+      "1": {
+        "ap": 0.156704069581843,
+        "ar": 0.23043134151167396
+      },
+      "2": {
+        "ap": 0.45128314395229613,
+        "ar": 0.5685761001562137
+      },
+      "3": {
+        "ap": 0.3824573424593871,
+        "ar": 0.4739876078778491
+      },
+      "4": {
+        "ap": 0.3117680115584019,
+        "ar": 0.41870608899297423
+      },
+      "5": {
+        "ap": 0.20575383487611618,
+        "ar": 0.3802913063268093
+      },
+      "6": {
+        "ap": 0.13308376017980877,
+        "ar": 0.29923161361141604
+      },
+      "9": {
+        "ap": 0.0,
+        "ar": 0.0
+      }
+    }
+  },
+  "always_super": {
+    "stats": {
+      "AP": 0.24620670068293624,
+      "AP50": 0.4318470063157946,
+      "AP75": 0.23857952361896081,
+      "AP_small": 0.08395653428233828,
+      "AP_medium": 0.253065480042807,
+      "AP_large": 0.4512708200451775,
+      "AR@1": 0.18940824170827106,
+      "AR@10": 0.32694737182774125,
+      "AR@100": 0.3590220762384265,
+      "AR_small": 0.1865249941451387,
+      "AR_medium": 0.38708479860414,
+      "AR_large": 0.551726949523485
+    },
+    "summary": " Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.246\n Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.432\n Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.239\n Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.084\n Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.253\n Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.451\n Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.189\n Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.327\n Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.359\n Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.187\n Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.387\n Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.552\n",
+    "per_class": {
+      "0": {
+        "ap": 0.2402034177007819,
+        "ar": 0.4216275533128262
+      },
+      "1": {
+        "ap": 0.1635176197346854,
+        "ar": 0.2373169766521567
+      },
+      "2": {
+        "ap": 0.4567806375120594,
+        "ar": 0.571100478737278
+      },
+      "3": {
+        "ap": 0.3987893937862367,
+        "ar": 0.4942686435052003
+      },
+      "4": {
+        "ap": 0.32683992114445387,
+        "ar": 0.4308218676814988
+      },
+      "5": {
+        "ap": 0.22106647446476713,
+        "ar": 0.39460628129267183
+      },
+      "6": {
+        "ap": 0.1623285273154815,
+        "ar": 0.3162458836443469
+      },
+      "9": {
+        "ap": 0.00012761380502376615,
+        "ar": 0.006188925081433224
+      }
+    }
+  }
+}

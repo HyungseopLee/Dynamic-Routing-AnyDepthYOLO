@@ -1,0 +1,58 @@
+{
+  "conf_thres": 0.25,
+  "iou": 0.5,
+  "n_frames": 8008,
+  "n_frames_with_gt": 7762,
+  "rows": [
+    {
+      "target": 10.0,
+      "realised_usage": 10.012487512487512,
+      "recall_topk_n": 776,
+      "recall_router_coverage": 17.190721649484537,
+      "recall_random_coverage": 10.012487512487512,
+      "precision_topk_n": 768,
+      "precision_router_coverage": 18.854166666666668,
+      "precision_random_coverage": 10.012487512487512
+    },
+    {
+      "target": 30.0,
+      "realised_usage": 30.007492507492508,
+      "recall_topk_n": 2329,
+      "recall_router_coverage": 33.22455989695148,
+      "recall_random_coverage": 30.007492507492508,
+      "precision_topk_n": 2304,
+      "precision_router_coverage": 31.744791666666668,
+      "precision_random_coverage": 30.007492507492508
+    },
+    {
+      "target": 50.0,
+      "realised_usage": 50.00999000999001,
+      "recall_topk_n": 3881,
+      "recall_router_coverage": 50.36330842566349,
+      "recall_random_coverage": 50.00999000999001,
+      "precision_topk_n": 3840,
+      "precision_router_coverage": 50.864583333333336,
+      "precision_random_coverage": 50.00999000999001
+    },
+    {
+      "target": 70.0,
+      "realised_usage": 70.05244755244755,
+      "recall_topk_n": 5433,
+      "recall_router_coverage": 70.16749493833979,
+      "recall_random_coverage": 70.05244755244755,
+      "precision_topk_n": 5375,
+      "precision_router_coverage": 70.11348837209303,
+      "precision_random_coverage": 70.05244755244755
+    },
+    {
+      "target": 90.0,
+      "realised_usage": 90.02497502497503,
+      "recall_topk_n": 6986,
+      "recall_router_coverage": 90.33209275694246,
+      "recall_random_coverage": 90.02497502497503,
+      "precision_topk_n": 6911,
+      "precision_router_coverage": 90.54840109969614,
+      "precision_random_coverage": 90.02497502497503
+    }
+  ]
+}
