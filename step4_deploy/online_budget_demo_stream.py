@@ -117,11 +117,12 @@ def render_fps(dump, win, out):
     fps_lo, fps_hi = dump["fps_lo"], dump["fps_hi"]
     ylo = fps_lo - 2.0; yhi = fps_hi + 2.0
     budgets = [("step", "Step budget"), ("sawtooth", "Sawtooth budget")]
-    fig, axes = plt.subplots(len(fams), 2, figsize=(7.2, 1.9 * len(fams)), squeeze=False)
+    # compact layout: 2 rows (budget type) × N cols (scenario families) — wide figure
+    fig, axes = plt.subplots(2, len(fams), figsize=(4.0 * len(fams), 3.8), squeeze=False)
     print(f"\n{'scenario':<14}{'budget':<10}{'MAE(fps)':>10}{'SUPER%':>9}")
-    for r, fam in enumerate(fams):
+    for c, fam in enumerate(fams):
         bounds = dump["families"][fam]["bounds"]; labels = dump["families"][fam]["labels"]
-        for c, (bkind, btitle) in enumerate(budgets):
+        for r, (bkind, btitle) in enumerate(budgets):
             cell = dump["cells"][f"{fam}/{bkind}"]
             realized_lat = np.asarray(cell["realized"])
             fps_tgt = np.asarray(cell["target"])   # stored in fps
@@ -136,32 +137,26 @@ def render_fps(dump, win, out):
                            alpha=0.07, zorder=0)
                 ax.text((x0 + x1) / 2, fps_hi + 0.8,
                         SHORT.get(labels[k], labels[k]),
-                        # ha="center", va="bottom", fontsize=6.5, color="0.3")
-                        ha="center", va="bottom", fontsize=12, color="0.3")
+                        ha="center", va="bottom", fontsize=6.5, color="0.3")
                 if k > 0:
                     ax.axvline(x0, color="0.6", ls="-", lw=0.6, alpha=0.5, zorder=1)
             ax.plot(fps_tgt, color="black", ls="--", lw=1.3, zorder=6)
             ax.plot(sm_fps, color="tab:red", lw=1.5, zorder=5)
             ax.set_ylim(ylo, yhi); ax.set_xlim(0, n)
-            # ax.grid(alpha=0.2, ls="--"); ax.tick_params(labelsize=7)
-            ax.grid(alpha=0.2, ls="--"); ax.tick_params(labelsize=12)
+            ax.grid(alpha=0.2, ls="--"); ax.tick_params(labelsize=7)
             if r == 0:
-                # ax.set_title(btitle, fontsize=9)
-                ax.set_title(btitle, fontsize=12)
+                ax.set_title(TITLES.get(fam, fam), fontsize=9)
             if c == 0:
-                # ax.set_ylabel(f"{TITLES.get(fam, fam)}\nFPS", fontsize=7.5)
-                ax.set_ylabel(f"{TITLES.get(fam, fam)}\nFPS", fontsize=13)
-            if r == len(fams) - 1:
-                ax.set_xlabel("frame", fontsize=14)
+                ax.set_ylabel(f"{btitle}\nFPS", fontsize=7.5)
+            if r == len(budgets) - 1:
+                ax.set_xlabel("frame", fontsize=8)
             ax.text(0.02, 0.04, f"MAE={mae:.2f} fps", transform=ax.transAxes,
-                    # va="bottom", ha="left", fontsize=7,
-                    va="bottom", ha="left", fontsize=13,
+                    va="bottom", ha="left", fontsize=7,
                     bbox=dict(boxstyle="round,pad=0.2", fc="white", ec="0.8", alpha=0.9))
-    handles = [Line2D([0], [0], color="black", ls="--", lw=1.3, label="target FPS $F^\\star(t)$"),
-               Line2D([0], [0], color="tab:red", lw=1.5, label="realized mean FPS")]
+    handles = [Line2D([0], [0], color="black", ls="--", lw=1.3, label="Target FPS $F^\\star(t)$"),
+               Line2D([0], [0], color="tab:red", lw=1.5, label="Measured FPS")]
     fig.legend(handles=handles, loc="lower center", ncol=2, frameon=False,
-            #    fontsize=8.5, bbox_to_anchor=(0.5, -0.02))
-               fontsize=14, bbox_to_anchor=(0.5, -0.02))
+               fontsize=8.5, bbox_to_anchor=(0.5, -0.02))
     fig.tight_layout(pad=0.4, rect=(0, 0.03, 1, 1))
     Path(out).parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out, bbox_inches="tight", pad_inches=0.02)
@@ -185,11 +180,12 @@ def render_energy(dump, win, out):
     e_hi = e_super - 0.10 * (e_super - e_base)
     ylo = e_base - 20.0; yhi = e_super + 40.0
     budgets = [("step", "Step budget"), ("sawtooth", "Sawtooth budget")]
-    fig, axes = plt.subplots(len(fams), 2, figsize=(7.2, 1.9 * len(fams)), squeeze=False)
+    # compact layout: 2 rows (budget type) × N cols (scenario families) — wide figure
+    fig, axes = plt.subplots(2, len(fams), figsize=(4.0 * len(fams), 3.8), squeeze=False)
     print(f"\n{'scenario':<14}{'budget':<10}{'MAE(mJ)':>10}{'SUPER%':>9}")
-    for r, fam in enumerate(fams):
+    for c, fam in enumerate(fams):
         bounds = dump["families"][fam]["bounds"]; labels = dump["families"][fam]["labels"]
-        for c, (bkind, btitle) in enumerate(budgets):
+        for r, (bkind, btitle) in enumerate(budgets):
             cell = dump["cells"][f"{fam}/{bkind}"]
             realized_e = np.asarray(cell["realized"])   # stored as per-frame energy
             Etgt = np.asarray(cell["target"])
@@ -204,32 +200,26 @@ def render_energy(dump, win, out):
                            alpha=0.07, zorder=0)
                 ax.text((x0 + x1) / 2, e_hi + 15.0,
                         SHORT.get(labels[k], labels[k]),
-                        # ha="center", va="bottom", fontsize=6.5, color="0.3")
-                        ha="center", va="bottom", fontsize=12, color="0.3")
+                        ha="center", va="bottom", fontsize=6.5, color="0.3")
                 if k > 0:
                     ax.axvline(x0, color="0.6", ls="-", lw=0.6, alpha=0.5, zorder=1)
             ax.plot(Etgt, color="black", ls="--", lw=1.3, zorder=6)
             ax.plot(sm, color="tab:red", lw=1.5, zorder=5)
             ax.set_ylim(ylo, yhi); ax.set_xlim(0, n)
-            # ax.grid(alpha=0.2, ls="--"); ax.tick_params(labelsize=7)
-            ax.grid(alpha=0.2, ls="--"); ax.tick_params(labelsize=12)
+            ax.grid(alpha=0.2, ls="--"); ax.tick_params(labelsize=7)
             if r == 0:
-                # ax.set_title(btitle, fontsize=9)
-                ax.set_title(btitle, fontsize=12)
+                ax.set_title(TITLES.get(fam, fam), fontsize=9)
             if c == 0:
-                # ax.set_ylabel(f"{TITLES.get(fam, fam)}\nenergy (mJ)", fontsize=7.5)
-                ax.set_ylabel(f"{TITLES.get(fam, fam)}\nenergy (mJ)", fontsize=13)
-            if r == len(fams) - 1:
-                ax.set_xlabel("frame", fontsize=14)
+                ax.set_ylabel(f"{btitle}\nenergy (mJ)", fontsize=7.5)
+            if r == len(budgets) - 1:
+                ax.set_xlabel("frame", fontsize=8)
             ax.text(0.02, 0.04, f"MAE={mae:.1f} mJ", transform=ax.transAxes,
-                    # va="bottom", ha="left", fontsize=7,
-                    va="bottom", ha="left", fontsize=13,
+                    va="bottom", ha="left", fontsize=7,
                     bbox=dict(boxstyle="round,pad=0.2", fc="white", ec="0.8", alpha=0.9))
-    handles = [Line2D([0], [0], color="black", ls="--", lw=1.3, label="target energy $E^\\star(t)$"),
-               Line2D([0], [0], color="tab:red", lw=1.5, label="realized mean energy")]
+    handles = [Line2D([0], [0], color="black", ls="--", lw=1.3, label="Target energy $E^\\star(t)$"),
+               Line2D([0], [0], color="tab:red", lw=1.5, label="Measured energy")]
     fig.legend(handles=handles, loc="lower center", ncol=2, frameon=False,
-            #    fontsize=8.5, bbox_to_anchor=(0.5, -0.02))
-               fontsize=14, bbox_to_anchor=(0.5, -0.02))
+               fontsize=8.5, bbox_to_anchor=(0.5, -0.02))
     fig.tight_layout(pad=0.4, rect=(0, 0.03, 1, 1))
     Path(out).parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out, bbox_inches="tight", pad_inches=0.02)
@@ -521,10 +511,7 @@ def main():
         # super_rate_ff = (ctrl_tgt - l_base) / (l_super - l_base), then map through the
         # offline cost profile (or the online quantile fallback)
         if args.mode in ("fps", "energy"):
-            if args.mode == "energy":
-                ff_pct = np.clip((ctrl - e_base) / max(e_super - e_base, 1e-6), 0.0, 1.0)
-            else:
-                ff_pct = np.clip((ctrl - l_base) / max(l_super - l_base, 1e-6), 0.0, 1.0)
+            ff_pct = np.clip((ctrl - l_base) / max(l_super - l_base, 1e-6), 0.0, 1.0)
             tau_ff = np.array([pct_to_tau(p) for p in ff_pct])
         else:
             tau_ff = np.full(n, tau0)
