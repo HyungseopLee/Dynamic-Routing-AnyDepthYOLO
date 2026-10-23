@@ -15,8 +15,14 @@ at the same compute budget. always_base / always_super bound what any routing
 policy can reach, since the detector is frozen.
 
 Usage (run from repo root):
+    # curve averaged over the common SUPER-rate grid
     python -m step3_eval.ablation.risk_weighted_table
     python -m step3_eval.ablation.risk_weighted_table --pattern video_curve_coco_riskw{w}.json
+
+    # read at fixed SUPER usages instead, keeping the per-seed spread. This is what
+    # the discussion section's table reports, since the differences between risk
+    # weights are a few tenths of an AP point and need a spread to be read at all.
+    python -m step3_eval.ablation.risk_weighted_table --targets 30,50,70
 """
 import argparse
 import json
@@ -61,51 +67,7 @@ def seed_values(seeds, fn, targets):
 
 
 
-def oracle_rows(dump, sc, other, targets):
-    """Upper bound on what ANY router could reach for the safety-critical classes.
-
-    The router only ever picks between two executions of the same frozen detector, so
-    for every frame there is a best choice, and a policy with perfect foresight would
-    make it. We approximate that choice on the metric itself rather than on the
-    training target: per frame, the number of safety-critical ground-truth boxes
-    recovered as true positives (IoU 0.50, conf 0.25) under each path. Frames are
-    ranked by super minus base on that count and the top `target` fraction is routed
-    to SUPER, so the bound is read at the same budget as the learned rows. The
-    unconstrained bound takes every frame with a positive gain, ignoring the budget.
-    """
-    from step3_eval.ablation.tau_sweep import load as load_dump, score
-    d = load_dump(dump)
-    n = len(d["seq"])
-    gt_cols = {int(c): i for i, c in enumerate(d["gt_cls"])}
-    gain = np.zeros(n)
-    for pth, sign in (("super", 1.0), ("base", -1.0)):
-        off, cls, conf = d[f"off_{pth}"], d[f"cls_{pth}"], d[f"conf_{pth}"]
-        tp = d[f"tp_{pth}"][:, 0]
-        keep = (conf >= 0.25) & np.isin(cls, sc) & tp
-        idx = np.flatnonzero(keep)
-        per_frame = np.zeros(n)
-        # map each kept detection row back to its frame
-        frame_of = np.searchsorted(off, idx, side="right") - 1
-        np.add.at(per_frame, frame_of, 1.0)
-        gain += sign * per_frame
-    order = np.argsort(-gain, kind="stable")
-    out = []
-    for t in list(targets) + [None]:
-        take = np.zeros(n, bool)
-        if t is None:
-            take[gain > 0] = True
-            label = "oracle (unconstrained)"
-        else:
-            take[order[: int(round(t * n))]] = True
-            label = f"oracle @ {t*100:.0f}%"
-        pc = score(d, take, per_class=True)[3]
-        vals = [np.mean([pc[c][k] for c in ids if c in pc]) * 100
-                for ids, k in ((sc, "ap"), (sc, "ar"), (other, "ap"), (other, "ar"))]
-        out.append((label, take.mean() * 100, vals))
-    return out
-
-
-def report_targets(data, consts, sc, other, targets, dump=None):
+def report_targets(data, consts, sc, other, targets):
     """Table read at fixed SUPER usages, with the spread over the 5 seeds."""
     cols = [("sc AP", sc, "ap"), ("sc AR", sc, "ar"),
             ("other AP", other, "ap"), ("other AR", other, "ar")]
@@ -125,17 +87,6 @@ def report_targets(data, consts, sc, other, targets, dump=None):
                                 lambda r, i=ids, kk=k: group_metric(r, i, kk), [t])[:, 0]
                 cells.append(f"{np.nanmean(v)*100:>11.2f} +/-{np.nanstd(v)*100:.2f}")
             print(f"{'w='+str(w):<24}" + "".join(f"{c:>18}" for c in cells))
-        if dump:
-            for label, used, vals in oracle_rows(dump, sc, other, [t]):
-                if "unconstrained" in label:
-                    continue
-                print(f"{label+f' [{used:.1f}%]':<24}"
-                      + "".join(f"{v:>18.2f}" for v in vals))
-    if dump:
-        print("\n=== budget-free upper bound ===")
-        for label, used, vals in oracle_rows(dump, sc, other, []):
-            print(f"{label+f' [{used:.1f}% SUPER]':<30}"
-                  + "".join(f"{v:>18.2f}" for v in vals))
 
 
 def main():
@@ -146,8 +97,6 @@ def main():
     ap.add_argument("--targets", default=None,
                     help="comma-separated SUPER usages in percent; reads the table at "
                          "each of them with a seed spread instead of averaging the curve")
-    ap.add_argument("--dump", default=None,
-                    help="frame dump, to add the oracle upper bound rows")
     args = ap.parse_args()
     d = Path(args.dir)
 
@@ -175,7 +124,7 @@ def main():
 
     if args.targets:
         report_targets(data, consts, sc, other,
-                       [float(x) / 100 for x in args.targets.split(",")], args.dump)
+                       [float(x) / 100 for x in args.targets.split(",")])
         return
 
     cols = [("safety-critical AP", sc, "ap"), ("safety-critical AR", sc, "ar"),

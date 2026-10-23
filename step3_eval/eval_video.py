@@ -16,7 +16,7 @@ The three differ only in --dataset, --imgsz and the cache/weight paths.
         --dataset kitti --weight results/step1_finetune/weights/kitti/best.pt \
         --policies  "s0=results/step2_router/weights/kitti/router_g2x2_both_s0.pt" \
         --val_cache results/step2_router/cache/kitti/cache_val_g2x2_both.pt \
-        --grid 2 --imgsz 384 1248 --conf 0.25 \
+        --grid 2 --imgsz 384 1248 --conf 0.001 --max_det 100 \
         --budgets 10,20,30,40,50,60,70,80,90 \
         --out results/step3_eval/kitti/eval/video_curve.json
 
@@ -25,7 +25,7 @@ The three differ only in --dataset, --imgsz and the cache/weight paths.
         --dataset bdd100k --weight results/step1_finetune/weights/bdd100k/best.pt \
         --policies  "s0=results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt" \
         --val_cache results/step2_router/cache/bdd100k/cache_val_g2x2_both.pt \
-        --grid 2 --imgsz 720 1280 --conf 0.25 \
+        --grid 2 --imgsz 720 1280 --conf 0.001 --max_det 100 \
         --budgets 10,20,30,40,50,60,70,80,90 \
         --out results/step3_eval/bdd100k/eval/video_curve.json
 
@@ -34,9 +34,23 @@ The three differ only in --dataset, --imgsz and the cache/weight paths.
         --dataset waymo --weight results/step1_finetune/weights/waymo/best.pt \
         --policies  "s0=results/step2_router/weights/waymo/router_g2x2_both_s3.pt" \
         --val_cache results/step2_router/cache/waymo/cache_val_g2x2_both.pt \
-        --grid 2 --imgsz 1280 1920 --conf 0.25 \
+        --grid 2 --imgsz 1280 1920 --conf 0.001 --max_det 100 \
         --budgets 10,20,30,40,50,60,70,80,90 \
         --out results/step3_eval/waymo/eval/video_curve.json
+
+    # Scene-change guard (discussion section). Registers a '..._pi{t}_guard' twin of
+    # every PI strategy that forces the super-path wherever the Glimpse changed-pixel
+    # fraction exceeds --guard_phi_motion, feeding the forced choice back into the
+    # same controller state. --guard_features is written by ablation/frame_features.py.
+    python -m step3_eval.eval_video \
+        --dataset kitti --weight results/step1_finetune/weights/kitti/best.pt \
+        --policies  "s0=results/step2_router/weights/kitti/router_g2x2_both_s0.pt" \
+        --val_cache results/step2_router/cache/kitti/cache_val_g2x2_both.pt \
+        --grid 2 --imgsz 384 1248 --conf 0.001 --max_det 100 \
+        --pi --pi_targets 10,30,50,70,90 \
+        --guard_features results/step3_eval/kitti/eval/frame_features.npz \
+        --guard_phi_motion 0.3 \
+        --out results/step3_eval/kitti/eval/guard_pi/video_curve_guard_pi_phi03.json
 
 Waymo at 1280x1920 is heavy enough to want sharding: add --num_shards N --shard_id I
 with --raw_out results/step3_eval/waymo/eval/shard_<I>.pt, then merge the shards with
@@ -398,8 +412,7 @@ def main():
                          "strategy whose routing decision is forced to SUPER whenever "
                          "the Glimpse changed-pixel fraction exceeds --guard_phi_motion; "
                          "the forced choice feeds back into that strategy's OWN "
-                         "controller state (EMA + integral), unlike the static-tau "
-                         "feasibility study in step3_eval/ablation/guard_eval.py")
+                         "controller state (EMA + integral), so the budget loop sees it")
     ap.add_argument("--guard_phi_motion", type=float, default=0.5,
                     help="Glimpse's own rule: trigger when changed-pixel fraction "
                          "exceeds half the frame (Chen et al., SenSys'15, Sec. 7.3)")
@@ -420,7 +433,7 @@ def main():
                          "to this .npz. Any per-frame path-selection policy can then be "
                          "scored offline without touching the GPU, which is what "
                          "step3_eval/ablation/tau_sweep.py uses to solve for the tau that "
-                         "realises an exact SUPER usage (10%, 20%, ...)")
+                         "realises an exact SUPER usage (10%%, 20%%, ...)")
     ap.add_argument("--causal", action="store_true",
                     help="decide frame t from the A-hat produced while executing frame t-1, "
                          "matching the deployed controller. Default (off) decides frame t "
@@ -596,8 +609,7 @@ def main():
                 if args.guard_features:
                     # Same PI target and gains, but the scene-change guard forces SUPER
                     # on triggered frames; the forced choice feeds back into the SAME
-                    # controller state (EMA + integral), unlike guard_eval.py's static-tau
-                    # feasibility study. This is the true closed-loop integration test.
+                    # controller state (EMA + integral), so the budget loop reacts to it.
                     ctrl_g = PIController(target=t / 100.0, kp=args.pi_kp, ki=args.pi_ki,
                                           beta=args.pi_beta, tau0=args.pi_tau0)
                     strategies.append(dict(

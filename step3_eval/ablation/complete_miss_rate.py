@@ -9,9 +9,17 @@ fixed conf=0.25 operating point, IoU=0.50) under always-base, always-super,
 and the router at several target SUPER budgets.
 
 Usage (run from repo root):
+    # one row per SUPER budget, for the paper's router
     python -m step3_eval.ablation.complete_miss_rate \
         --dump results/step3_eval/kitti/eval/frames.npz \
         --out results/step3_eval/kitti/eval/complete_miss_rate.json
+
+    # one row per risk weight, read at matched SUPER usage (discussion section).
+    # Needs the risk-weighted dump, whose router tags are named w<W>s<S>.
+    python -m step3_eval.ablation.complete_miss_rate \
+        --dump results/step3_eval/kitti/eval/frames_risk.npz \
+        --by_weight --targets 30,50,70 \
+        --out results/step3_eval/kitti/eval/complete_miss_rate_riskw.json
 """
 import argparse
 import json

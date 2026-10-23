@@ -10,7 +10,7 @@
 ![Main results](docs/main_results.png)
 
 ## 📊 Router Performance
-Measured on-device savings at matched accuracy (**< 0.1 AP drop**).
+On-device savings at matched accuracy (**< 0.1 AP drop**).
 
 | Metrics Saved | KITTI | BDD100K | Waymo |
 |---|:---:|:---:|:---:|
@@ -27,7 +27,7 @@ pip install -r requirements.txt && pip install -e .
 ```
 
 ### 2. Dataset Preparation
-Convert raw datasets to YOLO format and update the paths in their respective configs:
+Convert to YOLO format, then point the config at your copy:
 
 | Dataset | Converter Script | Target Config |
 |---|---|---|
@@ -35,20 +35,20 @@ Convert raw datasets to YOLO format and update the paths in their respective con
 | **BDD100K** | `tools/bdd_det20_to_yolo.py` | `ultralytics/cfg/datasets/bdd100k.yaml` |
 | **Waymo** | `tools/waymo_v2_to_yolo.py` → `tools/build_waymo_det.py` | `ultralytics/cfg/datasets/waymo.yaml` |
 
-* **Tracking Data:** Step 3 (Video Evaluation) requires tracking splits (KITTI-Tracking, BDD100K MOT, Waymo segments), passed via `--data_root`.
+Step 3 evaluates on video, so it also needs the tracking splits (KITTI-Tracking, BDD100K MOT, Waymo segments), passed via `--data_root`.
 
 ---
 
 ## ⚙️ Pipeline
 
-* **Note:** Run all commands from the repo root. **BDD100K** is used as the running example below.
+Run everything from the repo root. **BDD100K** is the running example; swap `--dataset` and the paths for KITTI or Waymo.
 
 ### Step 1. Finetune AnyDepth-YOLO
-[AnyDepth-YOLO](https://arxiv.org/abs/2605.09407) operates at multiple depths using skippable blocks, sharing weights between a shallow **BASE** path and a full-depth **SUPER** path. Since the detector must be frozen during router training, we first finetune the model on the target dataset.
+Get one detector that runs at two depths. [AnyDepth-YOLO](https://arxiv.org/abs/2605.09407) shares weights between a shallow **BASE** path and a full-depth **SUPER** path, so finetuning it once gives you both. It stays frozen from here on.
 
 #### Option A: Download finetuned weights *(quick start)*
 
-Skip the training and download the finetuned detector directly into `results/step1_finetune/weights/<dataset>/best.pt`:
+Download into `results/step1_finetune/weights/<dataset>/best.pt` and skip to Step 2:
 
 | KITTI | BDD100K | Waymo |
 |:---:|:---:|:---:|
@@ -76,11 +76,11 @@ python -m torch.distributed.run --nproc_per_node 2 step1_finetune/finetune.py \
 ---
 
 ### Step 2. Train the Router
-The lightweight router is trained to predict the frame-by-frame advantage of running the deep path.
+Train the router that decides, per frame, whether the SUPER path is worth it. It is a small head on top of the frozen detector's features, so this takes minutes, not hours.
 
 #### Option A: Download the trained router *(quick start)*
 
-Skip the training and download the trained router into `results/step2_router/weights/<dataset>/`:
+Download into `results/step2_router/weights/<dataset>/` and skip to Step 3:
 
 | KITTI | BDD100K | Waymo |
 |:---:|:---:|:---:|
@@ -91,7 +91,7 @@ Skip the training and download the trained router into `results/step2_router/wei
 <details>
 <summary><b>Click to expand router training recipe</b></summary>
 
-Caching runs the frozen detector over the dataset twice. To save time, we highly recommend downloading the pre-built caches into `results/step2_router/cache/<dataset>/`:
+Training needs a cache of both paths' losses, which costs two passes of the frozen detector over the dataset. Downloading it into `results/step2_router/cache/<dataset>/` saves that time:
 * **KITTI**: [train cache](https://drive.google.com/open?id=1_ZLnp48fXWyFOoNP_16nXgV2j8Nv7XZ0) | [val cache](https://drive.google.com/open?id=1U9iSPHxrWmaQptu_q13_9azOIazrH6rn)
 * **BDD100K**: [train cache](https://drive.google.com/open?id=1MZDgVF2IwEGed96oSw4OzC-vzKa9FBjR) | [val cache](https://drive.google.com/open?id=1UXvxgdpROLfyb17zYq0mWUD7AkzZ7A3I)
 * **Waymo**: [train cache](https://drive.google.com/open?id=1RveUTmhNWfINIg6mSdTkhFWGgAByeMnT) | [val cache](https://drive.google.com/open?id=1BUxT4Heb3Ham8Q_W1woP5-oN71avJIEk)
@@ -117,7 +117,7 @@ python -m step2_train_router.train_policy --dataset bdd100k \
 ---
 
 ### Step 3. Evaluate the Router
-Routing is **causal**: the advantage predicted at frame *t−1* selects the path run at frame *t*.
+Sweep the budget and get the accuracy-compute curve. Routing is **causal**, so frame *t* is decided from frame *t−1* and nothing is read twice.
 
 <details>
 <summary><b>Click to expand evaluation recipe</b></summary>
@@ -127,17 +127,17 @@ python -m step3_eval.eval_video --dataset bdd100k \
     --weight    results/step1_finetune/weights/bdd100k/best.pt \
     --policies  "s0=results/step2_router/weights/bdd100k/router_g2x2_both_s0.pt" \
     --val_cache results/step2_router/cache/bdd100k/cache_val_g2x2_both.pt \
-    --grid 2 --imgsz 720 1280 --conf 0.25 \
+    --grid 2 --imgsz 720 1280 --conf 0.001 --max_det 100 \
     --budgets 10,20,30,40,50,60,70,80,90 \
     --out results/step3_eval/bdd100k/eval/video_curve.json
 ```
-*Note: The paper averages seeds 0-4; pass them as a comma-separated `--policies` list. Ablation drivers live in [`step3_eval/ablation/`](step3_eval/ablation/).*
+*Note: The paper averages seeds 0-4; pass them as a comma-separated `--policies` list. Ablations live in [`step3_eval/ablation/`](step3_eval/ablation/).*
 </details>
 
 ---
 
 ### Step 4. Deploy
-TensorRT cannot skip layers inside a single static engine. Therefore, each depth path becomes its own engine, and the router dynamically selects one per frame.
+Run it on-device and hold a live budget. TensorRT cannot skip layers inside one static engine, so each path is exported as its own engine and the router picks one per frame.
 
 <details>
 <summary><b>Click to expand deployment recipe (Export, build engines, track budget)</b></summary>
