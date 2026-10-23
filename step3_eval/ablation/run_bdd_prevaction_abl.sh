@@ -18,7 +18,7 @@ VAL=$CACHE_DIR/cache_val_g2x2_both.pt
 
 echo "=== [1/2] Train: feat=both, prev_p in {0.0, 1.0}, seeds 0-4 ==="
 for PP in 0.0 1.0; do
-  TAG="p$(echo $PP | tr -d '.')"   # p00 / p10
+  TAG="$(echo $PP | tr -d '.')"   # 00 / 10 -> prevp00 / prevp10
   for S in 0 1 2 3 4; do
     PT="$OUT/router_g2x2_both_s${S}_prevp${TAG}.pt"
     if [ -f "$PT" ]; then
@@ -50,8 +50,9 @@ for S in 0 1 2 3 4; do
 done
 for PP in 0.0 1.0; do
   TAG="p$(echo $PP | tr -d '.')"
+  NTAG="${TAG#p}"
   for S in 0 1 2 3 4; do
-    POLS+="both_${TAG}_s${S}=$OUT/router_g2x2_both_s${S}_prevp${TAG}.pt,"
+    POLS+="both_${TAG}_s${S}=$OUT/router_g2x2_both_s${S}_prevp${NTAG}.pt,"
   done
 done
 POLS="${POLS%,}"
@@ -63,7 +64,7 @@ $PY -m step3_eval.eval_video --dataset bdd100k \
   --weight results/step1_finetune/weights/bdd100k/best.pt \
   --policies "$POLS" \
   --grid 2 \
-  --conf 0.25 \
+  --conf 0.001 \
   --router_only \
   --val_cache "$VAL" \
   --out "$OUT_JSON"

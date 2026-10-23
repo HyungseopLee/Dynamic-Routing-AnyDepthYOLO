@@ -31,7 +31,7 @@ echo "=== [1/2] Video eval grid=8 (TinyConv 8x8) ==="
 python -m step3_eval.eval_video --dataset bdd100k \
     --weight "$W" \
     --policies "$POL_G8" \
-    --grid 8 --imgsz 720 1280 --conf 0.25 \
+    --grid 8 --imgsz 720 1280 --conf 0.001 \
     --val_cache "$CACHE_DIR/cache_val_g8x8_both.pt" \
     --budgets 1,5,10,20,30,40,50,60,70,80,90,95,99 \
     --num_shards 1 --shard_id 0 \

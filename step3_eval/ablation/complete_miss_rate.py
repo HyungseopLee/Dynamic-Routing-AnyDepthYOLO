@@ -55,17 +55,74 @@ def miss_rate(tp_count, gt_count, subset=None):
     return float(missed) / n * 100, n
 
 
+
+def report_by_weight(d, tags, targets, conf, out_path=None):
+    """Complete-miss rate per risk weight, at matched SUPER usage.
+
+    The dump of the risk-weighted run tags each router `w<W>s<S>`, so the tags group
+    into one family per risk weight. Every family is read at the same realised usage,
+    which is what makes the comparison a question about WHERE the super-path is spent
+    rather than about how much of it is spent.
+    """
+    import re
+    fam = {}
+    for t in tags:
+        m = re.fullmatch(r"w(\d+)s(\d+)", t)
+        if m:
+            fam.setdefault(int(m.group(1)), []).append(t)
+    if not fam:
+        raise SystemExit("no w<W>s<S> tags in this dump; drop --by_weight")
+    weights = sorted(fam)
+
+    out = {"conf_thres": conf, "iou": 0.50, "targets": [t * 100 for t in targets],
+           "classes": {}}
+    for cname, cid in SAFETY.items():
+        tp_b, gt = per_frame_tp_gt(d, "base", cid, conf)
+        tp_s, _ = per_frame_tp_gt(d, "super", cid, conf)
+        base_rate, n = miss_rate(tp_b, gt)
+        super_rate, _ = miss_rate(tp_s, gt)
+        print(f"\n[{cname}] frames with GT>0: {n}")
+        print(f"  always-base {base_rate:.2f}%   always-super {super_rate:.2f}%")
+        rows = {}
+        for t in targets:
+            cells = []
+            for w in weights:
+                per_seed = []
+                for tg in fam[w]:
+                    tau, _ = solve_tau(d, tg, t)
+                    take = decide(d, tg, tau)
+                    per_seed.append(miss_rate(np.where(take, tp_s, tp_b), gt)[0])
+                cells.append(float(np.mean(per_seed)))
+            rows[f"{t*100:.0f}"] = cells
+            print(f"  @ {t*100:>3.0f}% budget  " +
+                  "  ".join(f"w={w}: {c:5.2f}%" for w, c in zip(weights, cells)))
+        out["classes"][cname] = {"n_frames_with_gt": n, "weights": weights,
+                                 "always_base_miss_rate": base_rate,
+                                 "always_super_miss_rate": super_rate, "rows": rows}
+    if out_path:
+        Path(out_path).write_text(json.dumps(out, indent=2))
+        print(f"\n[*] {out_path}")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dump", required=True)
     ap.add_argument("--conf", type=float, default=CONF)
     ap.add_argument("--targets", default="10,30,50,70,90")
     ap.add_argument("--out", default=None)
+    ap.add_argument("--by_weight", action="store_true",
+                    help="group the dump's router tags by risk weight (tags named wWsS, "
+                         "written by the risk-weighted dump run) and report one row per "
+                         "weight instead of one row per budget")
     args = ap.parse_args()
 
     d = load(args.dump)
     tags = d["tags"]
     targets = [float(t) / 100 for t in args.targets.split(",")]
+
+    if args.by_weight:
+        report_by_weight(d, tags, targets, args.conf, args.out)
+        return
 
     out = {"conf_thres": args.conf, "iou": 0.50, "classes": {}}
 

@@ -17,8 +17,8 @@ pv = c["pred_base"].to(dev).float()
 pid = torch.zeros(iv.shape[0], dtype=torch.long, device=dev)
 print(f"val frames {len(sc)}  with pedestrian/cyclist {sc.sum()} ({sc.mean()*100:.1f}%)")
 
-for w in (1, 2, 5, 10):
-    rates_sc, rates_other = [], []
+for w in (1, 2, 3, 4, 5, 10):
+    rates_sc, rates_other, shares = [], [], []
     for s in range(5):
         ck = torch.load(f"results/step2_router/weights/kitti/router_g2x2_both_riskw{w}_s{s}.pt",
                         map_location="cpu", weights_only=False)
@@ -34,7 +34,13 @@ for w in (1, 2, 5, 10):
         take = ah >= np.median(ah)          # exactly 50% SUPER
         rates_sc.append(take[sc].mean())
         rates_other.append(take[~sc].mean())
-    m_sc, m_o = np.mean(rates_sc), np.mean(rates_other)
+        # composition: of the frames sent to SUPER, the share containing a
+        # safety-critical object. Compared against the natural frequency of such
+        # frames, this says whether SUPER is prioritising them or merely sampling
+        # them at their base rate.
+        shares.append(sc[take].mean())
+    m_sc, m_o, m_sh = np.mean(rates_sc), np.mean(rates_other), np.mean(shares)
     print(f"w={w:<3} SUPER rate at 50% budget:  safety-critical frames {m_sc*100:5.1f}% "
           f"(+/-{np.std(rates_sc)*100:.1f})   other frames {m_o*100:5.1f}%   "
-          f"gap {(m_sc-m_o)*100:+5.1f} pp")
+          f"gap {(m_sc-m_o)*100:+5.1f} pp   "
+          f"SUPER composition {m_sh*100:5.1f}% (+/-{np.std(shares)*100:.1f})")

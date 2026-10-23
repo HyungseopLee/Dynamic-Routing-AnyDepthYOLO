@@ -110,14 +110,10 @@ def main():
         total_frames += d.get("total_frames", 0)
         meta.update(d["meta"])
         for name, st in d["state"].items():
-            mm = st["matches_multi"]
-            if mm:
-                cls_parts[name].append(np.fromiter((t[0] for t in mm), dtype=np.int16, count=len(mm)))
-                conf_parts[name].append(np.fromiter((t[1] for t in mm), dtype=np.float32, count=len(mm)))
-                tp = np.empty((len(mm), n_iou), dtype=bool)
-                for i, t in enumerate(mm):
-                    tp[i] = t[2]
-                tp_parts[name].append(tp)
+            if len(st["cls"]):
+                cls_parts[name].append(st["cls"])
+                conf_parts[name].append(st["conf"])
+                tp_parts[name].append(st["tp"])
             for k, v in st["gt_count"].items():
                 gt_count[name][k] += v
             n_super[name] += st["n_super"]
