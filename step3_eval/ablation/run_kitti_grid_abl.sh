@@ -132,7 +132,7 @@ POL_G8="${POL_G8#,}"
 "$PY" -m step3_eval.eval_video --dataset kitti \
     --weight "$WEIGHT" \
     --policies "${POL_GAP},${POL_G2}" \
-    --grid 2 --imgsz 384 1248 --conf 0.25 \
+    --grid 2 --imgsz 384 1248 --conf 0.001 \
     --val_cache "$CACHE_G2_VAL" \
     --budgets 10,20,30,40,50,60,70,80,90 \
     --out "$EVAL_DIR/eval/video_curve_grid_abl_g1_g2.json" \
@@ -142,7 +142,7 @@ POL_G8="${POL_G8#,}"
 "$PY" -m step3_eval.eval_video --dataset kitti \
     --weight "$WEIGHT" \
     --policies "$POL_G8" \
-    --grid 8 --imgsz 384 1248 --conf 0.25 \
+    --grid 8 --imgsz 384 1248 --conf 0.001 \
     --val_cache "$CACHE_G8_VAL" \
     --budgets 10,20,30,40,50,60,70,80,90 \
     --out "$EVAL_DIR/eval/video_curve_grid_abl_g8.json" \

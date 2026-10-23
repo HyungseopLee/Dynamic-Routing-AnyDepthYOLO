@@ -1,0 +1,70 @@
+{
+  "conf_thres": 0.25,
+  "iou": 0.5,
+  "classes": {
+    "pedestrian": {
+      "n_frames_with_gt": 2529,
+      "always_base_miss_rate": 15.223408461842624,
+      "always_super_miss_rate": 15.262949782522735,
+      "rows": [
+        {
+          "target": 10.0,
+          "router_miss_rate": 15.152234084618424,
+          "router_miss_rate_std": 0.08064878629644631
+        },
+        {
+          "target": 30.0,
+          "router_miss_rate": 15.128509292210362,
+          "router_miss_rate_std": 0.12403627632548953
+        },
+        {
+          "target": 50.0,
+          "router_miss_rate": 15.104784499802296,
+          "router_miss_rate_std": 0.10610049715301394
+        },
+        {
+          "target": 70.0,
+          "router_miss_rate": 15.065243179122183,
+          "router_miss_rate_std": 0.10311114915306645
+        },
+        {
+          "target": 90.0,
+          "router_miss_rate": 15.136417556346382,
+          "router_miss_rate_std": 0.04611270774887651
+        }
+      ]
+    },
+    "cyclist": {
+      "n_frames_with_gt": 1412,
+      "always_base_miss_rate": 50.49575070821529,
+      "always_super_miss_rate": 36.96883852691218,
+      "rows": [
+        {
+          "target": 10.0,
+          "router_miss_rate": 46.92634560906515,
+          "router_miss_rate_std": 2.8574007952236267
+        },
+        {
+          "target": 30.0,
+          "router_miss_rate": 39.8300283286119,
+          "router_miss_rate_std": 3.1750169340269805
+        },
+        {
+          "target": 50.0,
+          "router_miss_rate": 37.53541076487253,
+          "router_miss_rate_std": 0.4947379375799693
+        },
+        {
+          "target": 70.0,
+          "router_miss_rate": 37.08215297450425,
+          "router_miss_rate_std": 0.19317537814427635
+        },
+        {
+          "target": 90.0,
+          "router_miss_rate": 36.9971671388102,
+          "router_miss_rate_std": 0.03469532213574104
+        }
+      ]
+    }
+  }
+}

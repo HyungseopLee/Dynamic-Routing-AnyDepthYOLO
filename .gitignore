@@ -34,3 +34,21 @@ paper_figures/
 
 # staging area for weights copied in from other machines
 _incoming/
+
+# risk-weighted loss experiment logs (regenerable)
+logs_risk/
+
+logs_coco/
+logs_shuffle/
+logs_causal/
+logs_guard/
+*.npz
+logs_dump/
+
+revision/
+
+# raw COCOeval detection dumps: multi-hundred-MB to >1GB, exceeds GitHub's per-file
+# limit, regenerable via step3_eval/coco_summary.py; distribute via Drive/scp instead
+results/**/coco_check/dets_always_base.json
+results/**/coco_check/dets_always_super.json
+results/step3_eval/waymo/eval_both/coco_check/gt.json

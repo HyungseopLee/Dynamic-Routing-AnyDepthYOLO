@@ -1,0 +1,104 @@
+{
+  "always_base": {
+    "stats": {
+      "AP": 0.4357383166557203,
+      "AP50": 0.6724621065047078,
+      "AP75": 0.4574327722134821,
+      "AP_small": 0.27641923125036866,
+      "AP_medium": 0.4146744008282777,
+      "AP_large": 0.5473841741033966,
+      "AR@1": 0.3385871169832793,
+      "AR@10": 0.5594264503066715,
+      "AR@100": 0.6016567862937637,
+      "AR_small": 0.48669432217146835,
+      "AR_medium": 0.5797263907570042,
+      "AR_large": 0.6983450640460994
+    },
+    "summary": " Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.436\n Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.672\n Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.457\n Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.276\n Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.415\n Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.547\n Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.339\n Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.559\n Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.602\n Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.487\n Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.580\n Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.698\n",
+    "per_class": {
+      "0": {
+        "ap": 0.6453759640461127,
+        "ar": 0.708970695970696
+      },
+      "1": {
+        "ap": 0.43384851726440565,
+        "ar": 0.6219933353529233
+      },
+      "2": {
+        "ap": 0.6536771402691176,
+        "ar": 0.7767872161480235
+      },
+      "3": {
+        "ap": 0.31933792202953953,
+        "ar": 0.4745335658238884
+      },
+      "4": {
+        "ap": NaN,
+        "ar": NaN
+      },
+      "5": {
+        "ap": 0.32463644468803055,
+        "ar": 0.49891640866873066
+      },
+      "6": {
+        "ap": 0.23755391163711595,
+        "ar": 0.5287394957983192
+      },
+      "7": {
+        "ap": NaN,
+        "ar": NaN
+      }
+    }
+  },
+  "always_super": {
+    "stats": {
+      "AP": 0.45343293334484613,
+      "AP50": 0.7031789442169004,
+      "AP75": 0.4749742453384506,
+      "AP_small": 0.2761559005571011,
+      "AP_medium": 0.44194294998731676,
+      "AP_large": 0.5523633973831548,
+      "AR@1": 0.34720820303667044,
+      "AR@10": 0.5752181009976051,
+      "AR@100": 0.6143396530191367,
+      "AR_small": 0.49030311481821276,
+      "AR_medium": 0.5886742094379559,
+      "AR_large": 0.7173446040463928
+    },
+    "summary": " Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.453\n Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.703\n Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.475\n Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.276\n Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.442\n Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.552\n Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.347\n Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.575\n Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.614\n Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.490\n Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.589\n Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.717\n",
+    "per_class": {
+      "0": {
+        "ap": 0.6581419891187389,
+        "ar": 0.7141428571428572
+      },
+      "1": {
+        "ap": 0.418593174735857,
+        "ar": 0.6177219024538019
+      },
+      "2": {
+        "ap": 0.6719995325304448,
+        "ar": 0.7845248107653491
+      },
+      "3": {
+        "ap": 0.3196445445654773,
+        "ar": 0.4764167393199651
+      },
+      "4": {
+        "ap": NaN,
+        "ar": NaN
+      },
+      "5": {
+        "ap": 0.3764507649872087,
+        "ar": 0.5149122807017543
+      },
+      "6": {
+        "ap": 0.2757675941313502,
+        "ar": 0.5783193277310923
+      },
+      "7": {
+        "ap": NaN,
+        "ar": NaN
+      }
+    }
+  }
+}

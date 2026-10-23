@@ -211,16 +211,32 @@ def match_frame(preds, gts, iou_th=0.5):
     return [(c, conf, flags[0]) for (c, conf, flags) in res_multi], gt_count
 
 
+REC_THRS = np.linspace(0.0, 1.0, 101)
+
+
 def compute_ap(precisions, recalls):
-    mrec = np.concatenate(([0.0], recalls, [1.0]))
-    mpre = np.concatenate(([1.0], precisions, [0.0]))
-    for i in range(len(mpre) - 2, -1, -1):
-        mpre[i] = max(mpre[i], mpre[i + 1])
-    ap = 0.0
-    for t in np.linspace(0, 1, 101):
-        p = mpre[mrec >= t]
-        ap += (p.max() if len(p) > 0 else 0.0) / 101
-    return ap
+    """101-point interpolated AP, matching pycocotools COCOeval.accumulate() exactly.
+
+    The earlier version prepended a sentinel (recall 0, precision 1) before
+    interpolating, which credits perfect precision to the recall range below the
+    first detection and inflates AP by ~0.0015 absolute. pycocotools instead makes
+    precision monotonically non-increasing from the right and then samples it at the
+    101 recall thresholds via searchsorted, scoring 0 wherever recall never reaches
+    the threshold. Verified against COCOeval on KITTI: agreement < 1e-6.
+    """
+    precisions = np.asarray(precisions, dtype=np.float64)
+    recalls = np.asarray(recalls, dtype=np.float64)
+    if precisions.size == 0:
+        return 0.0
+    pr = precisions.copy()
+    for i in range(pr.size - 1, 0, -1):          # monotonic envelope, right to left
+        if pr[i] > pr[i - 1]:
+            pr[i - 1] = pr[i]
+    inds = np.searchsorted(recalls, REC_THRS, side="left")
+    q = np.zeros(REC_THRS.size)
+    valid = inds < pr.size
+    q[valid] = pr[inds[valid]]
+    return float(q.mean())
 
 
 def dataset_map_multi_iou(all_matches_multi, all_gt_counts, iou_grid=IOU_GRID):
@@ -489,6 +505,20 @@ class StrategyState:
         self._conf_parts.append(np.fromiter((m[1] for m in matches), dtype=np.float32,
                                             count=len(matches)))
         self._tp_parts.append(np.asarray([m[2] for m in matches], dtype=bool))
+
+    def consolidate(self):
+        """Collapse the accumulated per-frame chunks into one array each.
+
+        Called at sequence boundaries by step3_eval/eval_video.py. Without it the
+        chunk lists grow to (frames x strategies) live numpy objects -- 12 M for a
+        102-strategy Waymo run -- and CPython's generational GC rescans all of them
+        on every gen-2 pass, which stalls the run long before it finishes. Folding
+        per sequence keeps the count at (sequences x strategies).
+        """
+        if len(self._cls_parts) > 1:
+            self._cls_parts = [np.concatenate(self._cls_parts)]
+            self._conf_parts = [np.concatenate(self._conf_parts)]
+            self._tp_parts = [np.concatenate(self._tp_parts)]
 
     def compact(self):
         """Return (cls[N], conf[N], tp[N, n_iou]) for the whole run."""
